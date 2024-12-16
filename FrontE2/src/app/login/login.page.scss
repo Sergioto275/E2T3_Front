@@ -1,3 +1,13 @@
+:host {
+  ion-content {
+    --background: #b6f3f9;
+  }
+
+  #background-content {
+    background-color: #b6f3f9 !important;
+  }
+}
+
 .custom-content {
     display: flex;
     flex-direction: column;
@@ -13,6 +23,8 @@
   .logo {
     width: 350px;
     height: auto;
+    background-color: #fff;
+    border-radius: 10%;
   }
   
   .login-container {
