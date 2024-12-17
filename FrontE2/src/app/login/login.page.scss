@@ -27,8 +27,13 @@
   
   .login-button {
     margin-top: 15px;
-    background-color: #b6f3f9;
+    --background: #88E4E8;
     color: #000;
     border-radius: 5px;
+  }
+
+  img{
+    background-color: white;
+    border-radius: 10%;
   }
   
