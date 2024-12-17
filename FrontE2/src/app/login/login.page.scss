@@ -32,8 +32,17 @@
     border-radius: 5px;
   }
 
-  img{
+  .logo{
+    padding: 50px;
     background-color: white;
     border-radius: 10%;
+  }
+
+  ion-content{
+    --background: #E4FEFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
   }
   

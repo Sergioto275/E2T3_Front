@@ -1,9 +1,3 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Login</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true" class="ion-padding custom-content">
   <div class="logo-container">
     <img src="assets/logo.png" alt="Santurtzi Logo" class="logo" />
@@ -13,13 +7,13 @@
     <ion-list>
       <ion-item>
         <ion-label position="floating">
-          Erabiltzailea:<ion-text color="danger">(Required)</ion-text>
+          Erabiltzailea:<ion-text color="danger">*</ion-text>
         </ion-label>
         <ion-input type="text" placeholder="Tu usuario"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">
-          Pasahitza:<ion-text color="danger">(Required)</ion-text>
+          Pasahitza:<ion-text color="danger">*</ion-text>
         </ion-label>
         <ion-input type="password" placeholder="Tu contraseña"></ion-input>
       </ion-item>
