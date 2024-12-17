@@ -39,8 +39,22 @@
   
   .login-button {
     margin-top: 15px;
-    background-color: #b6f3f9;
+    --background: #88E4E8;
     color: #000;
     border-radius: 5px;
+  }
+
+  .logo{
+    padding: 50px;
+    background-color: white;
+    border-radius: 10%;
+  }
+
+  ion-content{
+    --background: #E4FEFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
   }
   
