@@ -3,48 +3,111 @@
     <img src="assets/logo.png" alt="Santurtzi Logo" class="logo" />
   </div>
 
-  <div>
-    <div class="grid-botoiak">
-      <ion-button expand="block" class="button-blue">
-        <ion-icon name="calendar-number-outline"></ion-icon>
-        <b>Hitzorduak</b>
-      </ion-button>
+  <div class="custom-content">
+    <ion-grid>
+      <ion-col>
+        <ion-button class="button-blue">
+          <ion-grid>
+            <ion-row>
+              <ion-col><ion-icon name="calendar-number-outline"></ion-icon></ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col><b>Hitzorduak</b></ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-button>
+      </ion-col>
 
-      <ion-button expand="block" class="button-blue">
-        <ion-icon name="document-text-outline"></ion-icon>
-        <b>Txostenak</b>
-      </ion-button>
+      <ion-col>
+        <ion-button class="button-blue">
+          <ion-grid>
+            <ion-row>
+              <ion-col><ion-icon name="document-text-outline"></ion-icon></ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col><b>Txostenak</b></ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-button>
+      </ion-col>
+    </ion-grid>
 
-      <div class="button-container">
-        <ion-icon name="cube-outline"></ion-icon>
-        <b>Inbentarioa</b>
-
-        <div class="botoiak-container">
-          <ion-button expand="block" class="button-white">
-            <ion-icon name="color-fill-outline"></ion-icon>
-            <b>Materialak</b>
-          </ion-button>
-
-          <ion-button expand="block" class="button-white">
-            <ion-icon name="calendar-number-outline"></ion-icon>
-            <b>Produktuak</b>
-          </ion-button>
-        </div>
-      </div>
-      <div class="button-container">
-        <ion-icon name="cog-outline"></ion-icon>
-        <b>Parametrizazioa</b>
-
-        <ion-button expand="block" class="button-white">
-          <ion-icon name="albums-outline"></ion-icon>
+    <div class="button-container">
+      <ion-grid class="custom-content">
+        <ion-row>
+          <ion-icon name="cube-outline"></ion-icon>
+        </ion-row>
+        <ion-row>
           <b>Inbentarioa</b>
-        </ion-button>
+        </ion-row>
+      </ion-grid>
 
-        <ion-button expand="block" class="button-white">
-          <ion-icon name="people-outline"></ion-icon>
-          <b>Ikasleak</b>
-        </ion-button>
-      </div>
+      <ion-grid>
+        <ion-col>
+          <ion-button class="button-white">
+            <ion-grid>
+              <ion-row>
+                <ion-col><ion-icon name="cut-outline"></ion-icon></ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col><b>Materialak</b></ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-button>
+        </ion-col>
+
+        <ion-col>
+          <ion-button class="button-white">
+            <ion-grid>
+              <ion-row>
+                <ion-col><ion-icon name="color-fill-outline"></ion-icon></ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col><b>Produktuak</b></ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-button>
+        </ion-col>
+      </ion-grid>
+    </div>
+
+    <div class="button-container">
+      <ion-grid class="custom-content">
+        <ion-row>
+          <ion-icon name="cog-outline"></ion-icon>
+        </ion-row>
+        <ion-row>
+          <b>Parametrizazioa</b>
+        </ion-row>
+      </ion-grid>
+
+      <ion-grid>
+        <ion-col  size="6" style="max-width: 200px;">
+          <ion-button class="button-white">
+            <ion-grid>
+              <ion-row>
+                <ion-col><ion-icon name="albums-outline"></ion-icon></ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col><b>Inbentarioa</b></ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-button>
+        </ion-col>
+
+        <ion-col  size="6" style="max-width: 200px;">
+          <ion-button class="button-white">
+            <ion-grid>
+              <ion-row>
+                <ion-col><ion-icon name="people-outline"></ion-icon></ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col><b>Ikasleak</b></ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-button>
+        </ion-col>
+      </ion-grid>
     </div>
   </div>
 </ion-content>

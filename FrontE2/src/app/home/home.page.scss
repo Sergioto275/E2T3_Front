@@ -1,10 +1,3 @@
-.custom-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
 .logo {
   width: 350px;
   height: auto;
@@ -33,10 +26,7 @@ b{
 
 .button-blue{
   --background: #E4FEFF;
-  --background-hover: #a0a0a0;
-  --background-activated: #25ff92;
-  --background-focused: #40755a;
-  --ripple-color: rgb(149, 234, 255);
+  --background-activated: rgb(149, 234, 255);
 }
 
 .button-white{
@@ -44,27 +34,24 @@ b{
   --background-hover: #9ce0be;
   --background-activated: #88f4be;
   --background-focused: #88f4be;
-  --ripple-color: deeppink;
 }
 
 .button-container{
   background-color: #E4FEFF;
-  padding: 20px;
-  margin-top: 10px;
   border-radius: 20px;
-  display: grid;
-  grid-template-columns: 2;
-  grid-template-rows: 2;
+  margin-bottom: 10px;
+  /*padding: 20px;
+  margin-top: 10px;
+  max-width: 20%;*/
 }
 
-.botoiak-container{
+/*.grid-container{
   display: grid;
-  grid-template-columns: 2fr 1fr;
-}
+  grid-template-columns: 2fr 2fr;
+}*/
 
 ion-button {
   --border-radius: 10px;
   --box-shadow: 0 2px 6px 0 rgb(0, 0, 0, 0.25);
-  --padding-top: 10px;
-  --padding-bottom: 10px;
+  --ion-grid-padding: 10px;
 }
