@@ -1,48 +1,55 @@
-.custom-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .logo-container {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .logo {
-    width: 350px;
-    height: auto;
-  }
-  
-  .login-container {
-    width: 90%;
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .login-button {
-    margin-top: 15px;
-    --background: #88E4E8;
-    color: #000;
-    border-radius: 5px;
-  }
+ion-toolbar {
+  --background: #007bff; /* Fondo azul */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra inferior */
+}
 
-  .logo{
-    padding: 50px;
-    background-color: white;
-    border-radius: 10%;
-  }
+ion-list {
+  background-color: #f0f8ff; /* Fondo azul claro para la lista */
+  padding: 20px;
+  border-radius: 5px;
+  width: 100%;
+}
 
-  ion-content{
-    --background: #E4FEFF;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-  }
-  
+ion-item {
+  background-color: white;
+  display: flex;
+  align-items: center;
+}
+
+ion-avatar img {
+  border-radius: 50%;
+}
+
+ion-label {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+small {
+  font-size: 12px;
+  color: #555;
+  display: block;
+  margin-top: 5px;
+}
+
+ion-badge {
+  background-color: #e42121;
+  color: white;
+}
+
+/* Estilos para el menú responsivo */
+ion-menu-button {
+  color: white;
+}
+
+/* Estilo para el bloque que contiene la lista */
+.list-block {
+  background-color: white;  /* Fondo blanco */
+  margin-top: 30px;          /* Separación de 30px del menú */
+  //padding: 20px;             /* Relleno para que los elementos no se peguen a los bordes */
+  border-radius: 10px;       /* Bordes redondeados */
+  width: 90%;                /* Ancho de la lista */
+  margin-left: auto;         /* Centrado horizontal */
+  margin-right: auto;        /* Centrado horizontal */
+}
