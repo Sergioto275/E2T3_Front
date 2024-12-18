@@ -32,7 +32,258 @@
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
-      jjj
+      <div class="flexbox">
+        <div class="taula">
+          <ion-item>
+            <ion-label position="floating">Fecha</ion-label>
+            <ion-input type="date" placeholder="Fecha"></ion-input>
+          </ion-item>
+          <ion-grid>
+            <ion-row>
+              <ion-col>hh:mm</ion-col>
+              <ion-col>Asiento 1</ion-col>
+              <ion-col>Asiento 2</ion-col>
+              <ion-col>Asiento 3</ion-col>
+              <ion-col>Asiento 4</ion-col>
+              <ion-col>Asiento 5</ion-col>
+              <ion-col>Asiento 6</ion-col>
+              <ion-col>Asiento 7</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>10:00</ion-col>
+              <ion-col></ion-col>
+              <!-- Card 1 will span two rows -->
+              <ion-col [attr.colspan]="2">
+                <ion-card>
+                  <ion-card-header>
+                    <ion-card-title>Cita 1</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                    Here's a small text description for the card content. Nothing more, nothing less.Here's a small text description for the card content. Nothing more, nothing less.Here's a small text description for the card content. Nothing more, nothing less.Here's a small text description for the card content. Nothing more, nothing less.
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+              <ion-col></ion-col>
+              <ion-col></ion-col>
+              <ion-col></ion-col>
+              <ion-col>
+                <ion-card>
+                  <ion-card-header>
+                    <ion-card-title>Cita 2</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                    Here's a small text description for the card content. Nothing more, nothing less.
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+              <ion-col></ion-col>
+            </ion-row>
+            
+            <ion-row>
+              <ion-col>10:30</ion-col>
+              <ion-col>
+                <ion-card>
+                  <ion-card-header>
+                    <ion-card-title>Cita 3</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                    Here's a small text description for the card content. Nothing more, nothing less.
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+              <ion-col></ion-col>
+              <ion-col></ion-col>
+              <ion-col></ion-col>
+              <ion-col></ion-col>
+              <ion-col>
+                <ion-card>
+                  <ion-card-header>
+                    <ion-card-title>Cita 4</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                    Here's a small text description for the card content. Nothing more, nothing less.
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+              <ion-col></ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>11:30</ion-col>
+              <ion-col></ion-col>
+              <ion-col>
+                <ion-card>
+                  <ion-card-header>
+                    <ion-card-title>Cita 5</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                    Here's a small text description for the card content. Nothing more, nothing less.
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+              <ion-col></ion-col>
+              <ion-col></ion-col>
+              <ion-col>
+                <ion-card>
+                  <ion-card-header>
+                    <ion-card-title>Cita 6</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                    Here's a small text description for the card content. Nothing more, nothing less.
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+              <ion-col></ion-col>
+              <ion-col></ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>hh:mm</ion-col>
+              <ion-col>
+                <ion-card>
+                  <ion-card-header>
+                    <ion-card-title>Cita 7</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                    Here's a small text description for the card content. Nothing more, nothing less.
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+              <ion-col></ion-col>
+              <ion-col></ion-col>
+              <ion-col></ion-col>
+              <ion-col>
+                <ion-card>
+                  <ion-card-header>
+                    <ion-card-title>Cita 8</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                    Here's a small text description for the card content. Nothing more, nothing less.
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+              <ion-col>
+                <ion-card>
+                  <ion-card-header>
+                    <ion-card-title>Cita 9</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                    Here's a small text description for the card content. Nothing more, nothing less.
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+              <ion-col></ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+        <div class="tabs">
+          <ion-segment>
+            <ion-segment-button value="sortu" content-id="sortu">
+              <ion-label>Sortu</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="editatu" content-id="editatu">
+              <ion-label>Editatu</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="asignatu" content-id="asignatu">
+              <ion-label>Asignatu</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="ticket" content-id="ticket">
+              <ion-label>Ticket Sortu</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+          <ion-segment-view>
+            <ion-segment-content id="sortu">
+              <ion-item>
+                <ion-label position="floating">Fecha</ion-label>
+                <ion-input type="date" placeholder="Fecha"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Hasiera ordua</ion-label>
+                <ion-input type="time" placeholder="Hasiera ordua"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Amaiera ordua</ion-label>
+                <ion-input type="time" placeholder="Amaiera ordua"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Asiento</ion-label>
+                <ion-input placeholder="Asiento"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Bezeroa</ion-label>
+                <ion-select placeholder="Seleccione un cliente">
+                  <ion-select-option value="1">Cliente 1</ion-select-option>
+                  <ion-select-option value="2">Cliente 2</ion-select-option>
+                  <ion-select-option value="3">Cliente 3</ion-select-option>
+                </ion-select>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Deskribapena</ion-label>
+                <ion-input placeholder="Deskribapena"></ion-input>
+              </ion-item>
+              <ion-button>Sortu</ion-button>
+            </ion-segment-content>
+            <ion-segment-content id="editatu">
+              <ion-item>
+                <ion-label position="floating">Fecha</ion-label>
+                <ion-input type="date" placeholder="Fecha"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Hasiera ordua</ion-label>
+                <ion-input type="time" placeholder="Hasiera ordua"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Amaiera ordua</ion-label>
+                <ion-input type="time" placeholder="Amaiera ordua"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Asiento</ion-label>
+                <ion-input placeholder="Asiento"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Bezeroa</ion-label>
+                <ion-select placeholder="Seleccione un cliente">
+                  <ion-select-option value="1">Cliente 1</ion-select-option>
+                  <ion-select-option value="2">Cliente 2</ion-select-option>
+                  <ion-select-option value="3">Cliente 3</ion-select-option>
+                </ion-select>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Deskribapena</ion-label>
+                <ion-input placeholder="Deskribapena"></ion-input>
+              </ion-item>
+              <ion-button>Gorde</ion-button>
+            </ion-segment-content>
+            <ion-segment-content id="asignatu">
+              <ion-item>
+                <ion-label position="floating">Alumno</ion-label>
+                <ion-select placeholder="Seleccione un responsable">
+                  <ion-select-option value="1">Alumno 1</ion-select-option>
+                  <ion-select-option value="2">Alumno 2</ion-select-option>
+                  <ion-select-option value="3">Alumno 3</ion-select-option>
+                </ion-select>
+              </ion-item>
+              <ion-button>Asignar</ion-button>
+            </ion-segment-content>
+            <ion-segment-content id="ticket">
+              <ion-item>
+                <ion-checkbox>Tratamiento 1</ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-checkbox>Tratamiento 2</ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-checkbox>Tratamiento 3</ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-checkbox>Tratamiento 4</ion-checkbox>
+              </ion-item>
+              <ion-item>
+                <ion-checkbox>Tratamiento 5</ion-checkbox>
+              </ion-item>
+              <ion-button>Generar Ticket</ion-button>
+            </ion-segment-content>
+          </ion-segment-view>
+        </div>
+      </div>
     </ion-content>
   </div>
 </ion-content>

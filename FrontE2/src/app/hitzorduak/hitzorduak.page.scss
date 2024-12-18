@@ -1,0 +1,40 @@
+  .double-row {
+    grid-row: span 2;
+  }
+  
+  ion-item {
+    --padding-start: 16px;
+    --padding-end: 16px;
+  }
+  
+  ion-input {
+    --padding-top: 1%;
+  }
+
+  ion-select {
+    --padding-top: 1%;
+  }
+
+  .flexbox{
+    display: flexbox;
+  }
+  
+  .taula{
+    // display: grid;
+    // grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Define las columnas */
+    // gap: 10px; /* Espacio entre elementos del grid */
+    // max-width: 60%; /* Ancho máximo */
+    // max-height: 80%; /* Alto máximo */
+    // overflow: auto; /* Habilita el scroll si el contenido supera las dimensiones */
+    // // border: 1px solid #ccc; /* Opcional: borde para visualizar el contenedor */
+    // padding: 10px; /* Opcional: espacio interior */
+    // background-color: #f9f9f9;
+    overflow:scroll;
+    height:500px;
+    width:500px;
+  }
+
+  .tabs{
+    max-width: 30%; /* Ancho máximo */
+    max-height: 300px; /* Alto máximo */
+  }
