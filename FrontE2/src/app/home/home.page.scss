@@ -11,7 +11,6 @@
   margin-bottom: 20px;
   background-color: #E4FEFF;
   border-radius: 20px;
-  padding: 20px;
 }
 
 ion-icon{
@@ -24,7 +23,10 @@ b{
 
 .button-blue{
   --background: #E4FEFF;
-  --background-activated: rgb(149, 234, 255);
+  --background-activate: #eeeeee(149, 234, 255);
+  --background-hover: #9ce0be;
+  --background-activated: #88f4be;
+  --background-focused: #88f4be;
 }
 
 .button-white{
@@ -38,15 +40,7 @@ b{
   background-color: #E4FEFF;
   border-radius: 20px;
   margin-bottom: 10px;
-  /*padding: 20px;
-  margin-top: 10px;
-  max-width: 20%;*/
 }
-
-/*.grid-container{
-  display: grid;
-  grid-template-columns: 2fr 2fr;
-}*/
 
 ion-button {
   --border-radius: 10px;
@@ -61,4 +55,8 @@ ion-content{
 .content{
   background-color: #ffffff;
   padding: 50px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 500px;
+  margin: 0 auto;
 }
