@@ -1,9 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-
-export interface IBalioa {
-  botoiTitulua: string;
-  iconIzena: string;
-}
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-home-botoiak-konponentea',
@@ -11,18 +6,9 @@ export interface IBalioa {
   styleUrls: ['./home-botoiak-konponentea.component.scss'],
 })
 export class HomeBotoiakKonponenteaComponent  implements OnInit {
-
-  //HACERLO CON INPUT
-  botoiLista: IBalioa[] = [
-    {
-      botoiTitulua: "Hitzorduak",
-      iconIzena: "calendar-number",
-    },
-    {
-      botoiTitulua: "Txostenak",
-      iconIzena: "document-text",
-    },
-  ]
+  @Input() botoiTitulua!:string;
+  @Input() iconIzena!:string;
+  @Input() kolorea!:string;
 
   constructor() { }
 

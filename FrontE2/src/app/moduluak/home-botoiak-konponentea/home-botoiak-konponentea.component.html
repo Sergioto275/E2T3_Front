@@ -1,12 +1,10 @@
-<ion-list *ngFor="let botoia of botoiLista">
-<ion-button>
+<ion-button [color]="kolorea">
   <ion-grid>
     <ion-row>
-      <ion-col><ion-icon [name]="botoia.iconIzena"></ion-icon></ion-col>
+      <ion-col><ion-icon [name]="iconIzena"></ion-icon></ion-col>
     </ion-row>
     <ion-row>
-      <ion-col><b>{{botoia.botoiTitulua}}</b></ion-col>
+      <ion-col><b>{{botoiTitulua}}</b></ion-col>
     </ion-row>
   </ion-grid>
 </ion-button>
-</ion-list>
