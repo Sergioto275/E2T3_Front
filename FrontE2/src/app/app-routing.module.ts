@@ -22,6 +22,10 @@ const routes: Routes = [
     path: 'produktuak',
     loadChildren: () => import('./produktuak/produktuak.module').then( m => m.ProduktuakPageModule)
   },
+  {
+    path: 'materialak',
+    loadChildren: () => import('./materialak/materialak.module').then( m => m.MaterialakPageModule)
+  },
 
 ];
 
