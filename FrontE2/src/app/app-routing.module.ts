@@ -18,7 +18,11 @@ const routes: Routes = [
   {
     path: 'hitzorduak',
     loadChildren: () => import('./hitzorduak/hitzorduak.module').then( m => m.HitzorduakPageModule)
+  },  {
+    path: 'produktuak',
+    loadChildren: () => import('./produktuak/produktuak.module').then( m => m.ProduktuakPageModule)
   },
+
 ];
 
 @NgModule({
