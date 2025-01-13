@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { GrafikoakPageRoutingModule } from './grafikoak-routing.module';
+import { IkasleakPageRoutingModule } from './ikasleak-routing.module';
 
-import { GrafikoakPage } from './grafikoak.page';
+import { IkasleakPage } from './ikasleak.page';
 import { ComponentsModule } from "../components/components.module";
 
 @NgModule({
@@ -14,9 +14,9 @@ import { ComponentsModule } from "../components/components.module";
     CommonModule,
     FormsModule,
     IonicModule,
-    GrafikoakPageRoutingModule,
+    IkasleakPageRoutingModule,
     ComponentsModule
 ],
-  declarations: [GrafikoakPage]
+  declarations: [IkasleakPage]
 })
-export class GrafikoakPageModule {}
+export class IkasleakPageModule {}

@@ -18,10 +18,20 @@ const routes: Routes = [
   {
     path: 'hitzorduak',
     loadChildren: () => import('./hitzorduak/hitzorduak.module').then( m => m.HitzorduakPageModule)
-  },  {
+  },
+  {
     path: 'produktuak',
     loadChildren: () => import('./produktuak/produktuak.module').then( m => m.ProduktuakPageModule)
   },
+  {
+    path: 'grafikoak',
+    loadChildren: () => import('./grafikoak/grafikoak.module').then( m => m.GrafikoakPageModule)
+  },  {
+    path: 'ikasleak',
+    loadChildren: () => import('./ikasleak/ikasleak.module').then( m => m.IkasleakPageModule)
+  },
+
+
 
 ];
 
