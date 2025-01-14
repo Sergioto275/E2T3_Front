@@ -1,0 +1,108 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>{{ 'productos.title' | translate }}</ion-title>
+    <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">
+      <ion-select-option value="es">Español</ion-select-option>
+      <ion-select-option value="eu">Euskera</ion-select-option>
+    </ion-select>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true" id="main-content">
+  <app-header></app-header>
+
+<!-- <div class="ion-page" id="main-content"> -->
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button id="prod-sortu-modal">{{ 'productos.botones.agregarProducto' | translate }}</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button id="atera-modal">{{ 'productos.botones.sacarProductos' | translate }}</ion-button>
+    </ion-buttons>
+  </ion-toolbar>  
+
+  <!-- Sección de Electrónica -->
+  <ng-container *ngFor="let categoria of produktuak">
+    <!-- Categoría -->
+    <ion-item button (click)="toggleCategoria(categoria.izena)">
+      <ion-label>{{ categoria.izena }}</ion-label>
+      <ion-icon [name]="isCategoriaAbierta(categoria.izena) ? 'chevron-up' : 'chevron-down'" slot="end"></ion-icon>
+    </ion-item>
+  
+    <!-- Lista de productos dentro de la categoría -->
+    <ion-list *ngIf="isCategoriaAbierta(categoria.izena)">
+      <ion-item *ngFor="let producto of categoria.produktuak">
+        <ion-label> {{ producto.izena }} - Stock: {{ producto.stock }} </ion-label>
+        <ion-checkbox slot="start" [(ngModel)]="producto.selected" (ionChange)="actualizarProductosSeleccionados(producto)"></ion-checkbox>
+        <ion-button slot="end" (click)="editarProducto(producto)">
+          <ion-icon name="create"></ion-icon>
+        </ion-button>
+        <ion-button slot="end" (click)="eliminarProducto(producto)">
+          <ion-icon name="trash"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+  
+  <!-- Modal para sacar productos -->
+  <ion-modal trigger="atera-modal">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ 'productos.botones.sacarProductos' | translate }}</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-item>
+          <ion-select label="Alumno" placeholder="Selecciona a un alumno">
+            <ion-select-option *ngFor="let item of alumnos" >{{item.grupo}} : {{item.nombre}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-button expand="full" (click)="confirmarSacarProductos()">{{ 'productos.botones.confirmar' | translate }}</ion-button>
+        <ion-list>
+          <ion-item *ngFor="let prod of productosSeleccionados">
+            <ion-label> {{prod.izena}} </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template> 
+  </ion-modal>
+  
+  <ion-modal trigger="prod-sortu-modal">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ 'productos.botones.crearProductos' | translate }}</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-item>
+          <ion-label position="stacked">{{ 'productos.modal.nombre' | translate }}</ion-label>
+          <ion-input placeholder="Izena"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">{{ 'productos.modal.descripcion' | translate }}</ion-label>
+          <ion-input placeholder="Deskribapena"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-select label="Kategoria" placeholder="Selecciona una kategoria">
+            <ion-select-option *ngFor="let cat of produktuak">{{cat.izena}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">{{ 'productos.modal.marca' | translate }}</ion-label>
+          <ion-input placeholder="Marka"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">{{ 'productos.modal.stock' | translate }}</ion-label>
+          <ion-input type="number" placeholder="Stock"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">{{ 'productos.modal.stockAlerta' | translate }}</ion-label>
+          <ion-input type="number" placeholder="Stock alerta"></ion-input>
+        </ion-item>
+        <ion-button expand="full" (click)="confirmarSacarProductos()">{{ 'productos.botones.crear' | translate }}</ion-button>
+      </ion-content>
+    </ng-template> 
+  </ion-modal>
+</ion-content>
+

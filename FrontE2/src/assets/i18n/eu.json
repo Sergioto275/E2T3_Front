@@ -1,0 +1,27 @@
+{
+    "productos": {
+        "title": "Produktuen kudeaketa",
+        "botones": {
+            "agregarProducto": "Produktu Gehitu",
+            "sacarProductos": "Produktuak Atera",
+            "crearProductos": "Produktuak Sortu",
+            "confirmar": "Baieztatu",
+            "crear": "Sortu"
+        },
+        "modal": {
+            "sacarProductos": "Produktuak Atera",
+            "alumno": "Ikaslea",
+            "seleccionaAlumno": "Hautatu ikaslea",
+            "producto": "Produktua",
+            "categoria": "Kategoria",
+            "nombre": "Izena",
+            "marca": "Marka",
+            "stock": "Stocka",
+            "stockAlerta": "Stock Alerta",
+            "descripcion": "Deskribapena"
+        },
+        "categorias": {
+            "electronica": "Elektronika"
+        }
+    }
+}
