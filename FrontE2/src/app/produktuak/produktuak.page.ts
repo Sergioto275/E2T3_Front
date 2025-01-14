@@ -1,12 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+
 // import { IonButton, IonContent, IonHeader, IonLabel, IonModal, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
-
-export interface Producto {
-  nombre:string,
-  precio:number,
-  selected:boolean
-}
 
 export interface Alumno {
   nombre: string;
@@ -21,6 +17,8 @@ export interface Alumno {
 })
 export class ProduktuakPage implements OnInit {
 
+  selectedLanguage: string = 'es';
+
   produktuak!:any[];
 
   productosSeleccionados:any[]=[];
@@ -30,19 +28,13 @@ export class ProduktuakPage implements OnInit {
     { nombre: 'Alejandro', grupo: "3pag2"}
   ];
 
-  // productosElectronica: Producto[] = [
-  //   { nombre: 'Televisor Samsung', precio: 399.99, selected: false },
-  //   { nombre: 'Auriculares Sony', precio: 99.99, selected: false }
-  // ];
-
-  // productosRopa: Producto[] = [
-  //   { nombre: 'Camiseta Nike', precio: 29.99, selected: false },
-  //   { nombre: 'Pantalones Adidas', precio: 59.99, selected: false }
-  // ];
-
   modalAtera = false;
   alumne = '';
   categoriasAbiertas: { [key: string]: boolean } = {};
+
+  changeLanguage() {
+    this.translate.use(this.selectedLanguage);
+  }
 
   actualizarProductosSeleccionados(producto:any) {
     const index = this.productosSeleccionados.findIndex(p => p.id === producto.id);
@@ -54,7 +46,6 @@ export class ProduktuakPage implements OnInit {
       // Si el producto no está seleccionado y está en la lista, lo elimina
       this.productosSeleccionados.splice(index, 1);
     }
-  
     console.log('Productos seleccionados:', this.productosSeleccionados);
   }
 
@@ -87,19 +78,6 @@ export class ProduktuakPage implements OnInit {
     } else {
       alert('Por favor, ingrese el nombre del alumno.');
     }
-  }
-
-  abrirModalAgregarProducto() {
-    // Función para abrir el modal de agregar producto
-  }
-
-  sacarProductos() {
-    // Función para abrir el modal de sacar productos
-    this.modalAtera = true;
-  }
-
-  cerrarModal() {
-    this.modalAtera = false;
   }
 
   async produktuakLortu() {
@@ -145,8 +123,11 @@ export class ProduktuakPage implements OnInit {
     }
   }
 
-  constructor() { }
-
+  constructor(private translate: TranslateService) {
+    this.translate.setDefaultLang('es');
+    this.translate.use(this.selectedLanguage);
+  }
+  
   ngOnInit() {
     this.produktuakLortu();
   }
