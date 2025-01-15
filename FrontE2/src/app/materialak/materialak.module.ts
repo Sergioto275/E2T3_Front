@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { MaterialakPageRoutingModule } from './materialak-routing.module';
 
 import { MaterialakPage } from './materialak.page';
+import { ComponentsModule } from "../components/components.module";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    MaterialakPageRoutingModule
-  ],
+    MaterialakPageRoutingModule,
+    ComponentsModule
+],
   declarations: [MaterialakPage]
 })
 export class MaterialakPageModule {}
