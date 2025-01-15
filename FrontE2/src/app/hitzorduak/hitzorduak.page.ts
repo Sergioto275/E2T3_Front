@@ -656,49 +656,49 @@ export class HitzorduakPage implements OnInit {
   }
 
   // Función: cita_sartuta
-  cita_sartuta(time: string, seatId: number): boolean {
-    if (time === this.hoursArray[0] && seatId === this.eserlekuKop[0].id) {
-      this.rowspanAux = [];
-    }
+  // cita_sartuta(time: string, seatId: number): boolean {
+  //   if (time === this.hoursArray[0] && seatId === this.eserlekuKop[0].id) {
+  //     this.rowspanAux = [];
+  //   }
 
-    const filteredCitas = this.hitzorduArray.filter(cita => 
-      cita.hasiera_ordua <= time && cita.amaiera_ordua > time && cita.eserlekua === seatId
-    );
+  //   const filteredCitas = this.hitzorduArray.filter(cita => 
+  //     cita.hasiera_ordua <= time && cita.amaiera_ordua > time && cita.eserlekua === seatId
+  //   );
 
-    if (filteredCitas.length <= 0) {
-      return true;
-    }
+  //   if (filteredCitas.length <= 0) {
+  //     return true;
+  //   }
 
-    const citaID = filteredCitas[0].id;
-    return !this.rowspanAux.includes(citaID);
-  }
+  //   const citaID = filteredCitas[0].id;
+  //   return !this.rowspanAux.includes(citaID);
+  // }
 
-  // Función: rowspanManagement
-  rowspanManagement(time: string, seatId: number): number {
-    if (time === this.hoursArray[0] && seatId === this.eserlekuKop[0].id) {
-      this.rowspanAux = [];
-    }
+  // // Función: rowspanManagement
+  // rowspanManagement(time: string, seatId: number): number {
+  //   if (time === this.hoursArray[0] && seatId === this.eserlekuKop[0].id) {
+  //     this.rowspanAux = [];
+  //   }
 
-    const filteredCitas = this.hitzorduArray.filter(cita => 
-      cita.hasiera_ordua <= time && cita.amaiera_ordua > time && cita.eserlekua === seatId
-    );
+  //   const filteredCitas = this.hitzorduArray.filter(cita => 
+  //     cita.hasiera_ordua <= time && cita.amaiera_ordua > time && cita.eserlekua === seatId
+  //   );
 
-    if (filteredCitas.length <= 0) {
-      return 1;
-    }
+  //   if (filteredCitas.length <= 0) {
+  //     return 1;
+  //   }
 
-    const citaID = filteredCitas[0].id;
-    let cant = 0;
-    this.rowspanAux.push(citaID);
+  //   const citaID = filteredCitas[0].id;
+  //   let cant = 0;
+  //   this.rowspanAux.push(citaID);
 
-    this.hoursArray.forEach(element => {
-      if (filteredCitas[0].hasiera_ordua <= element && filteredCitas[0].amaiera_ordua > element) {
-        cant++;
-      }
-    });
+  //   this.hoursArray.forEach(element => {
+  //     if (filteredCitas[0].hasiera_ordua <= element && filteredCitas[0].amaiera_ordua > element) {
+  //       cant++;
+  //     }
+  //   });
 
-    return cant;
-  }
+  //   return cant;
+  // }
 
   // Función: comprobar_cita_editar
   comprobar_cita_editar() {
