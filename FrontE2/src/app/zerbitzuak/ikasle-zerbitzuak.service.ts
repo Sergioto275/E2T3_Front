@@ -40,7 +40,7 @@ export class IkasleZerbitzuakService {
 
   taldeak: Taldea[] = []; // Lista de grupos
 
-  crearTaldea(taldea: Taldea): void {
+  crearTaldea(taldea: Taldea): void { 
     this.taldeak.push(taldea);
   }
 
