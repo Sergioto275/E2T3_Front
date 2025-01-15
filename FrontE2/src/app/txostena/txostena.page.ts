@@ -13,6 +13,7 @@ interface Txostena {
   selector: 'app-txostena',
   templateUrl: './txostena.page.html',
   styleUrls: ['./txostena.page.scss'],
+  standalone:false,
 })
 
 

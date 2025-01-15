@@ -1,4 +1,4 @@
-import { Ikaslea, IkasleZerbitzuakService } from './../zerbitzuak/ikasle-zerbitzuak.service';
+import { Ikaslea, IkasleZerbitzuakService, Taldea } from './../zerbitzuak/ikasle-zerbitzuak.service';
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
@@ -10,7 +10,15 @@ import { ModalController } from '@ionic/angular';
 })
 export class IkasleakPage implements OnInit {
 
+  selectedIkasleak: Set<number> = new Set(); // IDs de los alumnos seleccionados para el grupo
+  taldeIzena: string = ''; // Nombre del nuevo grupo
+  ikasleak: Ikaslea[]=[];
 
+  filteredAlumnos: Ikaslea[] = [];
+  
+  selectedAlumnos: Set<number> = new Set(); // Usamos un Set para almacenar los IDs de los alumnos seleccionados
+  
+  searchQuery: string = '';
 
   nuevoAlumno: Ikaslea = {
     id: 0, // El ID se asignará automáticamente por el servicio
@@ -18,14 +26,6 @@ export class IkasleakPage implements OnInit {
     abizenak: '',
     kodea: '',
   };
-
-ikasleak: Ikaslea[]=[];
-
-filteredAlumnos: Ikaslea[] = [];
-
-selectedAlumnos: Set<number> = new Set(); // Usamos un Set para almacenar los IDs de los alumnos seleccionados
-
-searchQuery: string = '';
 
   constructor(
     private modalController: ModalController,
@@ -38,6 +38,28 @@ searchQuery: string = '';
     this.filteredAlumnos = [...this.ikasleak]; // Copia de los alumnos para filtrar según la búsqueda
   }
 
+  onIkasleSelected(id: number) {
+    if (this.selectedIkasleak.has(id)) {
+      this.selectedIkasleak.delete(id);
+    } else {
+      this.selectedIkasleak.add(id);
+    }
+  }
+
+  sortuTaldea() {
+    const taldea: Taldea = {
+      izena: this.taldeIzena,
+      ikasleak: this.ikasleak.filter((ikaslea) =>
+        this.selectedIkasleak.has(ikaslea.id)
+      ),
+    };
+    this.ikasleService.crearTaldea(taldea);
+
+    // Reiniciar valores
+    this.taldeIzena = '';
+    this.selectedIkasleak.clear();
+  }
+  
   filterAlumnos() {
     if (this.searchQuery.trim() === '') {
       // Si no hay texto de búsqueda, mostrar todos los alumnos activos

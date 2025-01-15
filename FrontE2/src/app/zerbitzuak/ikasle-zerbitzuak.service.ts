@@ -7,15 +7,20 @@ export interface Ikaslea {
   abizenak: string;
 }
 
+export interface Taldea {
+  izena: string;
+  ikasleak: Ikaslea[];
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class IkasleZerbitzuakService {
-filteredAlumnos: Ikaslea[] = [];
+  filteredAlumnos: Ikaslea[] = [];
 
-selectedAlumno!: number;
+  selectedAlumno!: number;
 
-searchQuery: string = '';
+  searchQuery: string = '';
 
   alumnos: Ikaslea[] = [
     {
@@ -32,6 +37,12 @@ searchQuery: string = '';
     },
     // Otros alumnos...
   ];
+
+  taldeak: Taldea[] = []; // Lista de grupos
+
+  crearTaldea(taldea: Taldea): void {
+    this.taldeak.push(taldea);
+  }
 
   constructor() {}
 

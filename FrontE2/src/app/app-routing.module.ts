@@ -27,13 +27,18 @@ const routes: Routes = [
   {
     path: 'grafikoak',
     loadChildren: () => import('./grafikoak/grafikoak.module').then( m => m.GrafikoakPageModule)
-  },  {
+  },
+  {
     path: 'ikasleak',
     loadChildren: () => import('./ikasleak/ikasleak.module').then( m => m.IkasleakPageModule)
   },
   {
     path: 'materialak',
     loadChildren: () => import('./materialak/materialak.module').then( m => m.MaterialakPageModule)
+  },
+  {
+    path: 'txostena',
+    loadChildren: () => import('./txostena/txostena.module').then( m => m.TxostenaPageModule)
   },
 
 
