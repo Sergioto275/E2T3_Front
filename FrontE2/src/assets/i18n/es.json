@@ -5,6 +5,8 @@
       "agregarProducto": "Agregar Producto",
       "sacarProductos": "Sacar Productos",
       "crearProductos": "Crear Productos",
+      "editarProductos": "Editar Productos",
+      "crearCategoria":"Crear Categoria",
       "confirmar": "Confirmar",
       "crear": "Crear"
     },
@@ -18,11 +20,15 @@
       "marca": "Marca",
       "stock": "Stock",
       "stockAlerta": "Stock Alerta",
-      "descripcion": "Descripción"
+      "descripcion": "Descripción",
+      "vacio":"No hay productos seleccionados"
     },
     "categorias": {
       "electronica": "Electrónica"
     }
+  },
+  "citas": {
+      "horas":"Orduak"
   }
 }
   

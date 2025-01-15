@@ -4,21 +4,19 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { HitzorduakPageRoutingModule } from './hitzorduak-routing.module';
+import { IkasleakPageRoutingModule } from './ikasleak-routing.module';
 
-import { HitzorduakPage } from './hitzorduak.page';
+import { IkasleakPage } from './ikasleak.page';
 import { ComponentsModule } from "../components/components.module";
-import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    HitzorduakPageRoutingModule,
-    ComponentsModule,
-    TranslateModule
+    IkasleakPageRoutingModule,
+    ComponentsModule
 ],
-  declarations: [HitzorduakPage]
+  declarations: [IkasleakPage]
 })
-export class HitzorduakPageModule {}
+export class IkasleakPageModule {}

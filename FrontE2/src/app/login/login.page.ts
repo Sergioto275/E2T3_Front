@@ -12,8 +12,4 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
   }
-
-  onLogin() {
-    this.router.navigate(['/hitzorduak']);
-  }
 }
