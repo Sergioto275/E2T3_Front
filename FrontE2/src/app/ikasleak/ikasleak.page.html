@@ -6,17 +6,99 @@
 <ion-content [fullscreen]="true" id="main-content">
   <app-header titulua="Ikasleen Gestionamendua"></app-header>
 
-<ion-header collapse="condense">
-  <ion-toolbar>
-    <ion-title size="large">Ikasleak</ion-title>
-  </ion-toolbar>
-</ion-header>
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Ikasleak</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-<ion-toolbar>
-  <ion-buttons slot="start">
-    <ion-button id="prod-sortu-modal">Sortu Ikaslea</ion-button>
-  </ion-buttons>
-  <ion-buttons slot="end">
-    <ion-button id="atera-modal">Kendu Ikaslea</ion-button>
-  </ion-buttons>
-</ion-toolbar>  
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button id="prod-sortu-modal">Sortu Ikaslea</ion-button>
+    </ion-buttons>
+    <ion-buttons>
+      <ion-button id="prod-gestionatu-modal">Taldeak Gestionatu</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button id="atera-modal">Kendu Ikaslea</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-list>
+    <ion-item *ngFor="let ikaslea of ikasleak">
+      <ion-label>
+        <h2>{{ ikaslea.nombre }} {{ ikaslea.abizenak }}</h2>
+        <p>Kodea: {{ ikaslea.kodea }}</p>
+      </ion-label>
+      <ion-button>Editatu</ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-modal trigger="prod-sortu-modal">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Ikaslea Sortu</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-item>
+          <ion-label position="stacked">Izena</ion-label>
+          <ion-input [(ngModel)]="nuevoAlumno.nombre" placeholder="Izena"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Abizenak</ion-label>
+          <ion-input [(ngModel)]="nuevoAlumno.abizenak" placeholder="Abizenak"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Kodea</ion-label>
+          <ion-select [(ngModel)]="nuevoAlumno.kodea" placeholder="Selecciona un código">
+            <ion-select-option value="12a">12a</ion-select-option>
+            <ion-select-option value="14b">14b</ion-select-option>
+            <ion-select-option value="16c">16c</ion-select-option>
+            <ion-select-option value="18d">18d</ion-select-option>
+            <ion-select-option value="20e">20e</ion-select-option>
+            <ion-select-option value="22f">22f</ion-select-option>
+            <ion-select-option value="24g">24g</ion-select-option>
+            <ion-select-option value="26h">26h</ion-select-option>
+            <ion-select-option value="28i">28i</ion-select-option>
+            <ion-select-option value="30j">30j</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-button expand="full" (click)="agregarAlumno()">Sortu Ikaslea</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  
+  <ion-modal trigger="atera-modal">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <!-- Botón de Ezabatu en la esquina superior derecha -->
+          <ion-buttons slot="end">
+            <ion-button (click)="ngOnInit()" color="primary">
+              <ion-icon slot="icon-only" name="refresh"></ion-icon>
+            </ion-button>
+            <ion-button (click)="eliminarAlumnos()">Ezabatu</ion-button>            
+          </ion-buttons>
+          <ion-title>Ikaslea Ezabatu</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <!-- Barra de búsqueda para filtrar alumnos -->
+        <ion-item>
+          <ion-label position="stacked">Bilatu Ikaslea</ion-label>
+          <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterAlumnos()" debounce="0" placeholder="Bilatu izenaren arabera"></ion-searchbar>
+        </ion-item>
+  
+        <!-- Lista de alumnos con casillas de verificación para seleccionar varios -->
+        <ion-item *ngFor="let alumno of filteredAlumnos">
+          <ion-label>{{ alumno.nombre }} {{ alumno.abizenak }} ({{ alumno.kodea }})</ion-label>
+          <ion-checkbox (ionChange)="onAlumnoSelected(alumno.id)" [checked]="selectedAlumnos.has(alumno.id)"></ion-checkbox>
+        </ion-item>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  
+  
+</ion-content>
