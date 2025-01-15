@@ -1,3 +1,4 @@
+import { TxostenaPageModule } from './txostena/txostena.module';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
@@ -18,11 +19,15 @@ const routes: Routes = [
   {
     path: 'hitzorduak',
     loadChildren: () => import('./hitzorduak/hitzorduak.module').then( m => m.HitzorduakPageModule)
-  },  {
+  },
+  {
     path: 'produktuak',
     loadChildren: () => import('./produktuak/produktuak.module').then( m => m.ProduktuakPageModule)
   },
-
+  {
+    path: 'txostena',
+    loadChildren: () => import('./txostena/txostena.module').then( m => m.TxostenaPageModule)
+  }
 ];
 
 @NgModule({
