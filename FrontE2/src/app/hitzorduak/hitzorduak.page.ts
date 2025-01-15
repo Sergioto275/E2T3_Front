@@ -52,12 +52,17 @@ export class HitzorduakPage implements OnInit {
   citasDisponible: any = null;
   currentLocale: string = 'es';
   translations: any = {}; // Aquí deberían ir las traducciones
+  selectedLanguage: string = 'es';
   error: boolean = false;
   environment: string = 'http://localhost'; // O la URL de tu API
 
   constructor(private translate: TranslateService) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.currentLocale);
+  }
+  
+  changeLanguage() {
+    this.translate.use(this.selectedLanguage);
   }
 
   ngOnInit() {
@@ -97,11 +102,6 @@ export class HitzorduakPage implements OnInit {
     this.deskEditar = null;
     this.etxekoEditar = null;
     this.citasDisponible = null;
-  }
-
-  changeLanguage(locale: string) {
-    this.currentLocale = locale;
-    localStorage.setItem('selectedLocale', locale); // Guardar en localStorage
   }
 
   today(): string {

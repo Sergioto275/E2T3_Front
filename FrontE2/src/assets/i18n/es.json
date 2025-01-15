@@ -20,11 +20,15 @@
       "marca": "Marca",
       "stock": "Stock",
       "stockAlerta": "Stock Alerta",
-      "descripcion": "Descripción"
+      "descripcion": "Descripción",
+      "vacio":"No hay productos seleccionados"
     },
     "categorias": {
       "electronica": "Electrónica"
     }
+  },
+  "citas": {
+      "horas":"Orduak"
   }
 }
   

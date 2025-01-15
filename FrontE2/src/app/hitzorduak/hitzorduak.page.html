@@ -40,6 +40,40 @@
             <ion-input type="date" placeholder="Fecha"></ion-input>
           </ion-item>
           <div class="table-container">
+            <!-- <table class="h-100 w-100">
+              <thead>
+                <tr>
+                  <th>{{ 'citas.horas' | translate }}</th>
+                  <th v-for="eserlekua in eserlekuKop" :key="eserlekua.id">{{
+                    translations[currentLocale].citas.asiento }} {{ eserlekua.id }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(time, index) in hoursArray">
+                  <td>{{ time }}</td>
+                  <template v-for="(eserlekua, esIndex) in eserlekuKop">
+                    <td class="m-1" :key="eserlekua.id" v-if="cita_sartuta(time,eserlekua.id)"
+                      :rowspan="rowspanManagement(time,eserlekua.id)">
+                      <template v-if="getCitasAtTimeAndSeat(time, eserlekua.id).length > 0">
+                        <div v-for="cita in getCitasAtTimeAndSeat(time, eserlekua.id)" class="card h-100 border-0"
+                          v-bind:class="{ 'bg-grey-blue-light': cita.prezio_totala, 'bg-blue-green-light': cita.id_langilea && !cita.prezio_totala, 'bg-pink-light': !cita.id_langilea && !cita.prezio_totala }">
+                          <div class="card-body" @click="cargar_cita_selec(cita.id)">
+                            <h5 class="card-title">{{ cita.izena }}</h5>
+                            <p class="card-text">{{ cita.deskribapena }}</p>
+                          </div>
+                        </div>
+                      </template>
+                      <template v-else>
+                        <button class="w-100 border-0 bg-blue-brilliant"
+                          @click="seleccionar_citaCrear(eserlekua.id, time)">
+                          <i class="bi bi-calendar2-plus"></i>
+                        </button>
+                      </template>
+                    </td>
+                  </template>
+                </tr>
+              </tbody>
+            </table> -->
             <table>
               <tr>
                 <th>hh:mm</th>

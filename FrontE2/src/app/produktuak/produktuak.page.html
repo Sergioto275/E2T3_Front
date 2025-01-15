@@ -24,6 +24,33 @@
       <ion-button id="atera-modal">{{ 'productos.botones.sacarProductos' | translate }}</ion-button>
     </ion-buttons>
   </ion-toolbar>  
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button id="bottom-center">
+        <ion-icon name="cart"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar> 
+  <ion-popover trigger="bottom-center" side="bottom" alignment="center">
+    <ng-template>
+      <ion-content class="ion-padding">
+        <ion-list *ngIf="productosSeleccionados && productosSeleccionados.length > 0">
+          <ion-item *ngFor="let producto of productosSeleccionados">
+            <ion-label>
+              <h2>{{ producto.izena }}</h2>
+              <ion-input type="number" [(ngModel)]="producto.kantitatea" placeholder="Cantidad"></ion-input>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <ion-label *ngIf="productosSeleccionados.length === 0">
+          {{ 'productos.modal.vacio' | translate }}
+        </ion-label>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
+  
+
+
 
   <ng-container *ngFor="let categoria of produktuak">
     <!-- Categoría -->
@@ -73,10 +100,13 @@
             </ion-select-option>
           </ion-select>
         </ion-item>        
-        <ion-button expand="full" (click)="confirmarSacarProductos()">{{ 'productos.botones.confirmar' | translate }}</ion-button>
+        <ion-button expand="full" (click)="sacarProductos()">{{ 'productos.botones.confirmar' | translate }}</ion-button>
         <ion-list>
           <ion-item *ngFor="let prod of productosSeleccionados">
-            <ion-label> {{prod.izena}} </ion-label>
+            <ion-item>
+              <ion-label position="stacked">{{prod.izena}} </ion-label>
+              <ion-input type="number" [(ngModel)]="prod.kantitatea" placeholder="Cantidad"></ion-input>
+            </ion-item>
           </ion-item>
         </ion-list>
       </ion-content>

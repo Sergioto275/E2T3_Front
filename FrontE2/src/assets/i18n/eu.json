@@ -20,10 +20,14 @@
             "marca": "Marka",
             "stock": "Stocka",
             "stockAlerta": "Stock Alerta",
-            "descripcion": "Deskribapena"
+            "descripcion": "Deskribapena",
+            "vacio":"Ez daude produktuak aukeratuta"
         },
         "categorias": {
             "electronica": "Elektronika"
         }
+    },
+    "citas": {
+        "horas":"Orduak"
     }
 }

@@ -13,7 +13,6 @@ export interface Alumno {
   selector: 'app-produktuak',
   templateUrl: './produktuak.page.html',
   styleUrls: ['./produktuak.page.scss'],
-  // imports: [IonButton, IonContent, IonHeader, IonLabel, IonModal, IonTitle, IonToolbar],
 })
 export class ProduktuakPage implements OnInit {
 
@@ -54,6 +53,7 @@ export class ProduktuakPage implements OnInit {
 
   actualizarProductosSeleccionados(producto:any, kategoria_id: number) {
     producto.kategoria_id = kategoria_id;
+    producto.kantitatea = 1;
     const index = this.productosSeleccionados.findIndex(p => p.id === producto.id);
     if (producto.selected && index === -1) {
       this.productosSeleccionados.push(producto);
@@ -226,15 +226,38 @@ export class ProduktuakPage implements OnInit {
     this.editarStockAlerta = this.productosSeleccionados[0].stockAlerta;
   }
 
-  confirmarSacarProductos() {
-    if (this.alumne) {
-      alert(`Productos sacados por ${this.alumne}`);
-      this.modalAtera = false;
-      this.alumne = '';
-    } else {
-      alert('Por favor, ingrese el nombre del alumno.');
+  async sacarProductos() {
+    try {
+      const movimientos = this.productosSeleccionados.map(producto => ({
+        "produktu": {
+          "id": producto.id // El ID del producto dentro de un objeto
+        },
+        "langile": {
+          "id": this.selecAlumno // El ID del alumno dentro de un objeto
+        },
+        "data": new Date().toISOString(), // Fecha en formato ISO
+        "kopurua": producto.kantitatea // La cantidad del producto
+      }));
+      
+      // Asegúrate de que el JSON sea un array válido antes de enviarlo.      
+      console.log(JSON.stringify(movimientos));
+      const response = await fetch('http://localhost:8080/api/produktu_mugimenduak', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify(movimientos),
+      });
+      if (!response.ok) {
+        throw new Error('Errorea eskaera egiterakoan');
+      }
+      await this.produktuakLortu(); 
+    } catch (error) {
+      console.error('Error al registrar los movimientos', error);
     }
   }
+  
 
   async produktuakLortu() {
     try {
