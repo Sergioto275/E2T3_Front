@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { HitzorduakPageRoutingModule } from './hitzorduak-routing.module';
+import { MaterialakPageRoutingModule } from './materialak-routing.module';
 
-import { HitzorduakPage } from './hitzorduak.page';
+import { MaterialakPage } from './materialak.page';
 import { ComponentsModule } from "../components/components.module";
 
 @NgModule({
@@ -14,9 +14,9 @@ import { ComponentsModule } from "../components/components.module";
     CommonModule,
     FormsModule,
     IonicModule,
-    HitzorduakPageRoutingModule,
+    MaterialakPageRoutingModule,
     ComponentsModule
 ],
-  declarations: [HitzorduakPage]
+  declarations: [MaterialakPage]
 })
-export class HitzorduakPageModule {}
+export class MaterialakPageModule {}

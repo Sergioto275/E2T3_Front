@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
-import { ModuluakModule } from "../moduluak/moduluak.module";
+import { ComponentsModule } from "../components/components.module";
 
 
 @NgModule({
@@ -14,7 +14,7 @@ import { ModuluakModule } from "../moduluak/moduluak.module";
     FormsModule,
     IonicModule,
     HomePageRoutingModule,
-    ModuluakModule
+    ComponentsModule
 ],
   declarations: [HomePage]
 })

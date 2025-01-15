@@ -30,6 +30,10 @@ const routes: Routes = [
     path: 'ikasleak',
     loadChildren: () => import('./ikasleak/ikasleak.module').then( m => m.IkasleakPageModule)
   },
+  {
+    path: 'materialak',
+    loadChildren: () => import('./materialak/materialak.module').then( m => m.MaterialakPageModule)
+  },
 
 
 
