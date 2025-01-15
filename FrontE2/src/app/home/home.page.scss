@@ -1,27 +1,36 @@
-#container {
-  text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+.logo {
+  width: 350px;
+  height: auto;
+  padding: 50px;
+  background-color: white;
+  border-radius: 10%;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+ion-icon{
+  color: #616161;
+  margin-top: 10px;
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
+b{
+  color: black;
 }
 
-#container a {
-  text-decoration: none;
+ion-content{
+  --background: #E4FEFF;
+}
+
+.content{
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 450px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+
+ion-card {
+  --background: #E4FEFF;
+  margin-top: 25px;
 }
