@@ -11,7 +11,7 @@
       "crear": "Crear"
     },
     "modal": {
-      "sacarProductos": "Sacar Productos",
+      "sacarProductos": "Sacar Productos",       
       "alumno": "Alumno",
       "seleccionaAlumno": "Selecciona a un alumno",
       "producto": "Producto",
@@ -28,7 +28,8 @@
     }
   },
   "citas": {
-      "horas":"Orduak"
+    "horas":"Horas",
+    "asientos":"Asientos"
   }
 }
   
