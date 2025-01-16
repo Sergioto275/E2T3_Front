@@ -56,19 +56,21 @@
             <ion-select-option value="12a">12a</ion-select-option>
             <ion-select-option value="14b">14b</ion-select-option>
             <ion-select-option value="16c">16c</ion-select-option>
-            <ion-select-option value="18d">18d</ion-select-option>
-            <ion-select-option value="20e">20e</ion-select-option>
-            <ion-select-option value="22f">22f</ion-select-option>
-            <ion-select-option value="24g">24g</ion-select-option>
-            <ion-select-option value="26h">26h</ion-select-option>
-            <ion-select-option value="28i">28i</ion-select-option>
-            <ion-select-option value="30j">30j</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Taldea</ion-label>
+          <ion-select [(ngModel)]="nuevoAlumno.taldea" placeholder="Aukeratu taldea">
+            <ion-select-option *ngFor="let talde of gruposDisponibles" [value]="talde">
+              {{ talde }}
+            </ion-select-option>
           </ion-select>
         </ion-item>
         <ion-button expand="full" (click)="agregarAlumno()">Sortu Ikaslea</ion-button>
       </ion-content>
     </ng-template>
   </ion-modal>
+  
 
   <ion-modal trigger="atera-modal">
     <ng-template>
@@ -76,9 +78,6 @@
         <ion-toolbar>
           <!-- Botón de Ezabatu en la esquina superior derecha -->
           <ion-buttons slot="end">
-            <ion-button (click)="ngOnInit()" color="primary">
-              <ion-icon slot="icon-only" name="refresh"></ion-icon>
-            </ion-button>
             <ion-button (click)="eliminarAlumnos()">Ezabatu</ion-button>
           </ion-buttons>
           <ion-title>Ikaslea Ezabatu</ion-title>
@@ -96,7 +95,7 @@
         <ion-item *ngFor="let alumno of filteredAlumnos">
           <ion-label>{{ alumno.nombre }} {{ alumno.abizenak }} ({{ alumno.kodea }})</ion-label>
           <ion-checkbox (ionChange)="onAlumnoSelected(alumno.id)"
-            [checked]="selectedAlumnos.has(alumno.id)"></ion-checkbox>
+            [checked]="selectedIkasleak.has(alumno.id)"></ion-checkbox>
         </ion-item>
       </ion-content>
     </ng-template>

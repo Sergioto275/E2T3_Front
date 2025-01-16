@@ -5,6 +5,7 @@ export interface Ikaslea {
   nombre: string;
   kodea: string;
   abizenak: string;
+  taldea?:string;
 }
 
 export interface Taldea {
@@ -22,7 +23,7 @@ export class IkasleZerbitzuakService {
 
   searchQuery: string = '';
 
-  alumnos: Ikaslea[] = [
+  ikasleak: Ikaslea[] = [
     {
       id: 1,
       nombre: 'Julio',
@@ -40,35 +41,36 @@ export class IkasleZerbitzuakService {
 
   taldeak: Taldea[] = []; // Lista de grupos
 
+  get alumnos() {
+    return this.ikasleak;
+  }
+
+  get grupos() {
+    return this.taldeak.map((talde) => talde.izena);
+  }
+
   crearTaldea(taldea: Taldea): void { 
     this.taldeak.push(taldea);
+  }
+
+  agregarAlumno(nuevoAlumno: Ikaslea) {
+    const id = this.ikasleak.length > 0 ? this.ikasleak[this.ikasleak.length - 1].id + 1 : 1;
+    this.ikasleak.push({ ...nuevoAlumno, id });
   }
 
   constructor() {}
 
   // Método para generar un nuevo ID
   generarNuevoId(): number {
-    if (this.alumnos.length === 0) {
+    if (this.ikasleak.length === 0) {
       return 1; // Si no hay alumnos, el primer ID será 1
     }
-    const ids = this.alumnos.map((ikasle) => ikasle.id); // Obtener todos los IDs
+    const ids = this.ikasleak.map((ikasle) => ikasle.id); // Obtener todos los IDs
     const maxId = Math.max(...ids); // Encontrar el ID máximo
     return maxId + 1; // Incrementar en 1
   }
 
-  // Método para agregar un nuevo alumno
-  agregarAlumno(nuevoAlumno: Ikaslea): void {
-    nuevoAlumno.id = this.generarNuevoId(); // Asignar un ID único
-    this.alumnos.push(nuevoAlumno); // Añadir el nuevo alumno al array
-  }
-
-  // Método para eliminar un alumno
-  ezabatuPertsona(id: number): void {
-    const index = this.alumnos.findIndex((ikasle) => ikasle.id === id);
-    if (index !== -1) {
-      this.alumnos.splice(index, 1); // Eliminar el alumno del array
-    } else {
-      console.log(`ID ${id} duen pertsona ez da aurkitu`);
-    }
+  ezabatuPertsona(id: number) {
+    this.ikasleak = this.ikasleak.filter((ikaslea) => ikaslea.id !== id);
   }
 }

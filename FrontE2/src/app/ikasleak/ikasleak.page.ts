@@ -9,22 +9,20 @@ import { ModalController } from '@ionic/angular';
   standalone: false,
 })
 export class IkasleakPage implements OnInit {
-
   selectedIkasleak: Set<number> = new Set(); // IDs de los alumnos seleccionados para el grupo
   taldeIzena: string = ''; // Nombre del nuevo grupo
-  ikasleak: Ikaslea[]=[];
+  ikasleak: Ikaslea[] = []; // Lista de alumnos
+  filteredAlumnos: Ikaslea[] = []; // Lista filtrada para la búsqueda
+  searchQuery: string = ''; // Texto de búsqueda
+  gruposDisponibles: string[] = []; // Lista de grupos disponibles
 
-  filteredAlumnos: Ikaslea[] = [];
-  
-  selectedAlumnos: Set<number> = new Set(); // Usamos un Set para almacenar los IDs de los alumnos seleccionados
-  
-  searchQuery: string = '';
 
   nuevoAlumno: Ikaslea = {
-    id: 0, // El ID se asignará automáticamente por el servicio
+    id: 0,
     nombre: '',
     abizenak: '',
     kodea: '',
+    taldea: '', // Grupo asignado
   };
 
   constructor(
@@ -33,9 +31,9 @@ export class IkasleakPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Inicializar los alumnos activos (se filtran aquellos que no estén eliminados)
-    this.ikasleak = this.ikasleService.alumnos; // Obtener los alumnos directamente desde el servicio
-    this.filteredAlumnos = [...this.ikasleak]; // Copia de los alumnos para filtrar según la búsqueda
+    this.ikasleak = this.ikasleService.ikasleak; // Cargar los alumnos del servicio
+    this.filteredAlumnos = [...this.ikasleak]; // Inicializar la lista filtrada
+    this.gruposDisponibles = this.ikasleService.grupos; // Obtener los grupos disponibles
   }
 
   onIkasleSelected(id: number) {
@@ -53,58 +51,55 @@ export class IkasleakPage implements OnInit {
         this.selectedIkasleak.has(ikaslea.id)
       ),
     };
+
     this.ikasleService.crearTaldea(taldea);
 
-    // Reiniciar valores
+    // Limpiar los datos después de crear el grupo
     this.taldeIzena = '';
     this.selectedIkasleak.clear();
   }
-  
+
   filterAlumnos() {
-    if (this.searchQuery.trim() === '') {
-      // Si no hay texto de búsqueda, mostrar todos los alumnos activos
-      this.filteredAlumnos = this.ikasleak;
+    const query = this.searchQuery.trim().toLowerCase();
+    this.filteredAlumnos = query
+      ? this.ikasleak.filter((ikaslea) =>
+          `${ikaslea.nombre} ${ikaslea.abizenak} ${ikaslea.kodea}`
+            .toLowerCase()
+            .includes(query)
+        )
+      : [...this.ikasleak];
+  }
+
+  onAlumnoSelected(id: number) {
+    if (this.selectedIkasleak.has(id)) {
+      this.selectedIkasleak.delete(id);
     } else {
-      // Filtrar por nombre, apellidos y código (o cualquier otro criterio)
-      this.filteredAlumnos = this.ikasleak.filter((ikaslea) =>
-        `${ikaslea.nombre} ${ikaslea.abizenak} ${ikaslea.kodea}`.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
+      this.selectedIkasleak.add(id);
     }
   }
-    // Acción cuando se selecciona un alumno
-    onAlumnoSelected(id: number) {
-      if (this.selectedAlumnos.has(id)) {
-        this.selectedAlumnos.delete(id); // Si el alumno ya está seleccionado, lo deseleccionamos
-      } else {
-        this.selectedAlumnos.add(id); // Si no está seleccionado, lo agregamos
-      }
-    }
 
   eliminarAlumnos() {
-    this.selectedAlumnos.forEach((id) => {
-      this.ikasleService.ezabatuPertsona(id); // Llamamos al servicio para eliminar cada alumno seleccionado
-      this.ngOnInit;
-    });
-    this.modalController.dismiss(); // Cerramos el modal después de la eliminación
+    this.selectedIkasleak.forEach((id) => this.ikasleService.ezabatuPertsona(id));
+    this.ikasleak = this.ikasleService.ikasleak; // Actualizar la lista de alumnos después de eliminar
+    this.filteredAlumnos = [...this.ikasleak];
+    this.selectedIkasleak.clear();
+    this.modalController.dismiss(); // Cerrar el modal
   }
 
-  // Método que se llama cuando el alumno es agregado desde el modal
   async agregarAlumno() {
-    // Llamamos al servicio para agregar el nuevo alumno
     this.ikasleService.agregarAlumno(this.nuevoAlumno);
-  // Obtener la lista actualizada de alumnos del servicio
+    this.ikasleak = this.ikasleService.ikasleak; // Actualizar la lista de alumnos
+    this.filteredAlumnos = [...this.ikasleak]; // Actualizar la lista filtrada
 
-    this.ikasleak = this.ikasleService.alumnos;
-
-    // Resetear los campos del formulario en el modal
+    // Limpiar los datos del formulario
     this.nuevoAlumno = {
       id: 0,
       nombre: '',
       abizenak: '',
       kodea: '',
+      taldea: '',
     };
 
-    // Cerrar el modal después de agregar el alumno
-    this.modalController.dismiss();
+    this.modalController.dismiss(); // Cerrar el modal
   }
 }
