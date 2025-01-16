@@ -153,6 +153,8 @@ export class IkasleakPage implements OnInit {
         kodea: { izena: '' },
         taldea: { izena: '' },
       };
+
+      this.ngOnInit();
     
   }
 }
