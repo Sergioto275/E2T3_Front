@@ -1,27 +1,4 @@
 <ion-content [fullscreen]="true">
-  <!-- <ion-menu contentId="main-content">
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Menu</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content class="ion-padding">
-      <ion-list lines="none">
-        <ion-item>
-          <ion-icon name="calendar-number"></ion-icon>
-          <ion-label>Hitzorduak</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-icon name="library"></ion-icon>
-          <ion-label>Inbentarioa</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-icon name="document-text"></ion-icon>
-          <ion-label>Txostenak</ion-label>
-        </ion-item>
-      </ion-list>
-    </ion-content>
-  </ion-menu> -->
   <app-header></app-header>
   <div class="ion-page" id="main-content">
     <ion-header>
@@ -37,202 +14,44 @@
         <div>
           <ion-item>
             <ion-label position="stacked">Fecha</ion-label>
-            <ion-input type="date" placeholder="Fecha"></ion-input>
+            <ion-input [(ngModel)]="dataSelec" type="date" placeholder="Fecha" (ngModelChange)="cargar_dia_seleccionado()"></ion-input>
           </ion-item>
           <div class="table-container">
-            <!-- <table class="h-100 w-100">
+            <table class="h-100 w-100" *ngIf="!loading">
               <thead>
                 <tr>
-                  <th>{{ 'citas.horas' | translate }}</th>
-                  <th v-for="eserlekua in eserlekuKop" :key="eserlekua.id">{{
-                    translations[currentLocale].citas.asiento }} {{ eserlekua.id }}</th>
+                  <th>{{ "citas.horas" | translate }}</th>
+                  <th *ngFor="let i of [].constructor(10); let idx = index">{{ "citas.asientos" | translate }} {{ idx + 1 }}</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(time, index) in hoursArray">
+                <tr *ngFor="let time of hoursArray">
                   <td>{{ time }}</td>
-                  <template v-for="(eserlekua, esIndex) in eserlekuKop">
-                    <td class="m-1" :key="eserlekua.id" v-if="cita_sartuta(time,eserlekua.id)"
-                      :rowspan="rowspanManagement(time,eserlekua.id)">
-                      <template v-if="getCitasAtTimeAndSeat(time, eserlekua.id).length > 0">
-                        <div v-for="cita in getCitasAtTimeAndSeat(time, eserlekua.id)" class="card h-100 border-0"
-                          v-bind:class="{ 'bg-grey-blue-light': cita.prezio_totala, 'bg-blue-green-light': cita.id_langilea && !cita.prezio_totala, 'bg-pink-light': !cita.id_langilea && !cita.prezio_totala }">
-                          <div class="card-body" @click="cargar_cita_selec(cita.id)">
-                            <h5 class="card-title">{{ cita.izena }}</h5>
-                            <p class="card-text">{{ cita.deskribapena }}</p>
-                          </div>
-                        </div>
-                      </template>
-                      <template v-else>
-                        <button class="w-100 border-0 bg-blue-brilliant"
-                          @click="seleccionar_citaCrear(eserlekua.id, time)">
-                          <i class="bi bi-calendar2-plus"></i>
-                        </button>
-                      </template>
+                  <ng-container *ngFor="let i of [].constructor(10); let idnx = index">
+                    <td *ngIf="citaSartuta(time, idnx + 1)" [attr.rowspan]="rowspanManagement(time, idnx + 1)">
+                      <ng-container *ngIf="getCitasAtTimeAndSeat(time, idnx + 1).length > 0; else emptySeat">
+                        <ion-card *ngFor="let cita of getCitasAtTimeAndSeat(time, idnx + 1)" (click)="cargar_cita_selec(cita.id)" [ngClass]="{
+                          'bg-grey-blue-light': cita.prezio_totala,
+                          'bg-blue-green-light': cita.id_langilea && !cita.prezio_totala,
+                          'bg-pink-light': !cita.id_langilea && !cita.prezio_totala
+                        }">
+                          <ion-card-header>
+                            <ion-card-title>{{ cita.izena }}</ion-card-title>
+                          </ion-card-header>
+                          <ion-card-content>{{ cita.deskribapena }}</ion-card-content>
+                        </ion-card>
+                      </ng-container>
+                      <ng-template #emptySeat>
+                        <ion-button (click)="seleccionar_citaCrear(idnx + 1, time)">
+                          <ion-icon name="add-circle-outline"></ion-icon>
+                        </ion-button>
+                      </ng-template>
                     </td>
-                  </template>
+                  </ng-container>
                 </tr>
               </tbody>
-            </table> -->
-            <table>
-              <tr>
-                <th>hh:mm</th>
-                <th>Asiento 1</th>
-                <th>Asiento 2</th>
-                <th>Asiento 3</th>
-                <th>Asiento 4</th>
-                <th>Asiento 5</th>
-                <th>Asiento 6</th>
-                <th>Asiento 7</th>
-              </tr>
-              <tr>
-                <td>10:00</td>
-                <td></td>
-                <td rowspan="2">
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-title>Cita 1</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      Here's a small text description for the card content. Nothing more, nothing less.Here's a small text description for the card content. Nothing more, nothing less.Here's a small text description for the card content. Nothing more, nothing less.Here's a small text description for the card content. Nothing more, nothing less.
-                    </ion-card-content>
-                  </ion-card>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-title>Cita 2</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      Here's a small text description for the card content. Nothing more, nothing less.
-                    </ion-card-content>
-                  </ion-card>
-                </td>
-                <td></td>
-              </tr> 
-              <tr>
-                <td>10:30</td>
-                <td>
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-title>Cita 3</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      Here's a small text description for the card content. Nothing more, nothing less.
-                    </ion-card-content>
-                  </ion-card>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-title>Cita 4</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      Here's a small text description for the card content. Nothing more, nothing less.
-                    </ion-card-content>
-                  </ion-card>
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>11:30</td>
-                <td></td>
-                <td>
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-title>Cita 5</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      Here's a small text description for the card content. Nothing more, nothing less.
-                    </ion-card-content>
-                  </ion-card>
-                </td>
-                <td></td>
-                <td></td>
-                <td>
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-title>Cita 6</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      Here's a small text description for the card content. Nothing more, nothing less.
-                    </ion-card-content>
-                  </ion-card>
-                </td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>12:00</td>
-                <td>
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-title>Cita 7</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      Here's a small text description for the card content. Nothing more, nothing less.
-                    </ion-card-content>
-                  </ion-card>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-title>Cita 8</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      Here's a small text description for the card content. Nothing more, nothing less.
-                    </ion-card-content>
-                  </ion-card>
-                </td>
-                <td>
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-title>Cita 9</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      Here's a small text description for the card content. Nothing more, nothing less.
-                    </ion-card-content>
-                  </ion-card>
-                </td>
-                <td></td>
-              </tr>
             </table>
           </div>
-          <!-- <ion-grid>
-            <ion-row>
-              <ion-col>
-                <ion-table>
-                  <ion-header>
-                    <ion-row>
-                      <ion-col>{{ translations[currentLocale].citas.hora }}</ion-col>
-                      <ion-col *ngFor="let eserlekua of eserlekuKop">{{ translations[currentLocale].citas.asiento }} {{ eserlekua.id }}</ion-col>
-                    </ion-row>
-                  </ion-header>
-      
-                  <ion-row *ngFor="let time of hoursArray">
-                    <ion-col>{{ time }}</ion-col>
-                    <ion-col *ngFor="let eserlekua of eserlekuKop" [attr.rowspan]="rowspanManagement(time, eserlekua.id)">
-                      <div *ngIf="cita_sartuta(time, eserlekua.id)">
-                        <ion-button (click)="seleccionar_citaCrear(eserlekua.id, time)">
-                          <ion-icon name="calendar"></ion-icon>
-                        </ion-button>
-                      </div>
-                    </ion-col>
-                  </ion-row>
-                </ion-table>
-              </ion-col>
-            </ion-row>
-          </ion-grid> -->
         </div>
         <div>
           <ion-segment>
@@ -253,64 +72,71 @@
             <ion-segment-content id="sortu">
               <ion-item>
                 <ion-label position="stacked">Fecha</ion-label>
-                <ion-input type="date" placeholder="Fecha"></ion-input>
+                <ion-input [(ngModel)]="dataTest" type="date" placeholder="Fecha"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">Hasiera ordua</ion-label>
-                <ion-input type="time" placeholder="Hasiera ordua"></ion-input>
+                <ion-input [(ngModel)]="hasOrduaTest" type="time" placeholder="Hasiera ordua"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">Amaiera ordua</ion-label>
-                <ion-input type="time" placeholder="Amaiera ordua"></ion-input>
+                <ion-input [(ngModel)]="amaOrduaTest" type="time" placeholder="Amaiera ordua"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">Asiento</ion-label>
-                <ion-input placeholder="Asiento"></ion-input>
+                <ion-input [(ngModel)]="eserlekuaCrear" placeholder="Asiento"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">Bezeroa</ion-label>
-                <ion-select placeholder="Seleccione un cliente">
-                  <ion-select-option value="1">Cliente 1</ion-select-option>
-                  <ion-select-option value="2">Cliente 2</ion-select-option>
-                  <ion-select-option value="3">Cliente 3</ion-select-option>
-                </ion-select>
+                <ion-input [(ngModel)]="izenaCrear" placeholder="Bezeroa"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">Deskribapena</ion-label>
-                <ion-input placeholder="Deskribapena"></ion-input>
+                <ion-input [(ngModel)]="deskCrear" placeholder="Deskribapena"></ion-input>
               </ion-item>
-              <ion-button>Sortu</ion-button>
+              <ion-item>
+                <ion-label position="stacked">Telefonoa</ion-label>
+                <ion-input [(ngModel)]="telfCrear" placeholder="Telefonoa"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-checkbox [(ngModel)]="etxekoCrear" >Etxekoa</ion-checkbox>
+              </ion-item>
+              <ion-button (click)="createCita()">Sortu</ion-button>
             </ion-segment-content>
             <ion-segment-content id="editatu">
               <ion-item>
                 <ion-label position="stacked">Fecha</ion-label>
-                <ion-input type="date" placeholder="Fecha"></ion-input>
+                <ion-input [(ngModel)]="dataEditar" type="date" placeholder="Fecha"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">Hasiera ordua</ion-label>
-                <ion-input type="time" placeholder="Hasiera ordua"></ion-input>
+                <ion-input [(ngModel)]="hasOrduaEditar" type="time" placeholder="Hasiera ordua"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">Amaiera ordua</ion-label>
-                <ion-input type="time" placeholder="Amaiera ordua"></ion-input>
+                <ion-input [(ngModel)]="amaOrduaEditar" type="time" placeholder="Amaiera ordua"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">Asiento</ion-label>
-                <ion-input placeholder="Asiento"></ion-input>
+                <ion-input [(ngModel)]="eserlekuaEditar" placeholder="Asiento"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">Bezeroa</ion-label>
-                <ion-select placeholder="Seleccione un cliente">
-                  <ion-select-option value="1">Cliente 1</ion-select-option>
-                  <ion-select-option value="2">Cliente 2</ion-select-option>
-                  <ion-select-option value="3">Cliente 3</ion-select-option>
-                </ion-select>
+                <ion-input [(ngModel)]="izenaEditar" placeholder="Bezeroa"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">Deskribapena</ion-label>
-                <ion-input placeholder="Deskribapena"></ion-input>
+                <ion-input [(ngModel)]="deskEditar" placeholder="Deskribapena"></ion-input>
               </ion-item>
-              <ion-button>Gorde</ion-button>
+              <ion-item>
+                <ion-label position="stacked">Telefonoa</ion-label>
+                <ion-input [(ngModel)]="telfEditar" placeholder="Telefonoa"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-checkbox [(ngModel)]="etxekoEditar" >Etxekoa</ion-checkbox>
+              </ion-item>
+              <ion-button (click)="editar_cita()">Gorde</ion-button>
+              <ion-button (click)="eliminar_cita()">Ezabatu</ion-button>
             </ion-segment-content>
             <ion-segment-content id="asignatu">
               <ion-item>
