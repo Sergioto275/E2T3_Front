@@ -3,14 +3,18 @@ import { Injectable } from '@angular/core';
 export interface Ikaslea {
   id: number;
   nombre: string;
-  kodea: string;
   abizenak: string;
-  taldea?:string;
+  kodea: Kodea;
+  taldea?: Taldea;
 }
 
 export interface Taldea {
   izena: string;
-  ikasleak: Ikaslea[];
+  ikasleak?: Ikaslea[];
+}
+
+export interface Kodea {
+  izena: string;
 }
 
 @Injectable({
@@ -23,17 +27,29 @@ export class IkasleZerbitzuakService {
 
   searchQuery: string = '';
 
+  kodeak: Kodea[] = [
+    {
+      izena: '3pag2',
+    },
+    {
+      izena: '3pag1',
+    },
+    {
+      izena: '2cca1',
+    },
+  ]
+
   ikasleak: Ikaslea[] = [
     {
       id: 1,
       nombre: 'Julio',
-      kodea: '3pag2',
+      kodea: { izena: '3pag2'},
       abizenak: 'Lopez',
     },
     {
       id: 2,
       nombre: 'Maria',
-      kodea: '3cca2',
+      kodea: { izena: '3pag1'},
       abizenak: 'Fernandez',
     },
     // Otros alumnos...
@@ -49,9 +65,9 @@ export class IkasleZerbitzuakService {
     return this.taldeak.map((talde) => talde.izena);
   }
 
-  crearTaldea(taldea: Taldea): void { 
-    this.taldeak.push(taldea);
-  }
+  crearTaldea(taldea: Taldea): void {
+  this.taldeak.push(taldea); // Añadir el nuevo grupo
+}
 
   agregarAlumno(nuevoAlumno: Ikaslea) {
     const id = this.ikasleak.length > 0 ? this.ikasleak[this.ikasleak.length - 1].id + 1 : 1;

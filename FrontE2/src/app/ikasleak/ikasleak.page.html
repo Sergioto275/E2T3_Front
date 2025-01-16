@@ -20,19 +20,59 @@
       <ion-button id="prod-gestionatu-modal">Taldeak Gestionatu</ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
+      <ion-button id="crear-grupo">Sortu Taldea</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
       <ion-button id="atera-modal">Kendu Ikaslea</ion-button>
     </ion-buttons>
   </ion-toolbar>
 
-  <ion-list>
-    <ion-item *ngFor="let ikaslea of ikasleak">
-      <ion-label>
-        <h2>{{ ikaslea.nombre }} {{ ikaslea.abizenak }}</h2>
-        <p>Kodea: {{ ikaslea.kodea }}</p>
-      </ion-label>
-      <ion-button>Editatu</ion-button>
-    </ion-item>
-  </ion-list>
+  <ion-item *ngFor="let ikaslea of ikasleak">
+    <ion-label>
+      <h2>{{ ikaslea.nombre }} {{ ikaslea.abizenak }}</h2>
+      <p>Kodea: {{ ikaslea.kodea.izena }}</p>
+    </ion-label>
+    <p>Taldea: {{ikaslea.taldea?.izena}}</p>
+    <ion-button (click)="openEditModal(ikaslea)">Editatu</ion-button>
+  </ion-item>
+ 
+
+  <ion-modal [isOpen]="isEditModalOpen" (ionModalDidDismiss)="closeEditModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Editar Ikaslea</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-item>
+          <ion-label position="stacked">Izena</ion-label>
+          <ion-input placeholder= {{selectedAlumno?.nombre}}></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Abizenak</ion-label>
+          <ion-input placeholder={{selectedAlumno?.abizenak}}></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Kodea</ion-label>
+          <ion-select [(ngModel)]="selectedAlumno" placeholder="Selecciona un código">
+            <ion-select-option *ngFor="let kodea of kodeak" [value]="kodea.izena">{{ kodea.izena }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        
+        <ion-item>
+          <ion-label position="stacked">Taldea</ion-label>
+          <ion-select [(ngModel)]="selectedAlumno" placeholder="Aukeratu taldea">
+            <ion-select-option *ngFor="let talde of gruposDisponibles" [value]="talde">
+              {{ talde }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-button expand="full" (click)="updateAlumno()">Guardar Cambios</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  
 
   <ion-modal trigger="prod-sortu-modal">
     <ng-template>
@@ -52,19 +92,17 @@
         </ion-item>
         <ion-item>
           <ion-label position="stacked">Kodea</ion-label>
-          <ion-select [(ngModel)]="nuevoAlumno.kodea" placeholder="Selecciona un código">
-            <ion-select-option value="12a">12a</ion-select-option>
-            <ion-select-option value="14b">14b</ion-select-option>
-            <ion-select-option value="16c">16c</ion-select-option>
+          <ion-select [(ngModel)]="nuevoAlumno.kodea.izena" placeholder="Selecciona un código">
+            <ion-select-option *ngFor="let kodea of kodeak" [value]="kodea.izena">{{ kodea.izena }}</ion-select-option>
           </ion-select>
-        </ion-item>
+        </ion-item>        
         <ion-item>
           <ion-label position="stacked">Taldea</ion-label>
           <ion-select [(ngModel)]="nuevoAlumno.taldea" placeholder="Aukeratu taldea">
             <ion-select-option *ngFor="let talde of gruposDisponibles" [value]="talde">
               {{ talde }}
             </ion-select-option>
-          </ion-select>
+        </ion-select>
         </ion-item>
         <ion-button expand="full" (click)="agregarAlumno()">Sortu Ikaslea</ion-button>
       </ion-content>
@@ -93,7 +131,7 @@
 
         <!-- Lista de alumnos con casillas de verificación para seleccionar varios -->
         <ion-item *ngFor="let alumno of filteredAlumnos">
-          <ion-label>{{ alumno.nombre }} {{ alumno.abizenak }} ({{ alumno.kodea }})</ion-label>
+          <ion-label>{{ alumno.nombre }} {{ alumno.abizenak }} ({{ alumno.kodea.izena }})</ion-label>
           <ion-checkbox (ionChange)="onAlumnoSelected(alumno.id)"
             [checked]="selectedIkasleak.has(alumno.id)"></ion-checkbox>
         </ion-item>
@@ -114,17 +152,7 @@
           <ion-label position="stacked">Taldearen Izena</ion-label>
           <ion-input [(ngModel)]="taldeIzena" placeholder="Taldearen izena"></ion-input>
         </ion-item>
-        <!-- Lista de alumnos con casillas de verificación -->
-        <ion-list>
-          <ion-item *ngFor="let ikaslea of ikasleak">
-            <ion-label>{{ ikaslea.nombre }} {{ ikaslea.abizenak }} ({{ ikaslea.kodea }})</ion-label>
-            <ion-checkbox
-              [checked]="selectedIkasleak.has(ikaslea.id)"
-              (ionChange)="onIkasleSelected(ikaslea.id)">
-            </ion-checkbox>
-          </ion-item>
-        </ion-list>
-        <!-- Botón para guardar el grupo -->
+        <!-- Botón para crear el grupo -->
         <ion-button expand="full" (click)="sortuTaldea()">Sortu Taldea</ion-button>
       </ion-content>
     </ng-template>
