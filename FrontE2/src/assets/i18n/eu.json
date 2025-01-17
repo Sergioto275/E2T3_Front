@@ -7,8 +7,10 @@
             "crearProductos": "Produktuak Sortu",
             "editarProductos": "Produktuak Editatu",
             "crearCategoria":"Kategoria Sortu",
+            "editarCategoria": "Kategoria editatu",
             "confirmar": "Baieztatu",
-            "crear": "Sortu"
+            "crear": "Sortu",
+            "editar": "Editatu"
         },
         "modal": {
             "sacarProductos": "Produktuak Atera",
@@ -22,6 +24,32 @@
             "stockAlerta": "Stock Alerta",
             "descripcion": "Deskribapena",
             "vacio":"Ez daude produktuak aukeratuta"
+        },
+        "categorias": {
+            "electronica": "Elektronika"
+        }
+    },
+    "materiales": {
+        "title": "Materialen kudeaketa",
+        "botones": {
+            "agregarMaterial": "Materiala Gehitu",
+            "sacarMateriales": "Materialak Atera",
+            "crearMateriales": "Materialak Sortu",
+            "editarMateriales": "Materialak Editatu",
+            "crearCategoria":"Kategoria Sortu",
+            "confirmar": "Baieztatu",
+            "crear": "Sortu",
+            "cerrar": "Itxi"
+        },
+        "modal": {
+            "sacarMateriales": "Materialak Atera",
+            "alumno": "Ikaslea",
+            "seleccionaAlumno": "Hautatu ikaslea",
+            "material": "Materiala",
+            "categoria": "Kategoria",
+            "nombre": "Izena",
+            "etiqueta": "Etiqueta",
+            "vacio":"Ez daude materialak aukeratuta"
         },
         "categorias": {
             "electronica": "Elektronika"
