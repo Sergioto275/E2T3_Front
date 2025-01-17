@@ -28,8 +28,27 @@
     }
   },
   "citas": {
-    "horas":"Horas",
-    "asientos":"Asientos"
+    "titulo": "Citas",
+    "horas": "Horas",
+    "botones":{
+      "confirmar": "Confirmar",
+      "guardar": "Guardar",
+      "borrar": "Borrar",
+      "crear": "Crear",
+      "asignar":"Asignar Alumno",
+      "generar":"Generar Ticket"
+    },
+    "modal": {
+        "nombre": "Nombre",
+        "descripcion": "Descripción",
+        "fecha": "Fecha",
+        "horaInicio": "Hora de Inicio",
+        "horaFin": "Hora de Fin",
+        "asiento": "Asientos",
+        "cliente": "Cliente",
+        "telefono": "Teléfono",
+        "casa": "Del centro"
+    }
   }
 }
   

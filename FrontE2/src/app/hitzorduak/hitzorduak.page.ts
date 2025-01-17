@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-hitzorduak',
@@ -93,7 +94,7 @@ export class HitzorduakPage implements OnInit {
     this.hitzorduArray = [];
     this.hitzorduak = [];
     try {
-      const response = await fetch('http://localhost:8080/api/hitzorduak', {
+      const response = await fetch(`${environment.url}hitzorduak`, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
@@ -357,7 +358,7 @@ export class HitzorduakPage implements OnInit {
         "etxekoa":etxeko
       };
 
-      const response = await fetch('http://localhost:8080/api/hitzorduak', {
+      const response = await fetch(`${environment.url}hitzorduak`, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
@@ -396,7 +397,7 @@ export class HitzorduakPage implements OnInit {
         "etxekoa": etxeko
       };
       console.log(JSON.stringify(json_data));
-      const response = await fetch('http://localhost:8080/api/hitzorduak', {
+      const response = await fetch(`${environment.url}hitzorduak`, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
@@ -422,7 +423,7 @@ async eliminar_cita() {
   try {
     const json_data = { "id": this.idSelec };
 
-    const response = await fetch('http://localhost:8080/api/hitzorduak', {
+    const response = await fetch(`${environment.url}hitzorduak`, {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
