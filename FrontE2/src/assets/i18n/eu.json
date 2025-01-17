@@ -77,5 +77,8 @@
             "telefono":"Telefonoa",
             "casa":"Etxekoa"
         }
-    }
+    },
+    "informes":{
+        "title": "Txostenak"
+      }
 }

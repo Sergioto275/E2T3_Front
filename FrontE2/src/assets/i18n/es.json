@@ -34,7 +34,7 @@
     "botones": {
       "agregarMaterial": "Agregar Material",
       "sacarMateriales": "Sacar Materiales",
-      "crearMateriales": "Crear Materiales",
+      "crearMateriales": "Agregar Materiales",
       "editarMateriales": "Editar Materiales",
       "crearCategoria":"Crear Categoria",
       "confirmar": "Confirmar",
@@ -77,6 +77,9 @@
         "telefono": "Teléfono",
         "casa": "Del centro"
     }
+  },
+  "informes":{
+    "title": "Informes"
   }
 }
   
