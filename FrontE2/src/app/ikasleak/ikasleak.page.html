@@ -55,7 +55,7 @@
       <ion-item>
         <ion-label position="stacked">Kodea</ion-label>
         <ion-select [(ngModel)]="selectedAlumno.kodea.kodea" placeholder="Erabaki kode berri bat">
-          <ion-select-option *ngFor="let kodea of kodeak" [value]="kodea.izena">{{ kodea.izena }}</ion-select-option>
+          <ion-select-option *ngFor="let kodea of kodeak" [value]="kodea.kodea">{{ kodea.kodea }}</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-button expand="full" (click)="updateAlumno()">Guardar Cambios</ion-button>
@@ -132,7 +132,11 @@
         <!-- Campo para el nombre del grupo -->
         <ion-item>
           <ion-label position="stacked">Taldearen Izena</ion-label>
-          <ion-input [(ngModel)]="taldeIzena" placeholder="Taldearen izena"></ion-input>
+          <ion-input [(ngModel)]="nuevoKode.izena" placeholder="Taldearen izena"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Taldearen Kodea</ion-label>
+          <ion-input [(ngModel)]="nuevoKode.kodea" placeholder="Taldearen izena"></ion-input>
         </ion-item>
         <!-- Botón para crear el grupo -->
         <ion-button expand="full" (click)="agregarKodea()">Sortu Taldea</ion-button>

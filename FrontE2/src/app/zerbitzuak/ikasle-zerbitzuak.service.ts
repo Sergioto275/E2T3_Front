@@ -42,20 +42,17 @@ export class IkasleZerbitzuakService {
     {
       id: 1,
       nombre: 'Julio',
-      kodea: { kodea: '3pag2',
-        izena: '2undo de Desarrollo de aplicaciones multiplataforma',
-      },
+      kodea: this.kodeak.find(k => k.kodea === '3pag2') || { kodea: '', izena: '' },
       abizenak: 'Lopez',
     },
     {
       id: 2,
       nombre: 'Maria',
-      kodea: { kodea: '3pag1',
-        izena: '1ero de Desarrollo de aplicaciones multiplataforma',
-      },      abizenak: 'Fernandez',
+      kodea: this.kodeak.find(k => k.kodea === '3pag1') || { kodea: '', izena: '' },
+      abizenak: 'Fernandez',
     },
-    // Otros alumnos...
   ];
+  
 
 
   get alumnos() {
