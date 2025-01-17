@@ -28,7 +28,26 @@
         }
     },
     "citas": {
+        "titulo":"Hitzorduak",
         "horas":"Orduak",
-    "asientos":"Eserlekuak"
+        "botones": {
+            "confirmar": "Berretsi",
+            "guardar": "Gorde",
+            "borrar": "Ezabatu",
+            "crear": "Sortu",
+            "asignar": "Ikaslea Esleitu",
+            "generar": "Sarrera Sortu"
+        },
+        "modal":{
+            "nombre":"Izena",
+            "descripcion":"Deskribapena",
+            "fecha":"Data",
+            "horaInicio":"Hasiera Ordua",
+            "horaFin":"Amaiera Ordua",
+            "asiento":"Eserlekuak",
+            "cliente":"Bezeroa",
+            "telefono":"Telefonoa",
+            "casa":"Etxekoa"
+        }
     }
 }
