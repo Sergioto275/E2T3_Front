@@ -2,7 +2,6 @@ import {
   Ikaslea,
   IkasleZerbitzuakService,
   Kodea,
-  Taldea,
 } from './../zerbitzuak/ikasle-zerbitzuak.service';
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
@@ -19,8 +18,16 @@ export class IkasleakPage implements OnInit {
   ikasleak: Ikaslea[] = []; // Lista de alumnos
   filteredAlumnos: Ikaslea[] = []; // Lista filtrada para la búsqueda
   searchQuery: string = ''; // Texto de búsqueda
-  gruposDisponibles: string[] = []; // Lista de grupos disponibles
-  selectedAlumno: Ikaslea | null = null;
+  gruposDisponibles: Kodea[] = []; // Lista de grupos disponibles
+  selectedAlumno: Ikaslea = {
+    id: 0,
+    nombre: '',
+    abizenak: '',
+    kodea: {
+      izena: '',
+      kodea: ''
+    },
+  };
   isEditModalOpen: boolean = false; // Añadir esta propiedad
   kodeak: Kodea[] = [];
 
@@ -28,8 +35,14 @@ export class IkasleakPage implements OnInit {
     id: 0,
     nombre: '',
     abizenak: '',
-    kodea: { izena: '' },
-    taldea: { izena: '' }, // Inicializa taldea
+    kodea: {
+      izena: '',
+      kodea: ''
+    },
+  };
+  nuevoKode: Kodea = {
+    kodea: '',
+    izena: '',
   };
   
 
@@ -41,34 +54,41 @@ export class IkasleakPage implements OnInit {
   ngOnInit() {
     this.ikasleak = this.ikasleService.ikasleak;
     this.filteredAlumnos = [...this.ikasleak];
-    this.gruposDisponibles = this.ikasleService.grupos;
+    this.gruposDisponibles = this.ikasleService.kodeak;
     this.kodeak = this.ikasleService.kodeak; // Asegúrate de cargar los códigos aquí
   }
 
   openEditModal(ikaslea: Ikaslea) {
-    this.selectedAlumno = { ...ikaslea }; // Copia los datos del alumno
-    console.log(this.selectedAlumno);
+    // Asegurar que las propiedades anidadas existan antes de abrir el modal
+    this.selectedAlumno = {
+      ...ikaslea,
+      kodea: {
+        izena: ikaslea.kodea?.izena || '',
+        kodea: ''
+      },
+    };
     this.isEditModalOpen = true; // Abre el modal
   }
+  
 
   closeEditModal() {
     this.isEditModalOpen = false; // Cerrar el modal
   }
 
   updateAlumno() {
-    if (this.selectedAlumno) {
-      const index = this.ikasleService.ikasleak.findIndex(
-        (ikasle) => ikasle.id === this.selectedAlumno!.id
-      );
-      if (index !== -1) {
-        // Si hay un grupo seleccionado, actualiza el grupo del alumno
-        if (this.selectedAlumno.taldea && this.selectedAlumno.taldea.izena) {
-          this.ikasleService.ikasleak[index] = { ...this.selectedAlumno };
-        }
-      }
-      this.closeEditModal(); // Cerrar el modal después de guardar
-    }
+    console.log('Alumno actualizado:', this.selectedAlumno);
+  
+    // Actualizar el alumno en el servicio
+    this.ikasleService.updateAlumno(this.selectedAlumno);
+  
+    // Cerrar el modal después de la actualización
+    this.closeEditModal();
+    
+    // Actualizar la lista de alumnos
+    this.ikasleak = this.ikasleService.ikasleak;
+    this.filteredAlumnos = [...this.ikasleak];
   }
+  
 
   onIkasleSelected(id: number) {
     if (this.selectedIkasleak.has(id)) {
@@ -78,41 +98,13 @@ export class IkasleakPage implements OnInit {
     }
   }
 
-  sortuTaldea() {
-    if (!this.taldeIzena) {
-      alert('Debes ingresar el nombre del grupo.');
-      return;
-    }
-
-    const taldea: Taldea = {
-      izena: this.taldeIzena,
-      ikasleak: this.ikasleak.filter((ikaslea) =>
-        this.selectedIkasleak.has(ikaslea.id)
-      ),
-    };
-
-    // Asegúrate de que 'ikasleak' existe antes de hacer forEach
-    if (taldea.ikasleak && Array.isArray(taldea.ikasleak)) {
-      taldea.ikasleak.forEach((ikaslea) => {
-        ikaslea.taldea = taldea; // Asignar el grupo completo al alumno
-      });
-    }
-
-    // Llamar al servicio para crear el grupo
-    this.ikasleService.crearTaldea(taldea);
-
-    // Limpiar los datos
-    this.taldeIzena = '';
-    this.selectedIkasleak.clear();
-    this.gruposDisponibles = this.ikasleService.grupos; // Actualizar la lista de grupos
-    this.modalController.dismiss();
-  }
+  
 
   filterAlumnos() {
     const query = this.searchQuery.trim().toLowerCase();
     this.filteredAlumnos = query
       ? this.ikasleak.filter((ikaslea) =>
-          `${ikaslea.nombre} ${ikaslea.abizenak} ${ikaslea.kodea}`
+          `${ikaslea.nombre} ${ikaslea.abizenak} ${ikaslea.kodea.izena}`
             .toLowerCase()
             .includes(query)
         )
@@ -137,10 +129,28 @@ export class IkasleakPage implements OnInit {
     this.modalController.dismiss(); // Cerrar el modal
   }
 
+  async agregarKodea() {
+    // Add the new student to the service
+    this.ikasleService.agregarKodea(this.nuevoKode);
+    
+    // Optionally, refresh the student list
+    this.modalController.dismiss(); // Close the modal
+    console.log('Nuevo Kode creado:', this.nuevoAlumno);
+
+    // Clear the form
+    this.nuevoKode = {
+      kodea: '',
+      izena: '',
+    };
+
+    this.ngOnInit();
+  
+}
+
   async agregarAlumno() {
       // Add the new student to the service
       this.ikasleService.agregarAlumno(this.nuevoAlumno);
-
+      
       // Optionally, refresh the student list
       this.modalController.dismiss(); // Close the modal
       console.log('Nuevo alumno creado:', this.nuevoAlumno);
@@ -150,11 +160,17 @@ export class IkasleakPage implements OnInit {
         id: 0,
         nombre: '',
         abizenak: '',
-        kodea: { izena: '' },
-        taldea: { izena: '' },
+        kodea: {
+          izena: '',
+          kodea: ''
+        },
       };
 
       this.ngOnInit();
     
+  }
+
+  getAlumnosPorKodea(kodea: string): Ikaslea[] {
+    return this.ikasleak.filter((ikaslea) => ikaslea.kodea.kodea === kodea);
   }
 }

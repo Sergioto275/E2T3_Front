@@ -5,16 +5,12 @@ export interface Ikaslea {
   nombre: string;
   abizenak: string;
   kodea: Kodea;
-  taldea?: Taldea;
 }
 
-export interface Taldea {
-  izena: string;
-  ikasleak?: Ikaslea[];
-}
 
 export interface Kodea {
-  izena: string;
+  kodea: string;
+  izena?: string;
 }
 
 @Injectable({
@@ -29,13 +25,16 @@ export class IkasleZerbitzuakService {
 
   kodeak: Kodea[] = [
     {
-      izena: '3pag2',
+      kodea: '3pag2',
+      izena: '2undo de Desarrollo de aplicaciones multiplataforma',
     },
     {
-      izena: '3pag1',
+      kodea: '3pag1',
+      izena: '1ero de Desarrollo de aplicaciones multiplataforma',
     },
     {
-      izena: '2cca1',
+      kodea: '2cca1',
+      izena: 'Cosas raras de primero',
     },
   ]
 
@@ -43,35 +42,42 @@ export class IkasleZerbitzuakService {
     {
       id: 1,
       nombre: 'Julio',
-      kodea: { izena: '3pag2'},
+      kodea: { kodea: '3pag2',
+        izena: '2undo de Desarrollo de aplicaciones multiplataforma',
+      },
       abizenak: 'Lopez',
     },
     {
       id: 2,
       nombre: 'Maria',
-      kodea: { izena: '3pag1'},
-      abizenak: 'Fernandez',
+      kodea: { kodea: '3pag1',
+        izena: '1ero de Desarrollo de aplicaciones multiplataforma',
+      },      abizenak: 'Fernandez',
     },
     // Otros alumnos...
   ];
 
-  taldeak: Taldea[] = []; // Lista de grupos
 
   get alumnos() {
     return this.ikasleak;
   }
 
   get grupos() {
-    return this.taldeak.map((talde) => talde.izena);
+    return this.kodeak.map((talde) => talde.izena);
   }
 
-  crearTaldea(taldea: Taldea): void {
-  this.taldeak.push(taldea); // Añadir el nuevo grupo
+  crearKodea(kodea: Kodea): void {
+  this.kodeak.push(kodea); // Añadir el nuevo grupo
 }
 
   agregarAlumno(nuevoAlumno: Ikaslea) {
     const id = this.ikasleak.length > 0 ? this.ikasleak[this.ikasleak.length - 1].id + 1 : 1;
     this.ikasleak.push({ ...nuevoAlumno, id });
+  }
+
+  agregarKodea(nuevoKode: Kodea) {
+    const id = this.kodeak.length > 0 ? this.kodeak[this.kodeak.length - 1].kodea + 1 : 1;
+    this.kodeak.push({ ...nuevoKode });
   }
 
   constructor() {}
@@ -89,4 +95,14 @@ export class IkasleZerbitzuakService {
   ezabatuPertsona(id: number) {
     this.ikasleak = this.ikasleak.filter((ikaslea) => ikaslea.id !== id);
   }
+
+  // En ikasle-zerbitzuak.service.ts
+
+updateAlumno(updatedAlumno: Ikaslea) {
+  const index = this.ikasleak.findIndex((alumno) => alumno.id === updatedAlumno.id);
+  if (index !== -1) {
+    this.ikasleak[index] = updatedAlumno; // Actualiza el alumno en la lista
+  }
+}
+
 }
