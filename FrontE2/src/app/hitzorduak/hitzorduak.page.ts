@@ -11,6 +11,7 @@ export class HitzorduakPage implements OnInit {
   
   startHour: string = '10:00:00';
   endHour: string = '16:00:00';
+  loading: boolean = true;
   hitzorduArray: any[] = [];
   hitzorduak: any[] = [];
   langile_asignado: string = 'nadie Asignado';
@@ -27,6 +28,7 @@ export class HitzorduakPage implements OnInit {
   langileArray: any[] = [];
   eserlekuKop: any[] = [];
   hoursArray: any[] = [];
+  rowspanAux: any[] = [];
   idLangile: any = null;
   idTalde: any = null;
   dataTest: any = null;
@@ -41,7 +43,7 @@ export class HitzorduakPage implements OnInit {
   telfCrear: any = null;
   deskCrear: any = null;
   etxekoCrear: any = null;
-  dataSelec: any = null;
+  dataSelec!: any;
   dataEditar: any = null;
   hasOrduaEditar: any = null;
   amaOrduaEditar: any = null;
@@ -61,12 +63,389 @@ export class HitzorduakPage implements OnInit {
     this.translate.use(this.currentLocale);
   }
   
-  changeLanguage() {
-    this.translate.use(this.selectedLanguage);
+  ngOnInit() {
+    this.dataSelec = this.lortuData();
+    this.cargarHitzordu();
+    this.getHoursInRange();
   }
 
-  ngOnInit() {
-    this.cargarHitzordu();
+  // Función: lortuData
+  lortuData(): string {
+    const gaur = new Date();
+    const urtea = gaur.getFullYear();
+    let hilabetea: string | number = gaur.getMonth() + 1; // Los meses comienzan en 0
+    let eguna: string | number = gaur.getDate();
+  
+    if (eguna < 10) {
+      eguna = '0' + eguna;
+    }
+    if (hilabetea < 10) {
+      hilabetea = '0' + hilabetea;
+    }
+  
+    return `${urtea}-${hilabetea}-${eguna}`;
+  }
+
+// ---------------------------------------------------------------------- CARGA DE DATOS --------------------------------------------------------------------------------
+
+  // Función: cargarHitzordu
+  async cargarHitzordu() {
+    this.hitzorduArray = [];
+    this.hitzorduak = [];
+    try {
+      const response = await fetch('http://localhost:8080/api/hitzorduak', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        method: "GET"
+      });
+      if (!response.ok) {
+        throw new Error('Error al obtener las citas');
+      }
+      const datuak = await response.json();
+      this.hitzorduak = datuak.filter((hitzordu:any) => hitzordu.ezabatzeData === null);
+      const eguna = formatDate(this.dataSelec, 'yyyy-MM-dd', 'en-US');
+      this.hitzorduArray = this.hitzorduak.filter((hitzordu:any) => hitzordu.data.includes(eguna));
+    } catch (error) {
+      console.log("Error al cargar citas:", error);
+    } finally {
+      this.loading = false;
+    }
+    // this.cargar_asientos();
+  }
+
+  // Función: cargar_asientos
+  // async cargar_asientos() {
+  //   try {
+  //     const response2 = await fetch(`${this.environment}/public/api/langileak/count/${this.dataSelec}`, {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Access-Control-Allow-Origin': '*'
+  //       },
+  //       method: "GET"
+  //     });
+  //     if (!response2.ok) {
+  //       throw new Error('Error al obtener el número de asientos');
+  //     }
+  //     const datuak2 = await response2.json();
+  //     this.eserlekuKop = [];
+  //     const totalSeats = datuak2 <= 0 ? 20 : datuak2;
+  //     for (let i = 1; i <= totalSeats; i++) {
+  //       this.eserlekuKop.push({ id: i });
+  //     }
+  //   } catch (error) {
+  //     console.log("Error al cargar los asientos:", error);
+  //   }
+  // }
+
+  // Función: cargarComboBox
+  async cargarComboBox() {
+    try {
+      const response = await fetch(`${this.environment}/public/api/taldeak`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Errorea eskaera egiterakoan');
+      }
+
+      const datuak = await response.json();
+      this.taldeArray = datuak.filter((talde:any) => !talde.ezabatze_data || talde.ezabatze_data === "0000-00-00 00:00:00");
+    } catch (error) {
+      console.error("Error cargando el listado de equipos:", error);
+    }
+
+    try {
+      const response = await fetch(`${this.environment}/public/api/langileak`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Errorea eskaera egiterakoan');
+      }
+
+      const datuak = await response.json();
+      this.langileArray = datuak.filter((langile:any) => 
+        !langile.ezabatze_data && langile.kodea == this.idTalde ||
+        (langile.ezabatze_data === "0000-00-00 00:00:00" && langile.kodea == this.idTalde)
+      );
+    } catch (error) {
+      console.error("Error cargando el listado de trabajadores:", error);
+    }
+
+    // Llamar a la función que filtra los tratamientos por trabajador
+    this.tratamenduByLangile();
+  }
+
+  // Función: cargarTratamenduak
+  async cargarTratamenduak() {
+    try {
+      const response = await fetch(`${this.environment}/public/api/tratamenduak`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        method: "GET"
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al obtener tratamientos');
+      }
+
+      const datuak = await response.json();
+      this.tratamenduArray = datuak.filter((tratamendua:any) => !tratamendua.ezabatze_data || tratamendua.ezabatze_data === '0000-00-00 00:00:00');
+    } catch (error) {
+      console.log("Error al cargar tratamientos:", error);
+    }
+
+    try {
+      const response2 = await fetch(`${this.environment}/public/api/kategoriaTratamendu`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        method: "GET"
+      });
+
+      if (!response2.ok) {
+        throw new Error('Error al obtener categorías de tratamientos');
+      }
+
+      const datuak2 = await response2.json();
+      this.tratamenduKategoria = datuak2.filter((katTratamendu:any) => !katTratamendu.ezabatze_data || katTratamendu.ezabatze_data === '0000-00-00 00:00:00');
+    } catch (error) {
+      console.log("Error al cargar categorías de tratamientos:", error);
+    }
+  }
+
+  // Función: tratamenduByLangile
+  async tratamenduByLangile() {
+    try {
+      const response = await fetch(`${this.environment}/public/api/tratamenduByLangile/${this.idTalde}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        method: "GET"
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al obtener tratamientos por trabajador');
+      }
+
+      const datuak = await response.json();
+      this.langileTratamenduak = datuak;
+      this.tratamenduKategoriaTaula = this.tratamenduKategoria.filter(kategoria => kategoria.extra === 'n');
+    } catch (error) {
+      console.log("Error al obtener tratamientos del trabajador:", error);
+    }
+  }
+
+  // ---------------------------------------------------------------------- VISTA DE DATOS --------------------------------------------------------------------------------
+
+  // Función: getCitasAtTimeAndSeat
+  getCitasAtTimeAndSeat(time: string, seatId: number) {
+    const filteredCitas = this.hitzorduArray.filter(cita =>
+      cita.hasieraOrdua <= time && cita.amaieraOrdua > time && cita.eserlekua === seatId
+    );
+    return filteredCitas;
+  }
+
+  // Función: cargar_dia_seleccionado
+  cargar_dia_seleccionado() {
+    const eguna = formatDate(this.dataSelec, 'yyyy-MM-dd', 'en-US');
+    this.hitzorduArray = this.hitzorduak.filter((hitzordu:any) => 
+      (!hitzordu.ezabatze_data || hitzordu.ezabatze_data === "0000-00-00 00:00:00") && hitzordu.data.includes(eguna)
+    );
+    // this.cargar_asientos();
+  }
+
+  // Función: getHoursInRange
+  getHoursInRange(): void {
+    const startTime = new Date('2022-01-01T09:00:00');
+    const endTime = new Date('2022-01-01T14:30:00');
+    this.hoursArray = [];
+
+    while (startTime <= endTime) {
+      const formattedHour = startTime.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      });
+      this.hoursArray.push(formattedHour);
+      startTime.setMinutes(startTime.getMinutes() + 30);
+    }
+  }
+
+  // Función: cita_sartuta
+  citaSartuta(time: string, seatId: number): boolean {
+    // console.log(time + " | " + seatId);
+
+    if (time === this.hoursArray[0] && seatId === 1) {
+      this.rowspanAux = [];
+    }
+    // console.log(this.hitzorduArray)
+    const filteredCitas = this.hitzorduArray.filter((cita:any) => 
+      cita.hasieraOrdua <= time 
+      && cita.amaieraOrdua > time 
+      && cita.eserlekua == seatId
+    );
+
+    if (filteredCitas.length == 0) {
+      return true;
+    }
+    const citaID = filteredCitas[0].id;
+    if (this.rowspanAux.includes(citaID)) {
+      return false;
+    } else {
+      this.rowspanAux.push(citaID);
+      return true;
+    }
+  }
+
+  // // Función: rowspanManagement
+  rowspanManagement(time: string, seatId: number): number {
+    if (time === this.hoursArray[0] && seatId === 1) {
+      this.rowspanAux = [];
+    }
+    const filteredCitas = this.hitzorduArray.filter(cita => 
+      cita.hasieraOrdua <= time && cita.amaieraOrdua > time && cita.eserlekua === seatId
+    );
+    if (filteredCitas.length <= 0) {
+      return 1;
+    }
+    const citaID = filteredCitas[0].id;
+    let cant = 0;
+    this.rowspanAux.push(citaID);
+    this.hoursArray.forEach(element => {
+      if (filteredCitas[0].hasieraOrdua <= element && filteredCitas[0].amaieraOrdua > element) {
+        cant++;
+      }
+    });
+    return cant;
+  }
+  
+  // -------------------------------------------------------------------- CREAR DATOS -------------------------------------------------------------------------
+
+  // Función: createCita
+  async createCita() {
+    try {
+      const data = this.dataTest;
+      const hasOrdua = this.hasOrduaTest;
+      const amaOrdua = this.amaOrduaTest;
+      const eserlekua = this.eserlekuaCrear;
+      const izena = this.izenaCrear;
+      const telefonoa = this.telfCrear;
+      const deskribapena = this.deskCrear;
+      const etxeko = this.etxekoCrear ? "E" : "K";
+
+      const json_data = {
+        "data":data,
+        "hasieraOrdua":hasOrdua,
+        "amaieraOrdua":amaOrdua,
+        "eserlekua" :eserlekua,
+        "izena":izena,
+        "telefonoa":telefonoa,
+        "deskribapena":deskribapena,
+        "etxekoa":etxeko
+      };
+
+      const response = await fetch('http://localhost:8080/api/hitzorduak', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        method: "POST",
+        body: JSON.stringify(json_data)
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al crear la cita');
+      }
+
+      // this.toastr.success(this.translations[this.currentLocale].default.crear);
+      await this.cargarHitzordu();
+      this.limpiar_campos();
+    } catch (error) {
+      console.error("Error al crear la cita:", error);
+      throw new Error("No se ha creado la cita.");
+    }
+  }
+
+  // ------------------------------------------------------------------ EDITAR DATOS ---------------------------------------------------------------
+
+  async editar_cita() {
+    try {
+      const etxeko = this.etxekoEditar ? "E" : "K";
+      const json_data = {
+        "id": this.idSelec,
+        "data": this.dataEditar,
+        "hasieraOrdua": this.hasOrduaEditar,
+        "amaieraOrdua": this.amaOrduaEditar,
+        "eserlekua": this.eserlekuaEditar,
+        "izena": this.izenaEditar,
+        "telefonoa": this.telfEditar,
+        "deskribapena": this.deskEditar,
+        "etxekoa": etxeko
+      };
+      console.log(JSON.stringify(json_data));
+      const response = await fetch('http://localhost:8080/api/hitzorduak', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        method: "PUT",
+        body: JSON.stringify(json_data)
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error al editar la cita');
+      }
+      // toastr.success(this.translations[this.currentLocale].default.actualizar);
+      await this.cargarHitzordu();
+      this.limpiar_campos();
+    } catch (error) {
+      console.error("Error al editar la cita:", error);
+    }
+  }
+
+// ----------------------------------------------------------------- ELIMINAR DATOS -----------------------------------------------------------------
+
+async eliminar_cita() {
+  try {
+    const json_data = { "id": this.idSelec };
+
+    const response = await fetch('http://localhost:8080/api/hitzorduak', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+      method: "DELETE",
+      body: JSON.stringify(json_data)
+    });
+
+    if (!response.ok) {
+      throw new Error('Error al eliminar la cita');
+    }
+    // toastr.success(this.translations[this.currentLocale].default.eliminar);
+    await this.cargarHitzordu();
+    this.limpiar_campos();
+  } catch (error) {
+    console.error("Error al eliminar la cita:", error);
+  }
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  changeLanguage() {
+    this.translate.use(this.selectedLanguage);
   }
 
   retroceder() { 
@@ -110,37 +489,14 @@ export class HitzorduakPage implements OnInit {
     const month = ('0' + (today.getMonth() + 1)).slice(-2);
     const day = ('0' + today.getDate()).slice(-2);
     return `${year}-${month}-${day}`;
-  }
-
-  async cargarHitzordu() {
-    try {
-      const response = await fetch(`${this.environment}/public/api/hitzorduak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "GET"
-      });
-  
-      if (!response.ok) {
-        throw new Error('Error al cargar citas');
-      }
-  
-      const data = await response.json();
-      this.hitzorduArray = data;
-      console.log('Citas cargadas:', this.hitzorduArray);
-    } catch (error) {
-      this.error = true;
-      console.error("Error al cargar las citas:", error);
-    }
-  }
+  }  
 
   cargar_cita_selec(id: string) {
     const cita = this.hitzorduArray.filter(citas => citas.id === id);
     this.idSelec = id;
     this.dataEditar = cita[0].data;
-    this.hasOrduaEditar = cita[0].hasiera_ordua;
-    this.amaOrduaEditar = cita[0].amaiera_ordua;
+    this.hasOrduaEditar = cita[0].hasieraOrdua;
+    this.amaOrduaEditar = cita[0].amaieraOrdua;
     this.izenaSelec = cita[0].izena;
     this.izenaEditar = cita[0].izena;
     this.telfEditar = cita[0].telefonoa;
@@ -155,65 +511,6 @@ export class HitzorduakPage implements OnInit {
       this.asignado = false;
     }
     this.generado = !!cita[0].prezio_totala;
-  }
-
-  async editar_cita() {
-    try {
-      const etxeko = this.etxekoEditar ? "E" : "K";
-      const json_data = {
-        "id": this.idSelec,
-        "data": this.dataEditar,
-        "hasiera_ordua": this.hasOrduaEditar,
-        "amaiera_ordua": this.amaOrduaEditar,
-        "eserlekua": this.eserlekuaEditar,
-        "izena": this.izenaEditar,
-        "telefonoa": this.telfEditar,
-        "deskribapena": this.deskEditar,
-        "etxekoa": etxeko
-      };
-  
-      const response = await fetch(`${this.environment}/public/api/hitzorduak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "PUT",
-        body: JSON.stringify(json_data)
-      });
-  
-      if (!response.ok) {
-        throw new Error('Error al editar la cita');
-      }
-      // toastr.success(this.translations[this.currentLocale].default.actualizar);
-      await this.cargarHitzordu();
-      this.limpiar_campos();
-    } catch (error) {
-      console.error("Error al editar la cita:", error);
-    }
-  }
-
-  async eliminar_cita() {
-    try {
-      const json_data = { "id": this.idSelec };
-  
-      const response = await fetch(`${this.environment}/public/api/hitzorduak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "DELETE",
-        body: JSON.stringify(json_data)
-      });
-  
-      if (!response.ok) {
-        throw new Error('Error al eliminar la cita');
-      }
-      // toastr.success(this.translations[this.currentLocale].default.eliminar);
-      await this.cargarHitzordu();
-      this.limpiar_campos();
-    } catch (error) {
-      console.error("Error al eliminar la cita:", error);
-    }
   }
 
   async asignar_cita() {
@@ -319,50 +616,7 @@ export class HitzorduakPage implements OnInit {
     }
   }
 
-  // Función: cargarComboBox
-  async cargarComboBox() {
-    try {
-      const response = await fetch(`${this.environment}/public/api/taldeak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
-      }
-
-      const datuak = await response.json();
-      this.taldeArray = datuak.filter((talde:any) => !talde.ezabatze_data || talde.ezabatze_data === "0000-00-00 00:00:00");
-    } catch (error) {
-      console.error("Error cargando el listado de equipos:", error);
-    }
-
-    try {
-      const response = await fetch(`${this.environment}/public/api/langileak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
-      }
-
-      const datuak = await response.json();
-      this.langileArray = datuak.filter((langile:any) => 
-        !langile.ezabatze_data && langile.kodea == this.idTalde ||
-        (langile.ezabatze_data === "0000-00-00 00:00:00" && langile.kodea == this.idTalde)
-      );
-    } catch (error) {
-      console.error("Error cargando el listado de trabajadores:", error);
-    }
-
-    // Llamar a la función que filtra los tratamientos por trabajador
-    this.tratamenduByLangile();
-  }
+  
   // Función: seleccionar_citaCrear
   seleccionar_citaCrear(eserlekua: number, time: string) {
     if (this.dataTest) {
@@ -396,172 +650,9 @@ export class HitzorduakPage implements OnInit {
     }
   }
 
-  // Función: getCitasAtTimeAndSeat
-  getCitasAtTimeAndSeat(time: string, seatId: number) {
-    const filteredCitas = this.hitzorduArray.filter(cita =>
-      cita.hasiera_ordua <= time && cita.amaiera_ordua > time && cita.eserlekua === seatId
-    );
-    return filteredCitas;
-  }
+  
 
-  // // Función: cargarHitzordu
-  // async cargarHitzordu() {
-  //   this.hitzorduArray = [];
-  //   this.hitzorduak = [];
-  //   try {
-  //     const response = await fetch(`${this.environment}/public/api/hitzorduak/`, {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Access-Control-Allow-Origin': '*'
-  //       },
-  //       method: "GET"
-  //     });
-  //     if (!response.ok) {
-  //       throw new Error('Error al obtener las citas');
-  //     }
-  //     const datuak = await response.json();
-  //     this.hitzorduak = datuak.filter(hitzordu => !hitzordu.ezabatze_data || hitzordu.ezabatze_data === "0000-00-00 00:00:00");
-  //     const eguna = formatDate(this.dataSelec, 'yyyy-MM-dd', 'en-US');
-  //     this.hitzorduArray = datuak.filter(hitzordu => 
-  //       (!hitzordu.ezabatze_data || hitzordu.ezabatze_data === "0000-00-00 00:00:00") && hitzordu.data.includes(eguna)
-  //     );
-  //   } catch (error) {
-  //     console.log("Error al cargar citas:", error);
-  //   }
-  //   this.cargar_asientos();
-  // }
-
-  // Función: cargar_asientos
-  async cargar_asientos() {
-    try {
-      const response2 = await fetch(`${this.environment}/public/api/langileak/count/${this.dataSelec}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "GET"
-      });
-      if (!response2.ok) {
-        throw new Error('Error al obtener el número de asientos');
-      }
-      const datuak2 = await response2.json();
-      this.eserlekuKop = [];
-      const totalSeats = datuak2 <= 0 ? 20 : datuak2;
-      for (let i = 1; i <= totalSeats; i++) {
-        this.eserlekuKop.push({ id: i });
-      }
-    } catch (error) {
-      console.log("Error al cargar los asientos:", error);
-    }
-  }
-
-  // Función: cargar_dia_seleccionado
-  cargar_dia_seleccionado() {
-    const eguna = formatDate(this.dataSelec, 'yyyy-MM-dd', 'en-US');
-    this.hitzorduArray = this.hitzorduak.filter(hitzordu => 
-      (!hitzordu.ezabatze_data || hitzordu.ezabatze_data === "0000-00-00 00:00:00") && hitzordu.data.includes(eguna)
-    );
-    this.cargar_asientos();
-  }
-
-  // Función: getHoursInRange
-  getHoursInRange() {
-    const startTime = new Date(`2022-01-01 ${this.startHour}`);
-    const endTime = new Date(`2022-01-01 ${this.endHour}`);
-    this.hoursArray = [];
-
-    while (startTime <= endTime) {
-      const formattedHour = startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      this.hoursArray.push(formattedHour);
-      startTime.setMinutes(startTime.getMinutes() + 30);
-    }
-  }
-
-  // Función: createCita
-  async createCita() {
-    try {
-      const data = this.dataTest;
-      const hasOrdua = this.hasOrduaTest;
-      const amaOrdua = this.amaOrduaTest;
-      const eserlekua = this.eserlekuaCrear;
-      const izena = this.izenaCrear;
-      const telefonoa = this.telfCrear;
-      const deskribapena = this.deskCrear;
-      const etxeko = this.etxekoCrear ? "E" : "K";
-
-      const json_data = {
-        data,
-        hasOrdua,
-        amaOrdua,
-        eserlekua,
-        izena,
-        telefonoa,
-        deskribapena,
-        etxekoa: etxeko
-      };
-
-      const response = await fetch(`${this.environment}/public/api/hitzorduak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "POST",
-        body: JSON.stringify(json_data)
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al crear la cita');
-      }
-
-      // this.toastr.success(this.translations[this.currentLocale].default.crear);
-      await this.cargarHitzordu();
-      this.limpiar_campos();
-    } catch (error) {
-      console.error("Error al crear la cita:", error);
-      throw new Error("No se ha creado la cita.");
-    }
-  }
-
-  // Función: cargarTratamenduak
-  async cargarTratamenduak() {
-    try {
-      const response = await fetch(`${this.environment}/public/api/tratamenduak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "GET"
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al obtener tratamientos');
-      }
-
-      const datuak = await response.json();
-      this.tratamenduArray = datuak.filter((tratamendua:any) => !tratamendua.ezabatze_data || tratamendua.ezabatze_data === '0000-00-00 00:00:00');
-    } catch (error) {
-      console.log("Error al cargar tratamientos:", error);
-    }
-
-    try {
-      const response2 = await fetch(`${this.environment}/public/api/kategoriaTratamendu`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "GET"
-      });
-
-      if (!response2.ok) {
-        throw new Error('Error al obtener categorías de tratamientos');
-      }
-
-      const datuak2 = await response2.json();
-      this.tratamenduKategoria = datuak2.filter((katTratamendu:any) => !katTratamendu.ezabatze_data || katTratamendu.ezabatze_data === '0000-00-00 00:00:00');
-    } catch (error) {
-      console.log("Error al cargar categorías de tratamientos:", error);
-    }
-  }
+  
 
   // Función para comprobar extras en una categoría de tratamiento
   comprobar_extras(id_kategoria: number): boolean {
@@ -611,94 +702,15 @@ export class HitzorduakPage implements OnInit {
     const roundedMinute = minute >= 45 ? "00" : minute >= 15 ? "30" : "00";
     const roundedHour = minute >= 45 ? hour + 1 : hour;
     this.amaOrduaTest = `${roundedHour.toString().padStart(2, "0")}:${roundedMinute}`;
-  }
+  }  
 
-  // Función: lortuData
-  lortuData(): string {
-    const gaur = new Date();
-    const urtea = gaur.getFullYear();
-    let hilabetea = gaur.getMonth() + 1;
-    let eguna = gaur.getDate();
-    
-    // if (eguna < 10) eguna = `0${eguna}`;
-    // if (hilabetea < 10) hilabetea = `0${hilabetea}`;
-    
-    return `${urtea}-${hilabetea}-${eguna}`;
-  }
-
-   // Función: tratamenduByLangile
-   async tratamenduByLangile() {
-    try {
-      const response = await fetch(`${this.environment}/public/api/tratamenduByLangile/${this.idTalde}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "GET"
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al obtener tratamientos por trabajador');
-      }
-
-      const datuak = await response.json();
-      this.langileTratamenduak = datuak;
-      this.tratamenduKategoriaTaula = this.tratamenduKategoria.filter(kategoria => kategoria.extra === 'n');
-    } catch (error) {
-      console.log("Error al obtener tratamientos del trabajador:", error);
-    }
-  }
+   
 
   // Función: getCantKategoria
   getCantKategoria(katId: number, lanId: number): string {
     const cant = this.langileTratamenduak.filter(tratamendu => tratamendu.langile_id === lanId && tratamendu.kategoria_id === katId);
     return cant.length > 0 ? cant[0].cant : "0";
   }
-
-  // Función: cita_sartuta
-  // cita_sartuta(time: string, seatId: number): boolean {
-  //   if (time === this.hoursArray[0] && seatId === this.eserlekuKop[0].id) {
-  //     this.rowspanAux = [];
-  //   }
-
-  //   const filteredCitas = this.hitzorduArray.filter(cita => 
-  //     cita.hasiera_ordua <= time && cita.amaiera_ordua > time && cita.eserlekua === seatId
-  //   );
-
-  //   if (filteredCitas.length <= 0) {
-  //     return true;
-  //   }
-
-  //   const citaID = filteredCitas[0].id;
-  //   return !this.rowspanAux.includes(citaID);
-  // }
-
-  // // Función: rowspanManagement
-  // rowspanManagement(time: string, seatId: number): number {
-  //   if (time === this.hoursArray[0] && seatId === this.eserlekuKop[0].id) {
-  //     this.rowspanAux = [];
-  //   }
-
-  //   const filteredCitas = this.hitzorduArray.filter(cita => 
-  //     cita.hasiera_ordua <= time && cita.amaiera_ordua > time && cita.eserlekua === seatId
-  //   );
-
-  //   if (filteredCitas.length <= 0) {
-  //     return 1;
-  //   }
-
-  //   const citaID = filteredCitas[0].id;
-  //   let cant = 0;
-  //   this.rowspanAux.push(citaID);
-
-  //   this.hoursArray.forEach(element => {
-  //     if (filteredCitas[0].hasiera_ordua <= element && filteredCitas[0].amaiera_ordua > element) {
-  //       cant++;
-  //     }
-  //   });
-
-  //   return cant;
-  // }
 
   // Función: comprobar_cita_editar
   comprobar_cita_editar() {

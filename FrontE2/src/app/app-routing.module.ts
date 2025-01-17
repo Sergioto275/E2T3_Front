@@ -27,7 +27,8 @@ const routes: Routes = [
   {
     path: 'grafikoak',
     loadChildren: () => import('./grafikoak/grafikoak.module').then( m => m.GrafikoakPageModule)
-  },  {
+  },
+  {
     path: 'ikasleak',
     loadChildren: () => import('./ikasleak/ikasleak.module').then( m => m.IkasleakPageModule)
   },
@@ -35,7 +36,10 @@ const routes: Routes = [
     path: 'materialak',
     loadChildren: () => import('./materialak/materialak.module').then( m => m.MaterialakPageModule)
   },
-
+  {
+    path: 'txostenak',
+    loadChildren: () => import('./txostena/txostena.module').then( m => m.TxostenaPageModule)
+  },
 
 
 ];
