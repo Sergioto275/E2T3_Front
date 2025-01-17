@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { environment } from 'src/environments/environment';
 
 // import { IonButton, IonContent, IonHeader, IonLabel, IonModal, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
@@ -85,7 +86,7 @@ export class ProduktuakPage implements OnInit {
           "stockAlerta": this.crearStockAlerta
       }
       console.log(json_data);
-      const response = await fetch('http://localhost:8080/api/produktuak', {
+      const response = await fetch(`${environment.url}produktuak`, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
@@ -109,7 +110,7 @@ export class ProduktuakPage implements OnInit {
           "izena": this.crearKatNombre
       }
       console.log(json_data);
-      const response = await fetch('http://localhost:8080/api/produktu_kategoria', {
+      const response = await fetch(`${environment.url}produktu_kategoria`, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
@@ -141,7 +142,7 @@ export class ProduktuakPage implements OnInit {
           "stockAlerta": this.editarStockAlerta
       }
       console.log(json_data);
-      const response = await fetch('http://localhost:8080/api/produktuak', {
+      const response = await fetch(`${environment.url}produktuak`, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
@@ -172,7 +173,7 @@ export class ProduktuakPage implements OnInit {
           "id": id
       }
       console.log(json_data);
-      const response = await fetch('http://localhost:8080/api/produktuak', {
+      const response = await fetch(`${environment.url}produktuak`, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
@@ -201,7 +202,7 @@ export class ProduktuakPage implements OnInit {
           "id": id
       }
       console.log(json_data);
-      const response = await fetch('http://localhost:8080/api/produktu_kategoria', {
+      const response = await fetch(`${environment.url}produktu_kategoria`, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
@@ -274,7 +275,7 @@ export class ProduktuakPage implements OnInit {
       
       // Asegúrate de que el JSON sea un array válido antes de enviarlo.      
       console.log(JSON.stringify(movimientos));
-      const response = await fetch('http://localhost:8080/api/produktu_mugimenduak', {
+      const response = await fetch(`${environment.url}produktu_mugimenduak`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -294,7 +295,7 @@ export class ProduktuakPage implements OnInit {
 
   async produktuakLortu() {
     try {
-      const response = await fetch('http://localhost:8080/api/produktu_kategoria', {
+      const response = await fetch(`${environment.url}produktu_kategoria`, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
@@ -337,7 +338,7 @@ export class ProduktuakPage implements OnInit {
 
   async langileakLortu() {
     try {
-      const response = await fetch('http://localhost:8080/api/taldeak', {
+      const response = await fetch(`${environment.url}taldeak`, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
