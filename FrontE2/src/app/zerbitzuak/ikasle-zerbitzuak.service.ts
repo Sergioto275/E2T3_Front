@@ -64,7 +64,7 @@ export class IkasleZerbitzuakService {
   }
 
   crearKodea(kodea: Kodea): void {
-  this.kodeak.push(kodea); // Añadir el nuevo grupo
+  this.kodeak.push(kodea); 
 }
 
   agregarAlumno(nuevoAlumno: Ikaslea) {

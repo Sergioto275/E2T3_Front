@@ -104,7 +104,7 @@ export class IkasleakPage implements OnInit {
     const query = this.searchQuery.trim().toLowerCase();
     this.filteredAlumnos = query
       ? this.ikasleak.filter((ikaslea) =>
-          `${ikaslea.nombre} ${ikaslea.abizenak} ${ikaslea.kodea.izena}`
+          `${ikaslea.nombre} ${ikaslea.abizenak} ${ikaslea.kodea.kodea}${ikaslea.kodea.izena}`
             .toLowerCase()
             .includes(query)
         )
