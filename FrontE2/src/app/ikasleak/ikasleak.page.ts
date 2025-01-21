@@ -25,15 +25,17 @@ export class IkasleakPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Obtener grupos
     this.ikasleService.getGrupos().subscribe((data) => {
-      this.gruposDisponibles = data;
+      this.gruposDisponibles = data;  // Cargar los grupos en la variable
+      console.log(this.gruposDisponibles); // Esto es solo para verificar que se están cargando correctamente
     });
 
     // Obtener alumnos
     this.getAlumnos();
   }
 
+
+  
   // Método para obtener los alumnos de la API
   getAlumnos() {
     this.ikasleService.getAlumnos().subscribe((data: Ikaslea[]) => {
@@ -52,13 +54,21 @@ export class IkasleakPage implements OnInit {
   }
 
   updateAlumno() {
-    this.ikasleService.updateAlumno(this.selectedAlumno).subscribe((updatedAlumno) => {
-      this.ikasleak = this.ikasleak.map((alumno) =>
-        alumno.id === updatedAlumno.id ? updatedAlumno : alumno
-      );
-      this.closeEditModal();
-    });
+    // Asegúrate de que los cambios se reflejan solo cuando el botón es presionado
+    if (this.selectedAlumno.taldea.kodea) {
+      this.ikasleService.updateAlumno(this.selectedAlumno).subscribe((updatedAlumno) => {
+        // Actualizamos el alumno en la lista
+        this.ikasleak = this.ikasleak.map((alumno) =>
+          alumno.id === updatedAlumno.id ? updatedAlumno : alumno
+        );
+        this.closeEditModal();  // Cerramos el modal después de la actualización
+      });
+    } else {
+      console.error("No se ha seleccionado un código de grupo.");
+    }
   }
+  
+  
 
   filterAlumnos() {
     const query = this.searchQuery.trim().toLowerCase();
@@ -73,11 +83,12 @@ export class IkasleakPage implements OnInit {
   eliminarAlumnos() {
     this.selectedIkasleak.forEach((id) => {
       this.ikasleService.eliminarAlumno(id).subscribe(() => {
+        // Eliminar el alumno de la lista
         this.ikasleak = this.ikasleak.filter((alumno) => alumno.id !== id);
-        this.filteredAlumnos = [...this.ikasleak];
+        this.filteredAlumnos = [...this.ikasleak];  // Actualizar la lista filtrada
       });
     });
-    this.selectedIkasleak.clear();
+    this.selectedIkasleak.clear();  // Limpiar la selección después de eliminar
   }
 
   async agregarAlumno() {
@@ -101,11 +112,14 @@ export class IkasleakPage implements OnInit {
     return this.ikasleak.filter((ikaslea) => ikaslea.taldea.kodea === kodea);
   }
 
-  onAlumnoSelected(alumnoId: number) {
-    if (this.selectedIkasleak.has(alumnoId)) {
-      this.selectedIkasleak.delete(alumnoId); // Eliminar de la selección
-    } else {
-      this.selectedIkasleak.add(alumnoId); // Añadir a la selección
+  onAlumnoSelected(alumnoId: number | undefined) {
+    if (alumnoId !== undefined) {
+      if (this.selectedIkasleak.has(alumnoId)) {
+        this.selectedIkasleak.delete(alumnoId);
+      } else {
+        this.selectedIkasleak.add(alumnoId);
+      }
     }
   }
+  
 }

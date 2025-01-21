@@ -11,6 +11,8 @@ export interface Ikaslea {
   sortzeData?: string;
   eguneratzeData?: string;
   ezabatzeData?: null;
+  selected?: boolean;  // Nueva propiedad para controlar la selección
+
 }
 
 export interface Taldea {
