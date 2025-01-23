@@ -59,7 +59,9 @@
         <ion-button id="cat-editar-modal" (click)="setSelectedCategory(categoria.id)" slot="end">
           <ion-icon name="create"></ion-icon>
         </ion-button>
-          <ion-icon  slot="end" color="danger" (click)="eliminarKategoriaProducto(categoria.id)"name="trash"></ion-icon>
+        <ion-button slot="end" color="danger" (click)="eliminarKategoriaProducto(categoria.id)">
+          <ion-icon name="trash"></ion-icon>
+        </ion-button>
         <ion-icon [name]="isCategoriaAbierta(categoria.izena) ? 'chevron-up' : 'chevron-down'" slot="end"></ion-icon>
       </ion-item>
 
@@ -69,7 +71,7 @@
           <ion-label> {{ producto.izena }} - Stock: {{ producto.stock }} </ion-label>
           <ion-checkbox slot="start" [(ngModel)]="producto.selected"
             (ionChange)="actualizarProductosSeleccionados(producto, categoria.id)"></ion-checkbox>
-            <ion-button id="cat-editar-modal" slot="end">
+            <ion-button slot="end">
               <ion-icon name="create"></ion-icon>
             </ion-button>
           <ion-button slot="end" color="danger" (click)="eliminarProducto(producto.id)">
@@ -122,11 +124,6 @@
         <ion-header>
           <ion-toolbar>
             <ion-title>{{ 'productos.botones.crearProductos' | translate }}</ion-title>
-            <ion-buttons slot="end">
-              <ion-button (click)="modalSortu.dismiss()">
-                <ion-icon name="close-circle-outline" color="danger" size="large"></ion-icon>
-              </ion-button>
-            </ion-buttons>
           </ion-toolbar>
         </ion-header>
         <ion-content>
@@ -167,7 +164,7 @@
             <ion-title>{{ 'productos.botones.editarProductos' | translate }}</ion-title>
             <ion-buttons slot="end">
               <ion-button (click)="prodeditarmod.dismiss()">
-                <ion-icon name="close-circle-outline" color="danger"></ion-icon>
+                <ion-icon name="close-circle-outline" size="large" color="danger"></ion-icon>
               </ion-button>
             </ion-buttons>
           </ion-toolbar>
@@ -203,11 +200,16 @@
       </ng-template>
     </ion-modal>
 
-    <ion-modal trigger="cat-editar-modal">
+    <ion-modal #modaleditarcat trigger="cat-editar-modal">
       <ng-template>
         <ion-header>
           <ion-toolbar>
             <ion-title>{{ 'productos.botones.editarCategoria' | translate }}</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="modaleditarcat.dismiss()">
+                <ion-icon name="close-circle-outline" color="danger" size="large"></ion-icon>
+              </ion-button>
+            </ion-buttons>
           </ion-toolbar>
         </ion-header>
         <ion-content>
@@ -227,7 +229,7 @@
             <ion-title>{{ 'productos.botones.crearCategoria' | translate }}</ion-title>
             <ion-buttons slot="end">
               <ion-button (click)="catprodsormodal.dismiss()">
-                <ion-icon name="close-circle-outline" color="danger"></ion-icon>
+                <ion-icon name="close-circle-outline" size="large" color="danger"></ion-icon>
               </ion-button>
             </ion-buttons>
           </ion-toolbar>
