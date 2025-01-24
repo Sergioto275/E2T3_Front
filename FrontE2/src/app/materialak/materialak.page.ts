@@ -17,7 +17,6 @@ export class MaterialakPage implements OnInit {
   selectedLanguage: string = 'es';
   modal!:string;
 
-
   materialesSeleccionados:any[]=[];
   materialak!:any;
 
@@ -25,11 +24,13 @@ export class MaterialakPage implements OnInit {
   crearNombre!:String;
   crearEtiqueta!:String;
   crearCategoria!:Number;
+
   editarKatNombre!:String;
   editarId!:Number;
   editarNombre!:String;
   editarEtiqueta!:String;
   editarCategoria!:Number;
+  
   selectedCategoryId!:number;
 
   alumnos!: any[];
@@ -40,6 +41,15 @@ export class MaterialakPage implements OnInit {
   alumne = '';
   categoriasAbiertas: { [key: string]: boolean } = {};
   filteredAlumnos!: any[];
+
+  public alertButtons = [
+    {
+      text: 'Ez',
+    },
+    {
+      text: 'Bai',
+    },
+  ];
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
@@ -91,7 +101,7 @@ export class MaterialakPage implements OnInit {
     this.materialakLortu();
   }
 
-  async materialaEditatu(){
+  materialaEditatu(){
     let data = {
       "id": this.editarId,
       "etiketa": this.editarEtiqueta,
@@ -105,50 +115,36 @@ export class MaterialakPage implements OnInit {
     observableRest.subscribe(datuak => {
       console.log(datuak);
 	  });
-    await this.materialakLortu();
+    this.materialakLortu();
   }
 
-  async materialaEzabatu(id:number){
+  materialaEzabatu(id:number){
     let observableRest: Observable<any> = this.restServer.delete<any>(`http://localhost:8080/api/materialak/id/${id}`);
     observableRest.subscribe(datuak => {
       console.log(datuak);
     });
-    await this.materialakLortu();
+    this.materialakLortu();
   }  
 
-  async kategoriaEzabatu(id:number){
+  kategoriaEzabatu(id:number){
     let observableRest: Observable<any> = this.restServer.delete<any>(`http://localhost:8080/api/material_kategoria/id/${id}`);
     observableRest.subscribe(datuak => {
       console.log(datuak);
     });
-    await this.materialakLortu();
+    this.materialakLortu();
   }  
 
-  async editarKategoriaMaterial(id: number) {
-    try {
-      const json_data = { izena: this.editarKatNombre }; 
-      console.log(json_data);
-  
-      const response = await fetch(`http://localhost:8080/api/material_kategoria/id/${id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-        method: 'PUT',
-        body: JSON.stringify(json_data),
-      });
-  
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
-      }
-  
-      console.log('Categoría actualizada correctamente');
-      await this.materialakLortu();
-    } catch (e) {
-      console.error('Errorea produktuak kargatzerakoan:', e);
+  kategoriaEditatu(id: number){
+    let data = {
+      izena: this.editarKatNombre
     }
+    let observableRest: Observable<any> = this.restServer.put<any>(`http://localhost:8080/api/material_kategoria/id/${id}`, data);
+    observableRest.subscribe(datuak => {
+      console.log(datuak);
+    });
+    this.materialakLortu();
   }
-
+  
   cargarEditarMateriales() {
     this.editarId = this.materialesSeleccionados[0].id;
     this.editarNombre = this.materialesSeleccionados[0].izena;
@@ -156,26 +152,25 @@ export class MaterialakPage implements OnInit {
     this.editarCategoria = this.materialesSeleccionados[0].kategoria_id;
   }
 
-  async materialakAtera(){
+  materialakAtera(){
     let data = this.materialesSeleccionados.map(material => ({
       "material": {
-        "id": material.id // El ID del material dentro de un objeto
+        "id": material.id
       },
       "langile": {
-        "id": this.selecAlumno // El ID del alumno dentro de un objeto
+        "id": this.selecAlumno
       },
-      "data": new Date().toISOString(), // Fecha en formato ISO
-      "kopurua": material.kantitatea // La cantidad del material
+      "data": new Date().toISOString(),
     }));
 
     let observableRest: Observable<any> = this.restServer.post<any>("http://localhost:8080/api/material_mugimenduak",data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
     });
-    await this.materialakLortu();
+    this.materialakLortu();
   }
 
-  async materialakLortu(){
+  materialakLortu(){
     let observableRest: Observable<any> = this.restServer.get<any>('http://localhost:8080/api/material_kategoria');
     observableRest.subscribe(datuak => {
       console.log(datuak);
@@ -198,40 +193,29 @@ export class MaterialakPage implements OnInit {
     });
   }
 
-  async langileakLortu() {
-    try {
-      const response = await fetch('http://localhost:8080/api/taldeak', {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-        method: 'GET',
-      });
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
-      }
-      const datuak = await response.json();
+  langileakLortu(){
+    let observableRest: Observable<any> = this.restServer.get<any>('http://localhost:8080/api/taldeak');
+    observableRest.subscribe(datuak => {
+      console.log(datuak);
+      
       this.alumnos = datuak
-        .filter((kategoria: any) => kategoria.ezabatzeData === null)
-        .map((kategoria: any) => ({
-          kodea: kategoria.kodea,
-          izena: kategoria.izena,
-          sortzeData: kategoria.sortzeData,
-          langileak: kategoria.langileak
-            .filter((langilea: any) => langilea.ezabatzeData === null)
-            .map((langilea: any) => ({
-              id: langilea.id,
-              izena: langilea.izena,
-              abizenak: langilea.abizenak,
-              sortzeData: langilea.sortzeData,
-              eguneratzeData: langilea.eguneratzeData,
-            })),
-        }));
-      console.log('Kategoriak eta langileak:', this.alumnos);
-  } catch (e) {
-        console.error('Errorea langileak kargatzerakoan:', e);
-    }
-  }
+      .filter((kategoria: any) => kategoria.ezabatzeData === null)
+      .map((kategoria: any) => ({
+        kodea: kategoria.kodea,
+        izena: kategoria.izena,
+        sortzeData: kategoria.sortzeData,
+        langileak: kategoria.langileak
+          .filter((langilea: any) => langilea.ezabatzeData === null)
+          .map((langilea: any) => ({
+            id: langilea.id,
+            izena: langilea.izena,
+            abizenak: langilea.abizenak,
+            sortzeData: langilea.sortzeData,
+            eguneratzeData: langilea.eguneratzeData,
+          })),
+      }));
+    });
+  }  
 
   onGrupoChange() {
     if (!this.alumnos || this.alumnos.length === 0) {

@@ -69,6 +69,7 @@
       <ion-list *ngIf="isCategoriaAbierta(categoria.izena)">
         <ion-item *ngFor="let producto of categoria.produktuak">
           <ion-label> {{ producto.izena }} - Stock: {{ producto.stock }} </ion-label>
+          <ion-label class="deskribapena"> {{ producto.deskribapena }}</ion-label>
           <ion-checkbox slot="start" [(ngModel)]="producto.selected"
             (ionChange)="actualizarProductosSeleccionados(producto, categoria.id)"></ion-checkbox>
             <ion-button slot="end">
