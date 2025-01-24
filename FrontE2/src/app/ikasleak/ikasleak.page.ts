@@ -12,10 +12,11 @@ export class IkasleakPage implements OnInit {
   searchQuery: string = '';
   ikasleak: Ikaslea[] = [];
   filteredAlumnos: Ikaslea[] = [];
+  taldeak: Taldea[]=[];
   gruposDisponibles: Taldea[] = [];
-  selectedAlumno: Ikaslea = { id: 0, izena: '', abizenak: '', taldea: { kodea: '', izena: '', eguneratzeData: '',sortzeData: '', ezabatzeData: null } , eguneratzeData: '', ezabatzeData: null, mugimenduak: [], sortzeData: '' };
+  selectedAlumno: Ikaslea = { id: 0, izena: '', abizenak: '', taldea: { kodea: ''}};
   isEditModalOpen: boolean = false;
-  nuevoAlumno: Ikaslea = { id: 0, izena: '', abizenak: '', taldea: { kodea: '', izena: '' }, eguneratzeData: '', ezabatzeData: null, mugimenduak: [], sortzeData: '' };
+  nuevoAlumno: Ikaslea = { id: 0, izena: '', abizenak: '', taldea: { kodea: ''}};
   nuevoGrupo: Taldea = { kodea: '', izena: '' };
   kodeak: Taldea[] = [];
 
@@ -25,11 +26,8 @@ export class IkasleakPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.ikasleService.getGrupos().subscribe((data) => {
-      this.gruposDisponibles = data;  // Cargar los grupos en la variable
-      console.log(this.gruposDisponibles); // Esto es solo para verificar que se están cargando correctamente
-    });
-
+    
+    this.getGrupos();
     // Obtener alumnos
     this.getAlumnos();
   }
@@ -39,8 +37,17 @@ export class IkasleakPage implements OnInit {
   // Método para obtener los alumnos de la API
   getAlumnos() {
     this.ikasleService.getAlumnos().subscribe((data: Ikaslea[]) => {
-      this.ikasleak = data; // Asignar los alumnos a la propiedad ikasleak
+      
+      this.ikasleak = data.filter((ikaslea) => !ikaslea.ezabatzeData);  // Asignar los alumnos a la propiedad ikasleak
       this.filteredAlumnos = [...this.ikasleak]; // Inicializar la lista filtrada con todos los alumnos
+    });
+  }
+
+  getGrupos(){
+    this.ikasleService.getGrupos().subscribe((data: Taldea[]) => {
+      this.taldeak = data.filter((grupo) => !grupo.ezabatzeData);  // Cargar los grupos en la variable
+      console.log(this.taldeak); // Esto es solo para verificar que se están cargando correctamente
+      this.gruposDisponibles = [...this.taldeak]
     });
   }
 
@@ -54,19 +61,37 @@ export class IkasleakPage implements OnInit {
   }
 
   updateAlumno() {
-    // Asegúrate de que los cambios se reflejan solo cuando el botón es presionado
-    if (this.selectedAlumno.taldea.kodea) {
-      this.ikasleService.updateAlumno(this.selectedAlumno).subscribe((updatedAlumno) => {
-        // Actualizamos el alumno en la lista
+    if (this.selectedAlumno && this.selectedAlumno.taldea.kodea) {
+      // Creamos el objeto con los datos actualizados
+      let updatedData = {
+        "id": this.selectedAlumno.id, // Mantén el ID del alumno
+        "izena": this.selectedAlumno.izena, // Nombre
+        "abizenak": this.selectedAlumno.abizenak, // Apellidos
+        taldea: {
+          "kodea": this.selectedAlumno.taldea.kodea, // Código del grupo
+          "izena": this.selectedAlumno.taldea.izena // Nombre del grupo (si es necesario)
+        }
+      };
+  
+      console.log('Datos actualizados:', updatedData);
+  
+      // Llamada al servicio para actualizar el alumno
+      this.ikasleService.updateAlumno(updatedData).subscribe((updatedAlumno) => {
+        // Actualizamos el alumno en la lista de alumnos
         this.ikasleak = this.ikasleak.map((alumno) =>
           alumno.id === updatedAlumno.id ? updatedAlumno : alumno
         );
-        this.closeEditModal();  // Cerramos el modal después de la actualización
+  
+        // Cerramos el modal de edición después de la actualización
+        this.closeEditModal();
+      }, (error) => {
+        console.error('Error al actualizar el alumno:', error);
       });
     } else {
-      console.error("No se ha seleccionado un código de grupo.");
+      console.error("No se ha seleccionado un código de grupo o alumno.");
     }
   }
+  
   
   
 
@@ -92,20 +117,49 @@ export class IkasleakPage implements OnInit {
   }
 
   async agregarAlumno() {
-    this.ikasleService.agregarAlumno(this.nuevoAlumno).subscribe((nuevoAlumno) => {
-      this.ikasleak.push(nuevoAlumno);
+    let data = {
+      "izena": this.nuevoAlumno.izena,
+      "abizenak": this.nuevoAlumno.abizenak,
+      taldea: {
+        "kodea": this.nuevoAlumno.taldea.kodea
+      }
+  }
+  console.log(data);
+
+    this.ikasleService.agregarAlumno(data).subscribe((data) => {
+      this.ikasleak.push(data);
       this.filteredAlumnos = [...this.ikasleak];
       this.modalController.dismiss();
     });
-    this.nuevoAlumno = { izena: '', abizenak: '', taldea: { kodea: '', izena: '' }, mugimenduak: [] };
+    this.nuevoAlumno = { izena: '', abizenak: '', taldea: { kodea: '', izena: '' }};
   }
 
   async agregarGrupo() {
-    this.ikasleService.agregarGrupo(this.nuevoGrupo).subscribe((nuevoGrupo) => {
-      this.gruposDisponibles.push(nuevoGrupo);
+    let data = {
+      "kodea": this.nuevoGrupo.kodea,
+      "izena": this.nuevoGrupo.izena
+    }
+
+    this.ikasleService.agregarGrupo(data).subscribe((data) => {
+      this.gruposDisponibles.push(data);
       this.modalController.dismiss();
     });
     this.nuevoGrupo = { kodea: '', izena: '' };
+  }
+
+  eliminarGrupo(grupoKodea: string) {
+    // Llamamos al servicio que gestiona la eliminación de grupos
+    this.ikasleService.eliminarGrupo(grupoKodea).subscribe(
+      response => {
+        // Aquí, actualizas la lista de grupos disponibles después de eliminar
+        this.gruposDisponibles = this.gruposDisponibles.filter(grupo => grupo.kodea !== grupoKodea);
+        alert('Grupo eliminado exitosamente');
+      },
+      error => {
+        alert('Hubo un error al eliminar el grupo');
+        console.error(error);
+      }
+    );
   }
 
   getAlumnosPorKodea(kodea: string): Ikaslea[] {
