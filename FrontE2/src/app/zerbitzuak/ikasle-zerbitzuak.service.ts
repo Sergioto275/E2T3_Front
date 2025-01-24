@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Ikaslea {
@@ -7,17 +7,15 @@ export interface Ikaslea {
   izena: string;
   abizenak: string;
   taldea: Taldea;
-  mugimenduak: any[];
   sortzeData?: string;
   eguneratzeData?: string;
   ezabatzeData?: null;
   selected?: boolean;  // Nueva propiedad para controlar la selección
-
 }
 
 export interface Taldea {
   kodea: string;
-  izena: string;
+  izena?: string;
   sortzeData?: string;
   eguneratzeData?: string;
   ezabatzeData?: null;
@@ -43,7 +41,8 @@ export class IkasleZerbitzuakService {
 
   // Crear un nuevo alumno
   agregarAlumno(nuevoAlumno: Ikaslea): Observable<Ikaslea> {
-    return this.http.post<Ikaslea>('http://localhost:8080/api/langileak', nuevoAlumno);
+    console.log(nuevoAlumno);
+     return this.http.post<Ikaslea>('http://localhost:8080/api/langileak', nuevoAlumno);
   }
 
   // Crear un nuevo grupo
@@ -60,4 +59,13 @@ export class IkasleZerbitzuakService {
   eliminarAlumno(id: number): Observable<void> {
     return this.http.delete<void>('http://localhost:8080/api/langileak/'+id);
   }
+
+  eliminarGrupo(kodea: string): Observable<any> {
+    return this.http.delete('http://localhost:8080/api/taldeak/kodea/'+kodea);
+  }
+
+  updateGrupo(updatedGrupo: Taldea): Observable<Taldea> {
+    return this.http.put<Taldea>('http://localhost:8080/api/taldeak/' + updatedGrupo.kodea, updatedGrupo);
+  }
+  
 }
