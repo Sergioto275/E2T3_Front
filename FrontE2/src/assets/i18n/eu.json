@@ -79,6 +79,20 @@
         }
     },
     "informes":{
-        "title": "Txostenak"
+        "title": "Txostenak",
+        "cliente": "Bezero",
+        "botones": {
+          "datos": "Datuak ikusi",
+          "cerrar": "Itxi"
+
+      },
+      "modal": {
+        "idCliente": "Bezeroaren ID",
+        "nombre": "Izen",
+        "apellido": "Abizena",
+        "telefono": "Teléfonoa",
+        "tinte": "Tintea",
+        "pSensible": "Ile Sentikorra"
       }
+    }
 }

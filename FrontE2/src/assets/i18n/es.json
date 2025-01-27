@@ -79,7 +79,20 @@
     }
   },
   "informes":{
-    "title": "Informes"
+    "title": "Informes",
+    "cliente": "Cliente",
+    "botones": {
+      "datos": "Mostrar datos",
+      "cerrar": "Cerrar"
+  },
+  "modal": {
+    "idCliente": "ID del Cliente",
+    "nombre": "Nombre",
+    "apellido": "Apellido",
+    "telefono": "Teléfono",
+    "tinte": "Tinte",
+    "pSensible": "Pelo Sensible"
   }
+}
 }
   
