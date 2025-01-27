@@ -30,8 +30,10 @@
   "citas": {
     "titulo": "Citas",
     "horas": "Horas",
+    "asientos":"Asientos",
     "botones":{
       "confirmar": "Confirmar",
+      "editar": "Editar",
       "guardar": "Guardar",
       "borrar": "Borrar",
       "crear": "Crear",
@@ -47,7 +49,8 @@
         "asiento": "Asientos",
         "cliente": "Cliente",
         "telefono": "Teléfono",
-        "casa": "Del centro"
+        "casa": "Del centro",
+        "trabajador":"Trabajador"
     }
   }
 }
