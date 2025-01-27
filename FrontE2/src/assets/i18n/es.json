@@ -58,8 +58,10 @@
   "citas": {
     "titulo": "Citas",
     "horas": "Horas",
+    "asientos":"Asientos",
     "botones":{
       "confirmar": "Confirmar",
+      "editar": "Editar",
       "guardar": "Guardar",
       "borrar": "Borrar",
       "crear": "Crear",
@@ -75,11 +77,25 @@
         "asiento": "Asientos",
         "cliente": "Cliente",
         "telefono": "Teléfono",
-        "casa": "Del centro"
+        "casa": "Del centro",
+        "trabajador":"Trabajador"
     }
   },
   "informes":{
-    "title": "Informes"
+    "title": "Informes",
+    "cliente": "Cliente",
+    "botones": {
+      "datos": "Mostrar datos",
+      "cerrar": "Cerrar"
+  },
+  "modal": {
+    "idCliente": "ID del Cliente",
+    "nombre": "Nombre",
+    "apellido": "Apellido",
+    "telefono": "Teléfono",
+    "tinte": "Tinte",
+    "pSensible": "Pelo Sensible"
   }
+}
 }
   

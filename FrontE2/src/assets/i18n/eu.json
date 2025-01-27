@@ -58,9 +58,11 @@
     "citas": {
         "titulo":"Hitzorduak",
         "horas":"Orduak",
+        "asientos":"Eserlekuak",
         "botones": {
             "confirmar": "Berretsi",
             "guardar": "Gorde",
+            "editar":"Editatu",
             "borrar": "Ezabatu",
             "crear": "Sortu",
             "asignar": "Ikaslea Esleitu",
@@ -75,10 +77,25 @@
             "asiento":"Eserlekuak",
             "cliente":"Bezeroa",
             "telefono":"Telefonoa",
-            "casa":"Etxekoa"
+            "casa":"Etxekoa",
+            "trabajador":"Langilea"
         }
     },
     "informes":{
-        "title": "Txostenak"
+        "title": "Txostenak",
+        "cliente": "Bezero",
+        "botones": {
+          "datos": "Datuak ikusi",
+          "cerrar": "Itxi"
+
+      },
+      "modal": {
+        "idCliente": "Bezeroaren ID",
+        "nombre": "Izen",
+        "apellido": "Abizena",
+        "telefono": "Teléfonoa",
+        "tinte": "Tintea",
+        "pSensible": "Ile Sentikorra"
       }
+    }
 }
