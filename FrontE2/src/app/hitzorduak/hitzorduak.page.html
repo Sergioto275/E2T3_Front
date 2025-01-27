@@ -151,7 +151,7 @@
               <ion-list *ngFor="let katTrat of tratamenduArray">
                 <ion-label>{{ katTrat.izena }}</ion-label>
                 <ion-item *ngFor="let trat of katTrat.zerbitzuak">
-                  <ion-checkbox slot="start"  [(ngModel)]="trat.selected" (ionChange)="actualizarServiciosSeleccionados(trat)"></ion-checkbox>
+                  <ion-checkbox slot="start"  [(ngModel)]="trat.selected" (ionChange)="actualizarServiciosSeleccionados(trat, katTrat.extra)"></ion-checkbox>
                   <ion-label>{{ trat.izena }}
                     <ng-container *ngIf="!katTrat.extra">
                       <ng-container *ngIf="etxekoEditar; else kanpokoa">
@@ -162,12 +162,12 @@
                       </ng-template>
                     </ng-container>
                     <ng-container *ngIf="katTrat.extra">
-                      <ion-input placeholder="€€€"></ion-input>
+                      <ion-input [(ngModel)]="trat.precio" placeholder="€€€"></ion-input>
                     </ng-container>
                   </ion-label>                                  
                 </ion-item>
               </ion-list>
-              <ion-button>{{ "citas.botones.generar" | translate }}</ion-button>
+              <ion-button (click)="generar_ticket()">{{ "citas.botones.generar" | translate }}</ion-button>
             </ion-segment-content>
           </ion-segment-view>
         </div>

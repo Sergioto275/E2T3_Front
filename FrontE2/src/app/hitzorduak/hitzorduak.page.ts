@@ -1,6 +1,9 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -89,7 +92,6 @@ export class HitzorduakPage implements OnInit {
     if (hilabetea < 10) {
       hilabetea = '0' + hilabetea;
     }
-  
     return `${urtea}-${hilabetea}-${eguna}`;
   }
 
@@ -176,29 +178,6 @@ export class HitzorduakPage implements OnInit {
       console.log(this.tratamenduArray)
     } catch (error) {
       console.log("Error al cargar tratamientos:", error);
-    }
-  }
-
-  // Función: tratamenduByLangile
-  async tratamenduByLangile() {
-    try {
-      const response = await fetch(`${this.environment}/public/api/tratamenduByLangile/${this.idTalde}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "GET"
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al obtener tratamientos por trabajador');
-      }
-
-      const datuak = await response.json();
-      this.langileTratamenduak = datuak;
-      this.tratamenduKategoriaTaula = this.tratamenduKategoria.filter(kategoria => kategoria.extra === 'n');
-    } catch (error) {
-      console.log("Error al obtener tratamientos del trabajador:", error);
     }
   }
 
@@ -420,10 +399,6 @@ async eliminar_cita() {
     this.translate.use(this.selectedLanguage);
   }
 
-  retroceder() { 
-    window.history.back(); 
-  }
-
   limpiar_campos() {
     this.langile_asignado = 'nadie Asignado';
     this.langileTratamenduak = [];
@@ -485,14 +460,19 @@ async eliminar_cita() {
     this.generado = !!cita[0].prezio_totala;
   }
 
-  actualizarServiciosSeleccionados(servicio:any) {
+  actualizarServiciosSeleccionados(servicio:any, extra:boolean) {
+    if (servicio.selected) {
+      if (!extra) {
+        servicio.precio = this.etxekoEditar ? servicio.etxekoPrezioa : servicio.kanpokoPrezioa;
+      }
+    }
     const index = this.serviciosSeleccionados.findIndex(s => s.id === servicio.id);
     if (servicio.selected && index === -1) {
       this.serviciosSeleccionados.push(servicio);
     } else if (!servicio.selected && index !== -1) {
       this.serviciosSeleccionados.splice(index, 1);
     }
-    console.log('Productos seleccionados:', this.serviciosSeleccionados);
+    console.log(this.serviciosSeleccionados);
   }
 
   async asignar_cita() {
@@ -532,35 +512,17 @@ async eliminar_cita() {
 
     // Actualizar cita con el precio total
     try {
-      const json_data = {
-        "id": this.idSelec,
-        "prezio_totala": prezio_totala
-      };
-      const response = await fetch(`${this.environment}/public/api/hitzorduaamaitu`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
+      const json_data = this.serviciosSeleccionados.map(servicio => ({
+        "hitzordua": {
+          "id": this.idSelec 
         },
-        method: "PUT",
-        body: JSON.stringify(json_data)
-      });
-
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
-      }
-      await this.cargarHitzordu();
-    } catch (error) {
-      console.error("Error en generación de cita:", error);
-    }
-
-    // Crear ticket
-    try {
-      const json_data = {
-        "id_hitzordu": this.idSelec,
-        "tratamendua": this.tratamenduSelec
-      };
-
-      const response = await fetch(`${this.environment}/public/api/ticket_lerro`, {
+        "zerbitzuak": {
+          "id": servicio.id 
+        },
+        "prezioa": servicio.precio
+      }));
+      console.log(JSON.stringify(json_data));
+      const response = await fetch(`${environment.url}ticket_lerroak`, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
@@ -572,29 +534,59 @@ async eliminar_cita() {
       if (!response.ok) {
         throw new Error('Errorea eskaera egiterakoan');
       }
+      await this.cargarHitzordu();
+      const datuak = await response.json();
+      if(confirm("Desea descargar el ticket de la cita?")){
+        this.descargar_ticket(datuak);
 
-      // toastr.success(this.translations[this.currentLocale].default.actualizar);
-      // toastr.info(this.translations[this.currentLocale].citas.precioMessage + prezio_totala);
-
-      for (let tratamendu of this.tratamenduSelec) {
-        const tratamiento = this.tratamenduArray.filter(element => element.id == tratamendu.tratamendu_id);
-        const kategoria = this.tratamenduKategoria.filter(el => el.id == tratamiento[0].id_katTratamendu);
-
-        if (kategoria[0].kolorea === 's') {
-          // toastr.warning(this.translations[this.currentLocale].citas.registrarCliente);
-          if (confirm(this.translations[this.currentLocale].citas.redireccionCliente)) {
-            window.location.href = 'BezeroFitxak.html';
-          } else {
-            this.cargarHitzordu();
-          }
-          break; // Detener el bucle si se redirige
-        }
       }
-
-      this.limpiar_campos();
     } catch (error) {
-      console.error("Error en generación de ticket:", error);
+      console.error("Error en generación de cita:", error);
     }
+  }
+
+  descargar_ticket(datuak: any) {
+    const pdf = new jsPDF();
+    const margenIzquierdo = 10;
+    let posicionY = 20;
+    pdf.setFontSize(18);
+    pdf.setFont("helvetica", "bold");
+    pdf.text("Ticket de Cita", margenIzquierdo, posicionY);
+    posicionY += 10;
+    pdf.setFontSize(12);
+    pdf.setFont("helvetica", "normal");
+    pdf.text(`Data: ${datuak.data}`, margenIzquierdo, posicionY);
+    posicionY += 7;
+    pdf.text(`Hasiera Ordua: ${datuak.hasieraOrduaErreala}`, margenIzquierdo, posicionY);
+    posicionY += 7;
+    pdf.text(`Amaiera Ordua: ${datuak.amaieraOrduaErreala}`, margenIzquierdo, posicionY);
+    posicionY += 7;
+    pdf.text(`Langilea: ${datuak.langilea?.izena}`, margenIzquierdo, posicionY);
+    posicionY += 10;
+    const head = [
+      ['Zerbitzua', 'Prezioa (€)']
+    ];
+    const body = datuak.lerroak.map((lerro: any) => [
+      lerro.zerbitzuak.izena,
+      lerro.prezioa.toFixed(2)
+    ]);
+    autoTable(pdf, {
+      startY: posicionY,
+      margin: { left: margenIzquierdo, right: margenIzquierdo },
+      head: head,
+      body: body,
+      theme: 'grid',
+      styles: { fontSize: 10, halign: 'center' },
+      headStyles: { fillColor: [0, 102, 204], textColor: [255, 255, 255] }
+    });
+    posicionY = (pdf as any).lastAutoTable.finalY + 10;
+    pdf.setFont("helvetica", "bold");
+    pdf.text(
+      `PREZIO TOTALA: ${datuak.prezioTotala.toFixed(2)} €`,
+      margenIzquierdo,
+      posicionY
+    );
+    pdf.save(`ticket_${datuak.id}.pdf`);
   }
 
   
@@ -629,16 +621,6 @@ async eliminar_cita() {
       this.amaOrduaTest = this.hoursArray[this.hoursArray.indexOf(time) + 1];
       this.eserlekuaCrear = eserlekua;
     }
-  }
-
-  
-
-  
-
-  // Función para comprobar extras en una categoría de tratamiento
-  comprobar_extras(id_kategoria: number): boolean {
-    const kategoria = this.tratamenduKategoria.filter(katTratamendu => katTratamendu.id == id_kategoria);
-    return kategoria.length > 0 && kategoria[0].extra === 's';
   }
 
   // Función: roundDownHour_hasieraData_crear
@@ -684,56 +666,5 @@ async eliminar_cita() {
     const roundedHour = minute >= 45 ? hour + 1 : hour;
     this.amaOrduaTest = `${roundedHour.toString().padStart(2, "0")}:${roundedMinute}`;
   }  
-
-   
-
-  // Función: getCantKategoria
-  getCantKategoria(katId: number, lanId: number): string {
-    const cant = this.langileTratamenduak.filter(tratamendu => tratamendu.langile_id === lanId && tratamendu.kategoria_id === katId);
-    return cant.length > 0 ? cant[0].cant : "0";
-  }
-
-  // Función: comprobar_cita_editar
-  comprobar_cita_editar() {
-    const eguna = new Date(this.dataEditar).toISOString().substring(0, 10);
-    const filtrarCitas = this.hitzorduak.filter(cita => 
-      ((cita.hasiera_ordua >= this.hasOrduaEditar && cita.hasiera_ordua < this.amaOrduaEditar) || 
-      (cita.amaiera_ordua >= this.hasOrduaEditar && cita.amaiera_ordua < this.amaOrduaEditar)) && 
-      cita.eserlekua === this.eserlekuaEditar && cita.data.includes(eguna)
-    );
-
-    if (filtrarCitas.length > 0) {
-      this.error = true;
-      // this.toastr.error(this.translations[this.currentLocale].default.citaReservada);
-    } else {
-      this.error = false;
-    }
-  }
-
-  // Función: comprobar_cita_crear
-  comprobar_cita_crear() {
-    const eguna = new Date(this.dataTest).toISOString().substring(0, 10);
-    const filtrarCitas = this.hitzorduak.filter(cita => 
-      ((cita.hasiera_ordua >= this.hasOrduaTest && cita.hasiera_ordua < this.amaOrduaTest) || 
-      (cita.amaiera_ordua >= this.hasOrduaTest && cita.amaiera_ordua < this.amaOrduaTest)) && 
-      cita.eserlekua === this.eserlekuaCrear && cita.data.includes(eguna)
-    );
-
-    if (filtrarCitas.length > 0) {
-      this.error = true;
-      // this.toastr.error(this.translations[this.currentLocale].default.citaReservada);
-    } else {
-      this.error = false;
-    }
-  }
-
-  // Función: checkCookie
-  checkCookie() {
-    if (document.cookie === "") {
-      window.location.href = "http://localhost/Erronka2/Front/Login.html";
-    } else if (document.cookie === "lanbide") {
-      window.location.href = "http://localhost/Erronka2/Front/Home.html";
-    }
-  }
 
 }
