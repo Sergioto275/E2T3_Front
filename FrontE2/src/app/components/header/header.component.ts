@@ -15,6 +15,7 @@ export class HeaderComponent  implements OnInit {
     { title: 'Ikasleak', url: '/ikasleak', icon: 'people' },
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+
   constructor() { }
 
   ngOnInit() {}

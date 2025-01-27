@@ -47,6 +47,7 @@ export class ProduktuakPage implements OnInit {
   alumne = '';
   categoriasAbiertas: { [key: string]: boolean } = {};
   filteredAlumnos!: any[];
+  selectedCategoryId!: number;
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
@@ -159,6 +160,8 @@ export class ProduktuakPage implements OnInit {
     }
   }
 
+  
+
   async eliminarProducto(id:number){
     const confirmacion = confirm('¿Estás seguro de que quieres eliminar este producto?');
     if (!confirmacion) {
@@ -217,6 +220,35 @@ export class ProduktuakPage implements OnInit {
     }
   }
 
+  async editarKategoriaProducto(id: number) {
+    try {
+      const json_data = { izena: this.editarKatNombre }; 
+      console.log(json_data);
+  
+      const response = await fetch(`http://localhost:8080/api/produktu_kategoria/id/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        method: 'PUT',
+        body: JSON.stringify(json_data),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Errorea eskaera egiterakoan');
+      }
+  
+      console.log('Categoría actualizada correctamente');
+      await this.produktuakLortu();
+    } catch (e) {
+      console.error('Errorea produktuak kargatzerakoan:', e);
+    }
+  }
+
+  setSelectedCategory(id:number){
+    this.selectedCategoryId = id;
+  }
+
   cargarEditarProducto() {
     this.editarId = this.productosSeleccionados[0].id;
     this.editarNombre = this.productosSeleccionados[0].izena;
@@ -226,6 +258,7 @@ export class ProduktuakPage implements OnInit {
     this.editarStock = this.productosSeleccionados[0].stock;
     this.editarStockAlerta = this.productosSeleccionados[0].stockAlerta;
   }
+
 
   async sacarProductos() {
     try {
