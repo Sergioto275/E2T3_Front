@@ -4,21 +4,19 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { TxostenaPageRoutingModule } from './txostena-routing.module';
+import { IkasleakPageRoutingModule } from './ikasleak-routing.module';
 
-import { TxostenaPage } from './txostena.page';
+import { IkasleakPage } from './ikasleak.page';
 import { ComponentsModule } from "../components/components.module";
-import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    TxostenaPageRoutingModule,
-    ComponentsModule,
-    TranslateModule
+    IkasleakPageRoutingModule,
+    ComponentsModule
 ],
-  declarations: [TxostenaPage]
+  declarations: [IkasleakPage]
 })
-export class TxostenaPageModule {}
+export class IkasleakPageModule {}

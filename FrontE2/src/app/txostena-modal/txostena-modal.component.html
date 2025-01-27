@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ nombre }} {{ apellido }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">{{ 'informes.botones.cerrar' | translate }}</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>{{ 'informes.modal.idCliente' | translate }}:</ion-label>
+    <ion-text>{{ idCliente }}</ion-text>
+  </ion-item>
+  <ion-item>
+    <ion-label>{{ 'informes.modal.nombre' | translate }}:</ion-label>
+    <ion-text>{{ nombre }} {{ apellido }}</ion-text>
+  </ion-item>
+  <ion-item>
+    <ion-label>{{ 'informes.modal.telefono' | translate }}:</ion-label>
+    <ion-text>(+34) {{ tlf }}</ion-text>
+  </ion-item>
+  <ion-item>
+    <ion-label>{{ 'informes.modal.pSensible' | translate }}:</ion-label>
+    <ion-text>{{ pSensible ? 'Sí' : 'No' }}</ion-text>
+  </ion-item>
+  <ion-item>
+    <ion-label>{{ 'informes.modal.tinte' | translate }}:</ion-label>
+    <ion-text>{{ tinte }}</ion-text>
+  </ion-item>
+</ion-content>

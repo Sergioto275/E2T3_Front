@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { TxostenaPageRoutingModule } from './txostena-routing.module';
+import { HitzorduakPageRoutingModule } from './hitzorduak-routing.module';
 
-import { TxostenaPage } from './txostena.page';
+import { HitzorduakPage } from './hitzorduak.page';
 import { ComponentsModule } from "../components/components.module";
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -15,10 +15,10 @@ import { TranslateModule } from '@ngx-translate/core';
     CommonModule,
     FormsModule,
     IonicModule,
-    TxostenaPageRoutingModule,
+    HitzorduakPageRoutingModule,
     ComponentsModule,
     TranslateModule
 ],
-  declarations: [TxostenaPage]
+  declarations: [HitzorduakPage]
 })
-export class TxostenaPageModule {}
+export class HitzorduakPageModule {}
