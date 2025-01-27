@@ -259,6 +259,9 @@ export class ProduktuakPage implements OnInit {
     this.editarStockAlerta = this.productosSeleccionados[0].stockAlerta;
   }
 
+  cargarEditarKategoria(){
+    
+  }
 
   async sacarProductos() {
     try {
