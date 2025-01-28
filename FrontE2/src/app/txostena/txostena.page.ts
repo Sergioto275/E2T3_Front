@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 interface Txostena {
   name: string;
@@ -37,16 +38,26 @@ export class TxostenaPage {
     { name: 'Txostena 15', image: 'https://picsum.photos/50/50?random=15', number: '', buttonColor: '' },
 
   ];
-
+  selectedLanguage: string = 'es';
   buttonColors = ['warning', 'success', 'danger']; // Colores disponibles
 
-  constructor() {
+
+
+
+  constructor(private translate: TranslateService) {
     // Añadir números aleatorios y colores dinámicos a cada txostena
     this.txostenak = this.txostenak.map((txostena) => ({
       ...txostena,
       number: this.getRandomNumber(),
       buttonColor: this.getRandomButtonColor(),
     }));
+
+    this.translate.setDefaultLang('es');
+    this.translate.use(this.selectedLanguage);
+  }
+
+  changeLanguage() {
+    this.translate.use(this.selectedLanguage);
   }
 
   // Generar un número aleatorio entre 1 y 200
@@ -60,4 +71,5 @@ export class TxostenaPage {
     const randomIndex = Math.floor(Math.random() * this.buttonColors.length);
     return this.buttonColors[randomIndex];
   }
+  
 }

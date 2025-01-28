@@ -8,6 +8,7 @@ import { MaterialakPageRoutingModule } from './materialak-routing.module';
 
 import { MaterialakPage } from './materialak.page';
 import { ComponentsModule } from "../components/components.module";
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { ComponentsModule } from "../components/components.module";
     FormsModule,
     IonicModule,
     MaterialakPageRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    TranslateModule
 ],
   declarations: [MaterialakPage]
 })

@@ -7,8 +7,10 @@
             "crearProductos": "Produktuak Sortu",
             "editarProductos": "Produktuak Editatu",
             "crearCategoria":"Kategoria Sortu",
+            "editarCategoria": "Kategoria editatu",
             "confirmar": "Baieztatu",
-            "crear": "Sortu"
+            "crear": "Sortu",
+            "editar": "Editatu"
         },
         "modal": {
             "sacarProductos": "Produktuak Atera",
@@ -27,7 +29,56 @@
             "electronica": "Elektronika"
         }
     },
+    "materiales": {
+        "title": "Materialen kudeaketa",
+        "botones": {
+            "agregarMaterial": "Materiala Gehitu",
+            "sacarMateriales": "Materialak Atera",
+            "crearMateriales": "Materialak Sortu",
+            "editarMateriales": "Materialak Editatu",
+            "crearCategoria":"Kategoria Sortu",
+            "confirmar": "Baieztatu",
+            "crear": "Sortu",
+            "cerrar": "Itxi"
+        },
+        "modal": {
+            "sacarMateriales": "Materialak Atera",
+            "alumno": "Ikaslea",
+            "seleccionaAlumno": "Hautatu ikaslea",
+            "material": "Materiala",
+            "categoria": "Kategoria",
+            "nombre": "Izena",
+            "etiqueta": "Etiqueta",
+            "vacio":"Ez daude materialak aukeratuta"
+        },
+        "categorias": {
+            "electronica": "Elektronika"
+        }
+    },
     "citas": {
-        "horas":"Orduak"
-    }
+        "titulo":"Hitzorduak",
+        "horas":"Orduak",
+        "botones": {
+            "confirmar": "Berretsi",
+            "guardar": "Gorde",
+            "borrar": "Ezabatu",
+            "crear": "Sortu",
+            "asignar": "Ikaslea Esleitu",
+            "generar": "Sarrera Sortu"
+        },
+        "modal":{
+            "nombre":"Izena",
+            "descripcion":"Deskribapena",
+            "fecha":"Data",
+            "horaInicio":"Hasiera Ordua",
+            "horaFin":"Amaiera Ordua",
+            "asiento":"Eserlekuak",
+            "cliente":"Bezeroa",
+            "telefono":"Telefonoa",
+            "casa":"Etxekoa"
+        }
+    },
+    "informes":{
+        "title": "Txostenak"
+      }
 }

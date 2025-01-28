@@ -7,14 +7,18 @@ import { IonicModule } from '@ionic/angular';
 import { TxostenaPageRoutingModule } from './txostena-routing.module';
 
 import { TxostenaPage } from './txostena.page';
+import { ComponentsModule } from "../components/components.module";
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    TxostenaPageRoutingModule
-  ],
+    TxostenaPageRoutingModule,
+    ComponentsModule,
+    TranslateModule
+],
   declarations: [TxostenaPage]
 })
 export class TxostenaPageModule {}

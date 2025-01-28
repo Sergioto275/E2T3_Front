@@ -37,10 +37,9 @@ const routes: Routes = [
     loadChildren: () => import('./materialak/materialak.module').then( m => m.MaterialakPageModule)
   },
   {
-    path: 'txostena',
+    path: 'txostenak',
     loadChildren: () => import('./txostena/txostena.module').then( m => m.TxostenaPageModule)
   },
-
 
 
 ];

@@ -1,13 +1,18 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Txostenak</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content id="main-content">
+<app-header></app-header>
+<ion-content class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>{{ 'informes.title' | translate }}</ion-title>
+      <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">
+        <ion-select-option value="es">Español</ion-select-option>
+        <ion-select-option value="eu">Euskera</ion-select-option>
+      </ion-select>
+    </ion-toolbar>
+  </ion-header>
+<ion-content [fullscreen]="true">
   <!-- Bloque que contiene la lista -->
   <div class="list-block">
     <ion-list>
@@ -34,31 +39,3 @@
     </ion-list>
   </div>
 </ion-content>
-
-<!-- Menú lateral responsivo -->
-<ion-menu side="start" content-id="main-content">
-  <ion-header>
-    <ion-toolbar color="white">
-      <ion-title>Menu</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <ion-content>
-    <ion-list>
-      <ion-item button>
-        <ion-label>Hitzorduak</ion-label>
-      </ion-item>
-      <ion-item button>
-        <ion-label>Opción 2</ion-label>
-      </ion-item>
-      <ion-item button>
-        <ion-label>Opción 3</ion-label>
-      </ion-item>
-      <ion-item button>
-        <ion-label>Opción 4</ion-label>
-      </ion-item>
-      <ion-item button>
-        <ion-label>Opción 5</ion-label>
-      </ion-item>
-    </ion-list>
-  </ion-content>
-</ion-menu>

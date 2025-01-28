@@ -3,6 +3,7 @@
     <ion-title>Ikasleen Gestionamendua</ion-title>
   </ion-toolbar>
 </ion-header>
+
 <ion-content [fullscreen]="true" id="main-content">
   <app-header titulua="Ikasleen Gestionamendua"></app-header>
 
@@ -27,43 +28,56 @@
     </ion-buttons>
   </ion-toolbar>
 
-  <ion-item *ngFor="let ikaslea of ikasleak">
-    <ion-label>
-      <h2>{{ ikaslea.nombre }} {{ ikaslea.abizenak }}</h2>
-      <p>Kodea: {{ ikaslea.kodea.kodea }}</p>
-    </ion-label>
-    <ion-button (click)="openEditModal(ikaslea)">Editatu</ion-button>
-  </ion-item>
- 
+  <ion-content>
+    <ion-list>
+      <ion-item *ngFor="let ikaslea of filteredAlumnos">
+        <ion-label>
+          <h2>{{ ikaslea.izena }} {{ ikaslea.abizenak }}</h2>
+          <p>Taldea: {{ ikaslea.taldea.izena }}</p>
+          <p>Kodea: {{ ikaslea.taldea.kodea }}</p>
+        </ion-label>
+        <ion-button (click)="openEditModal(ikaslea)">Edit</ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
 
+  <!-- Modal para editar un Ikaslea -->
   <ion-modal [isOpen]="isEditModalOpen" (ionModalDidDismiss)="closeEditModal()">
-  <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Editar Ikaslea</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content>
-      <ion-item>
-        <ion-label position="stacked">Izena</ion-label>
-        <ion-input [(ngModel)]="selectedAlumno.nombre" placeholder="Sartu izen berria"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="stacked">Abizenak</ion-label>
-        <ion-input [(ngModel)]="selectedAlumno.abizenak" placeholder="Sartu abizen berriak"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="stacked">Kodea</ion-label>
-        <ion-select [(ngModel)]="selectedAlumno.kodea.kodea" placeholder="Erabaki kode berri bat">
-          <ion-select-option *ngFor="let kodea of kodeak" [value]="kodea.kodea">{{ kodea.kodea }}</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <ion-button expand="full" (click)="updateAlumno()">Guardar Cambios</ion-button>
-    </ion-content>
-  </ng-template>
-</ion-modal>
-
-
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Editar Ikaslea</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-item>
+          <ion-label position="stacked">Izena</ion-label>
+          <ion-input
+            [(ngModel)]="selectedAlumno.izena"
+            placeholder="Sartu izen berria"
+          ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Abizenak</ion-label>
+          <ion-input
+            [(ngModel)]="selectedAlumno.abizenak"
+            placeholder="Sartu abizen berriak"
+          ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Kodea</ion-label>
+          <ion-select [(ngModel)]="selectedAlumno.taldea.kodea" placeholder="Erabaki kode berri bat">
+            <ion-select-option *ngFor="let grupo of gruposDisponibles" [value]="grupo.kodea">
+              {{ grupo.kodea }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-button expand="full" (click)="updateAlumno()">Guardar Cambios</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  
+  <!-- Modal para crear Ikaslea -->
   <ion-modal trigger="prod-sortu-modal">
     <ng-template>
       <ion-header>
@@ -74,24 +88,32 @@
       <ion-content>
         <ion-item>
           <ion-label position="stacked">Izena</ion-label>
-          <ion-input [(ngModel)]="nuevoAlumno.nombre" placeholder="Izena"></ion-input>
+          <ion-input
+            [(ngModel)]="nuevoAlumno.izena"
+            placeholder="Izena"
+          ></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">Abizenak</ion-label>
-          <ion-input [(ngModel)]="nuevoAlumno.abizenak" placeholder="Abizenak"></ion-input>
+          <ion-input
+            [(ngModel)]="nuevoAlumno.abizenak"
+            placeholder="Abizenak"
+          ></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">Kodea</ion-label>
-          <ion-select [(ngModel)]="nuevoAlumno.kodea.izena" placeholder="Selecciona un código">
-            <ion-select-option *ngFor="let kodea of kodeak" [value]="kodea.izena">{{ kodea.kodea }}</ion-select-option>
+          <ion-select [(ngModel)]="nuevoAlumno.taldea.kodea" placeholder="Erabaki kode berri bat">
+            <ion-select-option *ngFor="let grupo of gruposDisponibles" [value]="grupo.kodea">
+              {{ grupo.kodea }}
+            </ion-select-option>          
           </ion-select>
         </ion-item>        
         <ion-button expand="full" (click)="agregarAlumno()">Sortu Ikaslea</ion-button>
       </ion-content>
     </ng-template>
   </ion-modal>
-  
 
+  <!-- Modal para eliminar un Ikaslea -->
   <ion-modal trigger="atera-modal">
     <ng-template>
       <ion-header>
@@ -107,20 +129,36 @@
         <!-- Barra de búsqueda para filtrar alumnos -->
         <ion-item>
           <ion-label position="stacked">Bilatu Ikaslea</ion-label>
-          <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterAlumnos()" debounce="0"
-            placeholder="Bilatu izenaren arabera"></ion-searchbar>
+          <ion-searchbar
+            [(ngModel)]="searchQuery"
+            (ionInput)="filterAlumnos()"
+            debounce="0"
+            placeholder="Bilatu izenaren arabera"
+          ></ion-searchbar>
         </ion-item>
 
         <!-- Lista de alumnos con casillas de verificación para seleccionar varios -->
-        <ion-item *ngFor="let alumno of filteredAlumnos">
-          <ion-label>{{ alumno.nombre }} {{ alumno.abizenak }} ({{ alumno.kodea.kodea }})</ion-label>
-          <ion-checkbox (ionChange)="onAlumnoSelected(alumno.id)"
-            [checked]="selectedIkasleak.has(alumno.id)"></ion-checkbox>
-        </ion-item>
+        <ion-list>
+          <ion-item *ngFor="let alumno of filteredAlumnos">
+            <!-- Checkbox para seleccionar alumno -->
+            <ion-checkbox 
+              slot="start" 
+              [(ngModel)]="alumno.selected" 
+              (ionChange)="onAlumnoSelected(alumno.id)">
+            </ion-checkbox>
+            <ion-label>
+              <h2>{{ alumno.izena }} {{ alumno.abizenak }}</h2>
+              <p>Taldea: {{ alumno.taldea.izena }}</p>
+              <p>Kodea: {{ alumno.taldea.kodea }}</p>
+              <p>Fecha de creación: {{ alumno.sortzeData }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
       </ion-content>
     </ng-template>
   </ion-modal>
 
+  <!-- Modal para gestionar grupos -->
   <ion-modal trigger="prod-gestionatu-modal">
     <ng-template>
       <ion-header>
@@ -132,18 +170,27 @@
         <!-- Campo para el nombre del grupo -->
         <ion-item>
           <ion-label position="stacked">Taldearen Izena</ion-label>
-          <ion-input [(ngModel)]="nuevoKode.izena" placeholder="Taldearen izena"></ion-input>
+          <ion-input
+            [(ngModel)]="nuevoGrupo.izena"
+            placeholder="Taldearen izena"
+          ></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">Taldearen Kodea</ion-label>
-          <ion-input [(ngModel)]="nuevoKode.kodea" placeholder="Taldearen izena"></ion-input>
+          <ion-input
+            [(ngModel)]="nuevoGrupo.kodea"
+            placeholder="Taldearen izena"
+          ></ion-input>
         </ion-item>
         <!-- Botón para crear el grupo -->
-        <ion-button expand="full" (click)="agregarKodea()">Sortu Taldea</ion-button>
+        <ion-button expand="full" (click)="agregarGrupo()"
+          >Sortu Taldea</ion-button
+        >
       </ion-content>
     </ng-template>
   </ion-modal>
-  
+
+  <!-- Modal para ver Taldeak e Ikasleak -->
   <ion-modal trigger="crear-grupo">
     <ng-template>
       <ion-header>
@@ -156,10 +203,18 @@
           <ion-item *ngFor="let grupo of gruposDisponibles">
             <ion-label>
               <h2>{{ grupo.izena }}</h2>
+              <!-- Botón para eliminar el grupo -->
+            <ion-button color="danger"(click)="eliminarGrupo(grupo.kodea)">
+              Eliminar
+            </ion-button>
               <p>Ikasleak:</p>
+            </ion-label>
+            <ion-label>
               <ion-list>
                 <ion-item *ngFor="let ikaslea of getAlumnosPorKodea(grupo.kodea)">
-                  <ion-label>{{ ikaslea.nombre }} {{ ikaslea.abizenak }} ({{ ikaslea.kodea.kodea }})</ion-label>
+                  <ion-label>
+                    {{ ikaslea.izena }} {{ ikaslea.abizenak }} ({{ ikaslea.taldea.kodea }})
+                  </ion-label>
                 </ion-item>
               </ion-list>
             </ion-label>
@@ -168,5 +223,4 @@
       </ion-content>
     </ng-template>
   </ion-modal>
-  
 </ion-content>
