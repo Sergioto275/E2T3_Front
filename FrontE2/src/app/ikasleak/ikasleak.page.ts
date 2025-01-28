@@ -19,6 +19,9 @@ export class IkasleakPage implements OnInit {
   nuevoAlumno: Ikaslea = { id: 0, izena: '', abizenak: '', taldea: { kodea: ''}};
   nuevoGrupo: Taldea = { kodea: '', izena: '' };
   kodeak: Taldea[] = [];
+  selectedTalde: Taldea = { kodea: '', izena: '' };
+  isEditTaldeModalOpen: boolean = false;
+
 
   constructor(
     private modalController: ModalController,
@@ -60,37 +63,7 @@ export class IkasleakPage implements OnInit {
     this.isEditModalOpen = false;
   }
 
-  updateAlumno() {
-    if (this.selectedAlumno && this.selectedAlumno.taldea.kodea) {
-      // Creamos el objeto con los datos actualizados
-      let updatedData = {
-        "id": this.selectedAlumno.id, // Mantén el ID del alumno
-        "izena": this.selectedAlumno.izena, // Nombre
-        "abizenak": this.selectedAlumno.abizenak, // Apellidos
-        taldea: {
-          "kodea": this.selectedAlumno.taldea.kodea, // Código del grupo
-          "izena": this.selectedAlumno.taldea.izena // Nombre del grupo (si es necesario)
-        }
-      };
   
-      console.log('Datos actualizados:', updatedData);
-  
-      // Llamada al servicio para actualizar el alumno
-      this.ikasleService.updateAlumno(updatedData).subscribe((updatedAlumno) => {
-        // Actualizamos el alumno en la lista de alumnos
-        this.ikasleak = this.ikasleak.map((alumno) =>
-          alumno.id === updatedAlumno.id ? updatedAlumno : alumno
-        );
-  
-        // Cerramos el modal de edición después de la actualización
-        this.closeEditModal();
-      }, (error) => {
-        console.error('Error al actualizar el alumno:', error);
-      });
-    } else {
-      console.error("No se ha seleccionado un código de grupo o alumno.");
-    }
-  }
   
   
   
@@ -146,6 +119,88 @@ export class IkasleakPage implements OnInit {
     });
     this.nuevoGrupo = { kodea: '', izena: '' };
   }
+
+// Abre el modal para editar un talde
+openEditTaldeModal(talde: Taldea) {
+  this.selectedTalde = { ...talde };  // Clonar el objeto seleccionado
+  console.log('selectedTalde al abrir modal:', this.selectedTalde);
+  this.isEditTaldeModalOpen = true;
+}
+
+
+
+// Cierra el modal de edición
+closeEditTaldeModal() {
+  this.isEditTaldeModalOpen = false;
+}
+
+  // Envía los datos del talde actualizado al backend
+  updateTalde() {
+    if (this.selectedTalde) {
+      let updatedData = {
+        "kodea": this.selectedTalde.kodea,
+        "izena": this.selectedTalde.izena,
+      };
+      console.log('Enviando datos actualizados:', updatedData);
+  
+      this.ikasleService.updateGrupo(updatedData).subscribe((updatedTalde) => {
+          console.log('Datos actualizados recibidos:', updatedTalde);
+          // Actualiza la lista de grupos
+          this.gruposDisponibles = this.gruposDisponibles.map((grupo) =>
+            grupo.kodea === updatedTalde.kodea ? updatedTalde : grupo
+          );
+          this.closeEditTaldeModal(); // Cierra el modal
+        },
+        (error) => {
+          console.error('Error al actualizar el grupo:', error);
+          alert('Errorea taldearen eguneratzean');
+        }
+      );
+  
+      // Reinicia selectedTalde después de la actualización
+      this.selectedTalde = { kodea: '', izena: '' };
+    } else {
+      console.error('selectedTalde is null or invalid:', this.selectedTalde);
+      alert('Taldearen datuak falta dira');
+    }
+  }
+  
+
+  
+  
+
+  updateAlumno() {
+    if (this.selectedAlumno && this.selectedAlumno.taldea.kodea) {
+      // Creamos el objeto con los datos actualizados
+      let updatedData = {
+        "id": this.selectedAlumno.id, // Mantén el ID del alumno
+        "izena": this.selectedAlumno.izena, // Nombre
+        "abizenak": this.selectedAlumno.abizenak, // Apellidos
+        taldea: {
+          "kodea": this.selectedAlumno.taldea.kodea, // Código del grupo
+          "izena": this.selectedAlumno.taldea.izena // Nombre del grupo (si es necesario)
+        }
+      };
+  
+      console.log('Datos actualizados:', updatedData);
+  
+      // Llamada al servicio para actualizar el alumno
+      this.ikasleService.updateAlumno(updatedData).subscribe((updatedAlumno) => {
+        // Actualizamos el alumno en la lista de alumnos
+        this.ikasleak = this.ikasleak.map((alumno) =>
+          alumno.id === updatedAlumno.id ? updatedAlumno : alumno
+        );
+  
+        // Cerramos el modal de edición después de la actualización
+        this.closeEditModal();
+      }, (error) => {
+        console.error('Error al actualizar el alumno:', error);
+      });
+    } else {
+      console.error("No se ha seleccionado un código de grupo o alumno.");
+    }
+  }
+
 
   eliminarGrupo(grupoKodea: string) {
     // Llamamos al servicio que gestiona la eliminación de grupos

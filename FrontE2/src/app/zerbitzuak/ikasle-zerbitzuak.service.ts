@@ -67,5 +67,4 @@ export class IkasleZerbitzuakService {
   updateGrupo(updatedGrupo: Taldea): Observable<Taldea> {
     return this.http.put<Taldea>('http://localhost:8080/api/taldeak/' + updatedGrupo.kodea, updatedGrupo);
   }
-  
 }
