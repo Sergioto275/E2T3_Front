@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { IkasleZerbitzuakService, Ikaslea, Taldea } from './../zerbitzuak/ikasle-zerbitzuak.service';
 
 @Component({
@@ -19,10 +19,14 @@ export class IkasleakPage implements OnInit {
   nuevoAlumno: Ikaslea = { id: 0, izena: '', abizenak: '', taldea: { kodea: ''}};
   nuevoGrupo: Taldea = { kodea: '', izena: '' };
   kodeak: Taldea[] = [];
+  selectedTalde: Taldea = { kodea: '', izena: '' };
+  isEditTaldeModalOpen: boolean = false;
+
 
   constructor(
     private modalController: ModalController,
-    private ikasleService: IkasleZerbitzuakService
+    private ikasleService: IkasleZerbitzuakService,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -43,7 +47,7 @@ export class IkasleakPage implements OnInit {
     });
   }
 
-  getGrupos(){
+  async getGrupos(){
     this.ikasleService.getGrupos().subscribe((data: Taldea[]) => {
       this.taldeak = data.filter((grupo) => !grupo.ezabatzeData);  // Cargar los grupos en la variable
       console.log(this.taldeak); // Esto es solo para verificar que se están cargando correctamente
@@ -59,40 +63,6 @@ export class IkasleakPage implements OnInit {
   closeEditModal() {
     this.isEditModalOpen = false;
   }
-
-  updateAlumno() {
-    if (this.selectedAlumno && this.selectedAlumno.taldea.kodea) {
-      // Creamos el objeto con los datos actualizados
-      let updatedData = {
-        "id": this.selectedAlumno.id, // Mantén el ID del alumno
-        "izena": this.selectedAlumno.izena, // Nombre
-        "abizenak": this.selectedAlumno.abizenak, // Apellidos
-        taldea: {
-          "kodea": this.selectedAlumno.taldea.kodea, // Código del grupo
-          "izena": this.selectedAlumno.taldea.izena // Nombre del grupo (si es necesario)
-        }
-      };
-  
-      console.log('Datos actualizados:', updatedData);
-  
-      // Llamada al servicio para actualizar el alumno
-      this.ikasleService.updateAlumno(updatedData).subscribe((updatedAlumno) => {
-        // Actualizamos el alumno en la lista de alumnos
-        this.ikasleak = this.ikasleak.map((alumno) =>
-          alumno.id === updatedAlumno.id ? updatedAlumno : alumno
-        );
-  
-        // Cerramos el modal de edición después de la actualización
-        this.closeEditModal();
-      }, (error) => {
-        console.error('Error al actualizar el alumno:', error);
-      });
-    } else {
-      console.error("No se ha seleccionado un código de grupo o alumno.");
-    }
-  }
-  
-  
   
 
   filterAlumnos() {
@@ -100,7 +70,7 @@ export class IkasleakPage implements OnInit {
     this.filteredAlumnos = query
       ? this.ikasleak.filter(
           (ikaslea) =>
-            `${ikaslea.izena} ${ikaslea.abizenak} ${ikaslea.taldea.kodea}`.toLowerCase().includes(query)
+            `${ikaslea.izena} ${ikaslea.abizenak} ${ikaslea.taldea.kodea} ${ikaslea.taldea.izena}`.toLowerCase().includes(query)
         )
       : [...this.ikasleak];
   }
@@ -145,7 +115,90 @@ export class IkasleakPage implements OnInit {
       this.modalController.dismiss();
     });
     this.nuevoGrupo = { kodea: '', izena: '' };
+    this.getGrupos();
   }
+
+// Abre el modal para editar un talde
+openEditTaldeModal(talde: Taldea) {
+  this.selectedTalde = { ...talde };  // Clonar el objeto seleccionado
+  console.log('selectedTalde al abrir modal:', this.selectedTalde);
+  this.isEditTaldeModalOpen = true;
+}
+
+
+
+// Cierra el modal de edición
+closeEditTaldeModal() {
+  this.isEditTaldeModalOpen = false;
+}
+
+  updateTalde() {
+    const updatedTalde = {
+      kodea: this.selectedTalde.kodea,
+      izena: this.selectedTalde.izena
+    };
+
+    this.ikasleService.updateGrupo(updatedTalde).subscribe(() => {
+      const index = this.taldeak.findIndex(
+        (grupo) => grupo.kodea === updatedTalde.kodea
+      );
+      if (index !== -1) {
+        this.taldeak[index] = updatedTalde;
+      }
+      this.gruposDisponibles = [...this.taldeak];
+      this.closeEditTaldeModal();
+    });
+  }
+  
+
+  
+  
+
+  updateAlumno() {
+    const updatedAlumno = {
+      id: this.selectedAlumno.id,
+      izena: this.selectedAlumno.izena,
+      abizenak: this.selectedAlumno.abizenak,
+      taldea: { ...this.selectedAlumno.taldea }
+    };
+
+    this.ikasleService.updateAlumno(updatedAlumno).subscribe(() => {
+      const index = this.ikasleak.findIndex(
+        (alumno) => alumno.id === updatedAlumno.id
+      );
+      if (index !== -1) {
+        this.ikasleak[index] = updatedAlumno;
+      }
+      this.filteredAlumnos = [...this.ikasleak];
+      this.closeEditModal();
+    });
+  }
+
+  async confirmarEliminacionGrupo(grupoKodea: string) {
+    const alert = await this.alertController.create({
+      header: 'Segurtasuna',
+      message: 'Ziur al zaude talde hau ezabatu nahi duzula?',
+      buttons: [
+        {
+          text: 'Ezeztatu',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Ezeztatu');
+          }
+        },
+        {
+          text: 'Ezabatu',
+          handler: () => {
+            this.eliminarGrupo(grupoKodea);
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
+  }
+  
 
   eliminarGrupo(grupoKodea: string) {
     // Llamamos al servicio que gestiona la eliminación de grupos
@@ -153,10 +206,10 @@ export class IkasleakPage implements OnInit {
       response => {
         // Aquí, actualizas la lista de grupos disponibles después de eliminar
         this.gruposDisponibles = this.gruposDisponibles.filter(grupo => grupo.kodea !== grupoKodea);
-        alert('Grupo eliminado exitosamente');
+        alert('Taldea ezabatuta');
       },
       error => {
-        alert('Hubo un error al eliminar el grupo');
+        alert('Arazo bat egon da taldea ezabatzerakoan');
         console.error(error);
       }
     );
