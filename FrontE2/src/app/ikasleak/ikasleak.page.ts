@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { IkasleZerbitzuakService, Ikaslea, Taldea } from './../zerbitzuak/ikasle-zerbitzuak.service';
 
 @Component({
@@ -25,7 +25,8 @@ export class IkasleakPage implements OnInit {
 
   constructor(
     private modalController: ModalController,
-    private ikasleService: IkasleZerbitzuakService
+    private ikasleService: IkasleZerbitzuakService,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -46,7 +47,7 @@ export class IkasleakPage implements OnInit {
     });
   }
 
-  getGrupos(){
+  async getGrupos(){
     this.ikasleService.getGrupos().subscribe((data: Taldea[]) => {
       this.taldeak = data.filter((grupo) => !grupo.ezabatzeData);  // Cargar los grupos en la variable
       console.log(this.taldeak); // Esto es solo para verificar que se están cargando correctamente
@@ -114,6 +115,7 @@ export class IkasleakPage implements OnInit {
       this.modalController.dismiss();
     });
     this.nuevoGrupo = { kodea: '', izena: '' };
+    this.getGrupos();
   }
 
 // Abre el modal para editar un talde
@@ -172,6 +174,31 @@ closeEditTaldeModal() {
     });
   }
 
+  async confirmarEliminacionGrupo(grupoKodea: string) {
+    const alert = await this.alertController.create({
+      header: 'Segurtasuna',
+      message: 'Ziur al zaude talde hau ezabatu nahi duzula?',
+      buttons: [
+        {
+          text: 'Ezeztatu',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Ezeztatu');
+          }
+        },
+        {
+          text: 'Ezabatu',
+          handler: () => {
+            this.eliminarGrupo(grupoKodea);
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
+  }
+  
 
   eliminarGrupo(grupoKodea: string) {
     // Llamamos al servicio que gestiona la eliminación de grupos
@@ -179,10 +206,10 @@ closeEditTaldeModal() {
       response => {
         // Aquí, actualizas la lista de grupos disponibles después de eliminar
         this.gruposDisponibles = this.gruposDisponibles.filter(grupo => grupo.kodea !== grupoKodea);
-        alert('Grupo eliminado exitosamente');
+        alert('Taldea ezabatuta');
       },
       error => {
-        alert('Hubo un error al eliminar el grupo');
+        alert('Arazo bat egon da taldea ezabatzerakoan');
         console.error(error);
       }
     );

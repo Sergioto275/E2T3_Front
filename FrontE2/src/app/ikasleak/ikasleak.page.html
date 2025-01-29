@@ -1,11 +1,11 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Ikasleen Gestionamendua</ion-title>
+    <ion-title>Ikasleen Kudeaketa</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" id="main-content">
-  <app-header titulua="Ikasleen Gestionamendua"></app-header>
+  <app-header titulua="Ikasleen Kudeaketa"></app-header>
 
   <ion-header collapse="condense">
     <ion-toolbar>
@@ -14,14 +14,17 @@
   </ion-header>
 
   <ion-toolbar>
+    <ion-buttons>
+      <ion-button slot="start" id="prod-gestionatu-modal">Sortu Taldea</ion-button>
+    </ion-buttons>
     <ion-buttons slot="start">
       <ion-button id="prod-sortu-modal">Sortu Ikaslea</ion-button>
     </ion-buttons>
-    <ion-buttons>
-      <ion-button id="prod-gestionatu-modal">Sortu Taldea</ion-button>
+    <ion-buttons slot="start">
+      <ion-button id="egutegia">Egutegia</ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button id="atera-modal">Kendu Ikaslea</ion-button>
+      <ion-button id="atera-modal">Ikasleak bistaratu</ion-button>
     </ion-buttons>
   </ion-toolbar>
 
@@ -32,7 +35,7 @@
         <h2>{{ grupo.izena }}</h2>
         <p>Kodea: {{ grupo.kodea }}</p>
         <!-- Lista de alumnos dentro del grupo -->
-        <ion-button color="danger" (click)="eliminarGrupo(grupo.kodea)">
+        <ion-button color="danger" (click)="confirmarEliminacionGrupo(grupo.kodea)">
           <ion-icon name="trash-outline"></ion-icon>
         </ion-button>
                 <ion-button color="primary" (click)="openEditTaldeModal(grupo)">
@@ -176,6 +179,7 @@
               <p>Kodea: {{ alumno.taldea.kodea }}</p>
               <p>Fecha de creación: {{ alumno.sortzeData }}</p>
             </ion-label>
+            <ion-button (click)="openEditModal(alumno)"><ion-icon name="create-outline"></ion-icon></ion-button>
           </ion-item>
         </ion-list>
       </ion-content>
@@ -243,5 +247,8 @@
   </ng-template>
 </ion-modal>
 
+<ion-modal trigger="egutegia">
+  
+</ion-modal>
   
 </ion-content>
