@@ -19,6 +19,7 @@ export class MaterialakPage implements OnInit {
 
   materialesSeleccionados:any[]=[];
   materialak!:any;
+  materialaDevolver!:any;
 
   crearKatNombre!:String;
   crearNombre!:String;
@@ -41,15 +42,6 @@ export class MaterialakPage implements OnInit {
   alumne = '';
   categoriasAbiertas: { [key: string]: boolean } = {};
   filteredAlumnos!: any[];
-
-  public alertButtons = [
-    {
-      text: 'Ez',
-    },
-    {
-      text: 'Bai',
-    },
-  ];
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
@@ -136,13 +128,14 @@ export class MaterialakPage implements OnInit {
 
   kategoriaEditatu(id: number){
     let data = {
-      izena: this.editarKatNombre
+      "izena": this.editarKatNombre
     }
     let observableRest: Observable<any> = this.restServer.put<any>(`http://localhost:8080/api/material_kategoria/id/${id}`, data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
     });
     this.materialakLortu();
+    this.materialakLortuDevolver();
   }
   
   cargarEditarMateriales() {
@@ -153,21 +146,24 @@ export class MaterialakPage implements OnInit {
   }
 
   materialakAtera(){
-    let data = this.materialesSeleccionados.map(material => ({
-      "material": {
-        "id": material.id
-      },
-      "langile": {
-        "id": this.selecAlumno
-      },
-      "data": new Date().toISOString(),
-    }));
+    let data =
+    [
+      {
+          "materiala": {
+              "id": 2
+          },
+          "langilea": {
+              "id": 1
+          }
+      }
+    ]
 
-    let observableRest: Observable<any> = this.restServer.post<any>("http://localhost:8080/api/material_mugimenduak",data);
+    let observableRest: Observable<any> = this.restServer.post<any>("http://localhost:8080/api/material_mailegua",data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
     });
     this.materialakLortu();
+    this.materialakLortuDevolver();
   }
 
   materialakLortu(){
@@ -190,6 +186,16 @@ export class MaterialakPage implements OnInit {
           sortzeData: material.sortzeData
         }))
     }));
+    });
+  }
+
+  materialakLortuDevolver(){
+    let observableRest: Observable<any> = this.restServer.get<any>('http://localhost:8080/api/material_mailegua');
+    observableRest.subscribe(datuak => {
+      console.log(datuak);
+
+      this.materialaDevolver = datuak
+      
     });
   }
 
@@ -236,6 +242,7 @@ export class MaterialakPage implements OnInit {
   ngOnInit() {
     this.materialakLortu();
     this.langileakLortu();
+    this.materialakLortuDevolver();
   }
 
 }
