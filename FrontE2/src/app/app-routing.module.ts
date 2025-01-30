@@ -39,7 +39,11 @@ const routes: Routes = [
   {
     path: 'txostenak',
     loadChildren: () => import('./txostena/txostena.module').then( m => m.TxostenaPageModule)
+  },  {
+    path: 'historiala',
+    loadChildren: () => import('./historiala/historiala.module').then( m => m.HistorialaPageModule)
   },
+
 
 
 ];

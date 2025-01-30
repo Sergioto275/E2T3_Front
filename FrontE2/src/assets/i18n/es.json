@@ -81,6 +81,35 @@
         "trabajador":"Trabajador"
     }
   },
+  "historial": {
+    "titulo": "Historial",
+    "botones":{
+        "productos": "Movimientos de productos",
+        "materiales":"Movimientos de materiales",
+        "ticket":"Tickets",
+        "cliente":"Historial del cliente",
+        "crear":"Crear",
+        "añadir":"Añadir",
+        "guardar":"Guardar",
+        "editar":"Editar"
+      },
+      "modal": {
+        "cantidad": "Cantidad",
+        "servicios":"Servicios",
+        "precio":"Precio",
+        "total":"Precio Total",
+        "ficha":"Ficha Cliente",
+        "añadir_cliente":"Añadir cliente",
+        "nombre":"Nombre",
+        "apellido":"Apellido",
+        "telefono":"Teléfono",
+        "piel":"Piel Sensible",
+        "producto":"Producto",
+        "fecha":"Fecha",
+        "volumen":"volumen",
+        "comentarios":"Comentarios"
+      }
+  },
   "informes":{
     "title": "Informes",
     "cliente": "Cliente",

@@ -81,6 +81,35 @@
             "trabajador":"Langilea"
         }
     },
+    "historial": {
+      "titulo": "Historiala",
+      "botones":{
+            "productos": "Produktu mugimenduak",
+            "materiales":"Material mugimenduak",
+            "ticket":"Ticket-ak",
+            "cliente":"Bezero historiala",
+            "crear":"Sortu",
+            "añadir":"Añadir",
+            "guardar":"Gorde",
+            "editar":"Editar"
+        },
+      "modal": {
+            "cantidad": "Kantitatea",
+            "servicios":"Zerbitzuak",
+            "precio":"Prezioa",
+            "total":"Prezio Totala",
+            "ficha":"Bezeroa Fitxa",
+            "añadir_cliente":"Bezeroa Gehitu",
+            "nombre":"Izena",
+            "apellido":"Abizena",
+            "telefono":"Telefonoa",
+            "piel":"Azal Sentikorra",
+            "producto":"Produktua",
+            "fecha":"Data",
+            "volumen":"Bolumena",
+            "comentarios":"Oharrak"
+        }
+    },
     "informes":{
         "title": "Txostenak",
         "cliente": "Bezero",
