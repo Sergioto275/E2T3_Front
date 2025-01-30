@@ -257,7 +257,6 @@ closeEditTaldeModal() {
       "amaieraOrdua": this.horaFin,
     };
   
-    console.log(horarioData);
   
     // Usamos subscribe para manejar la respuesta
     this.ikasleService.guardarHorario(horarioData).subscribe(
