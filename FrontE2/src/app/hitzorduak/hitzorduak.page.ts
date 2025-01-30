@@ -68,7 +68,7 @@ export class HitzorduakPage implements OnInit {
 
   constructor(private translate: TranslateService) {
     this.translate.setDefaultLang('es');
-    this.translate.use(this.currentLocale);
+    this.translate.use(this.selectedLanguage);
   }
   
   ngOnInit() {
