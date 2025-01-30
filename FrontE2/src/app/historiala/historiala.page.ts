@@ -221,12 +221,6 @@ export class HistorialaPage implements OnInit {
   
   async guardar_bezero() {
     try {
-      // const json_data = {
-      //   "izena": this.crearNombre,
-      //   "abizena": this.crearApellido,
-      //   "telefonoa": this.crearTelefono,
-      //   "azalSentikorra": this.crearPiel ? "B" : "E",
-      // };
       console.log(JSON.stringify(this.editingBezero))
       const response = await fetch(`${environment.url}bezero_fitxak`, {
         headers: {
@@ -240,10 +234,8 @@ export class HistorialaPage implements OnInit {
       if (!response.ok) {
         throw new Error('Error al asignar la cita');
       }
-      // toastr.success(this.translations[this.currentLocale].default.actualizar);
       await this.cargarClientes();
       this.cerrarModal();
-      // this.limpiar_campos();
     } catch (error) {
       console.error("Error al asignar la cita:", error);
     }
@@ -273,6 +265,30 @@ export class HistorialaPage implements OnInit {
       // toastr.success(this.translations[this.currentLocale].default.actualizar);
       await this.cargarClientes();
       // this.limpiar_campos();
+    } catch (error) {
+      console.error("Error al asignar la cita:", error);
+    }
+  }
+
+  async deleteBezero(id:number) {
+    try {
+      const json_data = {
+        "id": id
+      };
+      console.log(JSON.stringify(json_data))
+      const response = await fetch(`${environment.url}bezero_fitxak`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        method: "DELETE",
+        body: JSON.stringify(json_data)
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error al asignar la cita');
+      }
+      await this.cargarClientes();
     } catch (error) {
       console.error("Error al asignar la cita:", error);
     }

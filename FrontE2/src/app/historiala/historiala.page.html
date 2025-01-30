@@ -131,8 +131,6 @@
       </ion-grid>
     </ion-segment-content>
     
-    
-    
     <ion-segment-content id="cliente">
       <ion-header>
         <ion-toolbar>
@@ -146,57 +144,17 @@
       <ion-content>
         <!-- Lista de Bezero -->
         <ion-list id="bezero-list">
-          <ion-item *ngFor="let bezero of bezeroak" (click)="openBezero(bezero)">
+          <ion-item *ngFor="let bezero of bezeroak">
             <ion-label>
               <h2>{{ bezero.izena }} {{ bezero.abizena }}</h2>
               <p>{{ "historial.modal.telefono" | translate }}: {{ bezero.telefonoa }}</p>
             </ion-label>
             <ion-buttons slot="end">
-              <ion-button color="primary" id="edit-bezero">Editar</ion-button>
-              <ion-button color="danger">Eliminar</ion-button>
+              <ion-button color="primary" (click)="openBezero(bezero)">Editar</ion-button>
+              <ion-button color="danger" (click)="deleteBezero(bezero.id)">Eliminar</ion-button>
             </ion-buttons>
           </ion-item>
         </ion-list>
-    
-        <!-- Formulario para Crear/Editar Bezero -->
-        <!-- <ion-modal [isOpen]="isEditingBezero">
-          <ion-header>
-            <ion-toolbar>
-              <ion-title>{{ editingBezero?.id ? 'Editar Bezero' : 'Nuevo Bezero' }}</ion-title>
-            </ion-toolbar>
-          </ion-header>
-          <ion-content>
-            <form [formGroup]="bezeroForm">
-              <ion-item>
-                <ion-label position="floating">Nombre</ion-label>
-                <ion-input formControlName="izena"></ion-input>
-              </ion-item>
-              <ion-item>
-                <ion-label position="floating">Apellido</ion-label>
-                <ion-input formControlName="abizena"></ion-input>
-              </ion-item>
-              <ion-item>
-                <ion-label position="floating">Teléfono</ion-label>
-                <ion-input formControlName="telefonoa"></ion-input>
-              </ion-item>
-              <ion-item>
-                <ion-label position="floating">Azal Sentikorra</ion-label>
-                <ion-select formControlName="azalSentikorra">
-                  <ion-select-option value="E">E</ion-select-option>
-                  <ion-select-option value="B">B</ion-select-option>
-                </ion-select>
-              </ion-item>
-              <ion-footer>
-                <ion-toolbar>
-                  <ion-buttons slot="end">
-                    <ion-button type="submit" color="primary">Guardar</ion-button>
-                    <ion-button color="light">Cancelar</ion-button>
-                  </ion-buttons>
-                </ion-toolbar>
-              </ion-footer>
-            </form>
-          </ion-content>
-        </ion-modal> -->
       </ion-content>
     </ion-segment-content>    
   </ion-segment-view>
