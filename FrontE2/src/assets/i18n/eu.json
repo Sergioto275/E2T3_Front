@@ -32,6 +32,8 @@
     "materiales": {
         "title": "Materialen kudeaketa",
         "botones": {
+            "gestionarMateriales": "Materialak Kudeatu",
+            "devolverMateriales": "Materialak Bueltatu",
             "agregarMaterial": "Materiala Gehitu",
             "sacarMateriales": "Materialak Atera",
             "crearMateriales": "Materialak Sortu",
@@ -48,7 +50,7 @@
             "material": "Materiala",
             "categoria": "Kategoria",
             "nombre": "Izena",
-            "etiqueta": "Etiqueta",
+            "etiqueta": "Etiketa",
             "vacio":"Ez daude materialak aukeratuta"
         },
         "categorias": {
