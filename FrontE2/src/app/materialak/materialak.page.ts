@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonModal, ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/internal/Observable';
 
@@ -37,6 +38,10 @@ export class MaterialakPage implements OnInit {
   alumnos!: any[];
   selecTaldea!:number;
   selecAlumno!:number;
+
+  @ViewChild('modaleditarcat', { static: true })
+  modaleditarcat!: IonModal;
+  selectedCategory: any = {};
 
   modalAtera = false;
   alumne = '';
@@ -223,6 +228,12 @@ export class MaterialakPage implements OnInit {
     });
   }  
 
+  abrirEditarCategoria(categoria:any) {
+    this.modaleditarcat.present();
+    this.selectedCategory = {...categoria};
+    this.editarKatNombre = this.selectedCategory.izena;
+  }
+
   onGrupoChange() {
     if (!this.alumnos || this.alumnos.length === 0) {
       console.error('No hay datos en alumnos');
@@ -234,7 +245,7 @@ export class MaterialakPage implements OnInit {
   }
 
 
-  constructor(private translate: TranslateService, private restServer:HttpClient) {
+  constructor(private translate: TranslateService, private restServer:HttpClient, private modalController: ModalController) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }

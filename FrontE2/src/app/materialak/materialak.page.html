@@ -45,10 +45,10 @@
           <!-- Categoría -->
           <ion-item button (click)="toggleCategoria(categoria.izena)">
             <ion-label>{{ categoria.izena }}</ion-label>
-            <ion-button slot="end" id="cat-mat-editar-modal">
+            <ion-button slot="end" (click)="abrirEditarCategoria(categoria)">
               <ion-icon name="create"></ion-icon>
             </ion-button>
-            <ion-button slot="end" color="danger">
+            <ion-button slot="end" color="danger" (click)="kategoriaEzabatu(categoria.id)">
               <ion-icon name="trash"></ion-icon>
             </ion-button>
             <ion-icon [name]="isCategoriaAbierta(categoria.izena) ? 'chevron-up' : 'chevron-down'" slot="end"></ion-icon>
@@ -228,7 +228,6 @@
             <ion-input [(ngModel)]="crearKatNombre" placeholder="Izena"></ion-input>
           </ion-item>
           <ion-button id="open-toast" expand="full" (click)="kategoriaSortu()">{{ 'materiales.botones.crear' | translate }}</ion-button>
-          <app-toast-mezua></app-toast-mezua>
         </ion-content>
       </ng-template>
     </ion-modal>
@@ -250,7 +249,7 @@
           <ion-grid>
             <ion-row>
               <ion-col>
-                <ion-button expand="block" color="success" (click)="kategoriaEditatu(selectedCategoryId)">
+                <ion-button expand="block" color="success" (click)="kategoriaEditatu(selectedCategory.id)">
                   <ion-icon name="checkmark"></ion-icon>
                 </ion-button>
               </ion-col>
