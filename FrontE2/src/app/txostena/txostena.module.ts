@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { MaterialakPageRoutingModule } from './materialak-routing.module';
+import { TxostenaPageRoutingModule } from './txostena-routing.module';
 
-import { MaterialakPage } from './materialak.page';
+import { TxostenaPage } from './txostena.page';
 import { ComponentsModule } from "../components/components.module";
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -15,10 +15,10 @@ import { TranslateModule } from '@ngx-translate/core';
     CommonModule,
     FormsModule,
     IonicModule,
-    MaterialakPageRoutingModule,
+    TxostenaPageRoutingModule,
     ComponentsModule,
     TranslateModule
 ],
-  declarations: [MaterialakPage]
+  declarations: [TxostenaPage]
 })
-export class MaterialakPageModule {}
+export class TxostenaPageModule {}

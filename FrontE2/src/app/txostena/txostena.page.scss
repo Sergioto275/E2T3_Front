@@ -1,0 +1,73 @@
+/* Estilos globales */
+ion-toolbar {
+    //--background: #d3d3d3; /* Color gris claro para la barra de herramientas */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra inferior */
+  }
+  
+  /* Estilo para el bloque que contiene la lista */
+  .list-block {
+    padding-top: 30px;         /* Borde superior de 30px */
+    border-radius: 10px;       /* Bordes redondeados */
+    width: 80%;                /* Ancho de la lista */
+    margin-left: auto;         /* Centrado horizontal */
+    margin-right: auto;        /* Centrado horizontal */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   /* Centra el contenido verticalmente */
+    align-items: center;       /* Centra el contenido horizontalmente */
+    padding-bottom: 20px;      /* Espaciado en la parte inferior */
+  }
+
+  
+  
+  /* Estilos para la lista y los items */
+  ion-list {
+    width: 100%;               /* Ancho completo */
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;       /* Centrado horizontal de los ítems */
+  }
+  
+  /* Estilo para cada ítem de la lista */
+  ion-item {
+   // background-color: white;
+    display: flex;
+    align-items: center;
+    width: 100%;               /* Hace que cada ítem ocupe el ancho completo */
+    //border-bottom: 1px solid #ccc;  /* Añade una línea separadora entre ítems */
+    padding: 10px;             /* Añadir espacio alrededor de los ítems */
+  }
+  
+  /* Estilo para el avatar */
+  ion-avatar img {
+    border-radius: 50%;
+  }
+  
+  /* Estilo para la etiqueta de cada ítem */
+  ion-label {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  /* Estilo para el texto pequeño "T1" */
+  small {
+    font-size: 12px;
+    color: #b3b3b3;
+    display: block;
+    margin-top: 5px;
+  }
+  
+  /* Estilo para el badge */
+  ion-badge {
+    background-color: #e42121;
+    color: white;
+  }
+  
+  
+  /* Si deseas asegurar el fondo de la página sin que sea sobrescrito por otros estilos */
+ion-content {
+    background-color: transparent !important; /* Asegura que el fondo no se sobrescriba */
+  }

@@ -6,710 +6,172 @@
         <ion-buttons slot="start">
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
-        <ion-title>Hitzorduak</ion-title>
+        <ion-title>{{ "citas.titulo" | translate }}</ion-title>
+        <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">
+          <ion-select-option value="es">Español</ion-select-option>
+          <ion-select-option value="eu">Euskera</ion-select-option>
+        </ion-select>
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
       <div class="flexbox">
         <div>
           <ion-item>
-            <ion-label position="stacked">Fecha</ion-label>
-            <ion-input type="date" placeholder="Fecha"></ion-input>
+            <ion-label position="stacked">{{ "citas.modal.fecha" | translate }}</ion-label>
+            <ion-input [(ngModel)]="dataSelec" type="date" placeholder="Fecha" (ngModelChange)="cargar_dia_seleccionado()"></ion-input>
           </ion-item>
           <div class="table-container">
-            <table>
-              <tr>
-                <th>hh:mm</th>
-                <th>Asiento 1</th>
-                <th>Asiento 2</th>
-                <th>Asiento 3</th>
-                <th>Asiento 4</th>
-                <th>Asiento 5</th>
-                <th>Asiento 6</th>
-                <th>Asiento 7</th>
-              </tr>
-              <tr>
-                <td>10:00</td>
-                <td></td>
-                <td rowspan="2">
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-title>Cita 1</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      Here's a small text description for the card content. Nothing more, nothing less.Here's a small text description for the card content. Nothing more, nothing less.Here's a small text description for the card content. Nothing more, nothing less.Here's a small text description for the card content. Nothing more, nothing less.
-                    </ion-card-content>
-                  </ion-card>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-title>Cita 2</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      Here's a small text description for the card content. Nothing more, nothing less.
-                    </ion-card-content>
-                  </ion-card>
-                </td>
-                <td></td>
-              </tr> 
-              <tr>
-                <td>10:30</td>
-                <td>
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-title>Cita 3</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      Here's a small text description for the card content. Nothing more, nothing less.
-                    </ion-card-content>
-                  </ion-card>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-title>Cita 4</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      Here's a small text description for the card content. Nothing more, nothing less.
-                    </ion-card-content>
-                  </ion-card>
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>11:30</td>
-                <td></td>
-                <td>
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-title>Cita 5</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      Here's a small text description for the card content. Nothing more, nothing less.
-                    </ion-card-content>
-                  </ion-card>
-                </td>
-                <td></td>
-                <td></td>
-                <td>
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-title>Cita 6</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      Here's a small text description for the card content. Nothing more, nothing less.
-                    </ion-card-content>
-                  </ion-card>
-                </td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>12:00</td>
-                <td>
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-title>Cita 7</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      Here's a small text description for the card content. Nothing more, nothing less.
-                    </ion-card-content>
-                  </ion-card>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-title>Cita 8</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      Here's a small text description for the card content. Nothing more, nothing less.
-                    </ion-card-content>
-                  </ion-card>
-                </td>
-                <td>
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-title>Cita 9</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      Here's a small text description for the card content. Nothing more, nothing less.
-                    </ion-card-content>
-                  </ion-card>
-                </td>
-                <td></td>
-              </tr>
+            <table class="h-100 w-100" *ngIf="!loading">
+              <thead>
+                <tr>
+                  <th>{{ "citas.horas" | translate }}</th>
+                  <th *ngFor="let i of [].constructor(asientos); let idx = index">{{ "citas.asientos" | translate }} {{ idx + 1 }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let time of hoursArray">
+                  <td>{{ time }}</td>
+                  <ng-container *ngFor="let i of [].constructor(asientos); let idnx = index">
+                    <td *ngIf="citaSartuta(time, idnx + 1)" [attr.rowspan]="rowspanManagement(time, idnx + 1)">
+                      <ng-container *ngIf="getCitasAtTimeAndSeat(time, idnx + 1).length > 0; else emptySeat">
+                        <ion-card *ngFor="let cita of getCitasAtTimeAndSeat(time, idnx + 1)" (click)="cargar_cita_selec(cita.id)" [ngClass]="{
+                          'bg-grey-blue-light': cita.prezio_totala,
+                          'bg-blue-green-light': cita.id_langilea && !cita.prezio_totala,
+                          'bg-pink-light': !cita.id_langilea && !cita.prezio_totala
+                        }">
+                          <ion-card-header>
+                            <ion-card-title>{{ cita.izena }}</ion-card-title>
+                          </ion-card-header>
+                          <ion-card-content>{{ cita.deskribapena }}</ion-card-content>
+                        </ion-card>
+                      </ng-container>
+                      <ng-template #emptySeat>
+                        <ion-button (click)="seleccionar_citaCrear(idnx + 1, time)">
+                          <ion-icon name="add-circle-outline"></ion-icon>
+                        </ion-button>
+                      </ng-template>
+                    </td>
+                  </ng-container>
+                </tr>
+              </tbody>
             </table>
           </div>
-          <!-- <ion-grid>
-            <ion-row>
-              <ion-col>
-                <ion-card>
-                  <ion-card-header>
-                    <ion-card-title>Orduak</ion-card-title>
-                  </ion-card-header>
-                  <ion-card-content>
-                    <ion-list>
-                      <ion-item>
-                        <ion-label>10:00</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>10:30</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>11:00</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>11:30</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>12:00</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>12:30</ion-label>
-                      </ion-item>
-                      <ion-item lines="none">
-                        <ion-label>13:00</ion-label>
-                      </ion-item>
-                    </ion-list>
-                  </ion-card-content>
-                </ion-card>
-              </ion-col>
-              <ion-col>
-                <ion-card>
-                  <ion-card-header>
-                    <ion-card-title>Asiento 1</ion-card-title>
-                  </ion-card-header>
-                  <ion-card-content>
-                    <ion-list>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 1</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 2</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 3</ion-label>
-                      </ion-item>
-                      <ion-item lines="none">
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                    </ion-list>
-                  </ion-card-content>
-                </ion-card>
-              </ion-col>
-              <ion-col>
-                <ion-card>
-                  <ion-card-header>
-                    <ion-card-title>Asiento 2</ion-card-title>
-                  </ion-card-header>
-                  <ion-card-content>
-                    <ion-list>
-                      <ion-item>
-                        <ion-label>Cita 4</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 5</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 6</ion-label>
-                      </ion-item>
-                      <ion-item lines="none">
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                    </ion-list>
-                  </ion-card-content>
-                </ion-card>
-              </ion-col>
-              <ion-col>
-                <ion-card>
-                  <ion-card-header>
-                    <ion-card-title>Asiento 3</ion-card-title>
-                  </ion-card-header>
-                  <ion-card-content>
-                    <ion-list>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 7</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 8</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 9</ion-label>
-                      </ion-item>
-                      <ion-item lines="none">
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                    </ion-list>
-                  </ion-card-content>
-                </ion-card>
-              </ion-col>
-              <ion-col>
-                <ion-card>
-                  <ion-card-header>
-                    <ion-card-title>Asiento 4</ion-card-title>
-                  </ion-card-header>
-                  <ion-card-content>
-                    <ion-list>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 10</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 11</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 12</ion-label>
-                      </ion-item>
-                      <ion-item lines="none">
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                    </ion-list>
-                  </ion-card-content>
-                </ion-card>
-              </ion-col>
-              <ion-col>
-                <ion-card>
-                  <ion-card-header>
-                    <ion-card-title>Asiento 5</ion-card-title>
-                  </ion-card-header>
-                  <ion-card-content>
-                    <ion-list>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 13</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 14</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 15</ion-label>
-                      </ion-item>
-                      <ion-item lines="none">
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                    </ion-list>
-                  </ion-card-content>
-                </ion-card>
-              </ion-col>
-              <ion-col>
-                <ion-card>
-                  <ion-card-header>
-                    <ion-card-title>Asiento 6</ion-card-title>
-                  </ion-card-header>
-                  <ion-card-content>
-                    <ion-list>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 16</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 17</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 18</ion-label>
-                      </ion-item>
-                      <ion-item lines="none">
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                    </ion-list>
-                  </ion-card-content>
-                </ion-card>
-              </ion-col>
-              <ion-col>
-                <ion-card>
-                  <ion-card-header>
-                    <ion-card-title>Asiento 6</ion-card-title>
-                  </ion-card-header>
-                  <ion-card-content>
-                    <ion-list>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 16</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 17</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 18</ion-label>
-                      </ion-item>
-                      <ion-item lines="none">
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                    </ion-list>
-                  </ion-card-content>
-                </ion-card>
-              </ion-col>
-              <ion-col>
-                <ion-card>
-                  <ion-card-header>
-                    <ion-card-title>Asiento 6</ion-card-title>
-                  </ion-card-header>
-                  <ion-card-content>
-                    <ion-list>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 16</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 17</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 18</ion-label>
-                      </ion-item>
-                      <ion-item lines="none">
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                    </ion-list>
-                  </ion-card-content>
-                </ion-card>
-              </ion-col>
-              <ion-col>
-                <ion-card>
-                  <ion-card-header>
-                    <ion-card-title>Asiento 6</ion-card-title>
-                  </ion-card-header>
-                  <ion-card-content>
-                    <ion-list>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 16</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 17</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 18</ion-label>
-                      </ion-item>
-                      <ion-item lines="none">
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                    </ion-list>
-                  </ion-card-content>
-                </ion-card>
-              </ion-col>
-              <ion-col>
-                <ion-card>
-                  <ion-card-header>
-                    <ion-card-title>Asiento 6</ion-card-title>
-                  </ion-card-header>
-                  <ion-card-content>
-                    <ion-list>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 16</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 17</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 18</ion-label>
-                      </ion-item>
-                      <ion-item lines="none">
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                    </ion-list>
-                  </ion-card-content>
-                </ion-card>
-              </ion-col>
-              <ion-col>
-                <ion-card>
-                  <ion-card-header>
-                    <ion-card-title>Asiento 6</ion-card-title>
-                  </ion-card-header>
-                  <ion-card-content>
-                    <ion-list>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 16</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 17</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 18</ion-label>
-                      </ion-item>
-                      <ion-item lines="none">
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                    </ion-list>
-                  </ion-card-content>
-                </ion-card>
-              </ion-col>
-              <ion-col>
-                <ion-card>
-                  <ion-card-header>
-                    <ion-card-title>Asiento 6</ion-card-title>
-                  </ion-card-header>
-                  <ion-card-content>
-                    <ion-list>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 16</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 17</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 18</ion-label>
-                      </ion-item>
-                      <ion-item lines="none">
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                    </ion-list>
-                  </ion-card-content>
-                </ion-card>
-              </ion-col>
-              <ion-col>
-                <ion-card>
-                  <ion-card-header>
-                    <ion-card-title>Asiento 6</ion-card-title>
-                  </ion-card-header>
-                  <ion-card-content>
-                    <ion-list>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 16</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 17</ion-label>
-                      </ion-item>
-                      <ion-item>
-                        <ion-label>Cita 18</ion-label>
-                      </ion-item>
-                      <ion-item lines="none">
-                        <ion-button expand="block"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-                      </ion-item>
-                    </ion-list>
-                  </ion-card-content>
-                </ion-card>
-              </ion-col>
-            </ion-row>
-          </ion-grid> -->
         </div>
         <div>
           <ion-segment>
             <ion-segment-button value="sortu" content-id="sortu">
-              <ion-label>Sortu</ion-label>
+              <ion-label>{{ "citas.botones.crear" | translate }}</ion-label>
             </ion-segment-button>
             <ion-segment-button value="editatu" content-id="editatu">
-              <ion-label>Editatu</ion-label>
+              <ion-label>{{ "citas.botones.editar" | translate }}</ion-label>
             </ion-segment-button>
             <ion-segment-button value="asignatu" content-id="asignatu">
-              <ion-label>Asignatu</ion-label>
+              <ion-label>{{ "citas.botones.asignar" | translate }}</ion-label>
             </ion-segment-button>
             <ion-segment-button value="ticket" content-id="ticket">
-              <ion-label>Ticket Sortu</ion-label>
+              <ion-label>{{ "citas.botones.generar" | translate }}</ion-label>
             </ion-segment-button>
           </ion-segment>
           <ion-segment-view>
             <ion-segment-content id="sortu">
               <ion-item>
-                <ion-label position="stacked">Fecha</ion-label>
-                <ion-input type="date" placeholder="Fecha"></ion-input>
+                <ion-label position="stacked">{{ "citas.modal.fecha" | translate }}</ion-label>
+                <ion-input [(ngModel)]="dataTest" type="date" placeholder="Fecha"></ion-input>
               </ion-item>
               <ion-item>
-                <ion-label position="stacked">Hasiera ordua</ion-label>
-                <ion-input type="time" placeholder="Hasiera ordua"></ion-input>
+                <ion-label position="stacked">{{ "citas.modal.horaInicio" | translate }}</ion-label>
+                <ion-input [(ngModel)]="hasOrduaTest" type="time" placeholder="Hasiera ordua"></ion-input>
               </ion-item>
               <ion-item>
-                <ion-label position="stacked">Amaiera ordua</ion-label>
-                <ion-input type="time" placeholder="Amaiera ordua"></ion-input>
+                <ion-label position="stacked">{{ "citas.modal.horaFin" | translate }}</ion-label>
+                <ion-input [(ngModel)]="amaOrduaTest" type="time" placeholder="Amaiera ordua"></ion-input>
               </ion-item>
               <ion-item>
-                <ion-label position="stacked">Asiento</ion-label>
-                <ion-input placeholder="Asiento"></ion-input>
+                <ion-label position="stacked">{{ "citas.modal.asiento" | translate }}</ion-label>
+                <ion-input [(ngModel)]="eserlekuaCrear" placeholder="Asiento"></ion-input>
               </ion-item>
               <ion-item>
-                <ion-label position="stacked">Bezeroa</ion-label>
-                <ion-select placeholder="Seleccione un cliente">
-                  <ion-select-option value="1">Cliente 1</ion-select-option>
-                  <ion-select-option value="2">Cliente 2</ion-select-option>
-                  <ion-select-option value="3">Cliente 3</ion-select-option>
-                </ion-select>
+                <ion-label position="stacked">{{ "citas.modal.cliente" | translate }}</ion-label>
+                <ion-input [(ngModel)]="izenaCrear" placeholder="Bezeroa"></ion-input>
               </ion-item>
               <ion-item>
-                <ion-label position="stacked">Deskribapena</ion-label>
-                <ion-input placeholder="Deskribapena"></ion-input>
+                <ion-label position="stacked">{{ "citas.modal.descripcion" | translate }}</ion-label>
+                <ion-input [(ngModel)]="deskCrear" placeholder="Deskribapena"></ion-input>
               </ion-item>
-              <ion-button>Sortu</ion-button>
+              <ion-item>
+                <ion-label position="stacked">{{ "citas.modal.telefono" | translate }}</ion-label>
+                <ion-input [(ngModel)]="telfCrear" placeholder="Telefonoa"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-checkbox [(ngModel)]="etxekoCrear" >{{ "citas.modal.casa" | translate }}</ion-checkbox>
+              </ion-item>
+              <ion-button (click)="createCita()">{{ "citas.botones.crear" | translate }}</ion-button>
             </ion-segment-content>
             <ion-segment-content id="editatu">
               <ion-item>
-                <ion-label position="stacked">Fecha</ion-label>
-                <ion-input type="date" placeholder="Fecha"></ion-input>
+                <ion-label position="stacked">{{ "citas.modal.fecha" | translate }}</ion-label>
+                <ion-input [(ngModel)]="dataEditar" type="date" placeholder="Fecha"></ion-input>
               </ion-item>
               <ion-item>
-                <ion-label position="stacked">Hasiera ordua</ion-label>
-                <ion-input type="time" placeholder="Hasiera ordua"></ion-input>
+                <ion-label position="stacked">{{ "citas.modal.horaInicio" | translate }}</ion-label>
+                <ion-input [(ngModel)]="hasOrduaEditar" type="time" placeholder="Hasiera ordua"></ion-input>
               </ion-item>
               <ion-item>
-                <ion-label position="stacked">Amaiera ordua</ion-label>
-                <ion-input type="time" placeholder="Amaiera ordua"></ion-input>
+                <ion-label position="stacked">{{ "citas.modal.horaFin" | translate }}</ion-label>
+                <ion-input [(ngModel)]="amaOrduaEditar" type="time" placeholder="Amaiera ordua"></ion-input>
               </ion-item>
               <ion-item>
-                <ion-label position="stacked">Asiento</ion-label>
-                <ion-input placeholder="Asiento"></ion-input>
+                <ion-label position="stacked">{{ "citas.modal.asiento" | translate }}</ion-label>
+                <ion-input [(ngModel)]="eserlekuaEditar" placeholder="Asiento"></ion-input>
               </ion-item>
               <ion-item>
-                <ion-label position="stacked">Bezeroa</ion-label>
-                <ion-select placeholder="Seleccione un cliente">
-                  <ion-select-option value="1">Cliente 1</ion-select-option>
-                  <ion-select-option value="2">Cliente 2</ion-select-option>
-                  <ion-select-option value="3">Cliente 3</ion-select-option>
-                </ion-select>
+                <ion-label position="stacked">{{ "citas.modal.cliente" | translate }}</ion-label>
+                <ion-input [(ngModel)]="izenaEditar" placeholder="Bezeroa"></ion-input>
               </ion-item>
               <ion-item>
-                <ion-label position="stacked">Deskribapena</ion-label>
-                <ion-input placeholder="Deskribapena"></ion-input>
+                <ion-label position="stacked">{{ "citas.modal.descripcion" | translate }}</ion-label>
+                <ion-input [(ngModel)]="deskEditar" placeholder="Deskribapena"></ion-input>
               </ion-item>
-              <ion-button>Gorde</ion-button>
+              <ion-item>
+                <ion-label position="stacked">{{ "citas.modal.telefono" | translate }}</ion-label>
+                <ion-input [(ngModel)]="telfEditar" placeholder="Telefonoa"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-checkbox [(ngModel)]="etxekoEditar" >{{ "citas.modal.casa" | translate }}</ion-checkbox>
+              </ion-item>
+              <ion-button (click)="editar_cita()">{{ "citas.botones.guardar" | translate }}</ion-button>
+              <ion-button (click)="eliminar_cita()">{{ "citas.botones.borrar" | translate }}</ion-button>
             </ion-segment-content>
             <ion-segment-content id="asignatu">
               <ion-item>
-                <ion-label position="stacked">Alumno</ion-label>
-                <ion-select placeholder="Seleccione un responsable">
-                  <ion-select-option value="1">Alumno 1</ion-select-option>
-                  <ion-select-option value="2">Alumno 2</ion-select-option>
-                  <ion-select-option value="3">Alumno 3</ion-select-option>
+                <ion-label position="stacked">{{ "citas.modal.trabajador" | translate }}</ion-label>
+                <ion-select [(ngModel)]="idLangile" placeholder="Seleccione un responsable">
+                  <ion-select-option *ngFor="let ikasle of langileArray" [value]="ikasle.id">{{ikasle.izena}} {{ikasle.abizena}}</ion-select-option>
                 </ion-select>
               </ion-item>
-              <ion-button>Asignar</ion-button>
+              <ion-button (click)="asignar_cita()" >{{ "citas.botones.asignar" | translate }}</ion-button>
             </ion-segment-content>
             <ion-segment-content id="ticket">
-              <ion-item>
-                <ion-checkbox>Tratamiento 1</ion-checkbox>
-              </ion-item>
-              <ion-item>
-                <ion-checkbox>Tratamiento 2</ion-checkbox>
-              </ion-item>
-              <ion-item>
-                <ion-checkbox>Tratamiento 3</ion-checkbox>
-              </ion-item>
-              <ion-item>
-                <ion-checkbox>Tratamiento 4</ion-checkbox>
-              </ion-item>
-              <ion-item>
-                <ion-checkbox>Tratamiento 5</ion-checkbox>
-              </ion-item>
-              <ion-button>Generar Ticket</ion-button>
+              <ion-list *ngFor="let katTrat of tratamenduArray">
+                <ion-label>{{ katTrat.izena }}</ion-label>
+                <ion-item *ngFor="let trat of katTrat.zerbitzuak">
+                  <ion-checkbox slot="start"  [(ngModel)]="trat.selected" (ionChange)="actualizarServiciosSeleccionados(trat, katTrat.extra)"></ion-checkbox>
+                  <ion-label>{{ trat.izena }}
+                    <ng-container *ngIf="!katTrat.extra">
+                      <ng-container *ngIf="etxekoEditar; else kanpokoa">
+                        {{ trat.etxekoPrezioa }}
+                      </ng-container>
+                      <ng-template #kanpokoa>
+                        {{ trat.kanpokoPrezioa }}
+                      </ng-template>
+                    </ng-container>
+                    <ng-container *ngIf="katTrat.extra">
+                      <ion-input [(ngModel)]="trat.precio" placeholder="€€€"></ion-input>
+                    </ng-container>
+                  </ion-label>                                  
+                </ion-item>
+              </ion-list>
+              <ion-button (click)="generar_ticket()">{{ "citas.botones.generar" | translate }}</ion-button>
             </ion-segment-content>
           </ion-segment-view>
         </div>

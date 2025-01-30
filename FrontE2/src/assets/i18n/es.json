@@ -1,0 +1,130 @@
+{
+  "productos": {
+    "title": "Gestion de productos",
+    "botones": {
+      "agregarProducto": "Agregar Producto",
+      "sacarProductos": "Sacar Productos",
+      "crearProductos": "Crear Productos",
+      "editarProductos": "Editar Productos",
+      "crearCategoria":"Crear Categoria",
+      "editarCategoria": "Editar Categoria",
+      "confirmar": "Confirmar",
+      "crear": "Crear",
+      "editar": "Editar"
+    },
+    "modal": {
+      "sacarProductos": "Sacar Productos",       
+      "alumno": "Alumno",
+      "seleccionaAlumno": "Selecciona a un alumno",
+      "producto": "Producto",
+      "categoria": "Categoría",
+      "nombre":"Nombre",
+      "marca": "Marca",
+      "stock": "Stock",
+      "stockAlerta": "Stock Alerta",
+      "descripcion": "Descripción",
+      "vacio":"No hay productos seleccionados"
+    },
+    "categorias": {
+      "electronica": "Electrónica"
+    }
+  },
+  "materiales": {
+    "title": "Gestion de materiales",
+    "botones": {
+      "agregarMaterial": "Agregar Material",
+      "sacarMateriales": "Sacar Materiales",
+      "crearMateriales": "Agregar Materiales",
+      "editarMateriales": "Editar Materiales",
+      "crearCategoria":"Crear Categoria",
+      "confirmar": "Confirmar",
+      "crear": "Crear",
+      "cerrar": "Cerrar"
+    },
+    "modal": {
+      "sacarMateriales": "Sacar Materiales",
+      "alumno": "Alumno",
+      "seleccionaAlumno": "Selecciona a un alumno",
+      "material": "Material",
+      "categoria": "Categoría",
+      "nombre":"Nombre",
+      "etiqueta": "Etiqueta",
+      "vacio":"No hay materiales seleccionados"
+    },
+    "categorias": {
+      "electronica": "Electrónica"
+    }
+  },
+  "citas": {
+    "titulo": "Citas",
+    "horas": "Horas",
+    "asientos":"Asientos",
+    "botones":{
+      "confirmar": "Confirmar",
+      "editar": "Editar",
+      "guardar": "Guardar",
+      "borrar": "Borrar",
+      "crear": "Crear",
+      "asignar":"Asignar Alumno",
+      "generar":"Generar Ticket"
+    },
+    "modal": {
+        "nombre": "Nombre",
+        "descripcion": "Descripción",
+        "fecha": "Fecha",
+        "horaInicio": "Hora de Inicio",
+        "horaFin": "Hora de Fin",
+        "asiento": "Asientos",
+        "cliente": "Cliente",
+        "telefono": "Teléfono",
+        "casa": "Del centro",
+        "trabajador":"Trabajador"
+    }
+  },
+  "historial": {
+    "titulo": "Historial",
+    "botones":{
+        "productos": "Movimientos de productos",
+        "materiales":"Movimientos de materiales",
+        "ticket":"Tickets",
+        "cliente":"Historial del cliente",
+        "crear":"Crear",
+        "añadir":"Añadir",
+        "guardar":"Guardar",
+        "editar":"Editar"
+      },
+      "modal": {
+        "cantidad": "Cantidad",
+        "servicios":"Servicios",
+        "precio":"Precio",
+        "total":"Precio Total",
+        "ficha":"Ficha Cliente",
+        "añadir_cliente":"Añadir cliente",
+        "nombre":"Nombre",
+        "apellido":"Apellido",
+        "telefono":"Teléfono",
+        "piel":"Piel Sensible",
+        "producto":"Producto",
+        "fecha":"Fecha",
+        "volumen":"volumen",
+        "comentarios":"Comentarios"
+      }
+  },
+  "informes":{
+    "title": "Informes",
+    "cliente": "Cliente",
+    "botones": {
+      "datos": "Mostrar datos",
+      "cerrar": "Cerrar"
+  },
+  "modal": {
+    "idCliente": "ID del Cliente",
+    "nombre": "Nombre",
+    "apellido": "Apellido",
+    "telefono": "Teléfono",
+    "tinte": "Tinte",
+    "pSensible": "Pelo Sensible"
+  }
+}
+}
+  

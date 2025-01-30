@@ -4,21 +4,19 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { MaterialakPageRoutingModule } from './materialak-routing.module';
+import { IkasleakPageRoutingModule } from './ikasleak-routing.module';
 
-import { MaterialakPage } from './materialak.page';
+import { IkasleakPage } from './ikasleak.page';
 import { ComponentsModule } from "../components/components.module";
-import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    MaterialakPageRoutingModule,
-    ComponentsModule,
-    TranslateModule
+    IkasleakPageRoutingModule,
+    ComponentsModule
 ],
-  declarations: [MaterialakPage]
+  declarations: [IkasleakPage]
 })
-export class MaterialakPageModule {}
+export class IkasleakPageModule {}

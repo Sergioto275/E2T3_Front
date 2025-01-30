@@ -1,3 +1,4 @@
+import { TxostenaPageModule } from './txostena/txostena.module';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
@@ -18,14 +19,32 @@ const routes: Routes = [
   {
     path: 'hitzorduak',
     loadChildren: () => import('./hitzorduak/hitzorduak.module').then( m => m.HitzorduakPageModule)
-  },  {
+  },
+  {
     path: 'produktuak',
     loadChildren: () => import('./produktuak/produktuak.module').then( m => m.ProduktuakPageModule)
+  },
+  {
+    path: 'grafikoak',
+    loadChildren: () => import('./grafikoak/grafikoak.module').then( m => m.GrafikoakPageModule)
+  },
+  {
+    path: 'ikasleak',
+    loadChildren: () => import('./ikasleak/ikasleak.module').then( m => m.IkasleakPageModule)
   },
   {
     path: 'materialak',
     loadChildren: () => import('./materialak/materialak.module').then( m => m.MaterialakPageModule)
   },
+  {
+    path: 'txostenak',
+    loadChildren: () => import('./txostena/txostena.module').then( m => m.TxostenaPageModule)
+  },  {
+    path: 'historiala',
+    loadChildren: () => import('./historiala/historiala.module').then( m => m.HistorialaPageModule)
+  },
+
+
 
 ];
 

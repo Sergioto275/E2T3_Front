@@ -1,0 +1,130 @@
+{
+    "productos": {
+        "title": "Produktuen kudeaketa",
+        "botones": {
+            "agregarProducto": "Produktu Gehitu",
+            "sacarProductos": "Produktuak Atera",
+            "crearProductos": "Produktuak Sortu",
+            "editarProductos": "Produktuak Editatu",
+            "crearCategoria":"Kategoria Sortu",
+            "editarCategoria": "Kategoria editatu",
+            "confirmar": "Baieztatu",
+            "crear": "Sortu",
+            "editar": "Editatu"
+        },
+        "modal": {
+            "sacarProductos": "Produktuak Atera",
+            "alumno": "Ikaslea",
+            "seleccionaAlumno": "Hautatu ikaslea",
+            "producto": "Produktua",
+            "categoria": "Kategoria",
+            "nombre": "Izena",
+            "marca": "Marka",
+            "stock": "Stocka",
+            "stockAlerta": "Stock Alerta",
+            "descripcion": "Deskribapena",
+            "vacio":"Ez daude produktuak aukeratuta"
+        },
+        "categorias": {
+            "electronica": "Elektronika"
+        }
+    },
+    "materiales": {
+        "title": "Materialen kudeaketa",
+        "botones": {
+            "agregarMaterial": "Materiala Gehitu",
+            "sacarMateriales": "Materialak Atera",
+            "crearMateriales": "Materialak Sortu",
+            "editarMateriales": "Materialak Editatu",
+            "crearCategoria":"Kategoria Sortu",
+            "confirmar": "Baieztatu",
+            "crear": "Sortu",
+            "cerrar": "Itxi"
+        },
+        "modal": {
+            "sacarMateriales": "Materialak Atera",
+            "alumno": "Ikaslea",
+            "seleccionaAlumno": "Hautatu ikaslea",
+            "material": "Materiala",
+            "categoria": "Kategoria",
+            "nombre": "Izena",
+            "etiqueta": "Etiqueta",
+            "vacio":"Ez daude materialak aukeratuta"
+        },
+        "categorias": {
+            "electronica": "Elektronika"
+        }
+    },
+    "citas": {
+        "titulo":"Hitzorduak",
+        "horas":"Orduak",
+        "asientos":"Eserlekuak",
+        "botones": {
+            "confirmar": "Berretsi",
+            "guardar": "Gorde",
+            "editar":"Editatu",
+            "borrar": "Ezabatu",
+            "crear": "Sortu",
+            "asignar": "Ikaslea Esleitu",
+            "generar": "Sarrera Sortu"
+        },
+        "modal":{
+            "nombre":"Izena",
+            "descripcion":"Deskribapena",
+            "fecha":"Data",
+            "horaInicio":"Hasiera Ordua",
+            "horaFin":"Amaiera Ordua",
+            "asiento":"Eserlekuak",
+            "cliente":"Bezeroa",
+            "telefono":"Telefonoa",
+            "casa":"Etxekoa",
+            "trabajador":"Langilea"
+        }
+    },
+    "historial": {
+      "titulo": "Historiala",
+      "botones":{
+            "productos": "Produktu mugimenduak",
+            "materiales":"Material mugimenduak",
+            "ticket":"Ticket-ak",
+            "cliente":"Bezero historiala",
+            "crear":"Sortu",
+            "añadir":"Añadir",
+            "guardar":"Gorde",
+            "editar":"Editar"
+        },
+      "modal": {
+            "cantidad": "Kantitatea",
+            "servicios":"Zerbitzuak",
+            "precio":"Prezioa",
+            "total":"Prezio Totala",
+            "ficha":"Bezeroa Fitxa",
+            "añadir_cliente":"Bezeroa Gehitu",
+            "nombre":"Izena",
+            "apellido":"Abizena",
+            "telefono":"Telefonoa",
+            "piel":"Azal Sentikorra",
+            "producto":"Produktua",
+            "fecha":"Data",
+            "volumen":"Bolumena",
+            "comentarios":"Oharrak"
+        }
+    },
+    "informes":{
+        "title": "Txostenak",
+        "cliente": "Bezero",
+        "botones": {
+          "datos": "Datuak ikusi",
+          "cerrar": "Itxi"
+
+      },
+      "modal": {
+        "idCliente": "Bezeroaren ID",
+        "nombre": "Izen",
+        "apellido": "Abizena",
+        "telefono": "Teléfonoa",
+        "tinte": "Tintea",
+        "pSensible": "Ile Sentikorra"
+      }
+    }
+}
