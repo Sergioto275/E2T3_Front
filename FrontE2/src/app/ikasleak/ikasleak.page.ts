@@ -21,6 +21,14 @@ export class IkasleakPage implements OnInit {
   kodeak: Taldea[] = [];
   selectedTalde: Taldea = { kodea: '', izena: '' };
   isEditTaldeModalOpen: boolean = false;
+  fecha: string = '';
+  horaInicio: string = '';
+  horaFin: string = '';
+  fechaInicio: string = '';
+  fechaFin: string = '';
+
+  grupoSeleccionado: Taldea = { kodea: '', izena: '' };
+  diaSeleccionado: number = 0;
 
 
   constructor(
@@ -229,4 +237,61 @@ closeEditTaldeModal() {
     }
   }
   
+  // Función para guardar los datos del horario
+  async guardarHorario() {
+    // Verifica si todos los campos necesarios están completos
+    if (!this.horaInicio || !this.horaFin || !this.fechaInicio || !this.fechaFin || !this.grupoSeleccionado.kodea || !this.diaSeleccionado) {
+      // Si algún campo no está completo, muestra un mensaje de error
+      this.showAlert('Error', 'Por favor, rellena todos los campos.');
+      return;
+    }
+  
+    const horarioData = {
+      taldea: {
+        "kodea": this.grupoSeleccionado.kodea,
+      },
+      "eguna": this.diaSeleccionado,
+      "hasieraData": this.fechaInicio,
+      "amaieraData": this.fechaFin,
+      "hasieraOrdua": this.horaInicio,
+      "amaieraOrdua": this.horaFin,
+    };
+  
+    console.log(horarioData);
+  
+    // Usamos subscribe para manejar la respuesta
+    this.ikasleService.guardarHorario(horarioData).subscribe(
+      (response) => {
+        // Aquí verificamos si el horario se ha guardado correctamente (comprobando el ID o cualquier otra propiedad)
+        if (response && response.id) {
+          this.showAlert('Éxito', 'Horario guardado correctamente');
+        } else {
+          this.showAlert('Error', 'Hubo un error al guardar el horario');
+        }
+      },
+      (error) => {
+        console.error('Error al guardar el horario:', error);
+        this.showAlert('Error', 'Hubo un problema con la conexión');
+      }
+    );
+  }
+  
+  
+  
+
+  // Mostrar alerta en caso de éxito o error
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
+  // Función para cerrar el modal
+  closeModal() {
+    this.modalController.dismiss();
+  }
+
 }

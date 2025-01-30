@@ -21,6 +21,22 @@ export interface Taldea {
   ezabatzeData?: null;
 }
 
+export interface Horario {
+  id?:number;
+  taldea: {
+    kodea: string;
+  };
+  eguna: number;  // Esto debe ser un número
+  hasieraData: string;
+  amaieraData: string;
+  hasieraOrdua: string;
+  amaieraOrdua: string;
+  sortzeData?: string;
+  eguneratzeData?: string;
+  ezabatzeData?: string | null;
+}
+
+
 @Injectable({
   providedIn: 'root',
 })
@@ -67,6 +83,22 @@ export class IkasleZerbitzuakService {
   updateGrupo(updatedGrupo: Taldea): Observable<Taldea> {
     return this.http.put<Taldea>('http://localhost:8080/api/taldeak/' + updatedGrupo.kodea, updatedGrupo);
   }
+
+  getHorarios(): Observable<Horario[]> {
+    return this.http.get<Horario[]>('http://localhost:8080/api/ordutegiak');
+  }
+  // Guardar un nuevo horario
+  guardarHorario(nuevoHorario: Horario): Observable<Horario> {
+    return this.http.post<Horario>('http://localhost:8080/api/ordutegiak/', nuevoHorario);
+  }
+  // Actualizar un horario existente
+  actualizarHorario(updatedHorario: Horario): Observable<Horario> {
+    return this.http.put<Horario>('http://localhost:8080/api/ordutegiak/' + updatedHorario.id, updatedHorario);
+  }
+
+  // Eliminar un horario
+  eliminarHorario(id: number): Observable<void> {
+    return this.http.delete<void>('http://localhost:8080/api/ordutegiak/'+id);
+  }
 }
 
-}
