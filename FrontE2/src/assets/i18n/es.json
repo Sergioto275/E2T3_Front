@@ -32,6 +32,8 @@
   "materiales": {
     "title": "Gestion de materiales",
     "botones": {
+      "gestionarMateriales": "Gestionar Materiales",
+      "devolverMateriales": "Devolver Materiales",
       "agregarMaterial": "Agregar Material",
       "sacarMateriales": "Sacar Materiales",
       "crearMateriales": "Agregar Materiales",
