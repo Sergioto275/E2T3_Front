@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
-import { IkasleZerbitzuakService, Ikaslea, Taldea } from './../zerbitzuak/ikasle-zerbitzuak.service';
+import { IkasleZerbitzuakService, Ikaslea, Taldea, Horario } from './../zerbitzuak/ikasle-zerbitzuak.service';
 
 @Component({
   selector: 'app-ikasleak',
@@ -22,14 +22,26 @@ export class IkasleakPage implements OnInit {
   selectedTalde: Taldea = { kodea: '', izena: '' };
   isEditTaldeModalOpen: boolean = false;
   fecha: string = '';
-  horaInicio: string = '';
-  horaFin: string = '';
-  fechaInicio: string = '';
-  fechaFin: string = '';
+  horaInicio: any = null;
+  horaFin: any = null;
+  fechaInicio: any = null;
+  fechaFin: any = null;
 
   grupoSeleccionado: Taldea = { kodea: '', izena: '' };
   diaSeleccionado: number = 0;
 
+  ordutegiArray: Horario[] = [];
+  ordutegia: Horario = {
+    taldea: {
+    kodea: '',
+  },
+  eguna: 0,  // Representa el miércoles si 1 = lunes
+  hasieraData: '',
+  amaieraData: '',
+  hasieraOrdua: '',
+  amaieraOrdua: ''
+  }
+  
 
   constructor(
     private modalController: ModalController,
@@ -42,9 +54,39 @@ export class IkasleakPage implements OnInit {
     this.getGrupos();
     // Obtener alumnos
     this.getAlumnos();
+    this.getHorarios();
   }
 
 
+  getHorarios(): void {
+    this.ikasleService.getHorarios().subscribe(
+        (horarios) => {
+          // Asignar los horarios obtenidos a ordutegiArray
+          this.ordutegiArray = horarios;
+          console.log('Horarios obtenidos:', this.ordutegiArray);
+        },
+        (error) => {
+          console.error('Error al obtener los horarios:', error);
+        }
+      );
+  }
+
+  getDayName(k: number): string {
+    if (k === 1) {
+      return "Astelehena"; // Lunes
+    } else if (k === 2) {
+      return "Asteartea"; // Martes
+    } else if (k === 3) {
+      return "Asteazkena"; // Miércoles
+    } else if (k === 4) {
+      return "Osteguna"; // Jueves
+    } else if (k === 5) {
+      return "Ostirala"; // Viernes
+    } else {
+      return ""; // Si no es un valor válido de 1 a 7
+    }
+  }
+  
   
   // Método para obtener los alumnos de la API
   getAlumnos() {
@@ -140,23 +182,23 @@ closeEditTaldeModal() {
   this.isEditTaldeModalOpen = false;
 }
 
-  updateTalde() {
-    const updatedTalde = {
-      kodea: this.selectedTalde.kodea,
-      izena: this.selectedTalde.izena
-    };
+updateTalde() {
+  const updatedTalde = {
+    kodea: this.selectedTalde.kodea,
+    izena: this.selectedTalde.izena
+  };
 
-    this.ikasleService.updateGrupo(updatedTalde).subscribe(() => {
-      const index = this.taldeak.findIndex(
-        (grupo) => grupo.kodea === updatedTalde.kodea
-      );
-      if (index !== -1) {
-        this.taldeak[index] = updatedTalde;
-      }
-      this.gruposDisponibles = [...this.taldeak];
-      this.closeEditTaldeModal();
-    });
-  }
+  this.ikasleService.updateGrupo(updatedTalde).subscribe(() => {
+    const index = this.taldeak.findIndex(
+      (grupo) => grupo.kodea === updatedTalde.kodea
+    );
+    if (index !== -1) {
+      this.taldeak[index] = updatedTalde;
+    }
+    this.gruposDisponibles = [...this.taldeak];
+    this.closeEditTaldeModal();
+  });
+}
   
 
   
@@ -237,43 +279,57 @@ closeEditTaldeModal() {
     }
   }
   
-  // Función para guardar los datos del horario
-  async guardarHorario() {
-    // Verifica si todos los campos necesarios están completos
-    if (!this.horaInicio || !this.horaFin || !this.fechaInicio || !this.fechaFin || !this.grupoSeleccionado.kodea || !this.diaSeleccionado) {
-      // Si algún campo no está completo, muestra un mensaje de error
-      this.showAlert('Error', 'Por favor, rellena todos los campos.');
-      return;
-    }
+  // Función para guardar los horarios
+ guardarHorario() {
+  // Verifica si todos los campos necesarios están completos
   
-    const horarioData = {
-      taldea: {
-        "kodea": this.grupoSeleccionado.kodea,
-      },
-      "eguna": this.diaSeleccionado,
-      "hasieraData": this.fechaInicio,
-      "amaieraData": this.fechaFin,
-      "hasieraOrdua": this.horaInicio,
-      "amaieraOrdua": this.horaFin,
-    };
-  
-  
-    // Usamos subscribe para manejar la respuesta
-    this.ikasleService.guardarHorario(horarioData).subscribe(
-      (response) => {
-        // Aquí verificamos si el horario se ha guardado correctamente (comprobando el ID o cualquier otra propiedad)
-        if (response && response.id) {
-          this.showAlert('Éxito', 'Horario guardado correctamente');
-        } else {
-          this.showAlert('Error', 'Hubo un error al guardar el horario');
-        }
-      },
-      (error) => {
-        console.error('Error al guardar el horario:', error);
-        this.showAlert('Error', 'Hubo un problema con la conexión');
+
+  // Formatear las fechas a 'yyyy-MM-dd' y las horas a 'HH:mm:ss'
+  const formattedFechaInicio = this.formatDate(this.fechaInicio);
+  const formattedFechaFin = this.formatDate(this.fechaFin);
+  const formattedHoraInicio = this.horaInicio + ":00";
+  const formattedHoraFin = this.horaFin + ":00";
+
+  const horarioData = {
+    taldea: {
+      "kodea": this.grupoSeleccionado.kodea,
+    },
+    "eguna": this.diaSeleccionado,
+    "hasieraData": formattedFechaInicio,  // Convierte a formato YYYY-MM-DD
+    "amaieraData": formattedFechaFin,     // Convierte a formato YYYY-MM-DD
+    "hasieraOrdua": formattedHoraInicio,  // Asegúrate de que está en formato HH:mm:ss
+    "amaieraOrdua": formattedHoraFin,     // Asegúrate de que está en formato HH:mm:ss
+  };
+
+  console.log(horarioData);
+
+  // Usamos subscribe para manejar la respuesta
+  this.ikasleService.guardarHorario(horarioData).subscribe(
+    (data) => {
+      this.ordutegiArray.push(data);
+      // Aquí verificamos si el horario se ha guardado correctamente (comprobando el ID o cualquier otra propiedad)
+      if (data && data.id) {
+        this.showAlert('Éxito', 'Horario guardado correctamente');
+      } else {
+        this.showAlert('Error', 'Hubo un error al guardar el horario');
       }
-    );
-  }
+    },
+    (error) => {
+      console.error('Error al guardar el horario:', error);
+      this.showAlert('Error', 'Hubo un problema con la conexión');
+    }
+  );
+}
+
+// Función para formatear la fecha a 'yyyy-MM-dd'
+formatDate(date: string): string {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0'); // Los meses empiezan desde 0
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
   
   
   
