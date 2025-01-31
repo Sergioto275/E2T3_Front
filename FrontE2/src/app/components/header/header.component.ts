@@ -11,10 +11,10 @@ export class HeaderComponent  implements OnInit {
     { title: 'Txostenak', url: '/txostenak', icon: 'document-text' },
     { title: 'Materialak', url: '/materialak', icon: 'cut' },
     { title: 'Produktuak', url: '/produktuak', icon: 'color-fill' },
-    { title: 'Inbentarioa', url: '/inbentarioa', icon: 'albums' },
+    { title: 'Mugimenduak', url: '/mugimenduak', icon: 'albums' },
     { title: 'Ikasleak', url: '/ikasleak', icon: 'people' },
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+
   constructor() { }
 
   ngOnInit() {}

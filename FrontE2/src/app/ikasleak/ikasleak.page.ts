@@ -1,31 +1,24 @@
-import { Ikaslea, IkasleZerbitzuakService } from './../zerbitzuak/ikasle-zerbitzuak.service';
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { IkasleZerbitzuakService, Ikaslea, Taldea } from './../zerbitzuak/ikasle-zerbitzuak.service';
 
 @Component({
   selector: 'app-ikasleak',
   templateUrl: './ikasleak.page.html',
   styleUrls: ['./ikasleak.page.scss'],
-  standalone: false,
 })
 export class IkasleakPage implements OnInit {
-
-
-
-  nuevoAlumno: Ikaslea = {
-    id: 0, // El ID se asignará automáticamente por el servicio
-    nombre: '',
-    abizenak: '',
-    kodea: '',
-  };
-
-ikasleak: Ikaslea[]=[];
-
-filteredAlumnos: Ikaslea[] = [];
-
-selectedAlumnos: Set<number> = new Set(); // Usamos un Set para almacenar los IDs de los alumnos seleccionados
-
-searchQuery: string = '';
+  selectedIkasleak: Set<number> = new Set();
+  searchQuery: string = '';
+  ikasleak: Ikaslea[] = [];
+  filteredAlumnos: Ikaslea[] = [];
+  taldeak: Taldea[]=[];
+  gruposDisponibles: Taldea[] = [];
+  selectedAlumno: Ikaslea = { id: 0, izena: '', abizenak: '', taldea: { kodea: ''}};
+  isEditModalOpen: boolean = false;
+  nuevoAlumno: Ikaslea = { id: 0, izena: '', abizenak: '', taldea: { kodea: ''}};
+  nuevoGrupo: Taldea = { kodea: '', izena: '' };
+  kodeak: Taldea[] = [];
 
   constructor(
     private modalController: ModalController,
@@ -33,56 +26,154 @@ searchQuery: string = '';
   ) {}
 
   ngOnInit() {
-    // Inicializar los alumnos activos (se filtran aquellos que no estén eliminados)
-    this.ikasleak = this.ikasleService.alumnos; // Obtener los alumnos directamente desde el servicio
-    this.filteredAlumnos = [...this.ikasleak]; // Copia de los alumnos para filtrar según la búsqueda
+    
+    this.getGrupos();
+    // Obtener alumnos
+    this.getAlumnos();
   }
+
+
+  
+  // Método para obtener los alumnos de la API
+  getAlumnos() {
+    this.ikasleService.getAlumnos().subscribe((data: Ikaslea[]) => {
+      
+      this.ikasleak = data.filter((ikaslea) => !ikaslea.ezabatzeData);  // Asignar los alumnos a la propiedad ikasleak
+      this.filteredAlumnos = [...this.ikasleak]; // Inicializar la lista filtrada con todos los alumnos
+    });
+  }
+
+  getGrupos(){
+    this.ikasleService.getGrupos().subscribe((data: Taldea[]) => {
+      this.taldeak = data.filter((grupo) => !grupo.ezabatzeData);  // Cargar los grupos en la variable
+      console.log(this.taldeak); // Esto es solo para verificar que se están cargando correctamente
+      this.gruposDisponibles = [...this.taldeak]
+    });
+  }
+
+  openEditModal(ikaslea: Ikaslea) {
+    this.selectedAlumno = { ...ikaslea };
+    this.isEditModalOpen = true;
+  }
+
+  closeEditModal() {
+    this.isEditModalOpen = false;
+  }
+
+  updateAlumno() {
+    if (this.selectedAlumno && this.selectedAlumno.taldea.kodea) {
+      // Creamos el objeto con los datos actualizados
+      let updatedData = {
+        "id": this.selectedAlumno.id, // Mantén el ID del alumno
+        "izena": this.selectedAlumno.izena, // Nombre
+        "abizenak": this.selectedAlumno.abizenak, // Apellidos
+        taldea: {
+          "kodea": this.selectedAlumno.taldea.kodea, // Código del grupo
+          "izena": this.selectedAlumno.taldea.izena // Nombre del grupo (si es necesario)
+        }
+      };
+  
+      console.log('Datos actualizados:', updatedData);
+  
+      // Llamada al servicio para actualizar el alumno
+      this.ikasleService.updateAlumno(updatedData).subscribe((updatedAlumno) => {
+        // Actualizamos el alumno en la lista de alumnos
+        this.ikasleak = this.ikasleak.map((alumno) =>
+          alumno.id === updatedAlumno.id ? updatedAlumno : alumno
+        );
+  
+        // Cerramos el modal de edición después de la actualización
+        this.closeEditModal();
+      }, (error) => {
+        console.error('Error al actualizar el alumno:', error);
+      });
+    } else {
+      console.error("No se ha seleccionado un código de grupo o alumno.");
+    }
+  }
+  
+  
+  
 
   filterAlumnos() {
-    if (this.searchQuery.trim() === '') {
-      // Si no hay texto de búsqueda, mostrar todos los alumnos activos
-      this.filteredAlumnos = this.ikasleak;
-    } else {
-      // Filtrar por nombre, apellidos y código (o cualquier otro criterio)
-      this.filteredAlumnos = this.ikasleak.filter((ikaslea) =>
-        `${ikaslea.nombre} ${ikaslea.abizenak} ${ikaslea.kodea}`.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
-    }
+    const query = this.searchQuery.trim().toLowerCase();
+    this.filteredAlumnos = query
+      ? this.ikasleak.filter(
+          (ikaslea) =>
+            `${ikaslea.izena} ${ikaslea.abizenak} ${ikaslea.taldea.kodea}`.toLowerCase().includes(query)
+        )
+      : [...this.ikasleak];
   }
-    // Acción cuando se selecciona un alumno
-    onAlumnoSelected(id: number) {
-      if (this.selectedAlumnos.has(id)) {
-        this.selectedAlumnos.delete(id); // Si el alumno ya está seleccionado, lo deseleccionamos
-      } else {
-        this.selectedAlumnos.add(id); // Si no está seleccionado, lo agregamos
-      }
-    }
 
   eliminarAlumnos() {
-    this.selectedAlumnos.forEach((id) => {
-      this.ikasleService.ezabatuPertsona(id); // Llamamos al servicio para eliminar cada alumno seleccionado
-      this.ngOnInit;
+    this.selectedIkasleak.forEach((id) => {
+      this.ikasleService.eliminarAlumno(id).subscribe(() => {
+        // Eliminar el alumno de la lista
+        this.ikasleak = this.ikasleak.filter((alumno) => alumno.id !== id);
+        this.filteredAlumnos = [...this.ikasleak];  // Actualizar la lista filtrada
+      });
     });
-    this.modalController.dismiss(); // Cerramos el modal después de la eliminación
+    this.selectedIkasleak.clear();  // Limpiar la selección después de eliminar
   }
 
-  // Método que se llama cuando el alumno es agregado desde el modal
   async agregarAlumno() {
-    // Llamamos al servicio para agregar el nuevo alumno
-    this.ikasleService.agregarAlumno(this.nuevoAlumno);
-  // Obtener la lista actualizada de alumnos del servicio
-
-    this.ikasleak = this.ikasleService.alumnos;
-
-    // Resetear los campos del formulario en el modal
-    this.nuevoAlumno = {
-      id: 0,
-      nombre: '',
-      abizenak: '',
-      kodea: '',
-    };
-
-    // Cerrar el modal después de agregar el alumno
-    this.modalController.dismiss();
+    let data = {
+      "izena": this.nuevoAlumno.izena,
+      "abizenak": this.nuevoAlumno.abizenak,
+      taldea: {
+        "kodea": this.nuevoAlumno.taldea.kodea
+      }
   }
+  console.log(data);
+
+    this.ikasleService.agregarAlumno(data).subscribe((data) => {
+      this.ikasleak.push(data);
+      this.filteredAlumnos = [...this.ikasleak];
+      this.modalController.dismiss();
+    });
+    this.nuevoAlumno = { izena: '', abizenak: '', taldea: { kodea: '', izena: '' }};
+  }
+
+  async agregarGrupo() {
+    let data = {
+      "kodea": this.nuevoGrupo.kodea,
+      "izena": this.nuevoGrupo.izena
+    }
+
+    this.ikasleService.agregarGrupo(data).subscribe((data) => {
+      this.gruposDisponibles.push(data);
+      this.modalController.dismiss();
+    });
+    this.nuevoGrupo = { kodea: '', izena: '' };
+  }
+
+  eliminarGrupo(grupoKodea: string) {
+    // Llamamos al servicio que gestiona la eliminación de grupos
+    this.ikasleService.eliminarGrupo(grupoKodea).subscribe(
+      response => {
+        // Aquí, actualizas la lista de grupos disponibles después de eliminar
+        this.gruposDisponibles = this.gruposDisponibles.filter(grupo => grupo.kodea !== grupoKodea);
+        alert('Grupo eliminado exitosamente');
+      },
+      error => {
+        alert('Hubo un error al eliminar el grupo');
+        console.error(error);
+      }
+    );
+  }
+
+  getAlumnosPorKodea(kodea: string): Ikaslea[] {
+    return this.ikasleak.filter((ikaslea) => ikaslea.taldea.kodea === kodea);
+  }
+
+  onAlumnoSelected(alumnoId: number | undefined) {
+    if (alumnoId !== undefined) {
+      if (this.selectedIkasleak.has(alumnoId)) {
+        this.selectedIkasleak.delete(alumnoId);
+      } else {
+        this.selectedIkasleak.add(alumnoId);
+      }
+    }
+  }
+  
 }
