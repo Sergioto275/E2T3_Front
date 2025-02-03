@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { IkasleZerbitzuakService, Ikaslea, Taldea } from './../zerbitzuak/ikasle-zerbitzuak.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ikasleak',
@@ -8,6 +9,7 @@ import { IkasleZerbitzuakService, Ikaslea, Taldea } from './../zerbitzuak/ikasle
   styleUrls: ['./ikasleak.page.scss'],
 })
 export class IkasleakPage implements OnInit {
+  selectedLanguage: string = 'es';
   selectedIkasleak: Set<number> = new Set();
   searchQuery: string = '';
   ikasleak: Ikaslea[] = [];
@@ -21,9 +23,13 @@ export class IkasleakPage implements OnInit {
   kodeak: Taldea[] = [];
 
   constructor(
+    private translate: TranslateService,
     private modalController: ModalController,
     private ikasleService: IkasleZerbitzuakService
-  ) {}
+  ) {
+    this.translate.setDefaultLang('es');
+    this.translate.use(this.selectedLanguage);
+  }
 
   ngOnInit() {
     
@@ -32,7 +38,9 @@ export class IkasleakPage implements OnInit {
     this.getAlumnos();
   }
 
-
+  changeLanguage() {
+    this.translate.use(this.selectedLanguage);
+  }
   
   // Método para obtener los alumnos de la API
   getAlumnos() {
