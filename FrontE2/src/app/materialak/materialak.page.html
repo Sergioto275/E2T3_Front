@@ -32,8 +32,7 @@
             <ion-button id="mat-sortu-modal">{{ 'materiales.botones.agregarMaterial' | translate }}</ion-button>
           </ion-buttons>
           <ion-buttons slot="end">
-            <ion-button id="atera-modal"
-              [disabled]="materialesSeleccionados.length == 0">{{
+            <ion-button id="atera-modal" [disabled]="materialesSeleccionados.length == 0">{{
               'materiales.botones.sacarMateriales' | translate }}</ion-button>
           </ion-buttons>
         </ion-toolbar>
@@ -74,8 +73,7 @@
       <ion-segment-content id="bueltatu">
         <ion-toolbar>
           <ion-buttons slot="start">
-            <ion-button id="mat-devolver-modal"
-              [disabled]="materialesSeleccionadosDevolver.length == 0"
+            <ion-button id="mat-devolver-modal" [disabled]="materialesSeleccionadosDevolver.length == 0"
               (click)="cargarEditarMaterialesDevolver()">Devolver materiales</ion-button>
           </ion-buttons>
         </ion-toolbar>
@@ -130,8 +128,16 @@
             <ion-list>
               <ion-label>Lista de materiales a sacar:</ion-label>
               <ion-list *ngFor="let mat of materialesSeleccionados">
-                <ion-label position="stacked">{{mat.izena}} </ion-label>
-                <ion-label position="stacked" class="etiketaSacar">{{mat.etiketa}} </ion-label>
+                <ion-card>
+                  <ion-grid>
+                    <ion-col>
+                    <ion-label><strong>Izena: </strong>{{mat.izena}}</ion-label>
+                  </ion-col>
+                  <ion-col>
+                    <ion-label><strong>Etiketa: </strong>{{mat.etiketa}}</ion-label>
+                  </ion-col>
+                  </ion-grid>
+                </ion-card>
               </ion-list>
             </ion-list>
           </ion-item>
