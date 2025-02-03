@@ -1,18 +1,18 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Ikasleen Gestionamendua</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true" id="main-content">
-  <app-header titulua="Ikasleen Gestionamendua"></app-header>
-
-  <ion-header collapse="condense">
+<app-header></app-header>
+<ion-content class="ion-page" id="main-content">
+  <ion-header>
     <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
       <ion-title size="large">Ikasleak</ion-title>
+      <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">
+        <ion-select-option value="es">Español</ion-select-option>
+        <ion-select-option value="eu">Euskera</ion-select-option>
+      </ion-select>
     </ion-toolbar>
   </ion-header>
-
+  <ion-content [fullscreen]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button id="prod-sortu-modal">Sortu Ikaslea</ion-button>

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonModal, ModalController } from '@ionic/angular';
+import { IonModal } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/internal/Observable';
 
@@ -283,7 +283,7 @@ export class MaterialakPage implements OnInit {
   }
 
 
-  constructor(private translate: TranslateService, private restServer:HttpClient, private modalController: ModalController) {
+  constructor(private translate: TranslateService, private restServer:HttpClient) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
