@@ -118,15 +118,34 @@
     "botones": {
       "datos": "Mostrar datos",
       "cerrar": "Cerrar"
+    },
+    "modal": {
+      "idCliente": "ID del Cliente",
+      "nombre": "Nombre",
+      "apellido": "Apellido",
+      "telefono": "Teléfono",
+      "tinte": "Tinte",
+      "pSensible": "Pelo Sensible"
+    }
   },
-  "modal": {
-    "idCliente": "ID del Cliente",
-    "nombre": "Nombre",
-    "apellido": "Apellido",
-    "telefono": "Teléfono",
-    "tinte": "Tinte",
-    "pSensible": "Pelo Sensible"
+  "servicios":{
+    "title":"Servicios",
+    "modal":{
+      "dentro":"Precio interno",
+      "fuera":"Precio externo",
+      "nombre":"Nombre",
+      "extra":"Extra",
+      "color":"Color"
+    },
+    "botones": {
+      "crearServicio": "Añadir servicio",
+      "editarServicio": "Editar Servicio",
+      "crearCategoria":"Crear Categoria",
+      "editarCategoria": "Editar Categoria",
+      "confirmar": "Confirmar",
+      "crear": "Crear",
+      "editar": "Editar"
+    }
   }
-}
 }
   

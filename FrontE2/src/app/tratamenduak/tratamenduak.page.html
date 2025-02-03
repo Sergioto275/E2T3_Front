@@ -1,0 +1,179 @@
+<app-header></app-header>
+<ion-content class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>{{ 'servicios.title' | translate }}</ion-title>
+      <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">
+        <ion-select-option value="es">Español</ion-select-option>
+        <ion-select-option value="eu">Euskera</ion-select-option>
+      </ion-select>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content [fullscreen]="true">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button id="cat-service-sortu-modal">{{ 'servicios.botones.crearCategoria' | translate }}</ion-button>
+      </ion-buttons>
+      <ion-buttons slot="start">
+        <ion-button id="service-sortu-modal">{{ 'servicios.botones.crearServicio' | translate }}</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  
+    <ng-container *ngFor="let categoria of zerbitzuak">
+      <ion-item button (click)="toggleCategoria(categoria.izena)">
+        <ion-label>{{ categoria.izena }}</ion-label>
+        <ion-button slot="end" (click)="openKatModal(categoria)">
+          <ion-icon name="create"></ion-icon>
+        </ion-button>
+        <ion-button slot="end" color="danger">
+          <ion-icon name="trash"></ion-icon>
+        </ion-button>
+        <ion-icon [name]="isCategoriaAbierta(categoria.izena) ? 'chevron-up' : 'chevron-down'" slot="end"></ion-icon>
+      </ion-item>
+
+      <ion-list *ngIf="isCategoriaAbierta(categoria.izena)">
+        <ion-item *ngFor="let servicio of categoria.zerbitzuak">
+          <ion-label> {{ servicio.izena }} </ion-label>
+          <ion-label> {{ "servicios.modal.fuera" | translate }}: {{ servicio.kanpokoPrezioa }} </ion-label>
+          <ion-label> {{ "servicios.modal.dentro" | translate }}: {{ servicio.etxekoPrezioa }} </ion-label>
+          <ion-checkbox slot="start" [(ngModel)]="servicio.selected"
+            (ionChange)="actualizarProductosSeleccionados(servicio, categoria.id)"></ion-checkbox>
+            <ion-button slot="end" (click)="openServiceModal(servicio, categoria.id)">
+              <ion-icon name="create"></ion-icon>
+            </ion-button>
+          <ion-button slot="end" color="danger">
+            <ion-icon name="trash"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-list>
+    </ng-container>
+  </ion-content>
+
+  <ion-modal #modalSortu trigger="service-sortu-modal">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ 'servicios.botones.crearServicio' | translate }}</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-item>
+          <ion-label position="stacked">{{ 'servicios.modal.nombre' | translate }}</ion-label>
+          <ion-input [(ngModel)]="crearServicio.izena" [attr.placeholder]="'servicios.modal.nombre' | translate"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-select [(ngModel)]="crearServicio.idKategoria" label="Kategoria" placeholder="Selecciona una kategoria">
+            <ion-select-option *ngFor="let cat of zerbitzuak" [value]="cat.id">{{cat.izena}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">{{ 'servicios.modal.fuera' | translate }}</ion-label>
+          <ion-input [(ngModel)]="crearServicio.kanpokoPrezioa" placeholder="Kanpoko Prezioa"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">{{ 'servicios.modal.dentro' | translate }}</ion-label>
+          <ion-input [(ngModel)]="crearServicio.etxekoPrezioa" placeholder="Etxeko Prezioa"></ion-input>
+        </ion-item>
+        <ion-button expand="full" (click)="modalSortu.dismiss()">{{ 'servicios.botones.crear' | translate }}</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal #prodeditarmod [isOpen]="isEditingService" backdropDismiss="false">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ 'servicios.botones.editarServicio' | translate }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeServiceModal()">
+              <ion-icon name="close-circle-outline" size="large" color="danger"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-item>
+          <ion-label position="stacked">{{ 'servicios.modal.nombre' | translate }}</ion-label>
+          <ion-input [(ngModel)]="editarServicio.izena" placeholder="Izena"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-select [(ngModel)]="editarServicio.idKategoria" label="Kategoria" placeholder="Selecciona una kategoria">
+            <ion-select-option *ngFor="let cat of zerbitzuak" [value]="cat.id">{{cat.izena}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">{{ 'servicios.modal.dentro' | translate }}</ion-label>
+          <ion-input [(ngModel)]="editarServicio.etxekoPrezioa" placeholder="Etxeko Prezioa"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">{{ 'servicios.modal.fuera' | translate }}</ion-label>
+          <ion-input [(ngModel)]="editarServicio.kanpokoPrezioa" placeholder="Kanpoko Prezioa"></ion-input>
+        </ion-item>
+        <ion-button expand="full">{{ 'servicios.botones.editar' | translate }}</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal #modaleditarcat [isOpen]="isEditingCategoria" backdropDismiss="false">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ 'servicios.botones.editarCategoria' | translate }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeKatModal()">
+              <ion-icon name="close-circle-outline" color="danger" size="large"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-item>
+          <ion-label position="stacked">{{ 'servicios.modal.nombre' | translate }}</ion-label>
+          <ion-input [(ngModel)]="editarCategoria.izena" placeholder="Izena"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">{{ 'servicios.modal.color' | translate }}</ion-label>
+          <ion-checkbox [(ngModel)]="editarCategoria.kolorea"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">{{ 'servicios.modal.extra' | translate }}</ion-label>
+          <ion-checkbox [(ngModel)]="editarCategoria.extra"></ion-checkbox>
+        </ion-item>
+        <ion-button expand="full">{{ 'servicios.botones.editar' | translate }}</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal #catprodsormodal trigger="cat-service-sortu-modal">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ 'productos.botones.crearCategoria' | translate }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="catprodsormodal.dismiss()">
+              <ion-icon name="close-circle-outline" size="large" color="danger"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-item>
+          <ion-label position="stacked">{{ 'servicios.modal.nombre' | translate }}</ion-label>
+          <ion-input [(ngModel)]="crearCategoria.izena" placeholder="Izena"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">{{ 'servicios.modal.color' | translate }}</ion-label>
+          <ion-checkbox [(ngModel)]="crearCategoria.kolorea"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">{{ 'servicios.modal.extra' | translate }}</ion-label>
+          <ion-checkbox [(ngModel)]="crearCategoria.extra"></ion-checkbox>
+        </ion-item>
+        <ion-button expand="full">{{ 'servicios.botones.crear' | translate }}</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

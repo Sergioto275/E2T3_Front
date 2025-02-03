@@ -128,5 +128,24 @@
         "tinte": "Tintea",
         "pSensible": "Ile Sentikorra"
       }
+    },
+    "servicios":{
+        "title":"Zerbitzuak",
+        "modal":{
+            "dentro":"Etxeko Prezioa",
+            "fuera":"Kanpoko Prezioa",
+            "nombre":"Izena",
+            "extra":"Extra",
+            "color":"Kolorea"
+        },
+        "botones": {
+            "crearServicio": "Zerbitzua gehitu",
+            "editarServicio": "Zerbitzua editatu",
+            "crearCategoria":"Kategoria Sortu",
+            "editarCategoria": "Kategoria editatu",
+            "confirmar": "Baieztatu",
+            "crear": "Sortu",
+            "editar": "Editatu"
+        }
     }
 }

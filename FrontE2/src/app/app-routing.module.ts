@@ -43,6 +43,10 @@ const routes: Routes = [
     path: 'historiala',
     loadChildren: () => import('./historiala/historiala.module').then( m => m.HistorialaPageModule)
   },
+  {
+    path: 'tratamenduak',
+    loadChildren: () => import('./tratamenduak/tratamenduak.module').then( m => m.TratamenduakPageModule)
+  },
 
 
 
