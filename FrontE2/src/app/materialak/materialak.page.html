@@ -32,7 +32,7 @@
             <ion-button id="mat-sortu-modal">{{ 'materiales.botones.agregarMaterial' | translate }}</ion-button>
           </ion-buttons>
           <ion-buttons slot="end">
-            <ion-button id="atera-modal" [disabled]="materialesSeleccionados.length == 0">{{
+            <ion-button id="atera-modal-mat" [disabled]="materialesSeleccionados.length == 0">{{
               'materiales.botones.sacarMateriales' | translate }}</ion-button>
           </ion-buttons>
         </ion-toolbar>
@@ -96,7 +96,7 @@
     </ion-segment-view>
 
     <!-- Modal para sacar materiales -->
-    <ion-modal #modalAteraMat trigger="atera-modal">
+    <ion-modal #modalAteraMat trigger="atera-modal-mat">
       <ng-template>
         <ion-header>
           <ion-toolbar>
@@ -125,24 +125,22 @@
             </ion-select>
           </ion-item>
           <ion-item>
-            <ion-list>
-              <ion-grid>
-              <ion-label>Lista de materiales a sacar:</ion-label>
+            <ion-grid>
+              <ion-label><strong>Lista de materiales a sacar:</strong></ion-label>
               <ion-row>
-              <ion-list expand="full" *ngFor="let mat of materialesSeleccionados">
-                <ion-card>
-                  <ion-card-header>
-                    <ion-label><strong strong>Izena: </strong>{{mat.izena}}</ion-label>
-                  </ion-card-header>
-                  <ion-card-content>
-                    <ion-label><strong>Etiketa: </strong>{{mat.etiketa}}</ion-label>
-                  </ion-card-content>
-                </ion-card>
-              </ion-list>
-            </ion-row>
+                <ion-col size="6" *ngFor="let mat of materialesSeleccionados">
+                  <ion-card>
+                    <ion-card-header>
+                      <ion-label><strong>Etiketa: </strong>{{ mat.etiketa }}</ion-label>
+                    </ion-card-header>
+                    <ion-card-content>
+                      <ion-label><strong>Izena: </strong>{{ mat.izena }}</ion-label>
+                    </ion-card-content>
+                  </ion-card>
+                </ion-col>
+              </ion-row>
             </ion-grid>
-            </ion-list>
-          </ion-item>
+          </ion-item>          
           <ion-button expand="full" position="fixed" (click)="materialakAtera()">{{ 'materiales.botones.confirmar' |
             translate
             }}</ion-button>
