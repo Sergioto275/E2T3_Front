@@ -28,7 +28,7 @@
         <ion-button slot="end" (click)="openKatModal(categoria)">
           <ion-icon name="create"></ion-icon>
         </ion-button>
-        <ion-button slot="end" color="danger">
+        <ion-button slot="end" color="danger" (click)="eliminarKategoria(categoria.id)">
           <ion-icon name="trash"></ion-icon>
         </ion-button>
         <ion-icon [name]="isCategoriaAbierta(categoria.izena) ? 'chevron-up' : 'chevron-down'" slot="end"></ion-icon>
@@ -44,7 +44,7 @@
             <ion-button slot="end" (click)="openServiceModal(servicio, categoria.id)">
               <ion-icon name="create"></ion-icon>
             </ion-button>
-          <ion-button slot="end" color="danger">
+          <ion-button slot="end" color="danger" (click)="eliminarServicio(servicio.id)">
             <ion-icon name="trash"></ion-icon>
           </ion-button>
         </ion-item>
@@ -52,17 +52,17 @@
     </ng-container>
   </ion-content>
 
-  <ion-modal #modalSortu trigger="service-sortu-modal">
+  <ion-modal #modalServiceCrear trigger="service-sortu-modal">
     <ng-template>
       <ion-header>
         <ion-toolbar>
-          <ion-title>{{ 'servicios.botones.crearServicio' | translate }}</ion-title>
+          <ion-title>{{ 'servicios.botones.crearServicio' | translate }} aaa</ion-title>
         </ion-toolbar>
       </ion-header>
       <ion-content>
         <ion-item>
           <ion-label position="stacked">{{ 'servicios.modal.nombre' | translate }}</ion-label>
-          <ion-input [(ngModel)]="crearServicio.izena" [attr.placeholder]="'servicios.modal.nombre' | translate"></ion-input>
+          <ion-input [(ngModel)]="crearServicio.izena" placeholder="Izena"></ion-input>
         </ion-item>
         <ion-item>
           <ion-select [(ngModel)]="crearServicio.idKategoria" label="Kategoria" placeholder="Selecciona una kategoria">
@@ -77,12 +77,12 @@
           <ion-label position="stacked">{{ 'servicios.modal.dentro' | translate }}</ion-label>
           <ion-input [(ngModel)]="crearServicio.etxekoPrezioa" placeholder="Etxeko Prezioa"></ion-input>
         </ion-item>
-        <ion-button expand="full" (click)="modalSortu.dismiss()">{{ 'servicios.botones.crear' | translate }}</ion-button>
+        <ion-button expand="full" (click)="sortuZerbitzua()" (click)="modalServiceCrear.dismiss()">{{ 'servicios.botones.crear' | translate }}</ion-button>
       </ion-content>
     </ng-template>
   </ion-modal>
 
-  <ion-modal #prodeditarmod [isOpen]="isEditingService" backdropDismiss="false">
+  <ion-modal [isOpen]="isEditingService" backdropDismiss="false">
     <ng-template>
       <ion-header>
         <ion-toolbar>
@@ -112,12 +112,12 @@
           <ion-label position="stacked">{{ 'servicios.modal.fuera' | translate }}</ion-label>
           <ion-input [(ngModel)]="editarServicio.kanpokoPrezioa" placeholder="Kanpoko Prezioa"></ion-input>
         </ion-item>
-        <ion-button expand="full">{{ 'servicios.botones.editar' | translate }}</ion-button>
+        <ion-button expand="full" (click)="editarServicios()">{{ 'servicios.botones.editar' | translate }}</ion-button>
       </ion-content>
     </ng-template>
   </ion-modal>
 
-  <ion-modal #modaleditarcat [isOpen]="isEditingCategoria" backdropDismiss="false">
+  <ion-modal [isOpen]="isEditingCategoria" backdropDismiss="false">
     <ng-template>
       <ion-header>
         <ion-toolbar>
@@ -142,18 +142,18 @@
           <ion-label position="stacked">{{ 'servicios.modal.extra' | translate }}</ion-label>
           <ion-checkbox [(ngModel)]="editarCategoria.extra"></ion-checkbox>
         </ion-item>
-        <ion-button expand="full">{{ 'servicios.botones.editar' | translate }}</ion-button>
+        <ion-button expand="full" (click)="editarKategoria()">{{ 'servicios.botones.editar' | translate }}</ion-button>
       </ion-content>
     </ng-template>
   </ion-modal>
 
-  <ion-modal #catprodsormodal trigger="cat-service-sortu-modal">
+  <ion-modal #modalKatCrear trigger="cat-service-sortu-modal">
     <ng-template>
       <ion-header>
         <ion-toolbar>
           <ion-title>{{ 'productos.botones.crearCategoria' | translate }}</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="catprodsormodal.dismiss()">
+            <ion-button (click)="modalKatCrear.dismiss()">
               <ion-icon name="close-circle-outline" size="large" color="danger"></ion-icon>
             </ion-button>
           </ion-buttons>
@@ -172,7 +172,7 @@
           <ion-label position="stacked">{{ 'servicios.modal.extra' | translate }}</ion-label>
           <ion-checkbox [(ngModel)]="crearCategoria.extra"></ion-checkbox>
         </ion-item>
-        <ion-button expand="full">{{ 'servicios.botones.crear' | translate }}</ion-button>
+        <ion-button expand="full" (click)="crearKategoria()" (click)="modalKatCrear.dismiss()">{{ 'servicios.botones.crear' | translate }}</ion-button>
       </ion-content>
     </ng-template>
   </ion-modal>

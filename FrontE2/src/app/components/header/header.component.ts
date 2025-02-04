@@ -13,6 +13,7 @@ export class HeaderComponent  implements OnInit {
     { title: 'Produktuak', url: '/produktuak', icon: 'color-fill' },
     { title: 'Mugimenduak', url: '/mugimenduak', icon: 'albums' },
     { title: 'Ikasleak', url: '/ikasleak', icon: 'people' },
+    { title: 'Zerbitzuak', url: '/tratamenduak', icon: 'cut' },
   ];
 
   constructor() { }
