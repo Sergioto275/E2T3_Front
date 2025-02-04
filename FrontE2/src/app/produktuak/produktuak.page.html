@@ -63,7 +63,8 @@
       <!-- Lista de productos dentro de la categoría -->
       <ion-list *ngIf="isCategoriaAbierta(categoria.izena)">
         <ion-item *ngFor="let producto of categoria.produktuak">
-          <ion-label> {{ producto.izena }} - Stock: {{ producto.stock }} </ion-label>
+          <ion-label> {{ producto.izena }}</ion-label>
+          <ion-label> Stock: {{ producto.stock }} </ion-label>
           <ion-label class="deskribapena"> {{ producto.deskribapena }}</ion-label>
           <ion-checkbox slot="start" [(ngModel)]="producto.selected"
             (ionChange)="actualizarProductosSeleccionados(producto, categoria.id)"></ion-checkbox>
@@ -201,11 +202,6 @@
         <ion-header>
           <ion-toolbar>
             <ion-title>{{ 'productos.botones.editarCategoria' | translate }}</ion-title>
-            <ion-buttons slot="end">
-              <ion-button (click)="closeKatModal()">
-                <ion-icon name="close-circle-outline" color="danger" size="large"></ion-icon>
-              </ion-button>
-            </ion-buttons>
           </ion-toolbar>
         </ion-header>
         <ion-content>
@@ -213,7 +209,20 @@
             <ion-label position="stacked">{{ 'productos.modal.nombre' | translate }}</ion-label>
             <ion-input [(ngModel)]="editingKategoria.izena" placeholder="Izena"></ion-input>
           </ion-item>
-          <ion-button expand="full" (click)="editarKategoriaProducto()">{{ 'productos.botones.editar' | translate }}</ion-button>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-button expand="block" color="success" (click)="editarKategoriaProducto()">
+                  <ion-icon name="checkmark"></ion-icon>
+                </ion-button>
+              </ion-col>
+              <ion-col>
+                <ion-button expand="block" color="danger" (click)="modaleditarcat.dismiss()">
+                  <ion-icon name="close"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </ion-content>
       </ng-template>
     </ion-modal>
