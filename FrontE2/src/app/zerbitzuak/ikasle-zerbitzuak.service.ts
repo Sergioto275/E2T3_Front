@@ -89,16 +89,16 @@ export class IkasleZerbitzuakService {
   }
   // Guardar un nuevo horario
   guardarHorario(nuevoHorario: Horario): Observable<Horario> {
-    return this.http.post<Horario>('http://localhost:8080/api/ordutegiak/', nuevoHorario);
+    return this.http.post<Horario>('http://localhost:8080/api/ordutegiak', nuevoHorario);
   }
   // Actualizar un horario existente
   actualizarHorario(updatedHorario: Horario): Observable<Horario> {
-    return this.http.put<Horario>('http://localhost:8080/api/ordutegiak/' + updatedHorario.id, updatedHorario);
+    return this.http.put<Horario>('http://localhost:8080/api/ordutegiak/id/' + updatedHorario.id, updatedHorario);
   }
 
   // Eliminar un horario
   eliminarHorario(id: number): Observable<void> {
-    return this.http.delete<void>('http://localhost:8080/api/ordutegiak/'+id);
+    return this.http.delete<void>('http://localhost:8080/api/ordutegiak/id/'+id);
   }
 }
 
