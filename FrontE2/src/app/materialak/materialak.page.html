@@ -32,8 +32,7 @@
             <ion-button id="mat-sortu-modal">{{ 'materiales.botones.agregarMaterial' | translate }}</ion-button>
           </ion-buttons>
           <ion-buttons slot="end">
-            <ion-button id="atera-modal"
-              [disabled]="materialesSeleccionados.length == 0">{{
+            <ion-button id="atera-modal-mat" [disabled]="materialesSeleccionados.length == 0">{{
               'materiales.botones.sacarMateriales' | translate }}</ion-button>
           </ion-buttons>
         </ion-toolbar>
@@ -74,8 +73,7 @@
       <ion-segment-content id="bueltatu">
         <ion-toolbar>
           <ion-buttons slot="start">
-            <ion-button id="mat-devolver-modal"
-              [disabled]="materialesSeleccionadosDevolver.length == 0"
+            <ion-button id="mat-devolver-modal" [disabled]="materialesSeleccionadosDevolver.length == 0"
               (click)="cargarEditarMaterialesDevolver()">Devolver materiales</ion-button>
           </ion-buttons>
         </ion-toolbar>
@@ -87,23 +85,25 @@
         </ion-item>
         <ng-container *ngFor="let materiala of materialaDevolver">
           <ion-item>
-            <ion-label>{{ materiala.materiala.izena}}</ion-label>
-            <ion-label class="etiketa"> {{ materiala.materiala.etiketa}}</ion-label>
-            <ion-label class="etiketa"> {{ materiala.langilea.izena}}</ion-label>
-            <ion-label class="etiketa"> {{ materiala.hasieraData | date:"short"}}</ion-label>
-            <ion-checkbox slot="start" (click)="actualizarMaterialesSeleccionadosDevolver(materiala)"></ion-checkbox>
+            <ion-label>{{ materiala.materiala.izena }}</ion-label>
+            <ion-label class="etiketa"> {{ materiala.materiala.etiketa }}</ion-label>
+            <ion-label class="etiketa"> {{ materiala.langilea.izena }}</ion-label>
+            <ion-label class="etiketa"> {{ materiala.hasieraData | date:"short" }}</ion-label>
+            <ion-checkbox slot="start" [checked]="materiala.selected"
+              (ionChange)="actualizarMaterialesSeleccionadosDevolver(materiala, $event.detail.checked)">
+            </ion-checkbox>
           </ion-item>
         </ng-container>
       </ion-segment-content>
     </ion-segment-view>
 
     <!-- Modal para sacar materiales -->
-    <ion-modal #modalAtera trigger="atera-modal">
+    <ion-modal #modalAteraMat trigger="atera-modal-mat">
       <ng-template>
         <ion-header>
           <ion-toolbar>
             <ion-buttons slot="end">
-              <ion-button (click)="modalAtera.dismiss()">
+              <ion-button (click)="modalAteraMat.dismiss()">
                 <ion-icon name="close-circle-outline" color="danger" size="large"></ion-icon>
               </ion-button>
             </ion-buttons>
@@ -127,13 +127,21 @@
             </ion-select>
           </ion-item>
           <ion-item>
-            <ion-list>
-              <ion-label>Lista de materiales a sacar:</ion-label>
-              <ion-list *ngFor="let mat of materialesSeleccionados">
-                <ion-label position="stacked">{{mat.izena}} </ion-label>
-                <ion-label position="stacked" class="etiketaSacar">{{mat.etiketa}} </ion-label>
-              </ion-list>
-            </ion-list>
+            <ion-grid>
+              <ion-label><strong>Lista de materiales a sacar:</strong></ion-label>
+              <ion-row>
+                <ion-col size="6" *ngFor="let mat of materialesSeleccionados">
+                  <ion-card>
+                    <ion-card-header>
+                      <ion-label><strong>Etiketa: </strong>{{ mat.etiketa }}</ion-label>
+                    </ion-card-header>
+                    <ion-card-content>
+                      <ion-label><strong>Izena: </strong>{{ mat.izena }}</ion-label>
+                    </ion-card-content>
+                  </ion-card>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
           </ion-item>
           <ion-button expand="full" position="fixed" (click)="materialakAtera()">{{ 'materiales.botones.confirmar' |
             translate
@@ -142,12 +150,12 @@
       </ng-template>
     </ion-modal>
 
-    <ion-modal #modalSortu trigger="mat-sortu-modal">
+    <ion-modal #modalSortuMat trigger="mat-sortu-modal">
       <ng-template>
         <ion-header>
           <ion-toolbar>
             <ion-buttons slot="end">
-              <ion-button (click)="modalSortu.dismiss()">
+              <ion-button (click)="modalSortuMat.dismiss()">
                 <ion-icon name="close-circle-outline" color="danger" size="large"></ion-icon>
               </ion-button>
             </ion-buttons>
@@ -168,7 +176,7 @@
               <ion-select-option *ngFor="let cat of materialak" [value]="cat.id">{{cat.izena}}</ion-select-option>
             </ion-select>
           </ion-item>
-          <ion-button expand="full" (click)="materialaSortu()" (click)="modalSortu.dismiss()">{{
+          <ion-button expand="full" (click)="materialaSortu()" (click)="modalSortuMat.dismiss()">{{
             'materiales.botones.crear' | translate }}</ion-button>
         </ion-content>
       </ng-template>
@@ -270,11 +278,44 @@
       </ng-template>
     </ion-modal>
 
-    <ion-modal #modaldevolver trigger="mat-devolver-modal">
-      <ion-label>Estas a punto de devolver los siguientes productos:</ion-label>
-      <ion-list>
-
-      </ion-list>
-      <ion-button>AAAA</ion-button>
+    <ion-modal #modalmatdevolver trigger="mat-devolver-modal">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Devolver materiales</ion-title>
+            <ion-buttons slot="end">
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <ion-item>
+            <ion-grid>
+              <ion-label><strong>Lista de materiales a devolver:</strong></ion-label>
+              <ion-row>
+                <ion-col size="6" *ngFor="let mat of materialesSeleccionadosDevolver">
+                  <ion-card>
+                    <ion-card-header>
+                      <ion-label><strong>Izena: </strong>{{ mat.materiala.izena }}</ion-label>
+                    </ion-card-header>
+                    <ion-card-content>
+                      <ion-label><strong>Langilea: </strong>{{ mat.langilea.izena }}</ion-label>
+                    </ion-card-content>
+                  </ion-card>
+                </ion-col>
+              </ion-row>
+            </ion-grid>        
+          </ion-item>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-button expand="block" color="success"
+                  (click)="materialakBueltatu()" (click)="modalmatdevolver.dismiss()">
+                  <ion-icon name="checkmark"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-content>
+      </ng-template>
     </ion-modal>
   </ion-content>

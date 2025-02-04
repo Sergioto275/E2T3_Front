@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonModal, ModalController } from '@ionic/angular';
+import { IonModal } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/internal/Observable';
 
@@ -70,15 +70,18 @@ export class MaterialakPage implements OnInit {
     console.log('Materiales seleccionados:', this.materialesSeleccionados);
   }
 
-  actualizarMaterialesSeleccionadosDevolver(material:any) {
+  actualizarMaterialesSeleccionadosDevolver(material: any, isChecked: boolean) {
     const index = this.materialesSeleccionadosDevolver.findIndex(p => p.id === material.id);
-    if (material.selected && index === -1) {
+  
+    if (isChecked && index === -1) {
       this.materialesSeleccionadosDevolver.push(material);
-    } else if (!material.selected && index !== -1) {
+    } else if (!isChecked && index !== -1) {
       this.materialesSeleccionadosDevolver.splice(index, 1);
     }
+    material.selected = isChecked;
     console.log('Materiales seleccionados:', this.materialesSeleccionadosDevolver);
   }
+  
 
   toggleCategoria(categoria: string) {
     this.categoriasAbiertas[categoria] = !this.categoriasAbiertas[categoria];
@@ -167,7 +170,7 @@ export class MaterialakPage implements OnInit {
   }
 
   cargarEditarMaterialesDevolver() {
-    this.matDevolverId = this.materialesSeleccionados[0].id;
+    this.matDevolverId = this.materialesSeleccionadosDevolver[0].id;
   }
 
   materialakAtera(){
@@ -219,7 +222,7 @@ export class MaterialakPage implements OnInit {
   
   materialakBueltatu(){
     let data ={
-      
+      "id": this.matDevolverId
     }
 
     let observableRest: Observable<any> = this.restServer.put<any>('http://localhost:8080/api/material_mailegua', data);
@@ -283,7 +286,7 @@ export class MaterialakPage implements OnInit {
   }
 
 
-  constructor(private translate: TranslateService, private restServer:HttpClient, private modalController: ModalController) {
+  constructor(private translate: TranslateService, private restServer:HttpClient) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }

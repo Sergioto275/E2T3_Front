@@ -11,7 +11,7 @@ export class HeaderComponent  implements OnInit {
     { title: 'Txostenak', url: '/txostenak', icon: 'document-text' },
     { title: 'Materialak', url: '/materialak', icon: 'cut' },
     { title: 'Produktuak', url: '/produktuak', icon: 'color-fill' },
-    { title: 'Mugimenduak', url: '/mugimenduak', icon: 'albums' },
+    { title: 'Historiala', url: '/historiala', icon: 'albums' },
     { title: 'Ikasleak', url: '/ikasleak', icon: 'people' },
     { title: 'Zerbitzuak', url: '/tratamenduak', icon: 'cut' },
   ];
