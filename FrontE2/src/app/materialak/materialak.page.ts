@@ -70,15 +70,18 @@ export class MaterialakPage implements OnInit {
     console.log('Materiales seleccionados:', this.materialesSeleccionados);
   }
 
-  actualizarMaterialesSeleccionadosDevolver(material:any) {
+  actualizarMaterialesSeleccionadosDevolver(material: any, isChecked: boolean) {
     const index = this.materialesSeleccionadosDevolver.findIndex(p => p.id === material.id);
-    if (material.selected && index === -1) {
+  
+    if (isChecked && index === -1) {
       this.materialesSeleccionadosDevolver.push(material);
-    } else if (!material.selected && index !== -1) {
+    } else if (!isChecked && index !== -1) {
       this.materialesSeleccionadosDevolver.splice(index, 1);
     }
+    material.selected = isChecked;
     console.log('Materiales seleccionados:', this.materialesSeleccionadosDevolver);
   }
+  
 
   toggleCategoria(categoria: string) {
     this.categoriasAbiertas[categoria] = !this.categoriasAbiertas[categoria];
@@ -167,7 +170,7 @@ export class MaterialakPage implements OnInit {
   }
 
   cargarEditarMaterialesDevolver() {
-    this.matDevolverId = this.materialesSeleccionados[0].id;
+    this.matDevolverId = this.materialesSeleccionadosDevolver[0].id;
   }
 
   materialakAtera(){
@@ -207,20 +210,23 @@ export class MaterialakPage implements OnInit {
     });
   }
 
-  materialakLortuDevolver(){
+  materialakLortuDevolver() {
     let observableRest: Observable<any> = this.restServer.get<any>('http://localhost:8080/api/material_mailegua');
-    observableRest.subscribe(datuak => {
-      console.log(datuak);
 
-      this.materialaDevolver = datuak
-      
+    observableRest.subscribe(datuak => {
+        this.materialaDevolver = datuak.filter((mailegu:any) => 
+            mailegu.hasieraData && !mailegu.amaieraData
+        );
+
+        console.log(this.materialaDevolver);
     });
-  }
+}
+
   
   materialakBueltatu(){
-    let data ={
-      
-    }
+    let data = this.materialesSeleccionadosDevolver.map(mailegu => ({
+      "id": mailegu.id
+  }));
 
     let observableRest: Observable<any> = this.restServer.put<any>('http://localhost:8080/api/material_mailegua', data);
     observableRest.subscribe(datuak => {
