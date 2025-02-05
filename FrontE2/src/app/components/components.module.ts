@@ -4,6 +4,7 @@ import { HeaderComponent } from './header/header.component';
 import { IonicModule } from '@ionic/angular';
 import { HomeBotoiakKonponenteaComponent } from './home-botoiak-konponentea/home-botoiak-konponentea.component';
 import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 
@@ -13,6 +14,7 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     IonicModule,
     RouterModule,
+    TranslateModule,
   ],
   exports: [HeaderComponent, HomeBotoiakKonponenteaComponent]
 })
