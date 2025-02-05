@@ -6,6 +6,7 @@ import {
   Taldea,
   Horario,
 } from './../zerbitzuak/ikasle-zerbitzuak.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ikasleak',
@@ -13,6 +14,7 @@ import {
   styleUrls: ['./ikasleak.page.scss'],
 })
 export class IkasleakPage implements OnInit {
+  selectedLanguage: string = 'es';
   selectedIkasleak: Set<number> = new Set();
   searchQuery: string = '';
   ikasleak: Ikaslea[] = [];
@@ -69,6 +71,7 @@ export class IkasleakPage implements OnInit {
   };
 
   constructor(
+    private translate: TranslateService,
     private modalController: ModalController,
     private ikasleService: IkasleZerbitzuakService,
     private alertController: AlertController
@@ -79,6 +82,10 @@ export class IkasleakPage implements OnInit {
     // Obtener alumnos
     this.getAlumnos();
     this.getHorarios();
+  }
+
+  changeLanguage() {
+    this.translate.use(this.selectedLanguage);
   }
 
   getHorarios(): void {

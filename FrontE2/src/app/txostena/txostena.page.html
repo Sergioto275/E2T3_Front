@@ -12,30 +12,32 @@
       </ion-select>
     </ion-toolbar>
   </ion-header>
-<ion-content [fullscreen]="true">
-  <!-- Bloque que contiene la lista -->
-  <div class="list-block">
-    <ion-list>
-      <ion-item *ngFor="let txostena of txostenak; let i = index">
-        <ion-avatar slot="start">
-          <img [src]="txostena.image" alt="Foto random" />
-        </ion-avatar>
 
-        <ion-label>
-          {{ txostena.name }}
-          <small>T{{ i + 1 }}</small> <!-- Índice dinámico -->
-        </ion-label>
+  <ion-content [fullscreen]="true">
+    <!-- Bloque que contiene la lista -->
+    <div class="list-block">
+      <ion-list>
+        <ion-item *ngFor="let txostena of txostenak; let i = index">
+          <ion-avatar slot="start">
+            <img [src]="txostena.image" alt="Foto random" />
+          </ion-avatar>
 
-        <!-- Botón dinámico con color aleatorio -->
-        <ion-button slot="end" [color]="txostena.buttonColor">
-          Txostena ikusita
-        </ion-button>
+          <ion-label>
+            {{ txostena.name }}
+            <small>Txosten {{ i + 1 }}</small>
+          </ion-label>
 
-        <!-- Badge con el número aleatorio -->
-        <ion-badge slot="end" color="danger">
-          {{ txostena.number }}
-        </ion-badge>
-      </ion-item>
-    </ion-list>
-  </div>
+          <!-- Botón dinámico con color aleatorio -->
+          <ion-button slot="end" [color]="txostena.buttonColor" (click)="openModal(txostena)">
+            {{ 'informes.botones.datos' | translate }}
+          </ion-button>
+
+          <!-- Badge con el número aleatorio -->
+          <ion-badge slot="end" color="danger">
+            {{ txostena.number }}
+          </ion-badge>
+        </ion-item>
+      </ion-list>
+    </div>
+  </ion-content>
 </ion-content>

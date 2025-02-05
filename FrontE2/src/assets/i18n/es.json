@@ -1,4 +1,14 @@
 {
+  "menu": {
+    "title":"Menu",
+    "hitzorduak": "Citas",
+    "txostenak": "Informes",
+    "materialak": "Materiales",
+    "produktuak": "Productos",
+    "historiala": "Historial",
+    "ikasleak": "Estudiantes",
+    "zerbitzuak": "Servicios"
+  },
   "productos": {
     "title": "Gestion de productos",
     "botones": {
@@ -32,6 +42,8 @@
   "materiales": {
     "title": "Gestion de materiales",
     "botones": {
+      "gestionarMateriales": "Gestionar Materiales",
+      "devolverMateriales": "Devolver Materiales",
       "agregarMaterial": "Agregar Material",
       "sacarMateriales": "Sacar Materiales",
       "crearMateriales": "Agregar Materiales",
@@ -58,8 +70,10 @@
   "citas": {
     "titulo": "Citas",
     "horas": "Horas",
+    "asientos":"Asientos",
     "botones":{
       "confirmar": "Confirmar",
+      "editar": "Editar",
       "guardar": "Guardar",
       "borrar": "Borrar",
       "crear": "Crear",
@@ -75,11 +89,80 @@
         "asiento": "Asientos",
         "cliente": "Cliente",
         "telefono": "Teléfono",
-        "casa": "Del centro"
+        "casa": "Del centro",
+        "trabajador":"Trabajador"
     }
   },
+  "historial": {
+    "titulo": "Historial",
+    "botones":{
+        "productos": "Movimientos de productos",
+        "materiales":"Movimientos de materiales",
+        "ticket":"Tickets",
+        "cliente":"Historial del cliente",
+        "crear":"Crear",
+        "añadir":"Añadir",
+        "guardar":"Guardar",
+        "editar":"Editar"
+      },
+      "modal": {
+        "proceso":"En proceso",
+        "trabajador":"Trabajador",
+        "fechaInicio":"Fecha Inicio",
+        "fechaFin":"Fecha Fin",
+        "grupo":"Grupo",
+        "cantidad": "Cantidad",
+        "servicios":"Servicios",
+        "precio":"Precio",
+        "total":"Precio Total",
+        "ficha":"Ficha Cliente",
+        "añadir_cliente":"Añadir cliente",
+        "nombre":"Nombre",
+        "apellido":"Apellido",
+        "telefono":"Teléfono",
+        "piel":"Piel Sensible",
+        "producto":"Producto",
+        "fecha":"Fecha",
+        "volumen":"volumen",
+        "comentarios":"Comentarios"
+      }
+  },
   "informes":{
-    "title": "Informes"
+    "title": "Informes",
+    "cliente": "Cliente",
+    "botones": {
+      "datos": "Mostrar datos",
+      "cerrar": "Cerrar"
+    },
+    "modal": {
+      "idCliente": "ID del Cliente",
+      "nombre": "Nombre",
+      "apellido": "Apellido",
+      "telefono": "Teléfono",
+      "tinte": "Tinte",
+      "pSensible": "Pelo Sensible"
+    }
+  },
+  "servicios":{
+    "title":"Servicios",
+    "modal":{
+      "dentro":"Precio interno",
+      "fuera":"Precio externo",
+      "nombre":"Nombre",
+      "extra":"Extra",
+      "color":"Color",
+      "select":"Seleccione una Categoria",
+      "categoria":"Categoría"
+    },
+    "botones": {
+      "crearServicio": "Añadir servicio",
+      "editarServicio": "Editar Servicio",
+      "crearCategoria":"Crear Categoria",
+      "editarCategoria": "Editar Categoria",
+      "confirmar": "Confirmar",
+      "crear": "Crear",
+      "editar": "Editar"
+    }
   }
 }
   

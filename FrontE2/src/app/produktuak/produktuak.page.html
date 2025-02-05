@@ -20,11 +20,6 @@
       <ion-buttons slot="start">
         <ion-button id="prod-sortu-modal">{{ 'productos.botones.agregarProducto' | translate }}</ion-button>
       </ion-buttons>
-      <ion-buttons slot="start">
-        <ion-button id="prod-editar-modal"
-          [disabled]="productosSeleccionados.length > 1 || productosSeleccionados.length == 0"
-          (click)="cargarEditarProducto()">{{ 'productos.botones.editarProductos' | translate }}</ion-button>
-      </ion-buttons>
       <ion-buttons slot="end">
         <ion-button id="atera-modal">{{ 'productos.botones.sacarProductos' | translate }}</ion-button>
       </ion-buttons>
@@ -56,7 +51,7 @@
       <!-- Categoría -->
       <ion-item button (click)="toggleCategoria(categoria.izena)">
         <ion-label>{{ categoria.izena }}</ion-label>
-        <ion-button id="cat-editar-modal" (click)="setSelectedCategory(categoria.id)" slot="end">
+        <ion-button (click)="openKatModal(categoria)" slot="end">
           <ion-icon name="create"></ion-icon>
         </ion-button>
         <ion-button slot="end" color="danger" (click)="eliminarKategoriaProducto(categoria.id)">
@@ -68,11 +63,12 @@
       <!-- Lista de productos dentro de la categoría -->
       <ion-list *ngIf="isCategoriaAbierta(categoria.izena)">
         <ion-item *ngFor="let producto of categoria.produktuak">
-          <ion-label> {{ producto.izena }} - Stock: {{ producto.stock }} </ion-label>
+          <ion-label> {{ producto.izena }}</ion-label>
+          <ion-label> Stock: {{ producto.stock }} </ion-label>
           <ion-label class="deskribapena"> {{ producto.deskribapena }}</ion-label>
           <ion-checkbox slot="start" [(ngModel)]="producto.selected"
             (ionChange)="actualizarProductosSeleccionados(producto, categoria.id)"></ion-checkbox>
-            <ion-button slot="end">
+            <ion-button slot="end" (click)="openProdModal(producto, categoria.id)">
               <ion-icon name="create"></ion-icon>
             </ion-button>
           <ion-button slot="end" color="danger" (click)="eliminarProducto(producto.id)">
@@ -158,13 +154,13 @@
       </ng-template>
     </ion-modal>
 
-    <ion-modal #prodeditarmod trigger="prod-editar-modal">
+    <ion-modal #prodeditarmod [isOpen]="isEditingProduct" backdropDismiss="false">
       <ng-template>
         <ion-header>
           <ion-toolbar>
             <ion-title>{{ 'productos.botones.editarProductos' | translate }}</ion-title>
             <ion-buttons slot="end">
-              <ion-button (click)="prodeditarmod.dismiss()">
+              <ion-button (click)="closeProdModal()">
                 <ion-icon name="close-circle-outline" size="large" color="danger"></ion-icon>
               </ion-button>
             </ion-buttons>
@@ -173,52 +169,60 @@
         <ion-content>
           <ion-item>
             <ion-label position="stacked">{{ 'productos.modal.nombre' | translate }}</ion-label>
-            <ion-input [(ngModel)]="editarNombre" placeholder="Izena"></ion-input>
+            <ion-input [(ngModel)]="editingProduct.izena" placeholder="Izena"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="stacked">{{ 'productos.modal.descripcion' | translate }}</ion-label>
-            <ion-input [(ngModel)]="editarDescripcion" placeholder="Deskribapena"></ion-input>
+            <ion-input [(ngModel)]="editingProduct.deskribapena" placeholder="Deskribapena"></ion-input>
           </ion-item>
           <ion-item>
-            <ion-select [(ngModel)]="editarCategoria" label="Kategoria" placeholder="Selecciona una kategoria">
+            <ion-select [(ngModel)]="editingProduct.idKategoria" label="Kategoria" placeholder="Selecciona una kategoria">
               <ion-select-option *ngFor="let cat of produktuak" [value]="cat.id">{{cat.izena}}</ion-select-option>
             </ion-select>
           </ion-item>
           <ion-item>
             <ion-label position="stacked">{{ 'productos.modal.marca' | translate }}</ion-label>
-            <ion-input [(ngModel)]="editarMarca" placeholder="Marka"></ion-input>
+            <ion-input [(ngModel)]="editingProduct.marka" placeholder="Marka"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="stacked">{{ 'productos.modal.stock' | translate }}</ion-label>
-            <ion-input [(ngModel)]="editarStock" type="number" placeholder="Stock"></ion-input>
+            <ion-input [(ngModel)]="editingProduct.stock" type="number" placeholder="Stock"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="stacked">{{ 'productos.modal.stockAlerta' | translate }}</ion-label>
-            <ion-input [(ngModel)]="editarStockAlerta" type="number" placeholder="Stock alerta"></ion-input>
+            <ion-input [(ngModel)]="editingProduct.stockAlerta" type="number" placeholder="Stock alerta"></ion-input>
           </ion-item>
           <ion-button expand="full" (click)="editarProducto()" (click)="prodeditarmod.dismiss()">{{ 'productos.botones.editar' | translate }}</ion-button>
         </ion-content>
       </ng-template>
     </ion-modal>
 
-    <ion-modal #modaleditarcat trigger="cat-editar-modal">
+    <ion-modal #modaleditarcat [isOpen]="isEditingKategoria" backdropDismiss="false">
       <ng-template>
         <ion-header>
           <ion-toolbar>
             <ion-title>{{ 'productos.botones.editarCategoria' | translate }}</ion-title>
-            <ion-buttons slot="end">
-              <ion-button (click)="modaleditarcat.dismiss()">
-                <ion-icon name="close-circle-outline" color="danger" size="large"></ion-icon>
-              </ion-button>
-            </ion-buttons>
           </ion-toolbar>
         </ion-header>
         <ion-content>
           <ion-item>
             <ion-label position="stacked">{{ 'productos.modal.nombre' | translate }}</ion-label>
-            <ion-input [(ngModel)]="editarKatNombre" placeholder="Izena"></ion-input>
+            <ion-input [(ngModel)]="editingKategoria.izena" placeholder="Izena"></ion-input>
           </ion-item>
-          <ion-button expand="full" (click)="editarKategoriaProducto(selectedCategoryId)">{{ 'productos.botones.editar' | translate }}</ion-button>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-button expand="block" color="success" (click)="editarKategoriaProducto()">
+                  <ion-icon name="checkmark"></ion-icon>
+                </ion-button>
+              </ion-col>
+              <ion-col>
+                <ion-button expand="block" color="danger" (click)="modaleditarcat.dismiss()">
+                  <ion-icon name="close"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </ion-content>
       </ng-template>
     </ion-modal>
@@ -245,3 +249,4 @@
       </ng-template>
     </ion-modal>
   </ion-content>
+</ion-content>

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonModal } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/internal/Observable';
 
@@ -18,7 +19,10 @@ export class MaterialakPage implements OnInit {
   modal!:string;
 
   materialesSeleccionados:any[]=[];
+  materialesSeleccionadosDevolver:any[]=[];
+
   materialak!:any;
+  materialaDevolver!:any;
 
   crearKatNombre!:String;
   crearNombre!:String;
@@ -30,26 +34,25 @@ export class MaterialakPage implements OnInit {
   editarNombre!:String;
   editarEtiqueta!:String;
   editarCategoria!:Number;
-  
+  matDevolverId!:Number;
+
   selectedCategoryId!:number;
 
   alumnos!: any[];
   selecTaldea!:number;
   selecAlumno!:number;
 
+  @ViewChild('modaleditarcat', { static: true })
+  modaleditarcat!: IonModal;
+  @ViewChild('modalEditar', { static: true })
+  modalEditar!: IonModal;
+  selectedCategory: any = {};
+  selectedMateriala: any = {};
+
   modalAtera = false;
   alumne = '';
   categoriasAbiertas: { [key: string]: boolean } = {};
   filteredAlumnos!: any[];
-
-  public alertButtons = [
-    {
-      text: 'Ez',
-    },
-    {
-      text: 'Bai',
-    },
-  ];
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
@@ -66,6 +69,19 @@ export class MaterialakPage implements OnInit {
     }
     console.log('Materiales seleccionados:', this.materialesSeleccionados);
   }
+
+  actualizarMaterialesSeleccionadosDevolver(material: any, isChecked: boolean) {
+    const index = this.materialesSeleccionadosDevolver.findIndex(p => p.id === material.id);
+  
+    if (isChecked && index === -1) {
+      this.materialesSeleccionadosDevolver.push(material);
+    } else if (!isChecked && index !== -1) {
+      this.materialesSeleccionadosDevolver.splice(index, 1);
+    }
+    material.selected = isChecked;
+    console.log('Materiales seleccionados:', this.materialesSeleccionadosDevolver);
+  }
+  
 
   toggleCategoria(categoria: string) {
     this.categoriasAbiertas[categoria] = !this.categoriasAbiertas[categoria];
@@ -101,7 +117,7 @@ export class MaterialakPage implements OnInit {
     this.materialakLortu();
   }
 
-  materialaEditatu(){
+  materialaEditatu(id:number){
     let data = {
       "id": this.editarId,
       "etiketa": this.editarEtiqueta,
@@ -111,7 +127,7 @@ export class MaterialakPage implements OnInit {
       },
     }
 
-    let observableRest: Observable<any> = this.restServer.put<any>("http://localhost:8080/api/materialak",data);
+    let observableRest: Observable<any> = this.restServer.put<any>(`http://localhost:8080/api/materialak/id/${id}`, data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
 	  });
@@ -136,13 +152,14 @@ export class MaterialakPage implements OnInit {
 
   kategoriaEditatu(id: number){
     let data = {
-      izena: this.editarKatNombre
+      "izena": this.editarKatNombre
     }
     let observableRest: Observable<any> = this.restServer.put<any>(`http://localhost:8080/api/material_kategoria/id/${id}`, data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
     });
     this.materialakLortu();
+    this.materialakLortuDevolver();
   }
   
   cargarEditarMateriales() {
@@ -152,22 +169,30 @@ export class MaterialakPage implements OnInit {
     this.editarCategoria = this.materialesSeleccionados[0].kategoria_id;
   }
 
-  materialakAtera(){
-    let data = this.materialesSeleccionados.map(material => ({
-      "material": {
-        "id": material.id
-      },
-      "langile": {
-        "id": this.selecAlumno
-      },
-      "data": new Date().toISOString(),
-    }));
+  cargarEditarMaterialesDevolver() {
+    this.matDevolverId = this.materialesSeleccionadosDevolver[0].id;
+  }
 
-    let observableRest: Observable<any> = this.restServer.post<any>("http://localhost:8080/api/material_mugimenduak",data);
+  materialakAtera(){
+    let data =
+    
+    [
+      {
+          "materiala": {
+              "id": 2
+          },
+          "langilea": {
+              "id": 1
+          }
+      }
+    ]
+
+    let observableRest: Observable<any> = this.restServer.post<any>("http://localhost:8080/api/material_mailegua",data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
     });
     this.materialakLortu();
+    this.materialakLortuDevolver();
   }
 
   materialakLortu(){
@@ -178,18 +203,37 @@ export class MaterialakPage implements OnInit {
     this.materialak = datuak
     .filter((categoria:any) => categoria.ezabatzeData === null)
     .map((categoria:any) => ({
-      id: categoria.id,
-      izena: categoria.izena,
-      sortzeData: categoria.sortzeData,
+      ...categoria,
       materialak: categoria.materialak
         .filter((material:any) => material.ezabatzeData === null)
-        .map((material:any) => ({
-          id: material.id,
-          etiketa: material.etiketa,
-          izena: material.izena,
-          sortzeData: material.sortzeData
-        }))
     }));
+    });
+  }
+
+  materialakLortuDevolver() {
+    let observableRest: Observable<any> = this.restServer.get<any>('http://localhost:8080/api/material_mailegua');
+
+    observableRest.subscribe(datuak => {
+        this.materialaDevolver = datuak.filter((mailegu:any) => 
+            mailegu.hasieraData && !mailegu.amaieraData
+        );
+
+        console.log(this.materialaDevolver);
+    });
+}
+
+  
+  materialakBueltatu(){
+    let data = this.materialesSeleccionadosDevolver.map(mailegu => ({
+      "id": mailegu.id
+  }));
+
+    let observableRest: Observable<any> = this.restServer.put<any>('http://localhost:8080/api/material_mailegua', data);
+    observableRest.subscribe(datuak => {
+      console.log(datuak);
+
+      this.materialaDevolver = datuak
+      
     });
   }
 
@@ -217,6 +261,23 @@ export class MaterialakPage implements OnInit {
     });
   }  
 
+  abrirEditarCategoria(categoria:any) {
+    this.modaleditarcat.present();
+    this.selectedCategory = {...categoria};
+    this.editarKatNombre = this.selectedCategory.izena;
+  }
+
+  abrirEditarMaterial(material:any) {
+    console.log(this.materialak)
+    console.log(material);
+    this.modalEditar.present();
+    this.selectedMateriala = {...material};
+    this.editarNombre = material.izena;
+    this.editarEtiqueta = material.etiketa;
+    this.editarCategoria = material.kategoriaId;
+  }
+
+
   onGrupoChange() {
     if (!this.alumnos || this.alumnos.length === 0) {
       console.error('No hay datos en alumnos');
@@ -236,6 +297,7 @@ export class MaterialakPage implements OnInit {
   ngOnInit() {
     this.materialakLortu();
     this.langileakLortu();
+    this.materialakLortuDevolver();
   }
 
 }

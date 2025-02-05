@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
+import { TxostenaModalComponent } from '../txostena-modal/txostena-modal.component'; // Asegúrate de importar correctamente el componente del modal
 
 interface Txostena {
   name: string;
   image: string;
-  number: string;        // Número aleatorio (puede ser '+99' o un valor numérico)
-  buttonColor: string;   // Color del botón ('warning', 'success', 'danger')
+  number: string;
+  buttonColor: string;
 }
-
-
 
 @Component({
   selector: 'app-txostena',
@@ -16,60 +16,69 @@ interface Txostena {
   styleUrls: ['./txostena.page.scss'],
   standalone:false,
 })
-
-
-export class TxostenaPage {
-  // Declarar el array con el tipo Txostena
+export class TxostenaPage implements OnInit {
   txostenak: Txostena[] = [
-    { name: 'Txostena 1', image: 'https://picsum.photos/50/50?random=1', number: '', buttonColor: '' },
-    { name: 'Txostena 2', image: 'https://picsum.photos/50/50?random=2', number: '', buttonColor: '' },
-    { name: 'Txostena 3', image: 'https://picsum.photos/50/50?random=3', number: '', buttonColor: '' },
-    { name: 'Txostena 4', image: 'https://picsum.photos/50/50?random=4', number: '', buttonColor: '' },
-    { name: 'Txostena 5', image: 'https://picsum.photos/50/50?random=5', number: '', buttonColor: '' },
-    { name: 'Txostena 6', image: 'https://picsum.photos/50/50?random=6', number: '', buttonColor: '' },
-    { name: 'Txostena 7', image: 'https://picsum.photos/50/50?random=7', number: '', buttonColor: '' },
-    { name: 'Txostena 8', image: 'https://picsum.photos/50/50?random=8', number: '', buttonColor: '' },
-    { name: 'Txostena 9', image: 'https://picsum.photos/50/50?random=9', number: '', buttonColor: '' },
-    { name: 'Txostena 10', image: 'https://picsum.photos/50/50?random=10', number: '', buttonColor: '' },
-    { name: 'Txostena 11', image: 'https://picsum.photos/50/50?random=11', number: '', buttonColor: '' },
-    { name: 'Txostena 12', image: 'https://picsum.photos/50/50?random=12', number: '', buttonColor: '' },
-    { name: 'Txostena 13', image: 'https://picsum.photos/50/50?random=13', number: '', buttonColor: '' },
-    { name: 'Txostena 14', image: 'https://picsum.photos/50/50?random=14', number: '', buttonColor: '' },
-    { name: 'Txostena 15', image: 'https://picsum.photos/50/50?random=15', number: '', buttonColor: '' },
-
+    { name: '', image: 'https://picsum.photos/50/50?random=1', number: '', buttonColor: '' },
+    { name: '', image: 'https://picsum.photos/50/50?random=2', number: '', buttonColor: '' },
+    { name: '', image: 'https://picsum.photos/50/50?random=3', number: '', buttonColor: '' },
+    { name: '', image: 'https://picsum.photos/50/50?random=4', number: '', buttonColor: '' },
+    { name: '', image: 'https://picsum.photos/50/50?random=5', number: '', buttonColor: '' },
+    { name: '', image: 'https://picsum.photos/50/50?random=6', number: '', buttonColor: '' },
+    { name: '', image: 'https://picsum.photos/50/50?random=7', number: '', buttonColor: '' },
+    { name: '', image: 'https://picsum.photos/50/50?random=8', number: '', buttonColor: '' },
+    { name: '', image: 'https://picsum.photos/50/50?random=9', number: '', buttonColor: '' },
+    { name: '', image: 'https://picsum.photos/50/50?random=10', number: '', buttonColor: '' },
+    { name: '', image: 'https://picsum.photos/50/50?random=11', number: '', buttonColor: '' },
+    { name: '', image: 'https://picsum.photos/50/50?random=12', number: '', buttonColor: '' },
+    { name: '', image: 'https://picsum.photos/50/50?random=13', number: '', buttonColor: '' },
+    { name: '', image: 'https://picsum.photos/50/50?random=14', number: '', buttonColor: '' },
+    { name: '', image: 'https://picsum.photos/50/50?random=15', number: '', buttonColor: '' }
   ];
-  selectedLanguage: string = 'es';
-  buttonColors = ['warning', 'success', 'danger']; // Colores disponibles
 
+  selectedLanguage: string = 'es'; // Idioma seleccionado
+  buttonColors = ['warning', 'success', 'danger']; // Colores de botones disponibles
 
+  constructor(
+    private translate: TranslateService,
+    private modalController: ModalController // Inyecta el ModalController
+  ) {}
 
-
-  constructor(private translate: TranslateService) {
-    // Añadir números aleatorios y colores dinámicos a cada txostena
-    this.txostenak = this.txostenak.map((txostena) => ({
+  ngOnInit() {
+    this.txostenak = this.txostenak.map((txostena, index) => ({
       ...txostena,
       number: this.getRandomNumber(),
       buttonColor: this.getRandomButtonColor(),
+      name: this.translate.instant('Cliente ') + (index + 1)
     }));
 
+    // Configuración inicial del idioma
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
 
-  changeLanguage() {
-    this.translate.use(this.selectedLanguage);
+  async openModal(txostena: Txostena) {
+    const modal = await this.modalController.create({
+      component: TxostenaModalComponent, // El componente del modal
+      componentProps: { txostena: txostena } // Pasa los datos de txostena al modal
+    });
+    return await modal.present();
   }
 
-  // Generar un número aleatorio entre 1 y 200
+  changeLanguage() {
+    this.translate.use(this.selectedLanguage);
+    this.txostenak = this.txostenak.map((txostena, index) => ({
+      ...txostena,
+      name: this.translate.instant('Bezero ') + (index + 1)
+    }));
+  }
+
   getRandomNumber(): string {
     const num = Math.floor(Math.random() * 200) + 1;
     return num > 99 ? '+99' : num.toString();
   }
 
-  // Obtener un color aleatorio del arreglo
   getRandomButtonColor(): string {
     const randomIndex = Math.floor(Math.random() * this.buttonColors.length);
     return this.buttonColors[randomIndex];
   }
-  
 }

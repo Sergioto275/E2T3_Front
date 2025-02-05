@@ -1,4 +1,14 @@
 {
+    "menu": {
+        "title":"Menua",
+        "hitzorduak": "Hitzorduak",
+        "txostenak": "Txostenak",
+        "materialak": "Materialak",
+        "produktuak": "Produktuak",
+        "historiala": "Historiala",
+        "ikasleak": "Ikasleak",
+        "zerbitzuak": "Zerbitzuak"
+    },
     "productos": {
         "title": "Produktuen kudeaketa",
         "botones": {
@@ -32,6 +42,8 @@
     "materiales": {
         "title": "Materialen kudeaketa",
         "botones": {
+            "gestionarMateriales": "Materialak Kudeatu",
+            "devolverMateriales": "Materialak Bueltatu",
             "agregarMaterial": "Materiala Gehitu",
             "sacarMateriales": "Materialak Atera",
             "crearMateriales": "Materialak Sortu",
@@ -48,7 +60,7 @@
             "material": "Materiala",
             "categoria": "Kategoria",
             "nombre": "Izena",
-            "etiqueta": "Etiqueta",
+            "etiqueta": "Etiketa",
             "vacio":"Ez daude materialak aukeratuta"
         },
         "categorias": {
@@ -58,9 +70,11 @@
     "citas": {
         "titulo":"Hitzorduak",
         "horas":"Orduak",
+        "asientos":"Eserlekuak",
         "botones": {
             "confirmar": "Berretsi",
             "guardar": "Gorde",
+            "editar":"Editatu",
             "borrar": "Ezabatu",
             "crear": "Sortu",
             "asignar": "Ikaslea Esleitu",
@@ -75,10 +89,80 @@
             "asiento":"Eserlekuak",
             "cliente":"Bezeroa",
             "telefono":"Telefonoa",
-            "casa":"Etxekoa"
+            "casa":"Etxekoa",
+            "trabajador":"Langilea"
+        }
+    },
+    "historial": {
+      "titulo": "Historiala",
+      "botones":{
+            "productos": "Produktu mugimenduak",
+            "materiales":"Material mugimenduak",
+            "ticket":"Ticket-ak",
+            "cliente":"Bezero historiala",
+            "crear":"Sortu",
+            "añadir":"Añadir",
+            "guardar":"Gorde",
+            "editar":"Editar"
+        },
+      "modal": {
+            "proceso":"Erabiltzen",
+            "trabajador":"Langilea",
+            "fechaInicio":"Hasiera Data",
+            "fechaFin":"Amaiera Data",
+            "grupo":"Taldea",
+            "cantidad": "Kantitatea",
+            "servicios":"Zerbitzuak",
+            "precio":"Prezioa",
+            "total":"Prezio Totala",
+            "ficha":"Bezeroa Fitxa",
+            "añadir_cliente":"Bezeroa Gehitu",
+            "nombre":"Izena",
+            "apellido":"Abizena",
+            "telefono":"Telefonoa",
+            "piel":"Azal Sentikorra",
+            "producto":"Produktua",
+            "fecha":"Data",
+            "volumen":"Bolumena",
+            "comentarios":"Oharrak"
         }
     },
     "informes":{
-        "title": "Txostenak"
+        "title": "Txostenak",
+        "cliente": "Bezero",
+        "botones": {
+          "datos": "Datuak ikusi",
+          "cerrar": "Itxi"
+
+      },
+      "modal": {
+        "idCliente": "Bezeroaren ID",
+        "nombre": "Izen",
+        "apellido": "Abizena",
+        "telefono": "Teléfonoa",
+        "tinte": "Tintea",
+        "pSensible": "Ile Sentikorra"
       }
+    },
+    "servicios":{
+        "title":"Zerbitzuak",
+        "modal":{
+            "dentro":"Etxeko Prezioa",
+            "fuera":"Kanpoko Prezioa",
+            "nombre":"Izena",
+            "extra":"Extra",
+            "color":"Kolorea",
+            "select":"Kategoria bat aukeratu",
+            "categoria":"Kategoria"
+        },
+        "botones": {
+            "crearServicio": "Zerbitzua gehitu",
+            "editarServicio": "Zerbitzua editatu",
+            "crearCategoria":"Kategoria Sortu",
+            "editarCategoria": "Kategoria editatu",
+            "confirmar": "Baieztatu",
+            "crear": "Sortu",
+            "editar": "Editatu"
+        }
+    }
 }

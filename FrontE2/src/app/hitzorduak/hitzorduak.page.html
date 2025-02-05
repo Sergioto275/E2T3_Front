@@ -7,6 +7,10 @@
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-title>{{ "citas.titulo" | translate }}</ion-title>
+        <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">
+          <ion-select-option value="es">Español</ion-select-option>
+          <ion-select-option value="eu">Euskera</ion-select-option>
+        </ion-select>
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
@@ -21,13 +25,13 @@
               <thead>
                 <tr>
                   <th>{{ "citas.horas" | translate }}</th>
-                  <th *ngFor="let i of [].constructor(10); let idx = index">{{ "citas.asientos" | translate }} {{ idx + 1 }}</th>
+                  <th *ngFor="let i of [].constructor(asientos); let idx = index">{{ "citas.asientos" | translate }} {{ idx + 1 }}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let time of hoursArray">
                   <td>{{ time }}</td>
-                  <ng-container *ngFor="let i of [].constructor(10); let idnx = index">
+                  <ng-container *ngFor="let i of [].constructor(asientos); let idnx = index">
                     <td *ngIf="citaSartuta(time, idnx + 1)" [attr.rowspan]="rowspanManagement(time, idnx + 1)">
                       <ng-container *ngIf="getCitasAtTimeAndSeat(time, idnx + 1).length > 0; else emptySeat">
                         <ion-card *ngFor="let cita of getCitasAtTimeAndSeat(time, idnx + 1)" (click)="cargar_cita_selec(cita.id)" [ngClass]="{
@@ -140,32 +144,34 @@
             </ion-segment-content>
             <ion-segment-content id="asignatu">
               <ion-item>
-                <ion-label position="stacked">Alumno</ion-label>
-                <ion-select placeholder="Seleccione un responsable">
-                  <ion-select-option value="1">Alumno 1</ion-select-option>
-                  <ion-select-option value="2">Alumno 2</ion-select-option>
-                  <ion-select-option value="3">Alumno 3</ion-select-option>
+                <ion-label position="stacked">{{ "citas.modal.trabajador" | translate }}</ion-label>
+                <ion-select [(ngModel)]="idLangile" placeholder="Seleccione un responsable">
+                  <ion-select-option *ngFor="let ikasle of langileArray" [value]="ikasle.id">{{ikasle.izena}} {{ikasle.abizena}}</ion-select-option>
                 </ion-select>
               </ion-item>
-              <ion-button>Asignar</ion-button>
+              <ion-button (click)="asignar_cita()" >{{ "citas.botones.asignar" | translate }}</ion-button>
             </ion-segment-content>
             <ion-segment-content id="ticket">
-              <ion-item>
-                <ion-checkbox>Tratamiento 1</ion-checkbox>
-              </ion-item>
-              <ion-item>
-                <ion-checkbox>Tratamiento 2</ion-checkbox>
-              </ion-item>
-              <ion-item>
-                <ion-checkbox>Tratamiento 3</ion-checkbox>
-              </ion-item>
-              <ion-item>
-                <ion-checkbox>Tratamiento 4</ion-checkbox>
-              </ion-item>
-              <ion-item>
-                <ion-checkbox>Tratamiento 5</ion-checkbox>
-              </ion-item>
-              <ion-button>Generar Ticket</ion-button>
+              <ion-list *ngFor="let katTrat of tratamenduArray">
+                <ion-label>{{ katTrat.izena }}</ion-label>
+                <ion-item *ngFor="let trat of katTrat.zerbitzuak">
+                  <ion-checkbox slot="start"  [(ngModel)]="trat.selected" (ionChange)="actualizarServiciosSeleccionados(trat, katTrat.extra)"></ion-checkbox>
+                  <ion-label>{{ trat.izena }}
+                    <ng-container *ngIf="!katTrat.extra">
+                      <ng-container *ngIf="etxekoEditar; else kanpokoa">
+                        {{ trat.etxekoPrezioa }}
+                      </ng-container>
+                      <ng-template #kanpokoa>
+                        {{ trat.kanpokoPrezioa }}
+                      </ng-template>
+                    </ng-container>
+                    <ng-container *ngIf="katTrat.extra">
+                      <ion-input [(ngModel)]="trat.precio" placeholder="€€€"></ion-input>
+                    </ng-container>
+                  </ion-label>                                  
+                </ion-item>
+              </ion-list>
+              <ion-button (click)="generar_ticket()">{{ "citas.botones.generar" | translate }}</ion-button>
             </ion-segment-content>
           </ion-segment-view>
         </div>
