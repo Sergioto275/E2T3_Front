@@ -56,26 +56,26 @@
     <ng-template>
       <ion-header>
         <ion-toolbar>
-          <ion-title>{{ 'servicios.botones.crearServicio' | translate }} aaa</ion-title>
+          <ion-title>{{ 'servicios.botones.crearServicio' | translate }}</ion-title>
         </ion-toolbar>
       </ion-header>
       <ion-content>
         <ion-item>
           <ion-label position="stacked">{{ 'servicios.modal.nombre' | translate }}</ion-label>
-          <ion-input [(ngModel)]="crearServicio.izena" placeholder="Izena"></ion-input>
+          <ion-input [(ngModel)]="crearServicio.izena" placeholder="{{ 'servicios.modal.nombre' | translate }}"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-select [(ngModel)]="crearServicio.idKategoria" label="Kategoria" placeholder="Selecciona una kategoria">
+          <ion-select [(ngModel)]="crearServicio.idKategoria" label="{{ 'servicios.modal.categoria' | translate }}" placeholder="{{ 'servicios.modal.select' | translate }}">
             <ion-select-option *ngFor="let cat of zerbitzuak" [value]="cat.id">{{cat.izena}}</ion-select-option>
           </ion-select>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">{{ 'servicios.modal.fuera' | translate }}</ion-label>
-          <ion-input [(ngModel)]="crearServicio.kanpokoPrezioa" placeholder="Kanpoko Prezioa"></ion-input>
+          <ion-input [(ngModel)]="crearServicio.kanpokoPrezioa" placeholder="{{ 'servicios.modal.fuera' | translate }}"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">{{ 'servicios.modal.dentro' | translate }}</ion-label>
-          <ion-input [(ngModel)]="crearServicio.etxekoPrezioa" placeholder="Etxeko Prezioa"></ion-input>
+          <ion-input [(ngModel)]="crearServicio.etxekoPrezioa" placeholder="{{ 'servicios.modal.dentro' | translate }}"></ion-input>
         </ion-item>
         <ion-button expand="full" (click)="sortuZerbitzua()" (click)="modalServiceCrear.dismiss()">{{ 'servicios.botones.crear' | translate }}</ion-button>
       </ion-content>
@@ -97,20 +97,20 @@
       <ion-content>
         <ion-item>
           <ion-label position="stacked">{{ 'servicios.modal.nombre' | translate }}</ion-label>
-          <ion-input [(ngModel)]="editarServicio.izena" placeholder="Izena"></ion-input>
+          <ion-input [(ngModel)]="editarServicio.izena" placeholder="{{ 'servicios.modal.nombre' | translate }}"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-select [(ngModel)]="editarServicio.idKategoria" label="Kategoria" placeholder="Selecciona una kategoria">
+          <ion-select [(ngModel)]="editarServicio.idKategoria" label="{{ 'servicios.modal.categoria' | translate }}" placeholder="{{ 'servicios.modal.select' | translate }}">
             <ion-select-option *ngFor="let cat of zerbitzuak" [value]="cat.id">{{cat.izena}}</ion-select-option>
           </ion-select>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">{{ 'servicios.modal.dentro' | translate }}</ion-label>
-          <ion-input [(ngModel)]="editarServicio.etxekoPrezioa" placeholder="Etxeko Prezioa"></ion-input>
+          <ion-input [(ngModel)]="editarServicio.etxekoPrezioa" placeholder="{{ 'servicios.modal.dentro' | translate }}"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">{{ 'servicios.modal.fuera' | translate }}</ion-label>
-          <ion-input [(ngModel)]="editarServicio.kanpokoPrezioa" placeholder="Kanpoko Prezioa"></ion-input>
+          <ion-input [(ngModel)]="editarServicio.kanpokoPrezioa" placeholder="{{ 'servicios.modal.fuera' | translate }}"></ion-input>
         </ion-item>
         <ion-button expand="full" (click)="editarServicios()">{{ 'servicios.botones.editar' | translate }}</ion-button>
       </ion-content>
@@ -132,7 +132,7 @@
       <ion-content>
         <ion-item>
           <ion-label position="stacked">{{ 'servicios.modal.nombre' | translate }}</ion-label>
-          <ion-input [(ngModel)]="editarCategoria.izena" placeholder="Izena"></ion-input>
+          <ion-input [(ngModel)]="editarCategoria.izena" placeholder="{{ 'servicios.modal.nombre' | translate }}"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">{{ 'servicios.modal.color' | translate }}</ion-label>
@@ -162,7 +162,7 @@
       <ion-content>
         <ion-item>
           <ion-label position="stacked">{{ 'servicios.modal.nombre' | translate }}</ion-label>
-          <ion-input [(ngModel)]="crearCategoria.izena" placeholder="Izena"></ion-input>
+          <ion-input [(ngModel)]="crearCategoria.izena" placeholder="{{ 'servicios.modal.nombre' | translate }}"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">{{ 'servicios.modal.color' | translate }}</ion-label>

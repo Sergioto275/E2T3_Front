@@ -1,23 +1,35 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent  implements OnInit {
-  public appPages = [
-    { title: 'Hitzorduak', url: '/hitzorduak', icon: 'calendar-number' },
-    { title: 'Txostenak', url: '/txostenak', icon: 'document-text' },
-    { title: 'Materialak', url: '/materialak', icon: 'cut' },
-    { title: 'Produktuak', url: '/produktuak', icon: 'color-fill' },
-    { title: 'Historiala', url: '/historiala', icon: 'albums' },
-    { title: 'Ikasleak', url: '/ikasleak', icon: 'people' },
-    { title: 'Zerbitzuak', url: '/tratamenduak', icon: 'cut' },
-  ];
+export class HeaderComponent implements OnInit {
+  public appPages: any[] = [];
 
-  constructor() { }
+  constructor(private translate: TranslateService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadTranslations();
+  }
 
+  public loadTranslations() {
+    this.translate.get([
+      'menu.hitzorduak', 'menu.txostenak', 'menu.materialak', 
+      'menu.produktuak', 'menu.historiala', 'menu.ikasleak', 'menu.zerbitzuak'
+    ]).subscribe(translations => {
+      this.appPages = [
+        { title: translations['menu.hitzorduak'], url: '/hitzorduak', icon: 'calendar-number' },
+        { title: translations['menu.txostenak'], url: '/txostenak', icon: 'document-text' },
+        { title: translations['menu.materialak'], url: '/materialak', icon: 'cut' },
+        { title: translations['menu.produktuak'], url: '/produktuak', icon: 'color-fill' },
+        { title: translations['menu.historiala'], url: '/historiala', icon: 'albums' },
+        { title: translations['menu.ikasleak'], url: '/ikasleak', icon: 'people' },
+        { title: translations['menu.zerbitzuak'], url: '/tratamenduak', icon: 'cut' },
+      ];
+    });
+  }
+  
 }

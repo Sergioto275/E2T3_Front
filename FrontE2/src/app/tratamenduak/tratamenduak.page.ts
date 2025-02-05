@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
+import { HeaderComponent } from '../components/header/header.component';
 
 @Component({
   selector: 'app-tratamenduak',
@@ -9,6 +10,7 @@ import { environment } from 'src/environments/environment';
 })
 export class TratamenduakPage implements OnInit {
 
+  @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   selectedLanguage: string = 'es';
   zerbitzuak:any[] = [];
   modalAtera = false;
@@ -35,6 +37,9 @@ export class TratamenduakPage implements OnInit {
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
+    if (this.headerComponent) {
+      this.headerComponent.loadTranslations();
+    }
   }
 
   openServiceModal(service:any, idKat:number){

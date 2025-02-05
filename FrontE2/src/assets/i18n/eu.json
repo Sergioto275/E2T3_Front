@@ -1,4 +1,14 @@
 {
+    "menu": {
+        "title":"Menua",
+        "hitzorduak": "Hitzorduak",
+        "txostenak": "Txostenak",
+        "materialak": "Materialak",
+        "produktuak": "Produktuak",
+        "historiala": "Historiala",
+        "ikasleak": "Ikasleak",
+        "zerbitzuak": "Zerbitzuak"
+    },
     "productos": {
         "title": "Produktuen kudeaketa",
         "botones": {
@@ -96,6 +106,11 @@
             "editar":"Editar"
         },
       "modal": {
+            "proceso":"Erabiltzen",
+            "trabajador":"Langilea",
+            "fechaInicio":"Hasiera Data",
+            "fechaFin":"Amaiera Data",
+            "grupo":"Taldea",
             "cantidad": "Kantitatea",
             "servicios":"Zerbitzuak",
             "precio":"Prezioa",
@@ -136,7 +151,9 @@
             "fuera":"Kanpoko Prezioa",
             "nombre":"Izena",
             "extra":"Extra",
-            "color":"Kolorea"
+            "color":"Kolorea",
+            "select":"Kategoria bat aukeratu",
+            "categoria":"Kategoria"
         },
         "botones": {
             "crearServicio": "Zerbitzua gehitu",
