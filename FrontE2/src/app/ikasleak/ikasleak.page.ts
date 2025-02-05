@@ -1,11 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlertController, IonModal, ModalController } from '@ionic/angular';
-import {
-  IkasleZerbitzuakService,
-  Ikaslea,
-  Taldea,
-  Horario,
-} from './../zerbitzuak/ikasle-zerbitzuak.service';
+import {IkasleZerbitzuakService, Ikaslea, Taldea, Horario,} from './../zerbitzuak/ikasle-zerbitzuak.service';
 import { TranslateService } from '@ngx-translate/core';
 import { HeaderComponent } from '../components/header/header.component';
 
@@ -23,19 +18,9 @@ export class IkasleakPage implements OnInit {
   filteredAlumnos: Ikaslea[] = [];
   taldeak: Taldea[] = [];
   gruposDisponibles: Taldea[] = [];
-  selectedAlumno: Ikaslea = {
-    id: 0,
-    izena: '',
-    abizenak: '',
-    taldea: { kodea: '' },
-  };
+  selectedAlumno: Ikaslea = {id: 0, izena: '', abizenak: '', taldea: { kodea: '' },};
   isEditModalOpen: boolean = false;
-  nuevoAlumno: Ikaslea = {
-    id: 0,
-    izena: '',
-    abizenak: '',
-    taldea: { kodea: '' },
-  };
+  nuevoAlumno: Ikaslea = {id: 0, izena: '', abizenak: '', taldea: { kodea: '' },};
   nuevoGrupo: Taldea = { kodea: '', izena: '' };
   kodeak: Taldea[] = [];
   selectedTalde: Taldea = { kodea: '', izena: '' };
@@ -46,31 +31,11 @@ export class IkasleakPage implements OnInit {
   fechaInicio: any = null;
   fechaFin: any = null;
   idHorario: any = null;
-
   grupoSeleccionado: Taldea = { kodea: '', izena: '' };
   diaSeleccionado: number = 0;
-
   ordutegiArray: Horario[] = [];
-  ordutegia: Horario = {
-    taldea: {
-      kodea: '',
-    },
-    eguna: 0,
-    hasieraData: '',
-    amaieraData: '',
-    hasieraOrdua: '',
-    amaieraOrdua: '',
-  };
-
-  selectedHorario: Horario = {
-    id: 0,
-    hasieraData: '',
-    hasieraOrdua: '',
-    amaieraData: '',
-    amaieraOrdua: '',
-    eguna: 0,
-    taldea: { kodea: '' },
-  };
+  ordutegia: Horario = {taldea: {kodea: '',},eguna: 0,hasieraData: '',amaieraData: '',hasieraOrdua: '',amaieraOrdua: '',};
+  selectedHorario: Horario = {id: 0,hasieraData: '',hasieraOrdua: '',amaieraData: '',amaieraOrdua: '',eguna: 0,taldea: { kodea: '' },};
 
   constructor(
     private translate: TranslateService,
@@ -102,8 +67,7 @@ export class IkasleakPage implements OnInit {
             (grupo) => grupo.kodea === horario.taldea.kodea && grupo.ezabatzeData
           );
           return !horario.ezabatzeData && !isDeletedTalde; // Filtra los horarios cuyo taldea no ha sido eliminado
-        });
-  
+        })
         console.log('Horarios obtenidos y filtrados:', this.ordutegiArray);
       },
       (error) => {
@@ -111,7 +75,6 @@ export class IkasleakPage implements OnInit {
       }
     );
   }
-  
 
   getDayName(k: number): string {
     if (k === 1) {
@@ -185,7 +148,6 @@ export class IkasleakPage implements OnInit {
       },
     };
     console.log(data);
-
     this.ikasleService.agregarAlumno(data).subscribe((data) => {
       this.ikasleak.push(data);
       this.filteredAlumnos = [...this.ikasleak];
@@ -321,7 +283,6 @@ export class IkasleakPage implements OnInit {
   // Función para guardar los horarios
   guardarHorario() {
     // Verifica si todos los campos necesarios están completos
-    
     // Formatear las fechas a 'yyyy-MM-dd' y las horas a 'HH:mm:ss'
     const formattedFechaInicio = this.formatDate(this.fechaInicio);
     const formattedFechaFin = this.formatDate(this.fechaFin);
@@ -338,15 +299,12 @@ export class IkasleakPage implements OnInit {
       hasieraOrdua: formattedHoraInicio, // Asegúrate de que está en formato HH:mm:ss
       amaieraOrdua: formattedHoraFin, // Asegúrate de que está en formato HH:mm:ss
     };
-  
     console.log(JSON.stringify(this.ordutegia));
-  
     // Usamos subscribe para manejar la respuesta
     this.ikasleService.guardarHorario(this.ordutegia).subscribe(
       (data) => {
         // Si el horario se guarda correctamente, agrega a la lista de horarios
         this.ordutegiArray.push(data);
-  
         // Reseteo de los campos después de guardar
         this.ordutegia = {
           taldea: {
@@ -364,9 +322,7 @@ export class IkasleakPage implements OnInit {
         this.fechaFin = ''; // Resetea la fecha de fin
         this.horaInicio = null; // Resetea la hora de inicio
         this.horaFin = null; // Resetea la hora de fin
-  
         console.log(data);
-  
         // Verifica si el horario se ha guardado correctamente
         if (data && data.id) {
           this.showAlert('Éxito', 'Horario guardado correctamente');
@@ -418,14 +374,12 @@ export class IkasleakPage implements OnInit {
     this.fechaFin = horario.amaieraData;
     this.horaInicio = horario.hasieraOrdua;
     this.horaFin = horario.amaieraOrdua;
-
     // Abrir el modal manualmente
     modal.present();
   }
 
   horarioSeleccionado: any; // Asegúrate de tener un horario seleccionado
   // Otras propiedades del componente
-
   seleccionarHorario(horario: any) {
     this.horarioSeleccionado = horario;
     // Aquí puedes agregar lógica adicional si es necesario
@@ -444,7 +398,6 @@ export class IkasleakPage implements OnInit {
         amaieraOrdua: this.horaFin,
         eguneratzeData: new Date().toISOString(),
       };
-
       // Si el id es undefined aquí, podría ser que no se esté asignando correctamente
       if (horarioActualizado.id) {
         this.ikasleService.actualizarHorario(horarioActualizado).subscribe(
@@ -490,10 +443,8 @@ export class IkasleakPage implements OnInit {
             handler: () => {
               // Obtener la fecha y hora actual
               const ezabatzeData = new Date().toISOString(); // Esto lo convierte en formato ISO 8601
-
               // Agregar el campo ezabatzeData al objeto horario
               horario.ezabatzeData = ezabatzeData;
-
               // Llamar al servicio para eliminar el horario
               this.ikasleService
                 .eliminarHorario(horario.id)

@@ -29,9 +29,7 @@
   <ion-segment-content id="kudeatu">
     <ion-toolbar>
       <ion-buttons>
-        <ion-button slot="start" id="prod-gestionatu-modal"
-          >Sortu Taldea</ion-button
-        >
+        <ion-button slot="start" id="prod-gestionatu-modal">Sortu Taldea</ion-button>
       </ion-buttons>
       <ion-buttons slot="start">
         <ion-button id="prod-sortu-modal">Sortu Ikaslea</ion-button>
@@ -47,28 +45,25 @@
         <h2>{{ grupo.izena }}</h2>
         <p>Kodea: {{ grupo.kodea }}</p>
         <!-- Lista de alumnos dentro del grupo -->
-        <ion-button
-          color="danger"
-          (click)="confirmarEliminacionGrupo(grupo.kodea)"
-        >
+        <ion-button color="danger" (click)="confirmarEliminacionGrupo(grupo.kodea)">
           <ion-icon name="trash-outline"></ion-icon>
         </ion-button>
         <ion-button color="primary" (click)="openEditTaldeModal(grupo)">
           <ion-icon name="create-outline"></ion-icon>
         </ion-button>
         <ion-list>
-          <ion-item *ngFor="let ikaslea of getAlumnosPorKodea(grupo.kodea)">
+          <!-- <ion-item *ngFor="let ikaslea of getAlumnosPorKodea(grupo.kodea)"> -->
+          <ion-item *ngFor="let ikaslea of grupo.langileak">
             <ion-label>
               <h3>{{ ikaslea.izena }} {{ ikaslea.abizenak }}</h3>
               <p>Ikaslearen sortze data: {{ ikaslea.sortzeData }}</p>
             </ion-label>
-            <ion-button (click)="openEditModal(ikaslea)"
-              ><ion-icon name="create-outline"></ion-icon
-            ></ion-button>
+            <ion-button (click)="openEditModal(ikaslea)">
+              <ion-icon name="create-outline"></ion-icon>
+            </ion-button>
           </ion-item>
         </ion-list>
       </ion-label>
-
       <!-- Botón para eliminar el grupo -->
     </ion-item>
   </ion-list>
@@ -84,35 +79,21 @@
       <ion-content>
         <ion-item>
           <ion-label position="stacked">Izena</ion-label>
-          <ion-input
-            [(ngModel)]="selectedAlumno.izena"
-            placeholder="Sartu izen berria"
-          ></ion-input>
+          <ion-input [(ngModel)]="selectedAlumno.izena" placeholder="Sartu izen berria"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">Abizenak</ion-label>
-          <ion-input
-            [(ngModel)]="selectedAlumno.abizenak"
-            placeholder="Sartu abizen berriak"
-          ></ion-input>
+          <ion-input [(ngModel)]="selectedAlumno.abizenak" placeholder="Sartu abizen berriak"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">Kodea</ion-label>
-          <ion-select
-            [(ngModel)]="selectedAlumno.taldea.kodea"
-            placeholder="Erabaki kode berri bat"
-          >
-            <ion-select-option
-              *ngFor="let grupo of gruposDisponibles"
-              [value]="grupo.kodea"
-            >
+          <ion-select [(ngModel)]="selectedAlumno.taldea.kodea" placeholder="Erabaki kode berri bat">
+            <ion-select-option *ngFor="let grupo of gruposDisponibles" [value]="grupo.kodea">
               {{ grupo.kodea }}
             </ion-select-option>
           </ion-select>
         </ion-item>
-        <ion-button expand="full" (click)="updateAlumno()"
-          >Guardar Cambios</ion-button
-        >
+        <ion-button expand="full" (click)="updateAlumno()">Guardar Cambios</ion-button>
       </ion-content>
     </ng-template>
   </ion-modal>
@@ -128,38 +109,22 @@
       <ion-content>
         <ion-item>
           <ion-label position="stacked">Izena</ion-label>
-          <ion-input
-            [(ngModel)]="nuevoAlumno.izena"
-            placeholder="Izena"
-          ></ion-input>
+          <ion-input [(ngModel)]="nuevoAlumno.izena" placeholder="Izena"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">Abizenak</ion-label>
-          <ion-input
-            [(ngModel)]="nuevoAlumno.abizenak"
-            placeholder="Abizenak"
-          ></ion-input>
+          <ion-input [(ngModel)]="nuevoAlumno.abizenak" placeholder="Abizenak"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">Kodea</ion-label>
-          <ion-select
-            [(ngModel)]="nuevoAlumno.taldea.kodea"
-            placeholder="Erabaki kode berri bat"
-          >
-            <ion-select-option
-              *ngFor="let grupo of gruposDisponibles"
-              [value]="grupo.kodea"
-            >
+          <ion-select [(ngModel)]="nuevoAlumno.taldea.kodea" placeholder="Erabaki kode berri bat">
+            <ion-select-option *ngFor="let grupo of gruposDisponibles" [value]="grupo.kodea">
               {{ grupo.kodea }}
             </ion-select-option>
           </ion-select>
         </ion-item>
         <!-- El botón se deshabilita si no están completos los campos -->
-        <ion-button
-          expand="full"
-          (click)="agregarAlumno()"
-          [disabled]="!nuevoAlumno.izena || !nuevoAlumno.abizenak || !nuevoAlumno.taldea.kodea"
-        >
+        <ion-button expand="full" (click)="agregarAlumno()" [disabled]="!nuevoAlumno.izena || !nuevoAlumno.abizenak || !nuevoAlumno.taldea.kodea">
           Sortu Ikaslea
         </ion-button>
       </ion-content>
@@ -182,33 +147,24 @@
         <!-- Barra de búsqueda para filtrar alumnos -->
         <ion-item>
           <ion-label position="stacked">Bilatu Ikaslea</ion-label>
-          <ion-searchbar
-            [(ngModel)]="searchQuery"
-            (ionInput)="filterAlumnos()"
-            debounce="0"
-            placeholder="Bilatu izenaren arabera"
-          ></ion-searchbar>
+          <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterAlumnos()" debounce="0" placeholder="Bilatu izenaren arabera"></ion-searchbar>
         </ion-item>
 
         <!-- Lista de alumnos con casillas de verificación para seleccionar varios -->
         <ion-list>
           <ion-item *ngFor="let alumno of filteredAlumnos">
             <!-- Checkbox para seleccionar alumno -->
-            <ion-checkbox
-              slot="start"
-              [(ngModel)]="alumno.selected"
-              (ionChange)="onAlumnoSelected(alumno.id)"
-            >
+            <ion-checkbox slot="start" [(ngModel)]="alumno.selected" (ionChange)="onAlumnoSelected(alumno.id)">
             </ion-checkbox>
             <ion-label>
               <h2>{{ alumno.izena }} {{ alumno.abizenak }}</h2>
-              <p>Taldea: {{ alumno.taldea.izena }}</p>
-              <p>Kodea: {{ alumno.taldea.kodea }}</p>
+              <p>Taldea: {{ alumno.taldeIzena }}</p>
+              <p>Kodea: {{ alumno.taldeKodea }}</p>
               <p>Fecha de creación: {{ alumno.sortzeData }}</p>
             </ion-label>
-            <ion-button (click)="openEditModal(alumno)"
-              ><ion-icon name="create-outline"></ion-icon
-            ></ion-button>
+            <ion-button (click)="openEditModal(alumno)">
+              <ion-icon name="create-outline"></ion-icon>
+            </ion-button>
           </ion-item>
         </ion-list>
       </ion-content>
@@ -227,24 +183,14 @@
         <!-- Campo para el nombre del grupo -->
         <ion-item>
           <ion-label position="stacked">Taldearen Izena</ion-label>
-          <ion-input
-            [(ngModel)]="nuevoGrupo.izena"
-            placeholder="Taldearen izena"
-          ></ion-input>
+          <ion-input [(ngModel)]="nuevoGrupo.izena" placeholder="Taldearen izena"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">Taldearen Kodea</ion-label>
-          <ion-input
-            [(ngModel)]="nuevoGrupo.kodea"
-            placeholder="Taldearen izena"
-          ></ion-input>
+          <ion-input [(ngModel)]="nuevoGrupo.kodea" placeholder="Taldearen izena"></ion-input>
         </ion-item>
         <!-- El botón se deshabilita si no están completos los campos -->
-        <ion-button
-          expand="full"
-          (click)="agregarGrupo()"
-          [disabled]="!nuevoGrupo.izena || !nuevoGrupo.kodea"
-        >
+        <ion-button expand="full" (click)="agregarGrupo()" [disabled]="!nuevoGrupo.izena || !nuevoGrupo.kodea">
           Sortu Taldea
         </ion-button>
       </ion-content>
@@ -253,10 +199,7 @@
 
   <!-- Modal para ver Taldeak e Ikasleak -->
 
-  <ion-modal
-    [isOpen]="isEditTaldeModalOpen"
-    (ionModalDidDismiss)="closeEditTaldeModal()"
-  >
+  <ion-modal [isOpen]="isEditTaldeModalOpen" (ionModalDidDismiss)="closeEditTaldeModal()">
     <ng-template>
       <ion-header>
         <ion-toolbar>
@@ -267,15 +210,10 @@
         <!-- Campos para editar el nombre y código -->
         <ion-item>
           <ion-label position="stacked">Taldearen Izena</ion-label>
-          <ion-input
-            [(ngModel)]="selectedTalde.izena"
-            placeholder="Sartu taldearen izena"
-          ></ion-input>
+          <ion-input [(ngModel)]="selectedTalde.izena" placeholder="Sartu taldearen izena"></ion-input>
         </ion-item>
         <!-- Botón para guardar los cambios -->
-        <ion-button expand="full" (click)="updateTalde()"
-          >Gorde Aldaketak</ion-button
-        >
+        <ion-button expand="full" (click)="updateTalde()">Gorde Aldaketak</ion-button>
       </ion-content>
     </ng-template>
   </ion-modal>
@@ -397,11 +335,7 @@
             <ion-input [(ngModel)]="horaFin" name="horaFin" type="time" required></ion-input>
           </ion-item>
           
-          <ion-button
-            [disabled]="!horaInicio || !horaFin || !grupoSeleccionado || !diaSeleccionado || !fechaInicio || !fechaFin"
-            expand="full"
-            (click)="guardarHorario()"
-          >
+          <ion-button [disabled]="!horaInicio || !horaFin || !grupoSeleccionado || !diaSeleccionado || !fechaInicio || !fechaFin" expand="full" (click)="guardarHorario()">
             Guardar
           </ion-button>
           
@@ -468,11 +402,7 @@
             <ion-input [(ngModel)]="horaFin" name="horaFin" type="time" required></ion-input>
           </ion-item>
 
-          <ion-button
-            [disabled]="!horaInicio || !horaFin || !grupoSeleccionado || !diaSeleccionado || !fechaInicio || !fechaFin"
-            expand="full"
-            (click)="actualizarHorario()"
-          >
+          <ion-button [disabled]="!horaInicio || !horaFin || !grupoSeleccionado || !diaSeleccionado || !fechaInicio || !fechaFin" expand="full" (click)="actualizarHorario()">
             Gorde
           </ion-button>
         </div>

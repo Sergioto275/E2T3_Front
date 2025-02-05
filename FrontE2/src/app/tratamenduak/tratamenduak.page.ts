@@ -13,6 +13,7 @@ export class TratamenduakPage implements OnInit {
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   selectedLanguage: string = 'es';
   zerbitzuak:any[] = [];
+  filteredZerbitzuak:any[] = [];
   modalAtera = false;
   alumne = '';
   categoriasAbiertas: { [key: string]: boolean } = {};
@@ -25,6 +26,9 @@ export class TratamenduakPage implements OnInit {
   serviciosSeleccionados:any[]=[];
   isEditingService: boolean = false;
   isEditingCategoria: boolean = false;
+  
+  filtroCategoria: string = '';
+  filtroZerbitzua: string = '';
 
   constructor(private translate: TranslateService) {
     this.translate.setDefaultLang('es');
@@ -39,6 +43,29 @@ export class TratamenduakPage implements OnInit {
     this.translate.use(this.selectedLanguage);
     if (this.headerComponent) {
       this.headerComponent.loadTranslations();
+    }
+  }
+
+  filtrarZerbitzuak() {
+    this.filteredZerbitzuak = this.zerbitzuak.map(categoria => ({
+      ...categoria,
+      zerbitzuak: categoria.zerbitzuak.map((zerbitzua: any) => ({ ...zerbitzua }))
+    }));
+
+    if(this.filtroCategoria !== '')
+    {
+      this.filteredZerbitzuak = this.filteredZerbitzuak.filter(categoria =>
+        (this.filtroCategoria === '' || categoria.izena.toLowerCase().includes(this.filtroCategoria.toLowerCase()))
+      );
+    }
+
+    if (this.filtroZerbitzua !== '') {
+      this.filteredZerbitzuak = this.filteredZerbitzuak.map(categoria => ({
+        ...categoria,
+        produktuak: categoria.produktuak.filter((producto: any) =>
+          producto.izena.toLowerCase().includes(this.filtroZerbitzua.toLowerCase())
+        )
+      }));
     }
   }
 
@@ -105,17 +132,8 @@ export class TratamenduakPage implements OnInit {
           ...categoria,
           zerbitzuak: categoria.zerbitzuak
             .filter((zerbitzua:any) => zerbitzua.ezabatzeData === null)
-            // .map((producto:any) => ({
-            //   id: producto.id,
-            //   izena: producto.izena,
-            //   deskribapena: producto.deskribapena,
-            //   marka: producto.marka,
-            //   stock: producto.stock,
-            //   stockAlerta: producto.stockAlerta,
-            //   sortzeData: producto.sortzeData
-            // }))
         }));
-  
+      this.filteredZerbitzuak = this.zerbitzuak;
       console.log('zerbitzuak kargatu:', this.zerbitzuak);
   
     } catch (e) {

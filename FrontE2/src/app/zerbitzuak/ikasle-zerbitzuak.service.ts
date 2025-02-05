@@ -7,6 +7,8 @@ export interface Ikaslea {
   izena: string;
   abizenak: string;
   taldea: Taldea;
+  taldeIzena?:String;
+  taldeKodea?:String;
   sortzeData?: string;
   eguneratzeData?: string;
   ezabatzeData?: null;
@@ -16,6 +18,7 @@ export interface Ikaslea {
 export interface Taldea {
   kodea: string;
   izena?: string;
+  langileak?:Ikaslea[];
   sortzeData?: string;
   eguneratzeData?: string;
   ezabatzeData?: null;
