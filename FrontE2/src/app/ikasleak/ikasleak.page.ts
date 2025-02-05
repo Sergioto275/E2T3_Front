@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlertController, IonModal, ModalController } from '@ionic/angular';
 import {
   IkasleZerbitzuakService,
@@ -7,6 +7,7 @@ import {
   Horario,
 } from './../zerbitzuak/ikasle-zerbitzuak.service';
 import { TranslateService } from '@ngx-translate/core';
+import { HeaderComponent } from '../components/header/header.component';
 
 @Component({
   selector: 'app-ikasleak',
@@ -14,6 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./ikasleak.page.scss'],
 })
 export class IkasleakPage implements OnInit {
+  @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   selectedLanguage: string = 'es';
   selectedIkasleak: Set<number> = new Set();
   searchQuery: string = '';
@@ -86,6 +88,9 @@ export class IkasleakPage implements OnInit {
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
+    if (this.headerComponent) {
+      this.headerComponent.loadTranslations();
+    }
   }
 
   getHorarios(): void {

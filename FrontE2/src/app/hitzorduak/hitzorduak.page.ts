@@ -1,10 +1,11 @@
 import { formatDate } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import autoTable from 'jspdf-autotable';
 import { environment } from 'src/environments/environment';
+import { HeaderComponent } from '../components/header/header.component';
 
 @Component({
   selector: 'app-hitzorduak',
@@ -12,7 +13,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./hitzorduak.page.scss'],
 })
 export class HitzorduakPage implements OnInit {
-  
+  @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   startHour: string = '10:00:00';
   endHour: string = '16:00:00';
   loading: boolean = true;
@@ -397,6 +398,9 @@ async eliminar_cita() {
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
+    if (this.headerComponent) {
+      this.headerComponent.loadTranslations();
+    }
   }
 
   limpiar_campos() {
