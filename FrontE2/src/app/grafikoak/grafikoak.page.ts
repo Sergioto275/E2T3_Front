@@ -11,5 +11,4 @@ export class GrafikoakPage implements OnInit {
 
   ngOnInit() {
   }
-
 }

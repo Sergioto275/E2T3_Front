@@ -27,9 +27,9 @@ export class TratamenduakPage implements OnInit {
   isEditingCategoria: boolean = false;
 
   constructor(private translate: TranslateService) {
-      this.translate.setDefaultLang('es');
-      this.translate.use(this.selectedLanguage);
-    }
+    this.translate.setDefaultLang('es');
+    this.translate.use(this.selectedLanguage);
+  }
 
   ngOnInit() {
     this.zerbiztuakLortu();

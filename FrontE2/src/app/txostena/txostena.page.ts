@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { TxostenaModalComponent } from '../txostena-modal/txostena-modal.component'; // Asegúrate de importar correctamente el componente del modal
+import { HeaderComponent } from '../components/header/header.component';
 
 interface Txostena {
   name: string;
@@ -17,6 +18,8 @@ interface Txostena {
   standalone:false,
 })
 export class TxostenaPage implements OnInit {
+  @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
+
   txostenak: Txostena[] = [
     { name: '', image: 'https://picsum.photos/50/50?random=1', number: '', buttonColor: '' },
     { name: '', image: 'https://picsum.photos/50/50?random=2', number: '', buttonColor: '' },
@@ -70,6 +73,9 @@ export class TxostenaPage implements OnInit {
       ...txostena,
       name: this.translate.instant('Bezero ') + (index + 1)
     }));
+    if (this.headerComponent) {
+      this.headerComponent.loadTranslations();
+    }
   }
 
   getRandomNumber(): string {
