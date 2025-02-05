@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { TxandakPageRoutingModule } from './txandak-routing.module';
 
 import { TxandakPage } from './txandak.page';
+import { ComponentsModule } from "../components/components.module";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    TxandakPageRoutingModule
-  ],
+    TxandakPageRoutingModule,
+    ComponentsModule
+],
   declarations: [TxandakPage]
 })
 export class TxandakPageModule {}

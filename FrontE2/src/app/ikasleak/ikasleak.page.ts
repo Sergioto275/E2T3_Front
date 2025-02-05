@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, IonModal, ModalController } from '@ionic/angular';
-import {
-  IkasleZerbitzuakService,
-  Ikaslea,
-  Taldea,
-  Horario,
-} from './../zerbitzuak/ikasle-zerbitzuak.service';
+import { IkasleZerbitzuakService,  Ikaslea,  Taldea,  Horario, } from './../zerbitzuak/ikasle-zerbitzuak.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -13,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './ikasleak.page.html',
   styleUrls: ['./ikasleak.page.scss'],
 })
+
 
 export class IkasleakPage implements OnInit {
   selectedLanguage: string = 'es';

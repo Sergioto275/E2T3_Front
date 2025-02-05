@@ -1,13 +1,59 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>txandak</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header></app-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">txandak</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-page" id="main-content">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title size="large">Txandak</ion-title>
+    <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">
+      <ion-select-option value="es">Español</ion-select-option>
+      <ion-select-option value="eu">Euskera</ion-select-option>
+    </ion-select>
+  </ion-toolbar>
+
+  <ion-content [fullscreen]="true">
+    <!-- Botón para añadir nueva txanda -->
+    <ion-button expand="full" color="success" (click)="addTxanda()">
+      Añadir Txanda
+    </ion-button>
+
+    <!-- Lista de Txandas -->
+    <ion-list>
+      <ion-item *ngFor="let txanda of txandak">
+        <ion-label>
+          <h2>{{ txanda.mota === 'G' ? 'Garbiketa' : txanda.mota === 'M' ? 'Mahaia' : txanda.mota }}</h2>
+          <p>{{ txanda.data }}</p>
+          <p>{{ txanda.id }}</p>
+
+
+          <!-- Mostrar alumno directamente -->
+          <p><strong>Alumno:</strong> 
+            <span *ngIf="txanda.alumno">
+              {{ txanda.alumno.izena }} {{ txanda.alumno.abizenak }}
+            </span>
+            <span *ngIf="!txanda.alumno">
+              Desconocido
+            </span>
+          </p>
+        </ion-label>
+    
+        <!-- Botón para editar -->
+        <ion-button (click)="editTxanda(txanda)" color="primary" slot="end">Editar</ion-button>
+        
+        <!-- Botón para eliminar -->
+        <ion-button (click)="deleteTxanda(txanda.id!)" color="danger" slot="end">Eliminar</ion-button>
+      </ion-item>
+    </ion-list>
+
+    <!-- Lista de Alumnos -->
+    <ion-list>
+      <ion-item *ngFor="let alumno of filteredAlumnos">
+        <ion-label>
+          <h2>{{ alumno.izena }} {{ alumno.abizenak }} {{alumno.id}}</h2>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    
+  </ion-content>
 </ion-content>
