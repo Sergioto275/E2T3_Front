@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
+import { of } from 'rxjs/internal/observable/of';
+import { catchError } from 'rxjs/operators';
 
 // Interfaz movida fuera de la clase
 export interface Txanda {
@@ -33,6 +35,11 @@ export class TxandakPage implements OnInit {
   txandak: Txanda[] = [];  // Lista de txandas
   ikasleak: Ikaslea[] = [];
   filteredAlumnos: Ikaslea[] = [];
+  nuevaTxanda = {
+    mota: '', // Tipo de txanda
+    data: '', // Fecha de la txanda
+    alumno: null, // ID del alumno
+  };
   
   constructor(private translate: TranslateService, 
               private http: HttpClient,
@@ -105,68 +112,6 @@ export class TxandakPage implements OnInit {
     });
   }
 
-  // Método para abrir la alerta de edición
-  async editTxanda(txanda: Txanda) {
-    const alert = await this.alertCtrl.create({
-      header: 'Editar Txanda',
-      inputs: [
-        {
-          name: 'mota',
-          type: 'text',
-          value: txanda.mota,  // Valor por defecto de mota
-          placeholder: 'Mota de la txanda',
-        },
-        {
-          name: 'data',
-          type: 'text',
-          value: txanda.data,  // Valor por defecto de data
-          placeholder: 'Fecha',
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancelado');
-          }
-        },
-        {
-          text: 'Actualizar',
-          handler: (alertData) => {
-            // Se ejecuta cuando se confirma la edición
-            const updatedTxanda: Txanda = {
-              ...txanda,
-              mota: alertData.mota,  // Actualizamos el campo mota
-              data: alertData.data,  // Actualizamos el campo data
-            };
-            this.updateTxanda(updatedTxanda);
-          }
-        }
-      ]
-    });
-
-    await alert.present();
-  }
-
-  // Método para actualizar la txanda (llama a la API)
-  updateTxanda(txanda: Txanda) {
-    const apiUrl = `http://localhost:8080/api/txandak/${txanda.id}`;
-
-    this.http.put<Txanda>(apiUrl, txanda).subscribe(
-      (updatedTxanda) => {
-        // Actualizamos la txanda en la lista local después de la actualización
-        const index = this.txandak.findIndex(t => t.id === updatedTxanda.id);
-        if (index !== -1) {
-          this.txandak[index] = updatedTxanda;
-        }
-      },
-      (error) => {
-        console.error('Error al actualizar la txanda', error);
-      }
-    );
-  }
-
   async deleteTxanda(txandaId: number) {
     // Crear la alerta de confirmación
     const alert = await this.alertCtrl.create({
@@ -214,94 +159,52 @@ export class TxandakPage implements OnInit {
   }
   
   
-  // Método para añadir una nueva txanda
-  async addTxanda() {
-    const alumnos = this.txandak.map(txanda => txanda.alumno);  // Obtener los alumnos de las txandas existentes
-  
-    const alert = await this.alertCtrl.create({
-      header: 'Añadir Txanda',
-      inputs: [
-        {
-          name: 'mota',
-          type: 'text',
-          placeholder: 'Mota de la txanda',
-        },
-        {
-          name: 'data',
-          type: 'date',  // Selección de fecha
-          placeholder: 'Fecha',
-        },
-        // Selección de un alumno por ID (radio button para selección única)
-        {
-          name: 'alumno',
-          type: 'radio',  // Usamos 'radio' para permitir solo una selección
-          label: 'Selecciona un alumno',
-          value: null, // Valor inicial si no se selecciona nada
-          // Generamos los radio buttons dinámicamente
-          options: alumnos.map(alumno => ({
-            text: `${alumno?.izena} ${alumno?.abizenak}`, // Nombre completo del alumno
-            value: alumno?.id  // El valor será el ID del alumno
-          })),
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          handler: () => {
-            console.log('Añadir txanda cancelado');
-          }
-        },
-        {
-          text: 'Añadir',
-          handler: (alertData) => {
-            // El valor de alertData.alumno será el ID del alumno seleccionado
-            const selectedAlumnoId = alertData.alumno;
-  
-            if (selectedAlumnoId) {
-              // Encontramos el alumno correspondiente por el ID
-              const selectedAlumno = alumnos.find(alumno => alumno.id === selectedAlumnoId);
-  
-              if (selectedAlumno) {
-                // Crear la nueva txanda con el alumno seleccionado
-                const newTxanda: Txanda = {
-                  mota: alertData.mota,
-                  data: alertData.data,
-                  alumno: selectedAlumno.id  // Solo guardamos el ID del alumno seleccionado
-                };
-                this.createTxanda(newTxanda);
-              } else {
-                console.error('Alumno no encontrado');
-              }
-            } else {
-              console.error('No se seleccionó ningún alumno');
-            }
-          }
-        }
-      ]
-    });
-  
-    await alert.present();
+  openModal() {
+    this.nuevaTxanda = { mota: '', data: '', alumno: null }; // Resetear el formulario
   }
-  
-  
-  
 
-// Método para crear una txanda en la API
-createTxanda(txanda: Txanda) {
-  const apiUrl = 'http://localhost:8080/api/txandak';
+  // Función para cerrar el modal (se puede utilizar el modalController también)
+  closeModal() {
+    this.nuevaTxanda = { mota: '', data: '', alumno: null }; // Resetear datos
+    // Aquí cerramos el modal manualmente si no se usa 'trigger'
+    // this.modalController.dismiss();
+  }  
 
-  this.http.post<Txanda>(apiUrl, txanda).subscribe(
-    (createdTxanda) => {
-      // Añadir la nueva txanda a la lista local
-      this.txandak.push(createdTxanda);
-    },
-    (error) => {
-      console.error('Error al crear la txanda', error);
+  // Función para guardar la nueva txanda
+  guardarTxanda() {
+    if (!this.nuevaTxanda.mota || !this.nuevaTxanda.data || !this.nuevaTxanda.alumno) {
+      console.log('Faltan datos');
+      return; // Validar que no haya campos vacíos
     }
-  );
-}
 
+    const txandaToSave = {
+      mota: this.nuevaTxanda.mota,
+      data: this.nuevaTxanda.data,
+      alumno: { id: this.nuevaTxanda.alumno }, // Aquí asumimos que el alumno tiene solo un ID
+    };
+    const apiUrl = `http://localhost:8080/api/txandak`; // URL de la API para eliminar la txanda
 
+    // Realizar la solicitud HTTP POST para crear la txanda
+    this.http.post(apiUrl, txandaToSave)
+      .pipe(
+        catchError(err => {
+          console.error('Error al crear la txanda', err);
+          return of(null); // Retornar un observable vacío en caso de error
+        })
+      )
+      .subscribe(response => {
+        if (response) {
+          console.log('Txanda guardada correctamente', response);
+          this.closeModal(); // Cerrar el modal si la txanda se guarda correctamente
+        } else {
+          console.error('No se pudo guardar la txanda');
+        }
+      });
+  }
+
+  // Función para mostrar los datos de la txanda (solo para demostración)
+  mostrarTxanda() {
+    console.log('Txanda:', this.nuevaTxanda);
+  }
 
 }

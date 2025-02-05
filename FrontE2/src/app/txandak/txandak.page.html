@@ -14,7 +14,7 @@
 
   <ion-content [fullscreen]="true">
     <!-- Botón para añadir nueva txanda -->
-    <ion-button expand="full" color="success" (click)="addTxanda()">
+    <ion-button expand="full" color="success" id="txanda-sortu-modal">
       Añadir Txanda
     </ion-button>
 
@@ -26,7 +26,6 @@
           <p>{{ txanda.data }}</p>
           <p>{{ txanda.id }}</p>
 
-
           <!-- Mostrar alumno directamente -->
           <p><strong>Alumno:</strong> 
             <span *ngIf="txanda.alumno">
@@ -36,11 +35,7 @@
               Desconocido
             </span>
           </p>
-        </ion-label>
-    
-        <!-- Botón para editar -->
-        <ion-button (click)="editTxanda(txanda)" color="primary" slot="end">Editar</ion-button>
-        
+        </ion-label>        
         <!-- Botón para eliminar -->
         <ion-button (click)="deleteTxanda(txanda.id!)" color="danger" slot="end">Eliminar</ion-button>
       </ion-item>
@@ -50,10 +45,69 @@
     <ion-list>
       <ion-item *ngFor="let alumno of filteredAlumnos">
         <ion-label>
-          <h2>{{ alumno.izena }} {{ alumno.abizenak }} {{alumno.id}}</h2>
+          <h2>{{ alumno.izena }} {{ alumno.abizenak }} {{ alumno.id }}</h2>
         </ion-label>
       </ion-item>
     </ion-list>
-    
   </ion-content>
+
+  <!-- Modal para añadir una nueva txanda -->
+  <ion-modal trigger="txanda-sortu-modal">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Añadir Txanda</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <!-- Selección del tipo de txanda -->
+      <ion-item>
+        <ion-label position="stacked">Tipo de Txanda</ion-label>
+        <ion-select
+          [(ngModel)]="nuevaTxanda.mota"
+          placeholder="Selecciona tipo de txanda"
+        >
+          <ion-select-option value="G">Garbiketa</ion-select-option>
+          <ion-select-option value="M">Mahaia</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- Fecha de la txanda -->
+      <ion-item>
+        <ion-label position="stacked">Fecha</ion-label>
+        <ion-input
+          type="date"
+          [(ngModel)]="nuevaTxanda.data"
+          placeholder="Selecciona la fecha"
+        ></ion-input>
+      </ion-item>
+
+      <!-- Selección del alumno -->
+      <ion-item>
+        <ion-label position="stacked">Alumno</ion-label>
+        <ion-select
+          [(ngModel)]="nuevaTxanda.alumno"
+          placeholder="Selecciona un alumno"
+        >
+          <ion-select-option
+            *ngFor="let alumno of filteredAlumnos"
+            [value]="alumno.id"
+          >
+            {{ alumno.izena }} {{ alumno.abizenak }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- Botón para guardar, deshabilitado si no están completos los campos -->
+      <ion-button
+        expand="full"
+        (click)="guardarTxanda()"
+        [disabled]="!nuevaTxanda.mota || !nuevaTxanda.data || !nuevaTxanda.alumno"
+      >
+        Guardar Txanda
+      </ion-button>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
 </ion-content>
