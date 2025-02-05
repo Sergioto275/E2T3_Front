@@ -1,4 +1,14 @@
 {
+  "menu": {
+    "title":"Menu",
+    "hitzorduak": "Citas",
+    "txostenak": "Informes",
+    "materialak": "Materiales",
+    "produktuak": "Productos",
+    "historiala": "Historial",
+    "ikasleak": "Estudiantes",
+    "zerbitzuak": "Servicios"
+  },
   "productos": {
     "title": "Gestion de productos",
     "botones": {
@@ -96,6 +106,11 @@
         "editar":"Editar"
       },
       "modal": {
+        "proceso":"En proceso",
+        "trabajador":"Trabajador",
+        "fechaInicio":"Fecha Inicio",
+        "fechaFin":"Fecha Fin",
+        "grupo":"Grupo",
         "cantidad": "Cantidad",
         "servicios":"Servicios",
         "precio":"Precio",
@@ -118,15 +133,36 @@
     "botones": {
       "datos": "Mostrar datos",
       "cerrar": "Cerrar"
+    },
+    "modal": {
+      "idCliente": "ID del Cliente",
+      "nombre": "Nombre",
+      "apellido": "Apellido",
+      "telefono": "Teléfono",
+      "tinte": "Tinte",
+      "pSensible": "Pelo Sensible"
+    }
   },
-  "modal": {
-    "idCliente": "ID del Cliente",
-    "nombre": "Nombre",
-    "apellido": "Apellido",
-    "telefono": "Teléfono",
-    "tinte": "Tinte",
-    "pSensible": "Pelo Sensible"
+  "servicios":{
+    "title":"Servicios",
+    "modal":{
+      "dentro":"Precio interno",
+      "fuera":"Precio externo",
+      "nombre":"Nombre",
+      "extra":"Extra",
+      "color":"Color",
+      "select":"Seleccione una Categoria",
+      "categoria":"Categoría"
+    },
+    "botones": {
+      "crearServicio": "Añadir servicio",
+      "editarServicio": "Editar Servicio",
+      "crearCategoria":"Crear Categoria",
+      "editarCategoria": "Editar Categoria",
+      "confirmar": "Confirmar",
+      "crear": "Crear",
+      "editar": "Editar"
+    }
   }
-}
 }
   

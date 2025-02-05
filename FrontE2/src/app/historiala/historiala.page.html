@@ -54,8 +54,52 @@
     </ion-segment-content>
 
     <ion-segment-content id="material">
-      <!-- Aquí puedes agregar contenido similar para el segmento de material -->
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" size-md="6" size-lg="4" *ngFor="let movimiento of materialMugimendu">
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title>{{ movimiento.materiala.izena }}</ion-card-title>
+                <ion-card-subtitle>{{ movimiento.materiala.etiketa }}</ion-card-subtitle>
+              </ion-card-header>
+              <ion-card-content>
+                <ion-row>
+                  <ion-col>
+                    <ion-label>
+                      <strong>{{ "historial.modal.trabajador" | translate }}:</strong> 
+                      {{ movimiento.langilea.izena }} {{ movimiento.langilea.abizenak }}
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="6">
+                    <ion-label>
+                      <strong>{{ "historial.modal.fechaInicio" | translate }}:</strong> 
+                      {{ movimiento.hasieraData | date: 'dd/MM/yyyy HH:mm' }}
+                    </ion-label>
+                  </ion-col>
+                  <ion-col size="6">
+                    <ion-label>
+                      <strong>{{ "historial.modal.fechaFin" | translate }}:</strong> 
+                      {{ movimiento.amaieraData ? (movimiento.amaieraData | date: 'dd/MM/yyyy HH:mm') : "historial.modal.proceso" | translate }}
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <ion-label>
+                      <strong>{{ "historial.modal.grupo" | translate }}:</strong> 
+                      {{ movimiento.langilea.taldeaKodea }}
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-segment-content>
+    
     
     <ion-segment-content id="ticket">
       <ion-grid>
@@ -193,7 +237,7 @@
     <ng-template>
       <ion-header>
         <ion-toolbar>
-          <ion-title>{{ 'historial.modal.detalles_cliente' | translate }}</ion-title>
+          <ion-title>{{ 'historial.botones.cliente' | translate }}</ion-title>
           <ion-buttons slot="end">
             <ion-button (click)="cerrarModal()">
               <ion-icon name="close"></ion-icon>
