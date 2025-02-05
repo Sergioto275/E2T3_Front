@@ -110,6 +110,7 @@ export class IkasleakPage implements OnInit {
 
   openEditModal(ikaslea: Ikaslea) {
     this.selectedAlumno = { ...ikaslea };
+    console.log(this.selectedAlumno)
     this.isEditModalOpen = true;
   }
 
@@ -209,16 +210,18 @@ export class IkasleakPage implements OnInit {
       id: this.selectedAlumno.id,
       izena: this.selectedAlumno.izena,
       abizenak: this.selectedAlumno.abizenak,
-      taldea: { ...this.selectedAlumno.taldea },
+      taldea: { 
+        kodea:this.selectedAlumno.taldeKodea
+      },
     };
 
     this.ikasleService.updateAlumno(updatedAlumno).subscribe(() => {
       const index = this.ikasleak.findIndex(
         (alumno) => alumno.id === updatedAlumno.id
       );
-      if (index !== -1) {
-        this.ikasleak[index] = updatedAlumno;
-      }
+      // if (index !== -1) {
+      //   this.ikasleak[index] = updatedAlumno;
+      // }
       this.filteredAlumnos = [...this.ikasleak];
       this.closeEditModal();
     });

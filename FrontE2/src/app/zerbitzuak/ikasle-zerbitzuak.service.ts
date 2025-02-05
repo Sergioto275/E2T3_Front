@@ -70,7 +70,7 @@ export class IkasleZerbitzuakService {
   }
 
   // Actualizar un alumno
-  updateAlumno(updatedAlumno: Ikaslea): Observable<Ikaslea> {
+  updateAlumno(updatedAlumno: any): Observable<Ikaslea> {
     return this.http.put<Ikaslea>('http://localhost:8080/api/langileak/' + updatedAlumno.id, updatedAlumno);
   }
 

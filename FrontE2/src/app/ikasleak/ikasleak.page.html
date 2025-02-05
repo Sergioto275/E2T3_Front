@@ -87,8 +87,8 @@
         </ion-item>
         <ion-item>
           <ion-label position="stacked">Kodea</ion-label>
-          <ion-select [(ngModel)]="selectedAlumno.taldea.kodea" placeholder="Erabaki kode berri bat">
-            <ion-select-option *ngFor="let grupo of gruposDisponibles" [value]="grupo.kodea">
+          <ion-select [(ngModel)]="selectedAlumno.taldeKodea" placeholder="Erabaki kode berri bat">
+            <ion-select-option *ngFor="let grupo of taldeak" [value]="grupo.kodea">
               {{ grupo.kodea }}
             </ion-select-option>
           </ion-select>
