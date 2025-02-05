@@ -13,6 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './ikasleak.page.html',
   styleUrls: ['./ikasleak.page.scss'],
 })
+
 export class IkasleakPage implements OnInit {
   selectedLanguage: string = 'es';
   selectedIkasleak: Set<number> = new Set();

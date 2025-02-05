@@ -47,6 +47,10 @@ const routes: Routes = [
     path: 'inbentarioa',
     loadChildren: () => import('./inbentarioa/inbentarioa.module').then( m => m.InbentarioaPageModule)
   },
+  {
+    path: 'txandak',
+    loadChildren: () => import('./txandak/txandak.module').then( m => m.TxandakPageModule)
+  },
 
 
 
