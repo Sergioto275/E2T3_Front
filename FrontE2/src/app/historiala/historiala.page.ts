@@ -14,6 +14,7 @@ export class HistorialaPage implements OnInit {
 
   selectedLanguage: string = 'es';
   produktuMugimendu: any[] = [];
+  materialMugimendu: any[] = [];
   tickets: any[] = [];
   bezeroak: any[] = [];
   produktuak: any[] = [];
@@ -62,6 +63,26 @@ export class HistorialaPage implements OnInit {
       this.produktuMugimendu = datuak.filter((prod:any) => prod.ezabatzeData === null);
     } catch (error) {
       console.log("Error al cargar citas:", error);
+    }
+  }
+
+  async cargarMovimientoMateriales() {
+    this.materialMugimendu = [];
+    try {
+      const response = await fetch(`${environment.url}material_mailegua`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        method: "GET"
+      });
+      if (!response.ok) {
+        throw new Error('Error al obtener las materiales');
+      }
+      const datuak = await response.json();
+      this.materialMugimendu = datuak.filter((mat:any) => mat.ezabatzeData === null);
+    } catch (error) {
+      console.log("Error al cargar material:", error);
     }
   }
 
@@ -300,6 +321,7 @@ export class HistorialaPage implements OnInit {
 
   ngOnInit() {
     this.cargarMovimientoProductos();
+    this.cargarMovimientoMateriales();
     this.cargarTickets();
     this.cargarClientes();
     this.cargarProductos();

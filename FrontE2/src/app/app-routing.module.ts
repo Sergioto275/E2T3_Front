@@ -48,8 +48,8 @@ const routes: Routes = [
     loadChildren: () => import('./inbentarioa/inbentarioa.module').then( m => m.InbentarioaPageModule)
   },
   {
-    path: 'txandak',
-    loadChildren: () => import('./txandak/txandak.module').then( m => m.TxandakPageModule)
+    path: 'tratamenduak',
+    loadChildren: () => import('./tratamenduak/tratamenduak.module').then( m => m.TratamenduakPageModule)
   },
 
 
