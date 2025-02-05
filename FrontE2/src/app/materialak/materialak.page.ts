@@ -210,20 +210,23 @@ export class MaterialakPage implements OnInit {
     });
   }
 
-  materialakLortuDevolver(){
+  materialakLortuDevolver() {
     let observableRest: Observable<any> = this.restServer.get<any>('http://localhost:8080/api/material_mailegua');
-    observableRest.subscribe(datuak => {
-      console.log(datuak);
 
-      this.materialaDevolver = datuak
-      
+    observableRest.subscribe(datuak => {
+        this.materialaDevolver = datuak.filter((mailegu:any) => 
+            mailegu.hasieraData && !mailegu.amaieraData
+        );
+
+        console.log(this.materialaDevolver);
     });
-  }
+}
+
   
   materialakBueltatu(){
-    let data ={
-      "id": this.matDevolverId
-    }
+    let data = this.materialesSeleccionadosDevolver.map(mailegu => ({
+      "id": mailegu.id
+  }));
 
     let observableRest: Observable<any> = this.restServer.put<any>('http://localhost:8080/api/material_mailegua', data);
     observableRest.subscribe(datuak => {
