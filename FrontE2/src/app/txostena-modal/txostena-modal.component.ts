@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { HeaderComponent } from '../components/header/header.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-txostena-modal',
@@ -7,14 +9,27 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class TxostenaModalComponent implements OnInit {
+  @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
+  
   idCliente!: number;
   nombre!: string;
   apellido!: string;
   tlf!: string;
   tinte!: number;
   pSensible!: boolean;
+  selectedLanguage: string = 'es';
 
-  constructor() {}
+  constructor(private translate: TranslateService) {
+    this.translate.setDefaultLang('es');
+    this.translate.use(this.selectedLanguage);
+  }
+
+  changeLanguage() {
+    this.translate.use(this.selectedLanguage);
+    if (this.headerComponent) {
+      this.headerComponent.loadTranslations();
+    }
+  }
 
   ngOnInit() {
     this.idCliente = Math.floor(Math.random() * 9000) + 1000;

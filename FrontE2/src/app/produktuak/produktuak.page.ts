@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
+import { HeaderComponent } from '../components/header/header.component';
 
 // import { IonButton, IonContent, IonHeader, IonLabel, IonModal, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
@@ -17,6 +18,7 @@ export interface Alumno {
 })
 export class ProduktuakPage implements OnInit {
 
+  @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   selectedLanguage: string = 'es';
   modal!:string;
   produktuak!:any[];
@@ -47,6 +49,9 @@ export class ProduktuakPage implements OnInit {
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
+    if (this.headerComponent) {
+      this.headerComponent.loadTranslations();
+    }
   }
 
   actualizarProductosSeleccionados(producto:any, kategoria_id: number) {

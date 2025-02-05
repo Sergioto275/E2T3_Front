@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonModal } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/internal/Observable';
+import { HeaderComponent } from '../components/header/header.component';
 
 export interface Alumno {
   nombre: string;
@@ -15,6 +16,8 @@ export interface Alumno {
   styleUrls: ['./materialak.page.scss'],
 })
 export class MaterialakPage implements OnInit {
+  @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
+
   selectedLanguage: string = 'es';
   modal!:string;
 
@@ -55,6 +58,9 @@ export class MaterialakPage implements OnInit {
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
+    if (this.headerComponent) {
+      this.headerComponent.loadTranslations();
+    }
   }
 
   actualizarMaterialesSeleccionados(material:any, kategoria_id: number) {
