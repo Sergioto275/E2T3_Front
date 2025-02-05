@@ -40,8 +40,12 @@ const routes: Routes = [
     path: 'txostenak',
     loadChildren: () => import('./txostena/txostena.module').then( m => m.TxostenaPageModule)
   },  {
-    path: 'historiala',
-    loadChildren: () => import('./historiala/historiala.module').then( m => m.HistorialaPageModule)
+    path: 'txandak',
+    loadChildren: () => import('./txandak/txandak.module').then( m => m.TxandakPageModule)
+  },
+  {
+    path: 'inbentarioa',
+    loadChildren: () => import('./inbentarioa/inbentarioa.module').then( m => m.InbentarioaPageModule)
   },
 
 
