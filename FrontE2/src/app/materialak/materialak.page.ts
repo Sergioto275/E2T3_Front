@@ -30,7 +30,6 @@ export class MaterialakPage implements OnInit {
   crearCategoria!:Number;
 
   editarKatNombre!:String;
-  editarId!:Number;
   editarNombre!:String;
   editarEtiqueta!:String;
   editarCategoria!:Number;
@@ -119,7 +118,6 @@ export class MaterialakPage implements OnInit {
 
   materialaEditatu(id:number){
     let data = {
-      "id": this.editarId,
       "etiketa": this.editarEtiqueta,
       "izena": this.editarNombre,
       "materialKategoria": {
@@ -163,23 +161,21 @@ export class MaterialakPage implements OnInit {
   }
   
   cargarEditarMateriales() {
-    this.editarId = this.materialesSeleccionados[0].id;
     this.editarNombre = this.materialesSeleccionados[0].izena;
     this.editarEtiqueta = this.materialesSeleccionados[0].etiketa;
     this.editarCategoria = this.materialesSeleccionados[0].kategoria_id;
   }
 
-  cargarEditarMaterialesDevolver() {
+  cargarMaterialesDevolver() {
     this.matDevolverId = this.materialesSeleccionadosDevolver[0].id;
   }
 
   materialakAtera(){
     let data =
-    
     [
       {
           "materiala": {
-              "id": 2
+              "id": 1
           },
           "langilea": {
               "id": 1
@@ -245,18 +241,9 @@ export class MaterialakPage implements OnInit {
       this.alumnos = datuak
       .filter((kategoria: any) => kategoria.ezabatzeData === null)
       .map((kategoria: any) => ({
-        kodea: kategoria.kodea,
-        izena: kategoria.izena,
-        sortzeData: kategoria.sortzeData,
+        ...kategoria,
         langileak: kategoria.langileak
           .filter((langilea: any) => langilea.ezabatzeData === null)
-          .map((langilea: any) => ({
-            id: langilea.id,
-            izena: langilea.izena,
-            abizenak: langilea.abizenak,
-            sortzeData: langilea.sortzeData,
-            eguneratzeData: langilea.eguneratzeData,
-          })),
       }));
     });
   }  
@@ -274,7 +261,7 @@ export class MaterialakPage implements OnInit {
     this.selectedMateriala = {...material};
     this.editarNombre = material.izena;
     this.editarEtiqueta = material.etiketa;
-    this.editarCategoria = material.kategoriaId;
+    this.editarCategoria = material.id_kategoria;
   }
 
 

@@ -13,10 +13,10 @@
     </ion-toolbar>
     <ion-segment>
       <ion-segment-button value="kudeatu" content-id="kudeatu">
-        <ion-label>{{ 'materiales.botones.gestionarMateriales' | translate }}</ion-label>
+        <ion-label><strong>{{ 'materiales.botones.gestionarMateriales' | translate }}</strong></ion-label>
       </ion-segment-button>
       <ion-segment-button value="bueltatu" content-id="bueltatu">
-        <ion-label>{{ 'materiales.botones.devolverMateriales' | translate }}</ion-label>
+        <ion-label><strong>{{ 'materiales.botones.devolverMateriales' | translate }}</strong></ion-label>
       </ion-segment-button>
     </ion-segment>
   </ion-header>
@@ -40,7 +40,7 @@
         <ng-container *ngFor="let categoria of materialak">
           <!-- Categoría -->
           <ion-item button (click)="toggleCategoria(categoria.izena)">
-            <ion-label>{{ categoria.izena }}</ion-label>
+            <ion-label><strong>{{ categoria.izena }}</strong></ion-label>
             <ion-button slot="end" (click)="abrirEditarCategoria(categoria)">
               <ion-icon name="create"></ion-icon>
             </ion-button>
@@ -74,7 +74,7 @@
         <ion-toolbar>
           <ion-buttons slot="start">
             <ion-button id="mat-devolver-modal" [disabled]="materialesSeleccionadosDevolver.length == 0"
-              (click)="cargarEditarMaterialesDevolver()">Devolver materiales</ion-button>
+              (click)="cargarMaterialesDevolver()">Devolver materiales</ion-button>
           </ion-buttons>
         </ion-toolbar>
         <ion-item>
