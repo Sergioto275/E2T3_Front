@@ -248,19 +248,12 @@ export class MaterialakPage implements OnInit {
   }
 
   abrirEditarMaterial(material:any) {
-    console.log("Material seleccionado:", material);
-    console.log("Categoría del material:", material.id_kategoria);    
+    console.log(material);
     this.modalEditar.present();
     this.selectedMateriala = {...material};
     this.editarNombre = material.izena;
     this.editarEtiqueta = material.etiketa;
-    this.editarCategoria = material.id_kategoria;
-  }
-
-  cargarEditarMateriales() {
-    this.editarNombre = this.materialesSeleccionados[0].izena;
-    this.editarEtiqueta = this.materialesSeleccionados[0].etiketa;
-    this.editarCategoria = this.materialesSeleccionados[0].kategoria_id;
+    this.editarCategoria = material.kategoriaId;
   }
 
   onGrupoChange() {
