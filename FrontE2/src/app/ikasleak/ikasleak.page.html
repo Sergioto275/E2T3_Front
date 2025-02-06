@@ -39,7 +39,7 @@
 
         <ion-card>
           <ion-card-header>
-            <ion-card-title>Filtrar por Grupo</ion-card-title>
+            <ion-card-title>Taldez edo Kodigoz filtratu</ion-card-title>
           </ion-card-header>
           <ion-card-content>
                 <ion-col size="12">
@@ -54,20 +54,13 @@
       
         
         <ion-list>
-          <ion-card *ngFor="let grupo of ikasleArray">
+          <ion-card *ngFor="let grupo of filteredGroups">
             <ion-card-header>
               <ion-card-title>{{ grupo.izena }}</ion-card-title>
               <ion-card-subtitle>Kodea: {{ grupo.kodea }}</ion-card-subtitle>
             </ion-card-header>
         
             <ion-card-content>
-              <ion-button color="danger" (click)="confirmarEliminacionGrupo(grupo.kodea)">
-                <ion-icon name="trash-outline"></ion-icon>
-              </ion-button>
-              <ion-button color="primary" (click)="openEditTaldeModal(grupo)">
-                <ion-icon name="create-outline"></ion-icon>
-              </ion-button>
-        
               <!-- Lista de alumnos dentro de items -->
               <ion-list>
                 <ion-item 
@@ -80,9 +73,20 @@
                   </ion-label>
                 </ion-item>
               </ion-list>
+        
+              <!-- Contenedor flex para alinear los botones al final -->
+              <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
+                <ion-button color="danger" (click)="confirmarEliminacionGrupo(grupo.kodea)">
+                  <ion-icon name="trash-outline"></ion-icon>
+                </ion-button>
+                <ion-button color="primary" (click)="openEditTaldeModal(grupo)">
+                  <ion-icon name="create-outline"></ion-icon>
+                </ion-button>
+              </div>
             </ion-card-content>
           </ion-card>
         </ion-list>
+        
         
         
 

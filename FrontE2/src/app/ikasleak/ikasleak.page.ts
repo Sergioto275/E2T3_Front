@@ -115,17 +115,18 @@ export class IkasleakPage implements OnInit {
   
 
   filterGroups() {
+    console.log('Buscando:', this.searchQuery); // 👈 Verifica que la función se ejecuta
+  
     if (this.searchQuery.trim() === '') {
-      // Si no hay búsqueda, mostrar todos los grupos
       this.filteredGroups = [...this.ikasleArray];
     } else {
-      // Filtrar por nombre o código
       this.filteredGroups = this.ikasleArray.filter(grupo =>
         grupo.izena.toLowerCase().includes(this.searchQuery.toLowerCase()) || 
         grupo.kodea.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     }
   }
+  
 
 
 
