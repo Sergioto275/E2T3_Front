@@ -38,6 +38,8 @@ export class HitzorduakPage implements OnInit {
   eserlekuKop: any[] = [];
   hoursArray: any[] = [];
   rowspanAux: any[] = [];
+  citaCrear:any = {"data":null, "hasieraOrdua":null, "amaieraOrdua":null, "eserlekua" :0, "izena":'', "telefonoa":'', "deskribapena":'', "etxekoa":false };
+  citaEditar:any;
   idLangile: any = null;
   idTalde: any = null;
   dataTest: any = null;
@@ -372,7 +374,7 @@ export class HitzorduakPage implements OnInit {
 
 async eliminar_cita() {
   try {
-    const json_data = { "id": this.idSelec };
+    const json_data = { "id": this.citaEditar.id };
 
     const response = await fetch(`${environment.url}hitzorduak`, {
       headers: {
@@ -441,7 +443,9 @@ async eliminar_cita() {
     return `${year}-${month}-${day}`;
   }  
 
-  cargar_cita_selec(id: string) {
+  cargar_cita_selec(id: string, citaSelec:any) {
+    this.editar_cita = citaSelec;
+    console.log(this.editar_cita)
     const cita = this.hitzorduArray.filter(citas => citas.id === id);
     this.idSelec = id;
     this.dataEditar = cita[0].data;
@@ -595,34 +599,34 @@ async eliminar_cita() {
   
   // Función: seleccionar_citaCrear
   seleccionar_citaCrear(eserlekua: number, time: string) {
-    if (this.dataTest) {
-      if (this.dataTest !== this.dataSelec) {
+    if (this.citaCrear.data) {
+      if (this.citaCrear.data !== this.dataSelec) {
         if (confirm("¿Desea cambiar el día?")) {
-          this.dataTest = this.dataSelec;
-          this.hasOrduaTest = time;
-          this.amaOrduaTest = this.hoursArray[this.hoursArray.indexOf(time) + 1];
-          this.eserlekuaCrear = eserlekua;
+          this.citaCrear.data = this.dataSelec;
+          this.citaCrear.hasieraOrdua = time;
+          this.citaCrear.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
+          this.citaCrear.eserlekua = eserlekua;
         }
       } else {
-        if (this.eserlekuaCrear !== eserlekua) {
+        if (this.citaCrear.eserlekua !== eserlekua) {
           if (confirm("¿Desea cambiar el asiento?")) {
-            this.hasOrduaTest = time;
-            this.amaOrduaTest = this.hoursArray[this.hoursArray.indexOf(time) + 1];
-            this.eserlekuaCrear = eserlekua;
+            this.citaCrear.hasieraOrdua = time;
+            this.citaCrear.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
+            this.citaCrear.eserlekua = eserlekua;
           }
         } else {
-          if (this.hasOrduaTest < time) {
-            this.amaOrduaTest = this.hoursArray[this.hoursArray.indexOf(time) + 1];
+          if (this.citaCrear.hasieraOrdua < time) {
+            this.citaCrear.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
           } else {
-            this.hasOrduaTest = time;
+            this.citaCrear.hasieraOrdua = time;
           }
         }
       }
     } else {
-      this.dataTest = this.dataSelec;
-      this.hasOrduaTest = time;
-      this.amaOrduaTest = this.hoursArray[this.hoursArray.indexOf(time) + 1];
-      this.eserlekuaCrear = eserlekua;
+      this.citaCrear.data = this.dataSelec;
+      this.citaCrear.hasieraOrdua = time;
+      this.citaCrear.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
+      this.citaCrear.eserlekua = eserlekua;
     }
   }
 
