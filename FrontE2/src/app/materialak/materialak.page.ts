@@ -226,7 +226,8 @@ export class MaterialakPage implements OnInit {
       console.log(datuak);
 
       this.materialaDevolver = datuak
-      
+      this.materialakLortu();
+      this.materialakLortuDevolver();
     });
   }
 
