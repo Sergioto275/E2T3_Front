@@ -33,8 +33,7 @@
       <ion-item *ngFor="let txanda of filteredTxandak">
         <ion-label>
           <h2>{{ txanda.mota === 'G' ? 'Garbiketa' : txanda.mota === 'M' ? 'Mahaia' : txanda.mota }}</h2>
-          <p>{{ txanda.data }}</p>
-          <p>{{ txanda.id }}</p>
+          <p>Txandaren data: {{ txanda.data }}</p>
 
           <!-- Mostrar alumno directamente -->
           <p><strong>Alumno:</strong> 

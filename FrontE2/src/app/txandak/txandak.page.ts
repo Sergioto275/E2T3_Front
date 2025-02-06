@@ -81,13 +81,10 @@ export class TxandakPage implements OnInit {
     const apiUrl = 'http://localhost:8080/api/txandak';
     this.http.get<Txanda[]>(apiUrl).subscribe(
       (data) => {
-        console.log('Respuesta completa de Txandas:', data);  // Verifica toda la respuesta
   
         this.txandak = data
           .filter(txanda => !txanda.ezabatzeData) // Filtramos las txandas eliminadas
           .map(txanda => {
-            console.log("txanda antes del mapeo:", txanda);  // Verifica cada txanda antes de asignarla
-  
             if (!txanda.id) {
               console.error('Txanda sin ID:', txanda); // Aquí se verá si alguna txanda tiene ID undefined
             }
@@ -109,7 +106,8 @@ export class TxandakPage implements OnInit {
             };
           });
   
-        console.log('Txandak después del mapeo:', this.txandak);  // Verifica la lista final de txandak
+        this.filterTxandas();  // Llamar a filterTxandas para filtrar y mostrar las txandas
+
       },
       (error) => {
         console.error('Error al cargar las txandas', error);
