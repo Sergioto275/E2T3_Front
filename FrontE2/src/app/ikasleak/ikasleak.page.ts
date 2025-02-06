@@ -9,6 +9,8 @@ import { HeaderComponent } from '../components/header/header.component';
   templateUrl: './ikasleak.page.html',
   styleUrls: ['./ikasleak.page.scss'],
 })
+
+
 export class IkasleakPage implements OnInit {
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   selectedLanguage: string = 'es';
