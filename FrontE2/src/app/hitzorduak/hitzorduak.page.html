@@ -35,12 +35,12 @@
                     <td *ngIf="citaSartuta(time, idnx + 1)" [attr.rowspan]="rowspanManagement(time, idnx + 1)">
                       <ng-container *ngIf="getCitasAtTimeAndSeat(time, idnx + 1).length > 0; else emptySeat">
                         <ion-card *ngFor="let cita of getCitasAtTimeAndSeat(time, idnx + 1)" 
-                                  (click)="cargar_cita_selec(cita.id, cita)" 
+                                  (click)="cargar_cita_selec(cita)" 
                                   [ngClass]="{
                                     'bg-grey-blue-light': cita.prezioTotala,
                                     'bg-blue-green-light': cita.langilea && !cita.prezioTotala,
                                     'bg-pink-light': !cita.langilea && !cita.prezioTotala,
-                                    'selected': cita.id === idSelec
+                                    'selected': cita.id === citaEditar.id
                                   }">
                           <ion-card-header>
                             <ion-card-title>{{ cita.izena }}</ion-card-title>
@@ -79,68 +79,68 @@
             <ion-segment-content id="sortu">
               <ion-item>
                 <ion-label position="stacked">{{ "citas.modal.fecha" | translate }}</ion-label>
-                <ion-input [(ngModel)]="this.citaCrear.data" type="date" placeholder="Fecha"></ion-input>
+                <ion-input [(ngModel)]="citaCrear.data" type="date" placeholder="Fecha"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">{{ "citas.modal.horaInicio" | translate }}</ion-label>
-                <ion-input [(ngModel)]="this.citaCrear.hasieraOrdua" type="time" placeholder="Hasiera ordua"></ion-input>
+                <ion-input [(ngModel)]="citaCrear.hasieraOrdua" type="time" placeholder="Hasiera ordua"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">{{ "citas.modal.horaFin" | translate }}</ion-label>
-                <ion-input [(ngModel)]="this.citaCrear.amaieraOrdua" type="time" placeholder="Amaiera ordua"></ion-input>
+                <ion-input [(ngModel)]="citaCrear.amaieraOrdua" type="time" placeholder="Amaiera ordua"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">{{ "citas.modal.asiento" | translate }}</ion-label>
-                <ion-input [(ngModel)]="this.citaCrear.eserlekua" placeholder="Asiento"></ion-input>
+                <ion-input [(ngModel)]="citaCrear.eserlekua" placeholder="Asiento"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">{{ "citas.modal.cliente" | translate }}</ion-label>
-                <ion-input [(ngModel)]="izenaCrear" placeholder="Bezeroa"></ion-input>
+                <ion-input [(ngModel)]="citaCrear.izena" placeholder="Bezeroa"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">{{ "citas.modal.descripcion" | translate }}</ion-label>
-                <ion-input [(ngModel)]="deskCrear" placeholder="Deskribapena"></ion-input>
+                <ion-input [(ngModel)]="citaCrear.deskribapena" placeholder="Deskribapena"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">{{ "citas.modal.telefono" | translate }}</ion-label>
-                <ion-input [(ngModel)]="telfCrear" placeholder="Telefonoa"></ion-input>
+                <ion-input [(ngModel)]="citaCrear.telefonoa" placeholder="Telefonoa"></ion-input>
               </ion-item>
               <ion-item>
-                <ion-checkbox [(ngModel)]="etxekoCrear" >{{ "citas.modal.casa" | translate }}</ion-checkbox>
+                <ion-checkbox [(ngModel)]="citaCrear.etxekoa" >{{ "citas.modal.casa" | translate }}</ion-checkbox>
               </ion-item>
               <ion-button (click)="createCita()">{{ "citas.botones.crear" | translate }}</ion-button>
             </ion-segment-content>
             <ion-segment-content id="editatu">
               <ion-item>
                 <ion-label position="stacked">{{ "citas.modal.fecha" | translate }}</ion-label>
-                <ion-input [(ngModel)]="dataEditar" type="date" placeholder="Fecha"></ion-input>
+                <ion-input [(ngModel)]="citaEditar.data" type="date" placeholder="Fecha"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">{{ "citas.modal.horaInicio" | translate }}</ion-label>
-                <ion-input [(ngModel)]="hasOrduaEditar" type="time" placeholder="Hasiera ordua"></ion-input>
+                <ion-input [(ngModel)]="citaEditar.hasieraOrdua" type="time" placeholder="Hasiera ordua"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">{{ "citas.modal.horaFin" | translate }}</ion-label>
-                <ion-input [(ngModel)]="amaOrduaEditar" type="time" placeholder="Amaiera ordua"></ion-input>
+                <ion-input [(ngModel)]="citaEditar.amaieraOrdua" type="time" placeholder="Amaiera ordua"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">{{ "citas.modal.asiento" | translate }}</ion-label>
-                <ion-input [(ngModel)]="eserlekuaEditar" placeholder="Asiento"></ion-input>
+                <ion-input [(ngModel)]="citaEditar.eserlekua" placeholder="Asiento"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">{{ "citas.modal.cliente" | translate }}</ion-label>
-                <ion-input [(ngModel)]="izenaEditar" placeholder="Bezeroa"></ion-input>
+                <ion-input [(ngModel)]="citaEditar.izena" placeholder="Bezeroa"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">{{ "citas.modal.descripcion" | translate }}</ion-label>
-                <ion-input [(ngModel)]="deskEditar" placeholder="Deskribapena"></ion-input>
+                <ion-input [(ngModel)]="citaEditar.deskribapena" placeholder="Deskribapena"></ion-input>
               </ion-item>
               <ion-item>
                 <ion-label position="stacked">{{ "citas.modal.telefono" | translate }}</ion-label>
-                <ion-input [(ngModel)]="telfEditar" placeholder="Telefonoa"></ion-input>
+                <ion-input [(ngModel)]="citaEditar.telefonoa" placeholder="Telefonoa"></ion-input>
               </ion-item>
               <ion-item>
-                <ion-checkbox [(ngModel)]="etxekoEditar" >{{ "citas.modal.casa" | translate }}</ion-checkbox>
+                <ion-checkbox [(ngModel)]="citaEditar.etxekoa" >{{ "citas.modal.casa" | translate }}</ion-checkbox>
               </ion-item>
               <ion-button (click)="editar_cita()">{{ "citas.botones.guardar" | translate }}</ion-button>
               <ion-button (click)="eliminar_cita()">{{ "citas.botones.borrar" | translate }}</ion-button>
@@ -161,7 +161,7 @@
                   <ion-checkbox slot="start"  [(ngModel)]="trat.selected" (ionChange)="actualizarServiciosSeleccionados(trat, katTrat.extra)"></ion-checkbox>
                   <ion-label>{{ trat.izena }}
                     <ng-container *ngIf="!katTrat.extra">
-                      <ng-container *ngIf="etxekoEditar; else kanpokoa">
+                      <ng-container *ngIf="citaEditar.etxekoa; else kanpokoa">
                         {{ trat.etxekoPrezioa }}
                       </ng-container>
                       <ng-template #kanpokoa>
