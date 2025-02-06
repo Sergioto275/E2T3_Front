@@ -31,10 +31,18 @@
               <tbody>
                 <tr *ngFor="let time of hoursArray">
                   <td>{{ time }}</td>
-                  <ng-container *ngFor="let i of [].constructor(asientos); let idnx = index">
-                    <td *ngIf="citaSartuta(time, idnx + 1)" [attr.rowspan]="rowspanManagement(time, idnx + 1)">
-                      <ng-container *ngIf="getCitasAtTimeAndSeat(time, idnx + 1).length > 0; else emptySeat">
-                        <ion-card *ngFor="let cita of getCitasAtTimeAndSeat(time, idnx + 1)" 
+                  <ng-container *ngFor="let i of [].constructor(asientos); let idx = index">
+                    <td
+                      id="{{ 'time-' + time + '-seat-' + (idx + 1) }}"
+                      *ngIf="citaSartuta(time, idx + 1)" 
+                      [attr.rowspan]="rowspanManagement(time, idx + 1)"
+                      (mousedown)="onMouseDown(time, idx + 1)"
+                      (mousemove)="onMouseMove(time)"
+                      (mouseup)="onMouseUp(time)">
+                      
+                      <!-- Contenido de la celda, como el contenido actual del botón o cita -->
+                      <ng-container *ngIf="getCitasAtTimeAndSeat(time, idx + 1).length > 0; else emptySeat">
+                        <ion-card *ngFor="let cita of getCitasAtTimeAndSeat(time, idx + 1)" 
                                   (click)="cargar_cita_selec(cita)" 
                                   [ngClass]="{
                                     'bg-grey-blue-light': cita.prezioTotala,
@@ -49,7 +57,7 @@
                         </ion-card>
                       </ng-container>
                       <ng-template #emptySeat>
-                        <ion-button (click)="seleccionar_citaCrear(idnx + 1, time)">
+                        <ion-button (click)="seleccionar_citaCrear(idx + 1, time)">
                           <ion-icon name="add-circle-outline"></ion-icon>
                         </ion-button>
                       </ng-template>
@@ -58,6 +66,7 @@
                 </tr>
               </tbody>
             </table>
+            
           </div>
         </div>
         <div>
