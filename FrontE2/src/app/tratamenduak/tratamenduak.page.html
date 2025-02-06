@@ -21,6 +21,15 @@
         <ion-button id="service-sortu-modal">{{ 'servicios.botones.crearServicio' | translate }}</ion-button>
       </ion-buttons>
     </ion-toolbar>
+
+    <ion-list class="filtros">
+      <ion-item>
+        <ion-searchbar [(ngModel)]="filtroCategoria" (ngModelChange)="filtrarZerbitzuak()" animated="true" placeholder="{{ 'productos.modal.filtroCat' | translate }}"></ion-searchbar>
+      </ion-item>
+      <ion-item>
+        <ion-searchbar [(ngModel)]="filtroZerbitzua" (ngModelChange)="filtrarZerbitzuak()" animated="true" placeholder="{{ 'productos.modal.filtroProd' | translate }}"></ion-searchbar>
+      </ion-item>
+    </ion-list>
   
     <ng-container *ngFor="let categoria of zerbitzuak">
       <ion-item button (click)="toggleCategoria(categoria.izena)">

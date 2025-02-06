@@ -24,7 +24,7 @@ export class MaterialakPage implements OnInit {
   materialesSeleccionados:any[]=[];
   materialesSeleccionadosDevolver:any[]=[];
 
-  materialak!:any;
+  materialak!:any[];
   materialaDevolver!:any;
 
   crearKatNombre!:String;
@@ -107,8 +107,8 @@ export class MaterialakPage implements OnInit {
     let observableRest: Observable<any> = this.restServer.post<any>("http://localhost:8080/api/materialak", data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
+      this.materialakLortu();
     });
-    this.materialakLortu();
   }
 
   kategoriaSortu(){
@@ -118,11 +118,11 @@ export class MaterialakPage implements OnInit {
     let observableRest: Observable<any> = this.restServer.post<any>('http://localhost:8080/api/material_kategoria', data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
+      this.materialakLortu();
     });
-    this.materialakLortu();
   }
 
-  async materialaEditatu(id:number){
+  materialaEditatu(id:number){
     let data = {
       "etiketa": this.editarEtiqueta,
       "izena": this.editarNombre,
@@ -134,36 +134,36 @@ export class MaterialakPage implements OnInit {
     let observableRest: Observable<any> = this.restServer.put<any>(`http://localhost:8080/api/materialak/id/${id}`, data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
+      this.materialakLortu();
 	  });
-    await this.materialakLortu();
   }
 
   materialaEzabatu(id:number){
     let observableRest: Observable<any> = this.restServer.delete<any>(`http://localhost:8080/api/materialak/id/${id}`);
     observableRest.subscribe(datuak => {
       console.log(datuak);
+      this.materialakLortu();
     });
-    this.materialakLortu();
   }  
 
   kategoriaEzabatu(id:number){
     let observableRest: Observable<any> = this.restServer.delete<any>(`http://localhost:8080/api/material_kategoria/id/${id}`);
     observableRest.subscribe(datuak => {
       console.log(datuak);
+      this.materialakLortu();
     });
-    this.materialakLortu();
   }  
 
-  async kategoriaEditatu(id: number){
+  kategoriaEditatu(id: number){
     let data = {
       "izena": this.editarKatNombre
     }
-    let observableRest: Observable<any> = await this.restServer.put<any>(`http://localhost:8080/api/material_kategoria/id/${id}`, data);
+    let observableRest: Observable<any> = this.restServer.put<any>(`http://localhost:8080/api/material_kategoria/id/${id}`, data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
+      this.materialakLortu();
+      this.materialakLortuDevolver();
     });
-    await this.materialakLortu();
-    await this.materialakLortuDevolver();
   }
 
   materialakAtera(){
@@ -179,9 +179,9 @@ export class MaterialakPage implements OnInit {
     let observableRest: Observable<any> = this.restServer.post<any>("http://localhost:8080/api/material_mailegua",data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
+      this.materialakLortu();
+      this.materialakLortuDevolver();
     });
-    this.materialakLortu();
-    this.materialakLortuDevolver();
   }
 
   materialakLortu(){

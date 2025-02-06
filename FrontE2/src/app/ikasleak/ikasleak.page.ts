@@ -1,11 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlertController, IonModal, ModalController } from '@ionic/angular';
-import {
-  IkasleZerbitzuakService,
-  Ikaslea,
-  Taldea,
-  Horario,
-} from './../zerbitzuak/ikasle-zerbitzuak.service';
+import {IkasleZerbitzuakService, Ikaslea, Taldea, Horario,} from './../zerbitzuak/ikasle-zerbitzuak.service';
 import { TranslateService } from '@ngx-translate/core';
 import { HeaderComponent } from '../components/header/header.component';
 
@@ -14,70 +9,46 @@ import { HeaderComponent } from '../components/header/header.component';
   templateUrl: './ikasleak.page.html',
   styleUrls: ['./ikasleak.page.scss'],
 })
+
+
 export class IkasleakPage implements OnInit {
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   selectedLanguage: string = 'es';
-  selectedIkasleak: Set<number> = new Set();
   searchQuery: string = '';
   ikasleak: Ikaslea[] = [];
-  filteredAlumnos: Ikaslea[] = [];
-  taldeak: Taldea[] = [];
-  gruposDisponibles: Taldea[] = [];
-  selectedAlumno: Ikaslea = {
-    id: 0,
-    izena: '',
-    abizenak: '',
-    taldea: { kodea: '' },
-  };
+  ikasleArray: any[] = [];
+  filteredAlumnos: any[] = [];
+  selectedAlumno: any = null;
+  selectedIkasleak: Set<number> = new Set();
+  nuevoAlumno: any = {izena: '', abizenak: '', taldea: { kodea: '' },};
   isEditModalOpen: boolean = false;
-  nuevoAlumno: Ikaslea = {
-    id: 0,
-    izena: '',
-    abizenak: '',
-    taldea: { kodea: '' },
-  };
-  nuevoGrupo: Taldea = { kodea: '', izena: '' };
-  kodeak: Taldea[] = [];
-  selectedTalde: Taldea = { kodea: '', izena: '' };
+  nuevoGrupo: any = { kodea: '', izena: '' };
+  selectedTalde: any = null;
+  ordutegiArray: any[] = [];
+  ordutegiArrayFiltered: any[] = [];
   isEditTaldeModalOpen: boolean = false;
   fecha: string = '';
   horaInicio: any = null;
   horaFin: any = null;
+  fechaInicioFilter: any = null;
+  fechaFinFilter: any = null;
   fechaInicio: any = null;
   fechaFin: any = null;
   idHorario: any = null;
-
   grupoSeleccionado: Taldea = { kodea: '', izena: '' };
   diaSeleccionado: number = 0;
-
-  ordutegiArray: Horario[] = [];
-  ordutegia: Horario = {
-    taldea: {
-      kodea: '',
-    },
-    eguna: 0,
-    hasieraData: '',
-    amaieraData: '',
-    hasieraOrdua: '',
-    amaieraOrdua: '',
-  };
-
-  selectedHorario: Horario = {
-    id: 0,
-    hasieraData: '',
-    hasieraOrdua: '',
-    amaieraData: '',
-    amaieraOrdua: '',
-    eguna: 0,
-    taldea: { kodea: '' },
-  };
+  ordutegia: Horario = {taldea: {kodea: '',},eguna: 0,hasieraData: '',amaieraData: '',hasieraOrdua: '',amaieraOrdua: '',};
+  selectedHorario: Horario = {id: 0,hasieraData: '',hasieraOrdua: '',amaieraData: '',amaieraOrdua: '',eguna: 0,taldea: { kodea: '' },};
 
   constructor(
     private translate: TranslateService,
     private modalController: ModalController,
     private ikasleService: IkasleZerbitzuakService,
     private alertController: AlertController
-  ) {}
+  ) {
+    this.translate.setDefaultLang('es');
+    this.translate.use(this.selectedLanguage);
+  }
 
   ngOnInit() {
     this.getGrupos();
@@ -98,12 +69,12 @@ export class IkasleakPage implements OnInit {
       (horarios) => {
         // Filtrar los horarios que no tienen datos en 'ezabatze_data' (null, undefined o vacío)
         this.ordutegiArray = horarios.filter((horario) => {
-          const isDeletedTalde = this.taldeak.some(
+          const isDeletedTalde = this.ikasleArray.some(
             (grupo) => grupo.kodea === horario.taldea.kodea && grupo.ezabatzeData
           );
           return !horario.ezabatzeData && !isDeletedTalde; // Filtra los horarios cuyo taldea no ha sido eliminado
-        });
-  
+        })
+        this.ordutegiArrayFiltered = this.ordutegiArray;
         console.log('Horarios obtenidos y filtrados:', this.ordutegiArray);
       },
       (error) => {
@@ -111,6 +82,33 @@ export class IkasleakPage implements OnInit {
       }
     );
   }
+
+  filterHorarios()
+  {
+    this.ordutegiArrayFiltered = this.ordutegiArray.map(ordutegi => ({
+      ...ordutegi,
+      // zerbitzuak: categoria.zerbitzuak.map((zerbitzua: any) => ({ ...zerbitzua }))
+    }));
+
+    this.ordutegiArrayFiltered = this.ordutegiArrayFiltered.filter(ordutegi => {
+      const horarioFecha = new Date(ordutegi.hasieraData); // Convertir a objeto Date
+      const inicio = this.fechaInicioFilter ? new Date(this.fechaInicioFilter) : null;
+      const fin = this.fechaFinFilter ? new Date(this.fechaFinFilter) : null;
+  
+      return (
+        (!inicio || horarioFecha >= inicio) &&
+        (!fin || horarioFecha <= fin)
+      );
+    });
+  }
+
+  resetFilters() {
+    this.fechaInicioFilter = null;
+    this.fechaFinFilter = null;
+    this.ordutegiArrayFiltered = this.ordutegiArray.map(ordutegi => ({
+      ...ordutegi,
+      // zerbitzuak: categoria.zerbitzuak.map((zerbitzua: any) => ({ ...zerbitzua }))
+    }));  }
   
 
   getDayName(k: number): string {
@@ -132,21 +130,24 @@ export class IkasleakPage implements OnInit {
   // Método para obtener los alumnos de la API
   getAlumnos() {
     this.ikasleService.getAlumnos().subscribe((data: Ikaslea[]) => {
-      this.ikasleak = data.filter((ikaslea) => !ikaslea.ezabatzeData); // Asignar los alumnos a la propiedad ikasleak
-      this.filteredAlumnos = [...this.ikasleak]; // Inicializar la lista filtrada con todos los alumnos
+      this.filteredAlumnos = data.filter((ikaslea) => !ikaslea.ezabatzeData); // Asignar los alumnos a la propiedad ikasleak
     });
   }
 
   async getGrupos() {
-    this.ikasleService.getGrupos().subscribe((data: Taldea[]) => {
-      this.taldeak = data.filter((grupo) => !grupo.ezabatzeData); // Cargar los grupos en la variable
-      console.log(this.taldeak); // Esto es solo para verificar que se están cargando correctamente
-      this.gruposDisponibles = [...this.taldeak];
+    this.ikasleService.getGrupos().subscribe((data: any[]) => {
+      this.ikasleArray = data
+        .filter((grupo:any) => grupo.ezabatzeData === null)
+        .map((grupo:any) => ({
+          ...grupo,
+          langileak: grupo.langileak.filter((langile:any) => langile.ezabatzeData === null)}));
+      console.log(this.ikasleArray); // Esto es solo para verificar que se están cargando correctamente
     });
   }
 
-  openEditModal(ikaslea: Ikaslea) {
-    this.selectedAlumno = { ...ikaslea };
+  openEditModal(ikaslea: any) {
+    this.selectedAlumno = ikaslea;
+    console.log(this.selectedAlumno)
     this.isEditModalOpen = true;
   }
 
@@ -156,21 +157,26 @@ export class IkasleakPage implements OnInit {
 
   filterAlumnos() {
     const query = this.searchQuery.trim().toLowerCase();
-    this.filteredAlumnos = query
-      ? this.ikasleak.filter((ikaslea) =>
-          `${ikaslea.izena} ${ikaslea.abizenak} ${ikaslea.taldea.kodea} ${ikaslea.taldea.izena}`
+    if(this.searchQuery !== ''){
+      this.filteredAlumnos = query
+      ? this.filteredAlumnos.filter((ikaslea) =>
+          `${ikaslea.izena} ${ikaslea.abizenak} ${ikaslea.taldeKodea} ${ikaslea.taldeIzena}`
             .toLowerCase()
             .includes(query)
         )
-      : [...this.ikasleak];
+      : [...this.filteredAlumnos];
+    }else{
+      this.getAlumnos();
+    }
+    
   }
 
   eliminarAlumnos() {
     this.selectedIkasleak.forEach((id) => {
       this.ikasleService.eliminarAlumno(id).subscribe(() => {
         // Eliminar el alumno de la lista
-        this.ikasleak = this.ikasleak.filter((alumno) => alumno.id !== id);
-        this.filteredAlumnos = [...this.ikasleak]; // Actualizar la lista filtrada
+        this.getAlumnos();
+        this.getGrupos();
       });
     });
     this.selectedIkasleak.clear(); // Limpiar la selección después de eliminar
@@ -185,10 +191,9 @@ export class IkasleakPage implements OnInit {
       },
     };
     console.log(data);
-
     this.ikasleService.agregarAlumno(data).subscribe((data) => {
-      this.ikasleak.push(data);
-      this.filteredAlumnos = [...this.ikasleak];
+      this.getAlumnos();
+      this.getGrupos();
       this.modalController.dismiss();
     });
     this.nuevoAlumno = {
@@ -205,16 +210,16 @@ export class IkasleakPage implements OnInit {
     };
 
     this.ikasleService.agregarGrupo(data).subscribe((data) => {
-      this.gruposDisponibles.push(data);
+      this.getGrupos();
+      this.getAlumnos();
       this.modalController.dismiss();
     });
     this.nuevoGrupo = { kodea: '', izena: '' };
-    this.getGrupos();
   }
 
   // Abre el modal para editar un talde
-  openEditTaldeModal(talde: Taldea) {
-    this.selectedTalde = { ...talde }; // Clonar el objeto seleccionado
+  openEditTaldeModal(talde: any) {
+    this.selectedTalde = talde; // Clonar el objeto seleccionado
     console.log('selectedTalde al abrir modal:', this.selectedTalde);
     this.isEditTaldeModalOpen = true;
   }
@@ -231,13 +236,8 @@ export class IkasleakPage implements OnInit {
     };
 
     this.ikasleService.updateGrupo(updatedTalde).subscribe(() => {
-      const index = this.taldeak.findIndex(
-        (grupo) => grupo.kodea === updatedTalde.kodea
-      );
-      if (index !== -1) {
-        this.taldeak[index] = updatedTalde;
-      }
-      this.gruposDisponibles = [...this.taldeak];
+      this.getAlumnos();
+      this.getGrupos();
       this.closeEditTaldeModal();
     });
   }
@@ -247,17 +247,14 @@ export class IkasleakPage implements OnInit {
       id: this.selectedAlumno.id,
       izena: this.selectedAlumno.izena,
       abizenak: this.selectedAlumno.abizenak,
-      taldea: { ...this.selectedAlumno.taldea },
+      taldea: { 
+        kodea:this.selectedAlumno.taldeKodea
+      },
     };
 
     this.ikasleService.updateAlumno(updatedAlumno).subscribe(() => {
-      const index = this.ikasleak.findIndex(
-        (alumno) => alumno.id === updatedAlumno.id
-      );
-      if (index !== -1) {
-        this.ikasleak[index] = updatedAlumno;
-      }
-      this.filteredAlumnos = [...this.ikasleak];
+      this.getGrupos();
+      this.getAlumnos();
       this.closeEditModal();
     });
   }
@@ -291,10 +288,8 @@ export class IkasleakPage implements OnInit {
     // Llamamos al servicio que gestiona la eliminación de grupos
     this.ikasleService.eliminarGrupo(grupoKodea).subscribe(
       (response) => {
-        // Aquí, actualizas la lista de grupos disponibles después de eliminar
-        this.gruposDisponibles = this.gruposDisponibles.filter(
-          (grupo) => grupo.kodea !== grupoKodea
-        );
+        this.getGrupos();
+        this.getAlumnos();
         alert('Taldea ezabatuta');
       },
       (error) => {
@@ -321,7 +316,6 @@ export class IkasleakPage implements OnInit {
   // Función para guardar los horarios
   guardarHorario() {
     // Verifica si todos los campos necesarios están completos
-    
     // Formatear las fechas a 'yyyy-MM-dd' y las horas a 'HH:mm:ss'
     const formattedFechaInicio = this.formatDate(this.fechaInicio);
     const formattedFechaFin = this.formatDate(this.fechaFin);
@@ -338,15 +332,12 @@ export class IkasleakPage implements OnInit {
       hasieraOrdua: formattedHoraInicio, // Asegúrate de que está en formato HH:mm:ss
       amaieraOrdua: formattedHoraFin, // Asegúrate de que está en formato HH:mm:ss
     };
-  
     console.log(JSON.stringify(this.ordutegia));
-  
     // Usamos subscribe para manejar la respuesta
     this.ikasleService.guardarHorario(this.ordutegia).subscribe(
       (data) => {
         // Si el horario se guarda correctamente, agrega a la lista de horarios
-        this.ordutegiArray.push(data);
-  
+        this.getHorarios();
         // Reseteo de los campos después de guardar
         this.ordutegia = {
           taldea: {
@@ -364,9 +355,7 @@ export class IkasleakPage implements OnInit {
         this.fechaFin = ''; // Resetea la fecha de fin
         this.horaInicio = null; // Resetea la hora de inicio
         this.horaFin = null; // Resetea la hora de fin
-  
         console.log(data);
-  
         // Verifica si el horario se ha guardado correctamente
         if (data && data.id) {
           this.showAlert('Éxito', 'Horario guardado correctamente');
@@ -408,7 +397,8 @@ export class IkasleakPage implements OnInit {
     this.modalController.dismiss();
   }
 
-  openModal(horario: Horario, modal: IonModal) {
+  openModal(horario: any, modal: IonModal) {
+    console.log(horario)
     // Asignar los valores del horario seleccionado al formulario
     this.selectedHorario = horario;
     this.idHorario = horario.id;
@@ -418,14 +408,12 @@ export class IkasleakPage implements OnInit {
     this.fechaFin = horario.amaieraData;
     this.horaInicio = horario.hasieraOrdua;
     this.horaFin = horario.amaieraOrdua;
-
     // Abrir el modal manualmente
     modal.present();
   }
 
   horarioSeleccionado: any; // Asegúrate de tener un horario seleccionado
   // Otras propiedades del componente
-
   seleccionarHorario(horario: any) {
     this.horarioSeleccionado = horario;
     // Aquí puedes agregar lógica adicional si es necesario
@@ -434,7 +422,7 @@ export class IkasleakPage implements OnInit {
   actualizarHorario() {
     if (this.selectedHorario) {
       console.log('Horario seleccionado:', this.selectedHorario); // Verifica que el id esté presente
-      const horarioActualizado: Horario = {
+      const horarioActualizado: any = {
         ...this.selectedHorario,
         taldea: this.grupoSeleccionado,
         eguna: this.diaSeleccionado,
@@ -444,11 +432,11 @@ export class IkasleakPage implements OnInit {
         amaieraOrdua: this.horaFin,
         eguneratzeData: new Date().toISOString(),
       };
-
       // Si el id es undefined aquí, podría ser que no se esté asignando correctamente
       if (horarioActualizado.id) {
         this.ikasleService.actualizarHorario(horarioActualizado).subscribe(
           (response) => {
+            this.getHorarios();
             console.log('Horario actualizado:', response);
             // Resetear el horario seleccionado
             this.selectedHorario = {
@@ -488,20 +476,10 @@ export class IkasleakPage implements OnInit {
           {
             text: 'Aceptar',
             handler: () => {
-              // Obtener la fecha y hora actual
-              const ezabatzeData = new Date().toISOString(); // Esto lo convierte en formato ISO 8601
-
-              // Agregar el campo ezabatzeData al objeto horario
-              horario.ezabatzeData = ezabatzeData;
-
-              // Llamar al servicio para eliminar el horario
               this.ikasleService
                 .eliminarHorario(horario.id)
                 .subscribe((response) => {
-                  // Eliminar el horario del array en la interfaz
-                  this.ordutegiArray = this.ordutegiArray.filter(
-                    (h) => h.id !== horario.id
-                  );
+                  this.getHorarios();
                   console.log('Horario eliminado', response);
                 });
             },

@@ -23,12 +23,13 @@
       <ion-buttons slot="end">
         <ion-button id="atera-modal">{{ 'productos.botones.sacarProductos' | translate }}</ion-button>
       </ion-buttons>
-      <ion-buttons slot="end"> 
+      <ion-buttons slot="end">
         <ion-button id="bottom-center">
           <ion-icon name="cart" size="large"></ion-icon>
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
+    
     <ion-popover trigger="bottom-center" side="bottom" alignment="center">
       <ng-template>
         <ion-content class="ion-padding">
@@ -46,8 +47,28 @@
         </ion-content>
       </ng-template>
     </ion-popover>
-
-    <ng-container *ngFor="let categoria of produktuak">
+    
+    <ion-list class="filtros">
+      <!-- Filtro por Categoría -->
+      <ion-item>
+        <!-- <ion-label position="stacked">{{ 'productos.modal.filtroCat' | translate }}</ion-label> -->
+        <ion-searchbar [(ngModel)]="filtroCategoria" (ngModelChange)="filtrarProductos()" animated="true" placeholder="{{ 'productos.modal.filtroCat' | translate }}"></ion-searchbar>
+      </ion-item>
+    
+      <!-- Filtro por Producto -->
+      <ion-item>
+        <!-- <ion-label position="stacked">{{ 'productos.modal.filtroProd' | translate }}</ion-label> -->
+        <ion-searchbar [(ngModel)]="filtroProducto" (ngModelChange)="filtrarProductos()" animated="true" placeholder="{{ 'productos.modal.filtroProd' | translate }}"></ion-searchbar>
+      </ion-item>
+    
+      <!-- Filtro por Stock Bajo -->
+      <ion-item>
+        <ion-label>{{ 'productos.modal.stockBajo' | translate }}</ion-label>
+        <ion-checkbox slot="start" [(ngModel)]="filtroStockBajo" (ngModelChange)="filtrarProductos()"></ion-checkbox>
+      </ion-item>
+    </ion-list>
+    
+    <ng-container *ngFor="let categoria of filteredProduktuak">
       <!-- Categoría -->
       <ion-card>
       <ion-item button (click)="toggleCategoria(categoria.izena)">
@@ -60,7 +81,7 @@
         </ion-button>
         <ion-icon [name]="isCategoriaAbierta(categoria.izena) ? 'chevron-up' : 'chevron-down'" slot="end"></ion-icon>
       </ion-item>
-
+    
       <!-- Lista de productos dentro de la categoría -->
       <ion-list *ngIf="isCategoriaAbierta(categoria.izena)">
         <ion-item *ngFor="let producto of categoria.produktuak">
@@ -79,6 +100,7 @@
       </ion-list>
       </ion-card>
     </ng-container>
+    
 
     <!-- Modal para sacar productos -->
     <ion-modal #prodAteraModal trigger="atera-modal">
