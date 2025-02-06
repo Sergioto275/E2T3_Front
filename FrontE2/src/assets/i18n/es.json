@@ -127,7 +127,10 @@
         "producto":"Producto",
         "fecha":"Fecha",
         "volumen":"volumen",
-        "comentarios":"Comentarios"
+        "comentarios":"Comentarios",
+        "reset":"Reset",
+        "filtroFecha":"Filtrar por Fecha",
+        "filtroBezero":"Busca nombre o apellido"
       }
   },
   "informes":{

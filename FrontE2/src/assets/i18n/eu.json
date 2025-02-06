@@ -127,7 +127,10 @@
             "producto":"Produktua",
             "fecha":"Data",
             "volumen":"Bolumena",
-            "comentarios":"Oharrak"
+            "comentarios":"Oharrak",
+            "reset":"Reset",
+            "filtroFecha":"Data Filtratu",
+            "filtroBezero":"Bilatu izena edo abizena"
         }
     },
     "informes":{
