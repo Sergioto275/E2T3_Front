@@ -24,7 +24,7 @@ export class MaterialakPage implements OnInit {
   materialesSeleccionados:any[]=[];
   materialesSeleccionadosDevolver:any[]=[];
 
-  materialak!:any;
+  materialak!:any[];
   materialaDevolver!:any;
 
   crearKatNombre!:String;
@@ -33,7 +33,6 @@ export class MaterialakPage implements OnInit {
   crearCategoria!:Number;
 
   editarKatNombre!:String;
-  editarId!:Number;
   editarNombre!:String;
   editarEtiqueta!:String;
   editarCategoria!:Number;
@@ -108,8 +107,8 @@ export class MaterialakPage implements OnInit {
     let observableRest: Observable<any> = this.restServer.post<any>("http://localhost:8080/api/materialak", data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
+      this.materialakLortu();
     });
-    this.materialakLortu();
   }
 
   kategoriaSortu(){
@@ -119,13 +118,12 @@ export class MaterialakPage implements OnInit {
     let observableRest: Observable<any> = this.restServer.post<any>('http://localhost:8080/api/material_kategoria', data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
+      this.materialakLortu();
     });
-    this.materialakLortu();
   }
 
   materialaEditatu(id:number){
     let data = {
-      "id": this.editarId,
       "etiketa": this.editarEtiqueta,
       "izena": this.editarNombre,
       "materialKategoria": {
@@ -136,24 +134,24 @@ export class MaterialakPage implements OnInit {
     let observableRest: Observable<any> = this.restServer.put<any>(`http://localhost:8080/api/materialak/id/${id}`, data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
+      this.materialakLortu();
 	  });
-    this.materialakLortu();
   }
 
   materialaEzabatu(id:number){
     let observableRest: Observable<any> = this.restServer.delete<any>(`http://localhost:8080/api/materialak/id/${id}`);
     observableRest.subscribe(datuak => {
       console.log(datuak);
+      this.materialakLortu();
     });
-    this.materialakLortu();
   }  
 
   kategoriaEzabatu(id:number){
     let observableRest: Observable<any> = this.restServer.delete<any>(`http://localhost:8080/api/material_kategoria/id/${id}`);
     observableRest.subscribe(datuak => {
       console.log(datuak);
+      this.materialakLortu();
     });
-    this.materialakLortu();
   }  
 
   kategoriaEditatu(id: number){
@@ -163,9 +161,9 @@ export class MaterialakPage implements OnInit {
     let observableRest: Observable<any> = this.restServer.put<any>(`http://localhost:8080/api/material_kategoria/id/${id}`, data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
+      this.materialakLortu();
+      this.materialakLortuDevolver();
     });
-    this.materialakLortu();
-    this.materialakLortuDevolver();
   }
 
   materialakAtera(){
@@ -181,9 +179,9 @@ export class MaterialakPage implements OnInit {
     let observableRest: Observable<any> = this.restServer.post<any>("http://localhost:8080/api/material_mailegua",data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
+      this.materialakLortu();
+      this.materialakLortuDevolver();
     });
-    this.materialakLortu();
-    this.materialakLortuDevolver();
   }
 
   materialakLortu(){
@@ -236,18 +234,9 @@ export class MaterialakPage implements OnInit {
       this.alumnos = datuak
       .filter((kategoria: any) => kategoria.ezabatzeData === null)
       .map((kategoria: any) => ({
-        kodea: kategoria.kodea,
-        izena: kategoria.izena,
-        sortzeData: kategoria.sortzeData,
+        ...kategoria,
         langileak: kategoria.langileak
           .filter((langilea: any) => langilea.ezabatzeData === null)
-          .map((langilea: any) => ({
-            id: langilea.id,
-            izena: langilea.izena,
-            abizenak: langilea.abizenak,
-            sortzeData: langilea.sortzeData,
-            eguneratzeData: langilea.eguneratzeData,
-          })),
       }));
     });
   }  
@@ -259,7 +248,6 @@ export class MaterialakPage implements OnInit {
   }
 
   abrirEditarMaterial(material:any) {
-    console.log(this.materialak)
     console.log(material);
     this.modalEditar.present();
     this.selectedMateriala = {...material};
@@ -267,7 +255,6 @@ export class MaterialakPage implements OnInit {
     this.editarEtiqueta = material.etiketa;
     this.editarCategoria = material.kategoriaId;
   }
-
 
   onGrupoChange() {
     if (!this.alumnos || this.alumnos.length === 0) {

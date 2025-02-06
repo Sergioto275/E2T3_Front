@@ -409,7 +409,6 @@ async eliminar_cita() {
     this.tratamenduKategoriaTaula = [];
     this.precioextra = null;
     this.tratamenduSelec = [];
-    this.langileArray = [];
     this.idLangile = null;
     this.idTalde = null;
     this.dataTest = null;
