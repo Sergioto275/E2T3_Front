@@ -51,7 +51,8 @@
             "sacarMateriales": "Materialak Atera",
             "crearMateriales": "Materialak Sortu",
             "editarMateriales": "Materialak Editatu",
-            "crearCategoria":"Kategoria Sortu"
+            "crearCategoria":"Kategoria Sortu",
+            "editarCategoria": "Kategoria editatu"
         },
         "modal": {
             "sacarMateriales": "Materialak Atera",
@@ -67,7 +68,8 @@
             "vacio":"Ez daude materialak aukeratuta",
             "fechaSalida": "Ateratze data",
             "filtroMat":"Marerialaren Izenaz Filtratu",
-            "listaMatsSacar": "Atera beharreko materialen zerrenda"
+            "listaMatsSacar": "Atera beharreko materialen zerrenda",
+            "listaMatsDevolver": "Bueltatu beharreko materialen zerrenda"
         }
     },
     "citas": {

@@ -40,7 +40,7 @@
           <ion-searchbar [(ngModel)]="filtroCategoria" (ngModelChange)="filtrarMateriales()" animated="true" placeholder="{{ 'productos.modal.filtroCat' | translate }}"></ion-searchbar>
         </ion-item>
       
-        <!-- Filtro por Producto -->
+        <!-- Filtro por Material -->
         <ion-item>
           <ion-searchbar [(ngModel)]="filtroMaterial" (ngModelChange)="filtrarMateriales()" animated="true" placeholder="{{ 'materiales.modal.filtroMat' | translate }}"></ion-searchbar>
         </ion-item>
@@ -281,15 +281,15 @@
       <ng-template>
         <ion-header>
           <ion-toolbar>
-            <ion-title>{{ 'productos.botones.editarCategoria' | translate }}</ion-title>
+            <ion-title>{{ 'materiales.botones.editarCategoria' | translate }}</ion-title>
             <ion-buttons slot="end">
             </ion-buttons>
           </ion-toolbar>
         </ion-header>
         <ion-content>
           <ion-item>
-            <ion-label position="stacked">{{ 'productos.modal.nombre' | translate }}</ion-label>
-            <ion-input [(ngModel)]="editarKatNombre" placeholder="{{ 'productos.modal.nombre' | translate }}"></ion-input>
+            <ion-label position="stacked">{{ 'materiales.modal.nombre' | translate }}</ion-label>
+            <ion-input [(ngModel)]="editarKatNombre" placeholder="{{ 'materiales.modal.nombre' | translate }}"></ion-input>
           </ion-item>
           <ion-grid>
             <ion-row>
@@ -314,7 +314,7 @@
       <ng-template>
         <ion-header>
           <ion-toolbar>
-            <ion-title>Devolver materiales</ion-title>
+            <ion-title>{{ 'materiales.botones.devolverMateriales' | translate }}</ion-title>
             <ion-buttons slot="end">
             </ion-buttons>
           </ion-toolbar>
@@ -322,15 +322,15 @@
         <ion-content>
           <ion-item>
             <ion-grid>
-              <ion-label><strong>Lista de materiales a devolver:</strong></ion-label>
+              <ion-label><strong>{{ 'materiales.modal.listaMatsDevolver' | translate }}:</strong></ion-label>
               <ion-row>
                 <ion-col size="6" *ngFor="let mat of materialesSeleccionadosDevolver">
                   <ion-card>
                     <ion-card-header>
-                      <ion-label><strong>Izena: </strong>{{ mat.materiala.izena }}</ion-label>
+                      <ion-label><strong>{{ 'materiales.modal.nombre' | translate }}: </strong>{{ mat.materiala.izena }}</ion-label>
                     </ion-card-header>
                     <ion-card-content>
-                      <ion-label><strong>Langilea: </strong>{{ mat.langilea.izena }}</ion-label>
+                      <ion-label><strong>{{ 'materiales.modal.alumno' | translate }}: </strong>{{ mat.langilea.izena }}</ion-label>
                     </ion-card-content>
                   </ion-card>
                 </ion-col>

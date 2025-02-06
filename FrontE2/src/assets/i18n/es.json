@@ -51,7 +51,8 @@
       "sacarMateriales": "Sacar Materiales",
       "crearMateriales": "Agregar Materiales",
       "editarMateriales": "Editar Materiales",
-      "crearCategoria":"Crear Categoria"
+      "crearCategoria":"Crear Categoria",
+      "editarCategoria": "Editar Categoria"
     },
     "modal": {
       "sacarMateriales": "Sacar Materiales",
@@ -67,7 +68,8 @@
       "vacio":"No hay materiales seleccionados",
       "fechaSalida": "Fecha de salida",
       "filtroMat":"Filtrar por Nombre del Material",
-      "listaMatsSacar": "Lista de materiales a sacar"
+      "listaMatsSacar": "Lista de materiales a sacar",
+      "listaMatsDevolver": "Lista de materiales a devolver"
       }
   },
   "citas": {
