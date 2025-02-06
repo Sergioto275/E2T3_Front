@@ -49,8 +49,9 @@
 
     <ng-container *ngFor="let categoria of produktuak">
       <!-- Categoría -->
+      <ion-card>
       <ion-item button (click)="toggleCategoria(categoria.izena)">
-        <ion-label>{{ categoria.izena }}</ion-label>
+        <ion-label><strong>{{ categoria.izena }}</strong></ion-label>
         <ion-button (click)="openKatModal(categoria)" slot="end">
           <ion-icon name="create"></ion-icon>
         </ion-button>
@@ -68,7 +69,7 @@
           <ion-label class="deskribapena"> {{ producto.deskribapena }}</ion-label>
           <ion-checkbox slot="start" [(ngModel)]="producto.selected"
             (ionChange)="actualizarProductosSeleccionados(producto, categoria.id)"></ion-checkbox>
-            <ion-button slot="end" (click)="openProdModal(producto, categoria.id)">
+            <ion-button color="light" slot="end" (click)="openProdModal(producto, categoria.id)">
               <ion-icon name="create"></ion-icon>
             </ion-button>
           <ion-button slot="end" color="danger" (click)="eliminarProducto(producto.id)">
@@ -76,10 +77,11 @@
           </ion-button>
         </ion-item>
       </ion-list>
+      </ion-card>
     </ng-container>
 
     <!-- Modal para sacar productos -->
-    <ion-modal trigger="atera-modal">
+    <ion-modal #prodAteraModal trigger="atera-modal">
       <ng-template>
         <ion-header>
           <ion-toolbar>
@@ -102,8 +104,21 @@
               </ion-select-option>
             </ion-select>
           </ion-item>
-          <ion-button expand="full" (click)="sacarProductos()">{{ 'productos.botones.confirmar' | translate
-            }}</ion-button>
+             <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <ion-button expand="block" color="success" (click)="sacarProductos()"
+                    (click)="prodAteraModal.dismiss()">
+                    <ion-icon name="checkmark"></ion-icon>
+                  </ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button expand="block" color="danger" (click)="prodAteraModal.dismiss()">
+                    <ion-icon name="close"></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
           <ion-list>
             <ion-item *ngFor="let prod of productosSeleccionados">
               <ion-item>
@@ -149,7 +164,21 @@
             <ion-label position="stacked">{{ 'productos.modal.stockAlerta' | translate }}</ion-label>
             <ion-input [(ngModel)]="crearStockAlerta" type="number" placeholder="Stock alerta"></ion-input>
           </ion-item>
-          <ion-button expand="full" (click)="crearProducto()" (click)="modalSortu.dismiss()">{{ 'productos.botones.crear' | translate }}</ion-button>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-button expand="block" color="success" (click)="crearProducto()"
+                  (click)="modalSortu.dismiss()">
+                  <ion-icon name="checkmark"></ion-icon>
+                </ion-button>
+              </ion-col>
+              <ion-col>
+                <ion-button expand="block" color="danger" (click)="modalSortu.dismiss()">
+                  <ion-icon name="close"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </ion-content>
       </ng-template>
     </ion-modal>
@@ -159,11 +188,6 @@
         <ion-header>
           <ion-toolbar>
             <ion-title>{{ 'productos.botones.editarProductos' | translate }}</ion-title>
-            <ion-buttons slot="end">
-              <ion-button (click)="closeProdModal()">
-                <ion-icon name="close-circle-outline" size="large" color="danger"></ion-icon>
-              </ion-button>
-            </ion-buttons>
           </ion-toolbar>
         </ion-header>
         <ion-content>
@@ -192,7 +216,21 @@
             <ion-label position="stacked">{{ 'productos.modal.stockAlerta' | translate }}</ion-label>
             <ion-input [(ngModel)]="editingProduct.stockAlerta" type="number" placeholder="Stock alerta"></ion-input>
           </ion-item>
-          <ion-button expand="full" (click)="editarProducto()" (click)="prodeditarmod.dismiss()">{{ 'productos.botones.editar' | translate }}</ion-button>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-button expand="block" color="success" (click)="editarProducto()"
+                  (click)="prodeditarmod.dismiss()">
+                  <ion-icon name="checkmark"></ion-icon>
+                </ion-button>
+              </ion-col>
+              <ion-col>
+                <ion-button expand="block" color="danger" (click)="prodeditarmod.dismiss()">
+                  <ion-icon name="close"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </ion-content>
       </ng-template>
     </ion-modal>
@@ -232,11 +270,6 @@
         <ion-header>
           <ion-toolbar>
             <ion-title>{{ 'productos.botones.crearCategoria' | translate }}</ion-title>
-            <ion-buttons slot="end">
-              <ion-button (click)="catprodsormodal.dismiss()">
-                <ion-icon name="close-circle-outline" size="large" color="danger"></ion-icon>
-              </ion-button>
-            </ion-buttons>
           </ion-toolbar>
         </ion-header>
         <ion-content>
@@ -244,7 +277,21 @@
             <ion-label position="stacked">{{ 'productos.modal.nombre' | translate }}</ion-label>
             <ion-input [(ngModel)]="crearKatNombre" placeholder="Izena"></ion-input>
           </ion-item>
-          <ion-button expand="full" (click)="kategoriaSortu()">{{ 'productos.botones.crear' | translate }}</ion-button>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-button expand="block" color="success" (click)="kategoriaSortu()"
+                  (click)="catprodsormodal.dismiss()">
+                  <ion-icon name="checkmark"></ion-icon>
+                </ion-button>
+              </ion-col>
+              <ion-col>
+                <ion-button expand="block" color="danger" (click)="catprodsormodal.dismiss()">
+                  <ion-icon name="close"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </ion-content>
       </ng-template>
     </ion-modal>

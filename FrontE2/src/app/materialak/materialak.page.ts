@@ -122,7 +122,7 @@ export class MaterialakPage implements OnInit {
     this.materialakLortu();
   }
 
-  materialaEditatu(id:number){
+  async materialaEditatu(id:number){
     let data = {
       "etiketa": this.editarEtiqueta,
       "izena": this.editarNombre,
@@ -135,7 +135,7 @@ export class MaterialakPage implements OnInit {
     observableRest.subscribe(datuak => {
       console.log(datuak);
 	  });
-    this.materialakLortu();
+    await this.materialakLortu();
   }
 
   materialaEzabatu(id:number){
@@ -154,16 +154,16 @@ export class MaterialakPage implements OnInit {
     this.materialakLortu();
   }  
 
-  kategoriaEditatu(id: number){
+  async kategoriaEditatu(id: number){
     let data = {
       "izena": this.editarKatNombre
     }
-    let observableRest: Observable<any> = this.restServer.put<any>(`http://localhost:8080/api/material_kategoria/id/${id}`, data);
+    let observableRest: Observable<any> = await this.restServer.put<any>(`http://localhost:8080/api/material_kategoria/id/${id}`, data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
     });
-    this.materialakLortu();
-    this.materialakLortuDevolver();
+    await this.materialakLortu();
+    await this.materialakLortuDevolver();
   }
 
   materialakAtera(){
@@ -248,8 +248,8 @@ export class MaterialakPage implements OnInit {
   }
 
   abrirEditarMaterial(material:any) {
-    console.log(this.materialak)
-    console.log(material);
+    console.log("Material seleccionado:", material);
+    console.log("Categoría del material:", material.id_kategoria);    
     this.modalEditar.present();
     this.selectedMateriala = {...material};
     this.editarNombre = material.izena;
@@ -257,6 +257,11 @@ export class MaterialakPage implements OnInit {
     this.editarCategoria = material.id_kategoria;
   }
 
+  cargarEditarMateriales() {
+    this.editarNombre = this.materialesSeleccionados[0].izena;
+    this.editarEtiqueta = this.materialesSeleccionados[0].etiketa;
+    this.editarCategoria = this.materialesSeleccionados[0].kategoria_id;
+  }
 
   onGrupoChange() {
     if (!this.alumnos || this.alumnos.length === 0) {
