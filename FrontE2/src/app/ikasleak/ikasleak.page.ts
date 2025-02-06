@@ -23,10 +23,13 @@ export class IkasleakPage implements OnInit {
   nuevoGrupo: any = { kodea: '', izena: '' };
   selectedTalde: any = null;
   ordutegiArray: any[] = [];
+  ordutegiArrayFiltered: any[] = [];
   isEditTaldeModalOpen: boolean = false;
   fecha: string = '';
   horaInicio: any = null;
   horaFin: any = null;
+  fechaInicioFilter: any = null;
+  fechaFinFilter: any = null;
   fechaInicio: any = null;
   fechaFin: any = null;
   idHorario: any = null;
@@ -40,7 +43,10 @@ export class IkasleakPage implements OnInit {
     private modalController: ModalController,
     private ikasleService: IkasleZerbitzuakService,
     private alertController: AlertController
-  ) {}
+  ) {
+    this.translate.setDefaultLang('es');
+    this.translate.use(this.selectedLanguage);
+  }
 
   ngOnInit() {
     this.getGrupos();
@@ -66,6 +72,7 @@ export class IkasleakPage implements OnInit {
           );
           return !horario.ezabatzeData && !isDeletedTalde; // Filtra los horarios cuyo taldea no ha sido eliminado
         })
+        this.ordutegiArrayFiltered = this.ordutegiArray;
         console.log('Horarios obtenidos y filtrados:', this.ordutegiArray);
       },
       (error) => {
@@ -73,6 +80,34 @@ export class IkasleakPage implements OnInit {
       }
     );
   }
+
+  filterHorarios()
+  {
+    this.ordutegiArrayFiltered = this.ordutegiArray.map(ordutegi => ({
+      ...ordutegi,
+      // zerbitzuak: categoria.zerbitzuak.map((zerbitzua: any) => ({ ...zerbitzua }))
+    }));
+
+    this.ordutegiArrayFiltered = this.ordutegiArrayFiltered.filter(ordutegi => {
+      const horarioFecha = new Date(ordutegi.hasieraData); // Convertir a objeto Date
+      const inicio = this.fechaInicioFilter ? new Date(this.fechaInicioFilter) : null;
+      const fin = this.fechaFinFilter ? new Date(this.fechaFinFilter) : null;
+  
+      return (
+        (!inicio || horarioFecha >= inicio) &&
+        (!fin || horarioFecha <= fin)
+      );
+    });
+  }
+
+  resetFilters() {
+    this.fechaInicioFilter = null;
+    this.fechaFinFilter = null;
+    this.ordutegiArrayFiltered = this.ordutegiArray.map(ordutegi => ({
+      ...ordutegi,
+      // zerbitzuak: categoria.zerbitzuak.map((zerbitzua: any) => ({ ...zerbitzua }))
+    }));  }
+  
 
   getDayName(k: number): string {
     if (k === 1) {

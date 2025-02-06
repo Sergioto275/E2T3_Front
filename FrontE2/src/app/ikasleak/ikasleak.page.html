@@ -224,6 +224,37 @@
             <ion-button id="egutegia">Sortu Ordutegia</ion-button>
           </ion-buttons>
         </ion-toolbar>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Filtrar por Fecha</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-grid>
+              <ion-row class="ion-align-items-center">
+                <ion-col size="5">
+                  <ion-item>
+                    <ion-label position="stacked">Fecha Inicio</ion-label>
+                    <ion-input type="date" [(ngModel)]="fechaInicioFilter" (ionChange)="filterHorarios()"></ion-input>
+                  </ion-item>
+                </ion-col>
+        
+                <ion-col size="5">
+                  <ion-item>
+                    <ion-label position="stacked">Fecha Fin</ion-label>
+                    <ion-input type="date" [(ngModel)]="fechaFinFilter" (ionChange)="filterHorarios()"></ion-input>
+                  </ion-item>
+                </ion-col>
+        
+                <ion-col size="2" class="ion-text-center">
+                  <ion-button color="danger" fill="outline" (click)="resetFilters()">
+                    <ion-icon slot="start" name="close-circle"></ion-icon>
+                    Reset
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
 
         <ion-content>
           <!-- Tabla para mostrar los horarios -->
@@ -243,9 +274,9 @@
                 </ion-row>
 
                 <!-- Verificar si hay horarios -->
-                <ng-container *ngIf="ordutegiArray.length > 0; else noHorarios">
+                <ng-container *ngIf="ordutegiArrayFiltered.length > 0; else noHorarios">
                   <!-- Mostrar cada horario en una fila de la tabla -->
-                  <ng-container *ngFor="let horario of ordutegiArray">
+                  <ng-container *ngFor="let horario of ordutegiArrayFiltered">
                     <ion-row>
                       <ion-col size="4">{{ horario.taldea.kodea }}</ion-col>
                       <ion-col size="3">{{ getDayName(horario.eguna) }}</ion-col>
