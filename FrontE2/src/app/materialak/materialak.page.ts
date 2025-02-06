@@ -23,6 +23,7 @@ export class MaterialakPage implements OnInit {
 
   materialesSeleccionados:any[]=[];
   materialesSeleccionadosDevolver:any[]=[];
+  filteredMaterialak: any[] = []; 
 
   materialak!:any[];
   materialaDevolver!:any;
@@ -57,6 +58,9 @@ export class MaterialakPage implements OnInit {
   alumne = '';
   categoriasAbiertas: { [key: string]: boolean } = {};
   filteredAlumnos!: any[];
+
+  filtroCategoria: string = '';
+  filtroMaterial: string = '';
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
@@ -162,7 +166,6 @@ export class MaterialakPage implements OnInit {
     observableRest.subscribe(datuak => {
       console.log(datuak);
       this.materialakLortu();
-      this.materialakLortuDevolver();
     });
   }
 
@@ -196,7 +199,9 @@ export class MaterialakPage implements OnInit {
       materialak: categoria.materialak
         .filter((material:any) => material.ezabatzeData === null)
     }));
+    this.filteredMaterialak = this.materialak;
     });
+
   }
 
   materialakLortuDevolver() {
@@ -206,7 +211,6 @@ export class MaterialakPage implements OnInit {
         this.materialaDevolver = datuak.filter((mailegu:any) => 
             mailegu.hasieraData && !mailegu.amaieraData
         );
-
         console.log(this.materialaDevolver);
     });
 }
@@ -270,6 +274,29 @@ export class MaterialakPage implements OnInit {
   constructor(private translate: TranslateService, private restServer:HttpClient) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
+  }
+
+  filtrarMateriales() {
+    this.filteredMaterialak = this.materialak.map(categoria => ({
+      ...categoria,
+      materialak: categoria.materialak.map((material: any) => ({ ...material }))
+    }));
+
+    if(this.filtroCategoria !== '')
+    {
+      this.filteredMaterialak = this.filteredMaterialak.filter(categoria =>
+        (this.filtroCategoria === '' || categoria.izena.toLowerCase().includes(this.filtroCategoria.toLowerCase()))
+      );
+    }
+
+    if (this.filtroMaterial !== '') {
+      this.filteredMaterialak = this.filteredMaterialak.map(categoria => ({
+        ...categoria,
+        materialak: categoria.materialak.filter((materiala: any) =>
+          materiala.izena.toLowerCase().includes(this.filtroMaterial.toLowerCase())
+        )
+      }));
+    }
   }
   
   ngOnInit() {

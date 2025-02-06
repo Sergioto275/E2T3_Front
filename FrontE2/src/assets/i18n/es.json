@@ -51,24 +51,24 @@
       "sacarMateriales": "Sacar Materiales",
       "crearMateriales": "Agregar Materiales",
       "editarMateriales": "Editar Materiales",
-      "crearCategoria":"Crear Categoria",
-      "confirmar": "Confirmar",
-      "crear": "Crear",
-      "cerrar": "Cerrar"
+      "crearCategoria":"Crear Categoria"
     },
     "modal": {
       "sacarMateriales": "Sacar Materiales",
       "alumno": "Alumno",
+      "grupo": "Grupo",
       "seleccionaAlumno": "Selecciona a un alumno",
+      "seleccionaGrupo": "Selecciona a un grupo",
+      "seleccionaCategoria": "Selecciona una categoría",
       "material": "Material",
       "categoria": "Categoría",
       "nombre":"Nombre",
       "etiqueta": "Etiqueta",
-      "vacio":"No hay materiales seleccionados"
-    },
-    "categorias": {
-      "electronica": "Electrónica"
-    }
+      "vacio":"No hay materiales seleccionados",
+      "fechaSalida": "Fecha de salida",
+      "filtroMat":"Filtrar por Nombre del Material",
+      "listaMatsSacar": "Lista de materiales a sacar"
+      }
   },
   "citas": {
     "titulo": "Citas",

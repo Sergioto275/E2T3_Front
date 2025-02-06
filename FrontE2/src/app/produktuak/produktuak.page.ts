@@ -22,7 +22,6 @@ export class ProduktuakPage implements OnInit {
   selectedLanguage: string = 'es';
   modal!:string;
   produktuak!:any[];
-  filteredProduktuak: any[] = []; 
 
   productosSeleccionados:any[]=[];
   isEditingProduct: boolean = false;
@@ -42,44 +41,11 @@ export class ProduktuakPage implements OnInit {
   selecTaldea!:number;
   selecAlumno!:number;
 
+  modalAtera = false;
+  alumne = '';
   categoriasAbiertas: { [key: string]: boolean } = {};
   filteredAlumnos!: any[];
-
-  filtroCategoria: string = '';
-  filtroProducto: string = '';
-  filtroStockBajo: boolean = false;
-
-  filtrarProductos() {
-    this.filteredProduktuak = this.produktuak.map(categoria => ({
-      ...categoria,
-      produktuak: categoria.produktuak.map((producto: any) => ({ ...producto }))
-    }));
-
-    if(this.filtroCategoria !== '')
-    {
-      this.filteredProduktuak = this.filteredProduktuak.filter(categoria =>
-        (this.filtroCategoria === '' || categoria.izena.toLowerCase().includes(this.filtroCategoria.toLowerCase()))
-      );
-    }
-
-    if (this.filtroProducto !== '') {
-      this.filteredProduktuak = this.filteredProduktuak.map(categoria => ({
-        ...categoria,
-        produktuak: categoria.produktuak.filter((producto: any) =>
-          producto.izena.toLowerCase().includes(this.filtroProducto.toLowerCase())
-        )
-      }));
-    }
-  
-    if (this.filtroStockBajo) {
-      this.filteredProduktuak = this.filteredProduktuak.filter(categoria => {
-        categoria.produktuak = categoria.produktuak.filter((producto: any) =>
-          producto.stock <= producto.stockAlerta
-        );
-        return categoria.produktuak.length > 0;
-      });
-    }
-  }
+  selectedCategoryId!: number;
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
@@ -356,23 +322,21 @@ export class ProduktuakPage implements OnInit {
       this.produktuak = datuak
         .filter((categoria:any) => categoria.ezabatzeData === null)
         .map((categoria:any) => ({
-          ...categoria,
-          // id: categoria.id,
-          // izena: categoria.izena,
-          // sortzeData: categoria.sortzeData,
+          id: categoria.id,
+          izena: categoria.izena,
+          sortzeData: categoria.sortzeData,
           produktuak: categoria.produktuak
             .filter((producto:any) => producto.ezabatzeData === null)
-            // .map((producto:any) => ({
-            //   id: producto.id,
-            //   izena: producto.izena,
-            //   deskribapena: producto.deskribapena,
-            //   marka: producto.marka,
-            //   stock: producto.stock,
-            //   stockAlerta: producto.stockAlerta,
-            //   sortzeData: producto.sortzeData
-            // }))
+            .map((producto:any) => ({
+              id: producto.id,
+              izena: producto.izena,
+              deskribapena: producto.deskribapena,
+              marka: producto.marka,
+              stock: producto.stock,
+              stockAlerta: producto.stockAlerta,
+              sortzeData: producto.sortzeData
+            }))
         }));
-      this.filteredProduktuak = this.produktuak;
   
       console.log('Produktuak kargatu:', this.produktuak);
   
