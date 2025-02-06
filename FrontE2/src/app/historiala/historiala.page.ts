@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { environment } from 'src/environments/environment';
+import { HeaderComponent } from '../components/header/header.component';
 
 @Component({
   selector: 'app-historiala',
@@ -11,7 +12,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./historiala.page.scss'],
 })
 export class HistorialaPage implements OnInit {
-
+  @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   selectedLanguage: string = 'es';
   produktuMugimendu: any[] = [];
   materialMugimendu: any[] = [];
@@ -317,6 +318,9 @@ export class HistorialaPage implements OnInit {
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
+    if (this.headerComponent) {
+      this.headerComponent.loadTranslations();
+    }
   }
 
   ngOnInit() {

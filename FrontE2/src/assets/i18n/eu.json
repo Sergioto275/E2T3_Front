@@ -33,7 +33,10 @@
             "stock": "Stocka",
             "stockAlerta": "Stock Alerta",
             "descripcion": "Deskribapena",
-            "vacio":"Ez daude produktuak aukeratuta"
+            "vacio":"Ez daude produktuak aukeratuta",
+            "filtroCat":"Kategoriaren Izenaz Filtratu",
+            "filtroProd":"Produktuaren Izenaz Filtratu",
+            "stockBajo":"Stock Gutxiko Produktuak"
         },
         "categorias": {
             "electronica": "Elektronika"
