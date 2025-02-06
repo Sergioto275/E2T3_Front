@@ -33,7 +33,10 @@
       "stock": "Stock",
       "stockAlerta": "Stock Alerta",
       "descripcion": "Descripción",
-      "vacio":"No hay productos seleccionados"
+      "vacio":"No hay productos seleccionados",
+      "filtroCat":"Filtrar por Nombre de Categoria",
+      "filtroProd":"Filtrar por Nombre de Producto",
+      "stockBajo":"Productos Bajo Stock"
     },
     "categorias": {
       "electronica": "Electrónica"

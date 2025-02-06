@@ -7,6 +7,8 @@ export interface Ikaslea {
   izena: string;
   abizenak: string;
   taldea: Taldea;
+  taldeIzena?:String;
+  taldeKodea?:String;
   sortzeData?: string;
   eguneratzeData?: string;
   ezabatzeData?: null;
@@ -16,6 +18,7 @@ export interface Ikaslea {
 export interface Taldea {
   kodea: string;
   izena?: string;
+  langileak?:Ikaslea[];
   sortzeData?: string;
   eguneratzeData?: string;
   ezabatzeData?: null;
@@ -67,7 +70,7 @@ export class IkasleZerbitzuakService {
   }
 
   // Actualizar un alumno
-  updateAlumno(updatedAlumno: Ikaslea): Observable<Ikaslea> {
+  updateAlumno(updatedAlumno: any): Observable<Ikaslea> {
     return this.http.put<Ikaslea>('http://localhost:8080/api/langileak/' + updatedAlumno.id, updatedAlumno);
   }
 
@@ -97,8 +100,9 @@ export class IkasleZerbitzuakService {
   }
 
   // Eliminar un horario
-  eliminarHorario(id: number): Observable<void> {
-    return this.http.delete<void>('http://localhost:8080/api/ordutegiak/id/'+id);
+  eliminarHorario(id: number): Observable<string> {
+    return this.http.delete('http://localhost:8080/api/ordutegiak/id/' + id, { responseType: 'text' });
   }
+  
 }
 
