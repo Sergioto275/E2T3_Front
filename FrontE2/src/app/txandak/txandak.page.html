@@ -28,8 +28,8 @@
 
           <!-- Mostrar alumno directamente -->
           <p><strong>Alumno:</strong> 
-            <span *ngIf="txanda.alumno">
-              {{ txanda.alumno.izena }} {{ txanda.alumno.abizenak }}
+            <span *ngIf="txanda.langileak">
+              {{ txanda.langileak.izena }} {{ txanda.langileak.abizenak }}
             </span>
             <span *ngIf="!txanda.alumno">
               Desconocido

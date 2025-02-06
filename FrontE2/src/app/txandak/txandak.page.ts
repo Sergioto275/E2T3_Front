@@ -180,19 +180,12 @@ export class TxandakPage implements OnInit {
     const txandaToSave = {
       mota: this.nuevaTxanda.mota,
       data: this.nuevaTxanda.data,
-      alumno: { id: this.nuevaTxanda.alumno }, // Aquí asumimos que el alumno tiene solo un ID
+      langileak: { id: this.nuevaTxanda.alumno }, // Aquí asumimos que el alumno tiene solo un ID
     };
     const apiUrl = `http://localhost:8080/api/txandak`; // URL de la API para eliminar la txanda
-
+    console.log(JSON.stringify(txandaToSave));
     // Realizar la solicitud HTTP POST para crear la txanda
-    this.http.post(apiUrl, txandaToSave)
-      .pipe(
-        catchError(err => {
-          console.error('Error al crear la txanda', err);
-          return of(null); // Retornar un observable vacío en caso de error
-        })
-      )
-      .subscribe(response => {
+    this.http.post(apiUrl, txandaToSave).subscribe(response => {
         if (response) {
           console.log('Txanda guardada correctamente', response);
           this.closeModal(); // Cerrar el modal si la txanda se guarda correctamente
@@ -201,10 +194,4 @@ export class TxandakPage implements OnInit {
         }
       });
   }
-
-  // Función para mostrar los datos de la txanda (solo para demostración)
-  mostrarTxanda() {
-    console.log('Txanda:', this.nuevaTxanda);
-  }
-
 }
