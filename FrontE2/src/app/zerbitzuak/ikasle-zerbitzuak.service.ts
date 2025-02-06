@@ -100,8 +100,9 @@ export class IkasleZerbitzuakService {
   }
 
   // Eliminar un horario
-  eliminarHorario(id: number): Observable<void> {
-    return this.http.delete<void>('http://localhost:8080/api/ordutegiak/id/'+id);
+  eliminarHorario(id: number): Observable<string> {
+    return this.http.delete('http://localhost:8080/api/ordutegiak/id/' + id, { responseType: 'text' });
   }
+  
 }
 
