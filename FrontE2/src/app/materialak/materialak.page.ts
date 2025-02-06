@@ -39,6 +39,8 @@ export class MaterialakPage implements OnInit {
   editarCategoria!:Number;
   matDevolverId!:Number;
 
+  seleccionarId!:Number;
+
   selectedCategoryId!:number;
 
   alumnos!: any[];
@@ -65,8 +67,6 @@ export class MaterialakPage implements OnInit {
   }
 
   actualizarMaterialesSeleccionados(material:any, kategoria_id: number) {
-    material.kategoria_id = kategoria_id;
-    material.kantitatea = 1;
     const index = this.materialesSeleccionados.findIndex(p => p.id === material.id);
     if (material.selected && index === -1) {
       this.materialesSeleccionados.push(material);
@@ -167,31 +167,16 @@ export class MaterialakPage implements OnInit {
     this.materialakLortu();
     this.materialakLortuDevolver();
   }
-  
-  cargarEditarMateriales() {
-    this.editarId = this.materialesSeleccionados[0].id;
-    this.editarNombre = this.materialesSeleccionados[0].izena;
-    this.editarEtiqueta = this.materialesSeleccionados[0].etiketa;
-    this.editarCategoria = this.materialesSeleccionados[0].kategoria_id;
-  }
-
-  cargarEditarMaterialesDevolver() {
-    this.matDevolverId = this.materialesSeleccionadosDevolver[0].id;
-  }
 
   materialakAtera(){
-    let data =
-    
-    [
-      {
-          "materiala": {
-              "id": 2
-          },
-          "langilea": {
-              "id": 1
-          }
-      }
-    ]
+    let data = this.materialesSeleccionados.map(materiala => ({
+      "materiala": {
+        "id": materiala.id
+    },
+      "langilea": {
+        "id": this.selecAlumno
+    }
+  }));
 
     let observableRest: Observable<any> = this.restServer.post<any>("http://localhost:8080/api/material_mailegua",data);
     observableRest.subscribe(datuak => {
