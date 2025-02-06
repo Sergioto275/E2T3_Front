@@ -33,6 +33,8 @@ export interface Ikaslea {
 export class TxandakPage implements OnInit {
   selectedLanguage: string = 'es';
   txandak: Txanda[] = [];  // Lista de txandas
+  filteredTxandak: Txanda[]=[];  // Lista filtrada de txandas
+
   ikasleak: Ikaslea[] = [];
   filteredAlumnos: Ikaslea[] = [];
   nuevaTxanda = {
@@ -40,7 +42,9 @@ export class TxandakPage implements OnInit {
     data: '', // Fecha de la txanda
     alumno: null, // ID del alumno
   };
-  
+  selectedType = 'all';  // Tipo de txanda seleccionado
+
+
   constructor(private translate: TranslateService, 
               private http: HttpClient,
               private alertCtrl: AlertController) { }
@@ -52,6 +56,8 @@ export class TxandakPage implements OnInit {
     // Llamar al método para obtener los txandas
     this.getTxandak();
     this.getAlumnos();
+    this.filterTxandas();  // Llamada inicial al filtro para mostrar todas las txandas
+
   }
 
   changeLanguage() {
@@ -62,6 +68,14 @@ export class TxandakPage implements OnInit {
     return this.filteredAlumnos.find(ikaslea => ikaslea.id === id);
   }
   
+  // Función para filtrar txandas por tipo
+  filterTxandas() {
+    if (this.selectedType === 'all') {
+      this.filteredTxandak = this.txandak;
+    } else {
+      this.filteredTxandak = this.txandak.filter(txanda => txanda.mota === this.selectedType);
+    }
+  }
 
   getTxandak() {
     const apiUrl = 'http://localhost:8080/api/txandak';
@@ -194,4 +208,6 @@ export class TxandakPage implements OnInit {
         }
       });
   }
+
+  
 }
