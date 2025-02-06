@@ -1,7 +1,7 @@
 <meta name="mobile-web-app-capable" content="yes" />
 <app-header></app-header>
 <ion-content class="ion-page" id="main-content">
-    <ion-toolbar>
+    <ion-toolbar class="Headeraaa">
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
@@ -11,8 +11,7 @@
         <ion-select-option value="eu">Euskera</ion-select-option>
       </ion-select>
     </ion-toolbar>
-  <ion-content [fullscreen]="true">
-    <ion-toolbar>
+    <ion-toolbar class="Headeraaa">
       <ion-segment>
         <ion-segment-button value="kudeatu" content-id="kudeatu">
           <ion-label>Taldeen Kudeaketa</ion-label>
@@ -22,6 +21,8 @@
         </ion-segment-button>
       </ion-segment>
     </ion-toolbar>
+  <ion-content [fullscreen]="true">
+    
     <ion-segment-view>
       <ion-segment-content id="kudeatu">
         <ion-toolbar>
@@ -35,35 +36,55 @@
             <ion-button id="atera-modal">Ikasleak bistaratu</ion-button>
           </ion-buttons>
         </ion-toolbar>
-      <!-- Listado de grupos con alumnos -->
-      <ion-list>
-        <ion-item *ngFor="let grupo of ikasleArray">
-          <ion-label>
-            <h2>{{ grupo.izena }}</h2>
-            <p>Kodea: {{ grupo.kodea }}</p>
-            <!-- Lista de alumnos dentro del grupo -->
-            <ion-button color="danger" (click)="confirmarEliminacionGrupo(grupo.kodea)">
-              <ion-icon name="trash-outline"></ion-icon>
-            </ion-button>
-            <ion-button color="primary" (click)="openEditTaldeModal(grupo)">
-              <ion-icon name="create-outline"></ion-icon>
-            </ion-button>
-            <ion-list>
-              <!-- <ion-item *ngFor="let ikaslea of getAlumnosPorKodea(grupo.kodea)"> -->
-              <ion-item *ngFor="let ikaslea of grupo.langileak">
-                <ion-label>
-                  <h3>{{ ikaslea.izena }} {{ ikaslea.abizenak }}</h3>
-                  <p>Ikaslearen sortze data: {{ ikaslea.sortzeData }}</p>
-                </ion-label>
-                <ion-button (click)="openEditModal(ikaslea)">
-                  <ion-icon name="create-outline"></ion-icon>
-                </ion-button>
-              </ion-item>
-            </ion-list>
-          </ion-label>
-          <!-- Botón para eliminar el grupo -->
-        </ion-item>
-      </ion-list>
+
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Filtrar por Grupo</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+                <ion-col size="12">
+                  <ion-item>
+                    <ion-label position="stacked">Buscar por Nombre o Código</ion-label>
+                    <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterGroups()" debounce="300" placeholder="Introduce nombre o código del grupo"></ion-searchbar>
+                  </ion-item>
+                </ion-col>
+          </ion-card-content>
+        </ion-card>
+        
+      
+        
+        <ion-list>
+          <ion-card *ngFor="let grupo of ikasleArray">
+            <ion-card-header>
+              <ion-card-title>{{ grupo.izena }}</ion-card-title>
+              <ion-card-subtitle>Kodea: {{ grupo.kodea }}</ion-card-subtitle>
+            </ion-card-header>
+        
+            <ion-card-content>
+              <ion-button color="danger" (click)="confirmarEliminacionGrupo(grupo.kodea)">
+                <ion-icon name="trash-outline"></ion-icon>
+              </ion-button>
+              <ion-button color="primary" (click)="openEditTaldeModal(grupo)">
+                <ion-icon name="create-outline"></ion-icon>
+              </ion-button>
+        
+              <!-- Lista de alumnos dentro de items -->
+              <ion-list>
+                <ion-item 
+                  *ngFor="let ikaslea of grupo.langileak" 
+                  class="ikasle-item"
+                  (click)="openEditModal(ikaslea)"
+                >
+                  <ion-label>
+                    <h3>{{ ikaslea.izena }} {{ ikaslea.abizenak }}</h3>
+                  </ion-label>
+                </ion-item>
+              </ion-list>
+            </ion-card-content>
+          </ion-card>
+        </ion-list>
+        
+        
 
       <!-- Modal para editar un Ikaslea -->
       <ion-modal [isOpen]="isEditModalOpen" (ionModalDidDismiss)="closeEditModal()">
@@ -127,6 +148,7 @@
           </ion-content>
         </ng-template>
       </ion-modal>
+
 
       <!-- Modal para eliminar un Ikaslea -->
       <ion-modal trigger="atera-modal">

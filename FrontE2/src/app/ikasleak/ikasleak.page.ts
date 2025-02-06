@@ -39,6 +39,8 @@ export class IkasleakPage implements OnInit {
   diaSeleccionado: number = 0;
   ordutegia: Horario = {taldea: {kodea: '',},eguna: 0,hasieraData: '',amaieraData: '',hasieraOrdua: '',amaieraOrdua: '',};
   selectedHorario: Horario = {id: 0,hasieraData: '',hasieraOrdua: '',amaieraData: '',amaieraOrdua: '',eguna: 0,taldea: { kodea: '' },};
+  filteredGroups: any[] = [];
+
 
   constructor(
     private translate: TranslateService,
@@ -108,8 +110,30 @@ export class IkasleakPage implements OnInit {
     this.ordutegiArrayFiltered = this.ordutegiArray.map(ordutegi => ({
       ...ordutegi,
       // zerbitzuak: categoria.zerbitzuak.map((zerbitzua: any) => ({ ...zerbitzua }))
-    }));  }
+    }));  
+  }
   
+
+  filterGroups() {
+    if (this.searchQuery.trim() === '') {
+      // Si no hay búsqueda, mostrar todos los grupos
+      this.filteredGroups = [...this.ikasleArray];
+    } else {
+      // Filtrar por nombre o código
+      this.filteredGroups = this.ikasleArray.filter(grupo =>
+        grupo.izena.toLowerCase().includes(this.searchQuery.toLowerCase()) || 
+        grupo.kodea.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    }
+  }
+
+
+
+  resetFilterGroup() {
+    this.searchQuery = '';
+    this.filteredGroups = this.ikasleArray;
+  }
+
 
   getDayName(k: number): string {
     if (k === 1) {
@@ -134,14 +158,11 @@ export class IkasleakPage implements OnInit {
     });
   }
 
-  async getGrupos() {
+  getGrupos() {
     this.ikasleService.getGrupos().subscribe((data: any[]) => {
       this.ikasleArray = data
-        .filter((grupo:any) => grupo.ezabatzeData === null)
-        .map((grupo:any) => ({
-          ...grupo,
-          langileak: grupo.langileak.filter((langile:any) => langile.ezabatzeData === null)}));
-      console.log(this.ikasleArray); // Esto es solo para verificar que se están cargando correctamente
+        .filter((grupo: any) => grupo.ezabatzeData === null); // Asegúrate de filtrar por los que no están eliminados
+      this.filteredGroups = [...this.ikasleArray]; // Al principio, muestra todos los grupos
     });
   }
 

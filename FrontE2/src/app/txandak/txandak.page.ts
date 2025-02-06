@@ -43,7 +43,8 @@ export class TxandakPage implements OnInit {
     alumno: null, // ID del alumno
   };
   selectedType = 'all';  // Tipo de txanda seleccionado
-
+  fechaInicio: string = '';
+  fechaFin: string = '';
 
   constructor(private translate: TranslateService, 
               private http: HttpClient,
@@ -207,5 +208,33 @@ export class TxandakPage implements OnInit {
       });
   }
 
-  
+  // Método para filtrar las txandas por fecha
+  filterByDate() {
+    // Filtrar txandas por el rango de fechas si ambos están presentes
+    if (this.fechaInicio && this.fechaFin) {
+      this.filteredTxandak = this.txandak.filter(txanda => {
+        return (
+          new Date(txanda.data) >= new Date(this.fechaInicio) &&
+          new Date(txanda.data) <= new Date(this.fechaFin)
+        );
+      });
+    } else {
+      // Si no hay fechas seleccionadas, mostrar todas las txandas
+      this.filteredTxandak = [...this.txandak];
+    }
+  }
+
+  resetFilters() {
+    this.fechaInicio = '';
+    this.fechaFin = '';
+    this.filteredTxandak = [...this.txandak];
+  }
+
+  filterToday() {
+    const today = new Date().toISOString().split('T')[0]; // Obtener la fecha de hoy en formato 'YYYY-MM-DD'
+
+    this.filteredTxandak = this.txandak.filter(txanda => {
+      return txanda.data === today; // Filtrar las txandas que tengan la fecha igual a la de hoy
+    });
+  }
 }
