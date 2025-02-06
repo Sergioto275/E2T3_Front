@@ -36,7 +36,7 @@
               'materiales.botones.sacarMateriales' | translate }}</ion-button>
           </ion-buttons>
         </ion-toolbar>
-        <ion-searchbar></ion-searchbar>
+        <ion-searchbar placeholder="Bilatu izenaren arabera"></ion-searchbar>
         <ng-container *ngFor="let categoria of materialak">
           <!-- Categoría -->
           <ion-card>
@@ -240,7 +240,7 @@
       </ng-template>
     </ion-modal>
 
-    <ion-modal #modal trigger="cat-mat-sortu-modal">
+    <ion-modal #modalKatMatSortu trigger="cat-mat-sortu-modal">
       <ng-template>
         <ion-header>
           <ion-toolbar>
@@ -255,12 +255,12 @@
           <ion-grid>
             <ion-row>
               <ion-col>
-                <ion-button expand="block" color="success" (click)="kategoriaSortu()" (click)="modal.dismiss()">
+                <ion-button expand="block" color="success" (click)="kategoriaSortu()" (click)="modalKatMatSortu.dismiss()">
                   <ion-icon name="checkmark"></ion-icon>
                 </ion-button>
               </ion-col>
               <ion-col>
-                <ion-button expand="block" color="danger" (click)="modal.dismiss()">
+                <ion-button expand="block" color="danger" (click)="modalKatMatSortu.dismiss()">
                   <ion-icon name="close"></ion-icon>
                 </ion-button>
               </ion-col>
