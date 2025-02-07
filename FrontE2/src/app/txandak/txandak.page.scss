@@ -60,19 +60,12 @@ ion-label {
   font-weight: bold;
 }
 
-ion-button {
+.Botoiak {
   --background: $color-dark-teal;
   --color: $color-white;
   &:hover {
-    --background: $color-medium-blue;
+    --background: $color-black;
   }
-}
-
-
-  
-
-ion-button[disabled] {
-  --background: $color-light-gray;
 }
 
 ion-searchbar {

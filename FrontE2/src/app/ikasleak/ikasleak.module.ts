@@ -8,6 +8,7 @@ import { IkasleakPageRoutingModule } from './ikasleak-routing.module';
 
 import { IkasleakPage } from './ikasleak.page';
 import { ComponentsModule } from "../components/components.module";
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { ComponentsModule } from "../components/components.module";
     FormsModule,
     IonicModule,
     IkasleakPageRoutingModule,
+    TranslateModule,
     ComponentsModule
 ],
   declarations: [IkasleakPage]

@@ -70,17 +70,15 @@ ion-label {
   font-weight: bold;
 }
 
-ion-button {
+.Botoiak {
   --background: $color-dark-teal;
-  --color: $color-white;
-  &:hover {
-    --background: $color-medium-blue;
-  }
+  --color: $color-light-teal;
 }
 
-ion-button[disabled] {
-  --background: $color-light-gray;
+.Botoiak:hover {
+  --background: $color-black;  
 }
+
 
 ion-searchbar {
   margin-bottom: 20px;
@@ -131,13 +129,7 @@ ion-select {
   font-weight: bold;
 }
 
-ion-button[expand="full"] {
-  background-color: $color-dark-teal;
-  color: $color-white;
-  &:disabled {
-    background-color: $color-light-gray;
-  }
-}
+
 
 ion-card-content {
   background-color: $color-white;
@@ -162,14 +154,4 @@ ion-label {
 
 ion-segment-content {
   background-color: $color-white;
-}
-
-ion-button[slot="start"] {
-  background-color: $color-dark-teal;
-  color: $color-white;
-}
-
-ion-button[slot="end"] {
-  background-color: $color-dark-teal;
-  color: $color-white;
 }

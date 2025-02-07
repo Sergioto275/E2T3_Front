@@ -138,15 +138,15 @@ export class IkasleakPage implements OnInit {
 
   getDayName(k: number): string {
     if (k === 1) {
-      return 'Astelehena'; // Lunes
+      return this.translate.instant('ikaslePage.Astelehena'); // Lunes
     } else if (k === 2) {
-      return 'Asteartea'; // Martes
+      return this.translate.instant('ikaslePage.Asteartea'); // Martes
     } else if (k === 3) {
-      return 'Asteazkena'; // Miércoles
+      return this.translate.instant('ikaslePage.Asteazkena'); // Miércoles
     } else if (k === 4) {
-      return 'Osteguna'; // Jueves
+      return this.translate.instant('ikaslePage.Osteguna'); // Jueves
     } else if (k === 5) {
-      return 'Ostirala'; // Viernes
+      return this.translate.instant('ikaslePage.Ostirala'); // Viernes
     } else {
       return ''; // Si no es un valor válido de 1 a 7
     }
@@ -199,6 +199,7 @@ export class IkasleakPage implements OnInit {
         // Eliminar el alumno de la lista
         this.getAlumnos();
         this.getGrupos();
+        this.closeModal();
       });
     });
     this.selectedIkasleak.clear(); // Limpiar la selección después de eliminar
@@ -283,19 +284,16 @@ export class IkasleakPage implements OnInit {
 
   async confirmarEliminacionGrupo(grupoKodea: string) {
     const alert = await this.alertController.create({
-      header: 'Segurtasuna',
-      message: 'Ziur al zaude talde hau ezabatu nahi duzula?',
+      header: this.translate.instant('ikaslePage.Segurtasuna'),
+      message: this.translate.instant('ikaslePage.Message1'),
       buttons: [
         {
-          text: 'Ezeztatu',
+          text: this.translate.instant('ikaslePage.Cancel'),
           role: 'cancel',
           cssClass: 'secondary',
-          handler: () => {
-            console.log('Ezeztatu');
-          },
         },
         {
-          text: 'Ezabatu',
+          text: this.translate.instant('ikaslePage.Borrar'),
           handler: () => {
             this.eliminarGrupo(grupoKodea);
           },
@@ -312,6 +310,7 @@ export class IkasleakPage implements OnInit {
       (response) => {
         this.getGrupos();
         this.getAlumnos();
+        this.getHorarios();
         alert('Taldea ezabatuta');
       },
       (error) => {
@@ -459,7 +458,6 @@ export class IkasleakPage implements OnInit {
         this.ikasleService.actualizarHorario(horarioActualizado).subscribe(
           (response) => {
             this.getHorarios();
-            console.log('Horario actualizado:', response);
             // Resetear el horario seleccionado
             this.selectedHorario = {
               id: 0,
@@ -470,6 +468,7 @@ export class IkasleakPage implements OnInit {
               eguna: 0,
               taldea: { kodea: '' },
             };
+            this.closeModal();
           },
           (error) => {
             console.error('Error al actualizar el horario:', error);
@@ -485,18 +484,18 @@ export class IkasleakPage implements OnInit {
     // Crear la alerta de confirmación
     this.alertController
       .create({
-        header: 'Confirmar Eliminación',
-        message: `¿Estás seguro de que quieres eliminar el horario de ${horario.taldea.kodea}?`,
+        header: this.translate.instant('ikaslePage.Message2'),
+        message: this.translate.instant('ikaslePage.Message3')  + horario.taldea.kodea + "?",
         buttons: [
           {
-            text: 'Cancelar',
+            text: this.translate.instant('ikaslePage.Cancel'),
             role: 'cancel',
             handler: () => {
               console.log('Eliminación cancelada');
             },
           },
           {
-            text: 'Aceptar',
+            text: this.translate.instant('ikaslePage.Aceptar'),
             handler: () => {
               this.ikasleService
                 .eliminarHorario(horario.id)

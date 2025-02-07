@@ -201,6 +201,7 @@ export class TxandakPage implements OnInit {
     this.http.post(apiUrl, txandaToSave).subscribe(response => {
         if (response) {
           console.log('Txanda guardada correctamente', response);
+          this.getTxandak();
           this.closeModal(); // Cerrar el modal si la txanda se guarda correctamente
         } else {
           console.error('No se pudo guardar la txanda');
