@@ -50,12 +50,12 @@
     <ng-container *ngFor="let categoria of produktuak">
       <!-- Categoría -->
       <ion-card>
-      <ion-item button (click)="toggleCategoria(categoria.izena)">
+      <ion-item button (click)="toggleCategoria(categoria.izena)" detail="false">
         <ion-label><strong>{{ categoria.izena }}</strong></ion-label>
-        <ion-button (click)="openKatModal(categoria)" slot="end">
+        <ion-button slot="end" (click)="openKatModal(categoria); $event.stopPropagation()">
           <ion-icon name="create"></ion-icon>
         </ion-button>
-        <ion-button slot="end" color="danger" (click)="eliminarKategoriaProducto(categoria.id)">
+        <ion-button slot="end" color="danger" (click)="eliminarKategoriaProducto(categoria.id); $event.stopPropagation()">
           <ion-icon name="trash"></ion-icon>
         </ion-button>
         <ion-icon [name]="isCategoriaAbierta(categoria.izena) ? 'chevron-up' : 'chevron-down'" slot="end"></ion-icon>
