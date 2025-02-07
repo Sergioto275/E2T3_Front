@@ -1,98 +1,117 @@
 {
   "productos": {
-    "title": "Gestion de productos",
+    "title": "Gestión de Productos",
     "botones": {
-      "agregarProducto": "Agregar Producto",
-      "sacarProductos": "Sacar Productos",
-      "crearProductos": "Crear Productos",
-      "editarProductos": "Editar Productos",
-      "crearCategoria":"Crear Categoria",
-      "editarCategoria": "Editar Categoria",
-      "confirmar": "Confirmar",
-      "crear": "Crear",
-      "editar": "Editar"
+      "agregar": "Agregar Producto",
+      "sacar": "Sacar Productos",
+      "crear": "Crear Productos",
+      "editar": "Editar Productos",
+      "crearCategoria": "Crear Categoría",
+      "editarCategoria": "Editar Categoría",
+      "confirmar": "Confirmar"
     },
     "modal": {
-      "sacarProductos": "Sacar Productos",       
+      "sacar": "Sacar Productos",
       "alumno": "Alumno",
       "seleccionaAlumno": "Selecciona a un alumno",
       "producto": "Producto",
       "categoria": "Categoría",
-      "nombre":"Nombre",
+      "nombre": "Nombre",
       "marca": "Marca",
       "stock": "Stock",
       "stockAlerta": "Stock Alerta",
       "descripcion": "Descripción",
-      "vacio":"No hay productos seleccionados"
+      "vacio": "No hay productos seleccionados"
     },
     "categorias": {
       "electronica": "Electrónica"
     }
   },
   "materiales": {
-    "title": "Gestion de materiales",
+    "title": "Gestión de Materiales",
     "botones": {
-      "agregarMaterial": "Agregar Material",
-      "sacarMateriales": "Sacar Materiales",
-      "crearMateriales": "Agregar Materiales",
-      "editarMateriales": "Editar Materiales",
-      "crearCategoria":"Crear Categoria",
+      "agregar": "Agregar Material",
+      "sacar": "Sacar Materiales",
+      "crear": "Crear Materiales",
+      "editar": "Editar Materiales",
+      "crearCategoria": "Crear Categoría",
       "confirmar": "Confirmar",
-      "crear": "Crear",
       "cerrar": "Cerrar"
     },
     "modal": {
-      "sacarMateriales": "Sacar Materiales",
+      "sacar": "Sacar Materiales",
       "alumno": "Alumno",
       "seleccionaAlumno": "Selecciona a un alumno",
       "material": "Material",
       "categoria": "Categoría",
-      "nombre":"Nombre",
+      "nombre": "Nombre",
       "etiqueta": "Etiqueta",
-      "vacio":"No hay materiales seleccionados"
+      "vacio": "No hay materiales seleccionados"
     },
     "categorias": {
       "electronica": "Electrónica"
     }
   },
   "citas": {
-    "titulo": "Citas",
+    "title": "Citas",
     "horas": "Horas",
-    "botones":{
+    "botones": {
       "confirmar": "Confirmar",
       "guardar": "Guardar",
       "borrar": "Borrar",
       "crear": "Crear",
-      "asignar":"Asignar Alumno",
-      "generar":"Generar Ticket"
+      "asignar": "Asignar Alumno",
+      "generar": "Generar Ticket"
     },
     "modal": {
-        "nombre": "Nombre",
-        "descripcion": "Descripción",
-        "fecha": "Fecha",
-        "horaInicio": "Hora de Inicio",
-        "horaFin": "Hora de Fin",
-        "asiento": "Asientos",
-        "cliente": "Cliente",
-        "telefono": "Teléfono",
-        "casa": "Del centro"
+      "nombre": "Nombre",
+      "descripcion": "Descripción",
+      "fecha": "Fecha",
+      "horaInicio": "Hora de Inicio",
+      "horaFin": "Hora de Fin",
+      "asientos": "Asientos",
+      "cliente": "Cliente",
+      "telefono": "Teléfono",
+      "casa": "Del centro"
     }
   },
-  "informes":{
+  "informes": {
     "title": "Informes",
     "cliente": "Cliente",
     "botones": {
-      "datos": "Mostrar datos",
+      "datos": "Mostrar Datos",
       "cerrar": "Cerrar"
+    },
+    "modal": {
+      "idCliente": "ID del Cliente",
+      "nombre": "Nombre",
+      "apellido": "Apellido",
+      "telefono": "Teléfono",
+      "tinte": "Tinte",
+      "pSensible": "Pelo Sensible"
+    }
   },
-  "modal": {
-    "idCliente": "ID del Cliente",
-    "nombre": "Nombre",
-    "apellido": "Apellido",
-    "telefono": "Teléfono",
-    "tinte": "Tinte",
-    "pSensible": "Pelo Sensible"
+  "graficos": {
+    "title": "Gráficos",
+    "citas": "Citas",
+    "tintes": "Tintes",
+    "clientes": "Clientes",
+    "citasPorMes": "Citas por mes",
+    "tintesAplicados": "Tintes aplicados",
+    "distribucionClientes": "Distribución de clientes",
+    "clientesCentro": "Clientes del centro",
+    "clientesExterior": "Clientes del exterior",
+    "meses": {
+      "septiembre": "Septiembre",
+      "octubre": "Octubre",
+      "noviembre": "Noviembre",
+      "diciembre": "Diciembre",
+      "enero": "Enero",
+      "febrero": "Febrero",
+      "marzo": "Marzo",
+      "abril": "Abril",
+      "mayo": "Mayo",
+      "junio": "Junio"
+    }
   }
 }
-}
-  

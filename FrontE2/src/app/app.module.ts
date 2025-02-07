@@ -1,30 +1,21 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router';
-
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
-
-// Importar los módulos de traducción
+import { IonicModule } from '@ionic/angular';
+import { HttpClientModule, HttpClient } from '@angular/common/http';  // Asegúrate de importar HttpClient aquí
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { TxostenaModalComponent } from './txostena-modal/txostena-modal.component';
+import { AppComponent } from './app.component';
 
-// Función para cargar los archivos de traducción
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 @NgModule({
-  declarations: [AppComponent, TxostenaModalComponent],  
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    AppRoutingModule,
-    HttpClientModule,
-    // Configuración del módulo de traducción
+    HttpClientModule,  // Este módulo es necesario para que funcione HttpClient
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -33,9 +24,6 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
-  ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}
