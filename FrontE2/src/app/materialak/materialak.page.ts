@@ -283,10 +283,10 @@ export class MaterialakPage implements OnInit {
     this.filteredAlumnos = grupoSeleccionado ? grupoSeleccionado.langileak : [];
   }
 
-  async confirmarEliminarMaterial(id: number) {
+  async confirmarEliminarMaterial(id: number, izena:string) {
     const alert = await this.alertController.create({
       header: this.translate.instant('materiales.modal.confirmacion'),
-      message: this.translate.instant('materiales.modal.mensajeAlertaBorrarMats'),
+      message: this.translate.instant('materiales.modal.mensajeAlertaBorrarMats') + " '" + izena + "'?",
       buttons: [
         {
           text: this.translate.instant('materiales.botones.cancelar'),
@@ -304,10 +304,10 @@ export class MaterialakPage implements OnInit {
     await alert.present();
   }
 
-  async confirmarEliminarCategoria(id: number) {
+  async confirmarEliminarCategoria(id: number, izena:string) {
     const alert = await this.alertController.create({
       header: this.translate.instant('materiales.modal.confirmacion'),
-      message: this.translate.instant('materiales.modal.mensajeAlertaBorrarCats'),
+      message: this.translate.instant('materiales.modal.mensajeAlertaBorrarCats') + " '" + izena + "'?",
       buttons: [
         {
           text: this.translate.instant('materiales.botones.cancelar'),

@@ -73,8 +73,8 @@
             "listaMatsSacar": "Atera beharreko materialen zerrenda",
             "listaMatsDevolver": "Bueltatu beharreko materialen zerrenda",
             "confirmacion": "Konfirmazioa",
-            "mensajeAlertaBorrarMats": "Ziur zaude material hau ezabatu nahi duzula?",
-            "mensajeAlertaBorrarCats": "Ziur zaude kategoria hau ezabatu nahi duzula?"
+            "mensajeAlertaBorrarMats": "Ziur zaude material hau ezabatu nahi duzula:",
+            "mensajeAlertaBorrarCats": "Ziur zaude kategoria hau ezabatu nahi duzula:"
         }
     },
     "citas": {

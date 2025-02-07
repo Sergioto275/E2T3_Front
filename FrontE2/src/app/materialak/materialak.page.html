@@ -1,7 +1,7 @@
 <app-header></app-header>
 <ion-content class="ion-page" id="main-content">
   <ion-header>
-    <ion-toolbar class="textoblanco">
+    <ion-toolbar>
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
@@ -46,6 +46,9 @@
         <!-- Filtro por Categoría -->
         <ion-card>
           <div *ngIf="mostrarFiltros">
+          <ion-card-header>
+            <ion-card-title><b>Filtros</b></ion-card-title>
+          </ion-card-header>
             <ion-searchbar [(ngModel)]="filtroCategoria" (ngModelChange)="filtrarMateriales()" animated="true"
               placeholder="{{ 'productos.modal.filtroCat' | translate }}"></ion-searchbar>
 
@@ -54,6 +57,10 @@
           </div>
         </ion-card>
 
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title><b>Materiales</b></ion-card-title>
+          </ion-card-header>
         <ng-container *ngFor="let categoria of filteredMaterialak">
           <!-- Categoría -->
           <ion-card>
@@ -63,7 +70,7 @@
                 <ion-icon name="create"></ion-icon>
               </ion-button>
               <ion-button slot="end" color="danger"
-                (click)="confirmarEliminarCategoria(categoria.id); $event.stopPropagation()">
+                (click)="confirmarEliminarCategoria(categoria.id, categoria.izena); $event.stopPropagation()">
                 <ion-icon name="trash"></ion-icon>
               </ion-button>
               <ion-icon [name]="isCategoriaAbierta(categoria.izena) ? 'chevron-up' : 'chevron-down'"
@@ -80,14 +87,14 @@
                 <ion-button slot="end" color="light" (click)="abrirEditarMaterial(material)">
                   <ion-icon name="create"></ion-icon>
                 </ion-button>
-                <ion-button slot="end" color="danger" (click)="confirmarEliminarMaterial(material.id)">
+                <ion-button slot="end" color="danger" (click)="confirmarEliminarMaterial(material.id, material.izena)">
                   <ion-icon name="trash"></ion-icon>
                 </ion-button>
               </ion-item>
             </ion-list>
           </ion-card>
         </ng-container>
-
+      </ion-card>
       </ion-segment-content>
 
       <ion-segment-content id="bueltatu">
@@ -97,6 +104,7 @@
               'materiales.botones.devolverMateriales' | translate }}</ion-button>
           </ion-buttons>
         </ion-toolbar>
+        <ion-card>
         <ion-item>
           <ion-label><strong>{{ 'materiales.modal.material' | translate }}</strong></ion-label>
           <ion-label><strong>{{ 'materiales.modal.etiqueta' | translate }}</strong></ion-label>
@@ -116,6 +124,7 @@
             </ion-item>
           </ion-card>
         </ng-container>
+      </ion-card>
       </ion-segment-content>
     </ion-segment-view>
 
@@ -149,7 +158,7 @@
               <ion-label><strong>{{ 'materiales.modal.listaMatsSacar' | translate }}:</strong></ion-label>
               <ion-row>
                 <ion-col size="6" *ngFor="let mat of materialesSeleccionados">
-                  <ion-card>
+                  <ion-card class="tarjetaRoja">
                     <ion-card-header>
                       <ion-label><strong>{{ 'materiales.modal.etiqueta' | translate }}: </strong>{{ mat.etiketa
                         }}</ion-label>
@@ -346,7 +355,7 @@
               <ion-label><strong>{{ 'materiales.modal.listaMatsDevolver' | translate }}:</strong></ion-label>
               <ion-row>
                 <ion-col size="6" *ngFor="let mat of materialesSeleccionadosDevolver">
-                  <ion-card>
+                  <ion-card  class="tarjetaVerde">
                     <ion-card-header>
                       <ion-label><strong>{{ 'materiales.modal.nombre' | translate }}: </strong>{{ mat.materiala.izena
                         }}</ion-label>
