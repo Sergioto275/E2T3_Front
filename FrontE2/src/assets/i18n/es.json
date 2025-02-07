@@ -52,7 +52,9 @@
       "crearMateriales": "Agregar Materiales",
       "editarMateriales": "Editar Materiales",
       "crearCategoria":"Crear Categoria",
-      "editarCategoria": "Editar Categoria"
+      "editarCategoria": "Editar Categoria",
+      "borrar":"Borrar",
+      "cancelar": "Cancelar"
     },
     "modal": {
       "sacarMateriales": "Sacar Materiales",
@@ -69,7 +71,10 @@
       "fechaSalida": "Fecha de salida",
       "filtroMat":"Filtrar por Nombre del Material",
       "listaMatsSacar": "Lista de materiales a sacar",
-      "listaMatsDevolver": "Lista de materiales a devolver"
+      "listaMatsDevolver": "Lista de materiales a devolver",
+      "confirmacion": "Confirmación",
+      "mensajeAlertaBorrarMats": "¿Estás seguro de querer eliminar este material?",
+      "mensajeAlertaBorrarCats": "¿Estás seguro de querer eliminar esta categoría?"
       }
   },
   "citas": {

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonModal } from '@ionic/angular';
+import { IonModal, AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { HeaderComponent } from '../components/header/header.component';
@@ -100,7 +100,7 @@ export class MaterialakPage implements OnInit {
     return this.categoriasAbiertas[categoria] || false;
   }
 
-  materialaSortu(){
+  async materialaSortu(){
     let data = {
       "etiketa": this.crearEtiqueta,
       "izena": this.crearNombre,
@@ -109,21 +109,25 @@ export class MaterialakPage implements OnInit {
       }
   }
     let observableRest: Observable<any> = this.restServer.post<any>("http://localhost:8080/api/materialak", data);
-    observableRest.subscribe(datuak => {
+    await observableRest.subscribe(datuak => {
       console.log(datuak);
       this.materialakLortu();
     });
+    this.crearEtiqueta = '';
+    this.crearNombre = '';
+    this.crearCategoria = 0;
   }
 
-  kategoriaSortu(){
+  async kategoriaSortu(){
     let data = {
       "izena": this.crearKatNombre,
     } 
     let observableRest: Observable<any> = this.restServer.post<any>('http://localhost:8080/api/material_kategoria', data);
-    observableRest.subscribe(datuak => {
+    await observableRest.subscribe(datuak => {
       console.log(datuak);
       this.materialakLortu();
     });
+    this.crearKatNombre = '';
   }
 
   materialaEditatu(id:number){
@@ -271,10 +275,46 @@ export class MaterialakPage implements OnInit {
     this.filteredAlumnos = grupoSeleccionado ? grupoSeleccionado.langileak : [];
   }
 
+  async confirmarEliminarMaterial(id: number) {
+    const alert = await this.alertController.create({
+      header: this.translate.instant('materiales.modal.confirmacion'),
+      message: this.translate.instant('materiales.modal.mensajeAlertaBorrarMats'),
+      buttons: [
+        {
+          text: this.translate.instant('materiales.botones.cancelar'),
+          role: 'cancel',
+        },
+        {
+          text: this.translate.instant('materiales.botones.borrar'),
+          handler: () => {
+            this.materialaEzabatu(id);
+          },
+        },
+      ],
+    });
 
-  constructor(private translate: TranslateService, private restServer:HttpClient) {
-    this.translate.setDefaultLang('es');
-    this.translate.use(this.selectedLanguage);
+    await alert.present();
+  }
+
+  async confirmarEliminarCategoria(id: number) {
+    const alert = await this.alertController.create({
+      header: this.translate.instant('materiales.modal.confirmacion'),
+      message: this.translate.instant('materiales.modal.mensajeAlertaBorrarCats'),
+      buttons: [
+        {
+          text: this.translate.instant('materiales.botones.cancelar'),
+          role: 'cancel',
+        },
+        {
+          text: this.translate.instant('materiales.botones.borrar'),
+          handler: () => {
+            this.kategoriaEzabatu(id);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 
   filtrarMateriales() {
@@ -298,6 +338,11 @@ export class MaterialakPage implements OnInit {
         )
       }));
     }
+  }
+
+  constructor(private translate: TranslateService, private restServer:HttpClient, private alertController: AlertController) {
+    this.translate.setDefaultLang('es');
+    this.translate.use(this.selectedLanguage);
   }
   
   ngOnInit() {

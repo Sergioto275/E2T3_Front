@@ -52,7 +52,7 @@
               <ion-button slot="end" (click)="abrirEditarCategoria(categoria)">
                 <ion-icon name="create"></ion-icon>
               </ion-button>
-              <ion-button slot="end" color="danger" (click)="kategoriaEzabatu(categoria.id)">
+              <ion-button slot="end" color="danger" (click)="confirmarEliminarCategoria(categoria.id)">
                 <ion-icon name="trash"></ion-icon>
               </ion-button>
               <ion-icon [name]="isCategoriaAbierta(categoria.izena) ? 'chevron-up' : 'chevron-down'"
@@ -69,7 +69,7 @@
                 <ion-button slot="end" color="light" (click)="abrirEditarMaterial(material)">
                   <ion-icon name="create"></ion-icon>
                 </ion-button>
-                <ion-button slot="end" color="danger" (click)="materialaEzabatu(material.id)">
+                <ion-button slot="end" color="danger" (click)="confirmarEliminarMaterial(material.id)">
                   <ion-icon name="trash"></ion-icon>
                 </ion-button>
               </ion-item>

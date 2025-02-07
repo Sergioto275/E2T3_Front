@@ -52,7 +52,9 @@
             "crearMateriales": "Materialak Sortu",
             "editarMateriales": "Materialak Editatu",
             "crearCategoria":"Kategoria Sortu",
-            "editarCategoria": "Kategoria editatu"
+            "editarCategoria": "Kategoria editatu",
+            "borrar":"Ezabatu",
+            "cancelar": "Ezeztatu"
         },
         "modal": {
             "sacarMateriales": "Materialak Atera",
@@ -69,7 +71,10 @@
             "fechaSalida": "Ateratze data",
             "filtroMat":"Marerialaren Izenaz Filtratu",
             "listaMatsSacar": "Atera beharreko materialen zerrenda",
-            "listaMatsDevolver": "Bueltatu beharreko materialen zerrenda"
+            "listaMatsDevolver": "Bueltatu beharreko materialen zerrenda",
+            "confirmacion": "Konfirmazioa",
+            "mensajeAlertaBorrarMats": "Ziur zaude material hau ezabatu nahi duzula?",
+            "mensajeAlertaBorrarCats": "Ziur zaude kategoria hau ezabatu nahi duzula?"
         }
     },
     "citas": {
