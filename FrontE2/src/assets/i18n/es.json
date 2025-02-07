@@ -231,8 +231,35 @@
     "Cancel": "Cancelar",
     "Aceptar": "Aceptar",
     "Borrar": "Borrar"
-
-
-
+  },
+  "txandakPage": {
+    "titulo": "Txandak",
+    "botonAñadir": "Añadir Txanda",
+    "filtrarFecha": "Filtrar por Fecha",
+    "fechaInicio": "Fecha Inicio",
+    "fechaFin": "Fecha Fin",
+    "botonHoy": "Hoy",
+    "botonReset": "Reset",
+    "filtrarTipo": "Filtrar por Tipo",
+    "tipoPlaceholder": "Selecciona tipo de Txanda",
+    "todas": "Todas",
+    "garbiketa": "Limpieza",
+    "mahaia": "Mostrador",
+    "listaTxandas": "Lista de Txandas",
+    "fechaTxanda": "Fecha de la Txanda",
+    "alumno": "Alumno:",
+    "desconocido": "Desconocido",
+    "botonEliminar": "Eliminar",
+    "modalTitulo": "Añadir Txanda",
+    "tipoTxanda": "Tipo de Txanda",
+    "fecha": "Fecha",
+    "alumnoSeleccion": "Alumno",
+    "botonGuardar": "Guardar Txanda",
+    "guardarDeshabilitado": "Guardar Txanda",
+    "tipoPlaceholderModal": "Selecciona tipo de txanda",
+    "fechaPlaceholderModal": "Selecciona la fecha",
+    "alumnoPlaceholderModal": "Selecciona un alumno",
+    "MessageEliminar": "Eliminar turno",
+    "MessageSeguroEliminar": "¿Estás seguro de que deseas eliminar esta txanda?"
   }
 }

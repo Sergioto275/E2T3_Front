@@ -231,7 +231,35 @@
     "Cancel": "aurre-ate",
     "Aceptar": "Onartu",
     "Borrar": "Ezabatu"
-
-
+  },
+  "txandakPage": {
+    "titulo": "Txandak",
+    "botonAñadir": "Txanda Gehitu",
+    "filtrarFecha": "Dataz Filtratu",
+    "fechaInicio": "Hasierako Data",
+    "fechaFin": "Amaierako Data",
+    "botonHoy": "Gaur",
+    "botonReset": "Berriz hasi",
+    "filtrarTipo": "Mota Filtratu",
+    "tipoPlaceholder": "Hautatu Txandaren Mota",
+    "todas": "Denak",
+    "garbiketa": "Garbiketa",
+    "mahaia": "Mahaia",
+    "listaTxandas": "Txanden Zerrenda",
+    "fechaTxanda": "Txandaren Data",
+    "alumno": "Ikaslea:",
+    "desconocido": "Ezezaguna",
+    "botonEliminar": "Ezabatu",
+    "modalTitulo": "Txanda Gehitu",
+    "tipoTxanda": "Txandaren Mota",
+    "fecha": "Data",
+    "alumnoSeleccion": "Ikaslea",
+    "botonGuardar": "Gorde Txanda",
+    "guardarDeshabilitado": "Gorde Txanda",
+    "tipoPlaceholderModal": "Hautatu txandaren mota",
+    "fechaPlaceholderModal": "Hautatu data",
+    "alumnoPlaceholderModal": "Hautatu ikasle bat",
+    "MessageEliminar": "Txanda ezabatu",
+    "MessageSeguroEliminar": "¿Ziur zaude txanda hau ezabatu nahi duzula?"
   }
 }
