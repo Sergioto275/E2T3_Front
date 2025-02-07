@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonModal } from '@ionic/angular';
+import { IonModal, AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { HeaderComponent } from '../components/header/header.component';
@@ -23,14 +23,15 @@ export class MaterialakPage implements OnInit {
 
   materialesSeleccionados:any[]=[];
   materialesSeleccionadosDevolver:any[]=[];
+  filteredMaterialak: any[] = []; 
 
   materialak!:any[];
   materialaDevolver!:any;
 
-  crearKatNombre!:String;
-  crearNombre!:String;
-  crearEtiqueta!:String;
-  crearCategoria!:Number;
+  crearKatNombre:String| null = null;
+  crearNombre:String| null = null;
+  crearEtiqueta:String| null = null;
+  crearCategoria:Number| null = null;
 
   editarKatNombre!:String;
   editarNombre!:String;
@@ -46,6 +47,8 @@ export class MaterialakPage implements OnInit {
   selecTaldea!:number;
   selecAlumno!:number;
 
+  mostrarFiltros: boolean = false;
+
   @ViewChild('modaleditarcat', { static: true })
   modaleditarcat!: IonModal;
   @ViewChild('modalEditar', { static: true })
@@ -57,6 +60,9 @@ export class MaterialakPage implements OnInit {
   alumne = '';
   categoriasAbiertas: { [key: string]: boolean } = {};
   filteredAlumnos!: any[];
+
+  filtroCategoria: string = '';
+  filtroMaterial: string = '';
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
@@ -96,7 +102,7 @@ export class MaterialakPage implements OnInit {
     return this.categoriasAbiertas[categoria] || false;
   }
 
-  materialaSortu(){
+  async materialaSortu(){
     let data = {
       "etiketa": this.crearEtiqueta,
       "izena": this.crearNombre,
@@ -105,20 +111,22 @@ export class MaterialakPage implements OnInit {
       }
   }
     let observableRest: Observable<any> = this.restServer.post<any>("http://localhost:8080/api/materialak", data);
-    observableRest.subscribe(datuak => {
+    await observableRest.subscribe(datuak => {
       console.log(datuak);
       this.materialakLortu();
+      this.vaciarDatos();
     });
   }
 
-  kategoriaSortu(){
+  async kategoriaSortu(){
     let data = {
       "izena": this.crearKatNombre,
     } 
     let observableRest: Observable<any> = this.restServer.post<any>('http://localhost:8080/api/material_kategoria', data);
-    observableRest.subscribe(datuak => {
+    await observableRest.subscribe(datuak => {
       console.log(datuak);
       this.materialakLortu();
+      this.vaciarDatos();
     });
   }
 
@@ -138,11 +146,21 @@ export class MaterialakPage implements OnInit {
 	  });
   }
 
+
+  vaciarDatos(){
+    this.crearEtiqueta = null;
+    this.crearNombre = null;
+    this.crearCategoria = null;
+    this.crearKatNombre = null;
+    this.materialesSeleccionados = [];
+  }
+
   materialaEzabatu(id:number){
     let observableRest: Observable<any> = this.restServer.delete<any>(`http://localhost:8080/api/materialak/id/${id}`);
     observableRest.subscribe(datuak => {
       console.log(datuak);
       this.materialakLortu();
+      this.vaciarDatos();
     });
   }  
 
@@ -162,7 +180,33 @@ export class MaterialakPage implements OnInit {
     observableRest.subscribe(datuak => {
       console.log(datuak);
       this.materialakLortu();
-      this.materialakLortuDevolver();
+    });
+  }
+
+  materialakLortu(){
+    let observableRest: Observable<any> = this.restServer.get<any>('http://localhost:8080/api/material_kategoria');
+    observableRest.subscribe(datuak => {
+      console.log(datuak);
+
+    this.materialak = datuak
+    .filter((categoria:any) => categoria.ezabatzeData === null)
+    .map((categoria:any) => ({
+      ...categoria,
+      materialak: categoria.materialak
+        .filter((material:any) => material.ezabatzeData === null)
+    }));
+    this.filteredMaterialak = this.materialak;
+    });
+  }
+
+  materialakLortuDevolver() {
+    let observableRest: Observable<any> = this.restServer.get<any>('http://localhost:8080/api/material_mailegua');
+
+    observableRest.subscribe(datuak => {
+        this.materialaDevolver = datuak.filter((mailegu:any) => 
+            mailegu.hasieraData && !mailegu.amaieraData
+        );
+        console.log(this.materialaDevolver);
     });
   }
 
@@ -184,34 +228,6 @@ export class MaterialakPage implements OnInit {
     });
   }
 
-  materialakLortu(){
-    let observableRest: Observable<any> = this.restServer.get<any>('http://localhost:8080/api/material_kategoria');
-    observableRest.subscribe(datuak => {
-      console.log(datuak);
-
-    this.materialak = datuak
-    .filter((categoria:any) => categoria.ezabatzeData === null)
-    .map((categoria:any) => ({
-      ...categoria,
-      materialak: categoria.materialak
-        .filter((material:any) => material.ezabatzeData === null)
-    }));
-    });
-  }
-
-  materialakLortuDevolver() {
-    let observableRest: Observable<any> = this.restServer.get<any>('http://localhost:8080/api/material_mailegua');
-
-    observableRest.subscribe(datuak => {
-        this.materialaDevolver = datuak.filter((mailegu:any) => 
-            mailegu.hasieraData && !mailegu.amaieraData
-        );
-
-        console.log(this.materialaDevolver);
-    });
-}
-
-  
   materialakBueltatu(){
     let data = this.materialesSeleccionadosDevolver.map(mailegu => ({
       "id": mailegu.id
@@ -222,7 +238,8 @@ export class MaterialakPage implements OnInit {
       console.log(datuak);
 
       this.materialaDevolver = datuak
-      
+      this.materialakLortu();
+      this.materialakLortuDevolver();
     });
   }
 
@@ -266,8 +283,72 @@ export class MaterialakPage implements OnInit {
     this.filteredAlumnos = grupoSeleccionado ? grupoSeleccionado.langileak : [];
   }
 
+  async confirmarEliminarMaterial(id: number, izena:string) {
+    const alert = await this.alertController.create({
+      header: this.translate.instant('materiales.modal.confirmacion'),
+      message: this.translate.instant('materiales.modal.mensajeAlertaBorrarMats') + " '" + izena + "'?",
+      buttons: [
+        {
+          text: this.translate.instant('materiales.botones.cancelar'),
+          role: 'cancel',
+        },
+        {
+          text: this.translate.instant('materiales.botones.borrar'),
+          handler: () => {
+            this.materialaEzabatu(id);
+          },
+        },
+      ],
+    });
 
-  constructor(private translate: TranslateService, private restServer:HttpClient) {
+    await alert.present();
+  }
+
+  async confirmarEliminarCategoria(id: number, izena:string) {
+    const alert = await this.alertController.create({
+      header: this.translate.instant('materiales.modal.confirmacion'),
+      message: this.translate.instant('materiales.modal.mensajeAlertaBorrarCats') + " '" + izena + "'?",
+      buttons: [
+        {
+          text: this.translate.instant('materiales.botones.cancelar'),
+          role: 'cancel',
+        },
+        {
+          text: this.translate.instant('materiales.botones.borrar'),
+          handler: () => {
+            this.kategoriaEzabatu(id);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  filtrarMateriales() {
+    this.filteredMaterialak = this.materialak.map(categoria => ({
+      ...categoria,
+      materialak: categoria.materialak.map((material: any) => ({ ...material }))
+    }));
+
+    if(this.filtroCategoria !== '')
+    {
+      this.filteredMaterialak = this.filteredMaterialak.filter(categoria =>
+        (this.filtroCategoria === '' || categoria.izena.toLowerCase().includes(this.filtroCategoria.toLowerCase()))
+      );
+    }
+
+    if (this.filtroMaterial !== '') {
+      this.filteredMaterialak = this.filteredMaterialak.map(categoria => ({
+        ...categoria,
+        materialak: categoria.materialak.filter((materiala: any) =>
+          materiala.izena.toLowerCase().includes(this.filtroMaterial.toLowerCase())
+        )
+      }));
+    }
+  }
+
+  constructor(private translate: TranslateService, private restServer:HttpClient, private alertController: AlertController) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }

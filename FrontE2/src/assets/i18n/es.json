@@ -51,24 +51,31 @@
       "sacarMateriales": "Sacar Materiales",
       "crearMateriales": "Agregar Materiales",
       "editarMateriales": "Editar Materiales",
-      "crearCategoria": "Crear Categoria",
-      "confirmar": "Confirmar",
-      "crear": "Crear",
-      "cerrar": "Cerrar"
+      "crearCategoria":"Crear Categoria",
+      "editarCategoria": "Editar Categoria",
+      "borrar":"Borrar",
+      "cancelar": "Cancelar"
     },
     "modal": {
       "sacarMateriales": "Sacar Materiales",
       "alumno": "Alumno",
+      "grupo": "Grupo",
       "seleccionaAlumno": "Selecciona a un alumno",
+      "seleccionaGrupo": "Selecciona a un grupo",
+      "seleccionaCategoria": "Selecciona una categoría",
       "material": "Material",
       "categoria": "Categoría",
       "nombre": "Nombre",
       "etiqueta": "Etiqueta",
-      "vacio": "No hay materiales seleccionados"
-    },
-    "categorias": {
-      "electronica": "Electrónica"
-    }
+      "vacio":"No hay materiales seleccionados",
+      "fechaSalida": "Fecha de salida",
+      "filtroMat":"Filtrar por Nombre del Material",
+      "listaMatsSacar": "Lista de materiales a sacar",
+      "listaMatsDevolver": "Lista de materiales a devolver",
+      "confirmacion": "Confirmación",
+      "mensajeAlertaBorrarMats": "¿Estás seguro de querer eliminar el material",
+      "mensajeAlertaBorrarCats": "¿Estás seguro de querer eliminar la categoría"
+      }
   },
   "citas": {
     "titulo": "Citas",
@@ -84,51 +91,55 @@
       "generar": "Generar Ticket"
     },
     "modal": {
-      "nombre": "Nombre",
-      "descripcion": "Descripción",
-      "fecha": "Fecha",
-      "horaInicio": "Hora de Inicio",
-      "horaFin": "Hora de Fin",
-      "asiento": "Asientos",
-      "cliente": "Cliente",
-      "telefono": "Teléfono",
-      "casa": "Del centro",
-      "trabajador": "Trabajador"
+        "vacio":"No hay horarios definidos para hoy",
+        "nombre": "Nombre",
+        "descripcion": "Descripción",
+        "fecha": "Fecha",
+        "horaInicio": "Hora de Inicio",
+        "horaFin": "Hora de Fin",
+        "asiento": "Asientos",
+        "cliente": "Cliente",
+        "telefono": "Teléfono",
+        "casa": "Del centro",
+        "trabajador":"Trabajador"
     }
   },
   "historial": {
     "titulo": "Historial",
-    "botones": {
-      "productos": "Movimientos de productos",
-      "materiales": "Movimientos de materiales",
-      "ticket": "Tickets",
-      "cliente": "Historial del cliente",
-      "crear": "Crear",
-      "añadir": "Añadir",
-      "guardar": "Guardar",
-      "editar": "Editar"
-    },
-    "modal": {
-      "proceso": "En proceso",
-      "trabajador": "Trabajador",
-      "fechaInicio": "Fecha Inicio",
-      "fechaFin": "Fecha Fin",
-      "grupo": "Grupo",
-      "cantidad": "Cantidad",
-      "servicios": "Servicios",
-      "precio": "Precio",
-      "total": "Precio Total",
-      "ficha": "Ficha Cliente",
-      "añadir_cliente": "Añadir cliente",
-      "nombre": "Nombre",
-      "apellido": "Apellido",
-      "telefono": "Teléfono",
-      "piel": "Piel Sensible",
-      "producto": "Producto",
-      "fecha": "Fecha",
-      "volumen": "volumen",
-      "comentarios": "Comentarios"
-    }
+    "botones":{
+        "productos": "Movimientos de productos",
+        "materiales":"Movimientos de materiales",
+        "ticket":"Tickets",
+        "cliente":"Historial del cliente",
+        "crear":"Crear",
+        "añadir":"Añadir",
+        "guardar":"Guardar",
+        "editar":"Editar"
+      },
+      "modal": {
+        "proceso":"En proceso",
+        "trabajador":"Trabajador",
+        "fechaInicio":"Fecha Inicio",
+        "fechaFin":"Fecha Fin",
+        "grupo":"Grupo",
+        "cantidad": "Cantidad",
+        "servicios":"Servicios",
+        "precio":"Precio",
+        "total":"Precio Total",
+        "ficha":"Ficha Cliente",
+        "añadir_cliente":"Añadir cliente",
+        "nombre":"Nombre",
+        "apellido":"Apellido",
+        "telefono":"Teléfono",
+        "piel":"Piel Sensible",
+        "producto":"Producto",
+        "fecha":"Fecha",
+        "volumen":"volumen",
+        "comentarios":"Comentarios",
+        "reset":"Reset",
+        "filtroFecha":"Filtrar por Fecha",
+        "filtroBezero":"Busca nombre o apellido"
+      }
   },
   "informes": {
     "title": "Informes",

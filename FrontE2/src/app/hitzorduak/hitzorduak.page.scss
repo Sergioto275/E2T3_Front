@@ -53,4 +53,14 @@ th {
   background-color:#B0BEC5 !important;
 }
 
+.selected {
+  border: 2px solid #ff4081; /* Borde de color rosa */
+  box-shadow: 0 0 10px rgba(255, 64, 129, 0.5); /* Sombra que da el efecto de "brillo" */
+  background-color: rgba(255, 64, 129, 0.1); /* Fondo suave con un toque de color */
+}
+
+.highlighted {
+  background-color: #f0f8ff; /* Color de fondo para la selección */
+  border: 1px solid #00bfff;
+}
 
