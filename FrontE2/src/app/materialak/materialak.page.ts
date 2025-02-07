@@ -47,6 +47,8 @@ export class MaterialakPage implements OnInit {
   selecTaldea!:number;
   selecAlumno!:number;
 
+  mostrarFiltros: boolean = false;
+
   @ViewChild('modaleditarcat', { static: true })
   modaleditarcat!: IonModal;
   @ViewChild('modalEditar', { static: true })

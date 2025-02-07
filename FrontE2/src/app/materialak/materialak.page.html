@@ -26,11 +26,17 @@
       <ion-segment-content id="kudeatu">
         <ion-toolbar>
           <ion-buttons slot="start">
+            <ion-button expand="full" (click)="mostrarFiltros = !mostrarFiltros">
+              <ion-icon name="search"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+          <ion-buttons slot="start">
             <ion-button id="cat-mat-sortu-modal">{{ 'materiales.botones.crearCategoria' | translate }}</ion-button>
           </ion-buttons>
           <ion-buttons slot="start">
             <ion-button id="mat-sortu-modal">{{ 'materiales.botones.agregarMaterial' | translate }}</ion-button>
           </ion-buttons>
+
           <ion-buttons slot="end">
             <ion-button id="atera-modal-mat" [disabled]="materialesSeleccionados.length == 0">{{
               'materiales.botones.sacarMateriales' | translate }}</ion-button>
@@ -39,17 +45,15 @@
 
         <!-- Filtro por Categoría -->
         <ion-card>
+          <div *ngIf="mostrarFiltros">
+            <ion-searchbar [(ngModel)]="filtroCategoria" (ngModelChange)="filtrarMateriales()" animated="true"
+              placeholder="{{ 'productos.modal.filtroCat' | translate }}"></ion-searchbar>
 
-          <ion-searchbar [(ngModel)]="filtroCategoria" (ngModelChange)="filtrarMateriales()" animated="true"
-            placeholder="{{ 'productos.modal.filtroCat' | translate }}"></ion-searchbar>
-
-
-          <!-- Filtro por Material -->
-
-          <ion-searchbar [(ngModel)]="filtroMaterial" (ngModelChange)="filtrarMateriales()" animated="true"
-            placeholder="{{ 'materiales.modal.filtroMat' | translate }}"></ion-searchbar>
-
+            <ion-searchbar [(ngModel)]="filtroMaterial" (ngModelChange)="filtrarMateriales()" animated="true"
+              placeholder="{{ 'materiales.modal.filtroMat' | translate }}"></ion-searchbar>
+          </div>
         </ion-card>
+
         <ng-container *ngFor="let categoria of filteredMaterialak">
           <!-- Categoría -->
           <ion-card>
@@ -58,11 +62,12 @@
               <ion-button slot="end" (click)="abrirEditarCategoria(categoria); $event.stopPropagation()">
                 <ion-icon name="create"></ion-icon>
               </ion-button>
-              <ion-button slot="end" color="danger" (click)="confirmarEliminarCategoria(categoria.id); $event.stopPropagation()">
+              <ion-button slot="end" color="danger"
+                (click)="confirmarEliminarCategoria(categoria.id); $event.stopPropagation()">
                 <ion-icon name="trash"></ion-icon>
               </ion-button>
               <ion-icon [name]="isCategoriaAbierta(categoria.izena) ? 'chevron-up' : 'chevron-down'"
-                slot="end" ></ion-icon>
+                slot="end"></ion-icon>
             </ion-item>
 
             <!-- Lista de materiales dentro de la categoría -->
