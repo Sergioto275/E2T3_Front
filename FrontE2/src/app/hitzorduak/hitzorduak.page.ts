@@ -31,123 +31,156 @@ export class HitzorduakPage implements OnInit {
   dataSelec!: any;
   selectedLanguage: string = 'es';
 
-  private dragging = false;
-  private startCell: { time: string, seat: number } | null = null;
-  private endCell: { time: string, seat: number } | null = null;
+  firstCell: { time: string, seat: number } | null = null;
+  secondCell: { time: string, seat: number } | null = null;
+  highlightedCells: { time: string, seat: number }[] = [];
 
-  // Función para cuando el usuario comienza a hacer clic
-  onMouseDown(time: string, seat: number): void {
-    this.dragging = true;
-    this.startCell = { time, seat };
-    this.endCell = { time, seat };
-    this.highlightSelection();
-  }
-
-  onMouseMove(time: string): void {
-    if (this.dragging) {
-      const startSeat = this.startCell?.seat;
-      
-      // Comprobar si startSeat está definido
-      if (startSeat !== undefined) {
-        this.endCell = { time, seat: startSeat }; // Mantener la columna fija
-        this.highlightSelection(); // Llamar a la función para resaltar
+  updateHighlightedCells() {
+    if (this.firstCell && this.secondCell) {
+      const minTimeIndex = Math.min(
+        this.hoursArray.indexOf(this.firstCell.time),
+        this.hoursArray.indexOf(this.secondCell.time)
+      );
+      const maxTimeIndex = Math.max(
+        this.hoursArray.indexOf(this.firstCell.time),
+        this.hoursArray.indexOf(this.secondCell.time)
+      );
+      this.highlightedCells = [];
+      for (let i = minTimeIndex; i <= maxTimeIndex; i++) {
+        this.highlightedCells.push({ time: this.hoursArray[i], seat: this.firstCell.seat });
       }
     }
   }
 
-  // Función para cuando el usuario suelta el clic
-  onMouseUp(time: string): void {
-    if (this.dragging) {
-      this.dragging = false;
-
-      // Obtener la columna inicial (la columna con la que comenzó el arrastre)
-      const startSeat = this.startCell?.seat;
-
-      // Si startSeat está definido, usarlo. Si no, puedes usar un valor por defecto (como 0).
-      if (startSeat !== undefined) {
-        this.endCell = { time, seat: startSeat }; // Mantener la columna fija en startSeat
-        this.bookCitaRange(); // Aquí se realizaría la reserva
-      }
-    }
+  resetSelection() {
+    this.firstCell = null;
+    this.secondCell = null;
+    this.highlightedCells = [];
   }
 
-
-
-  // Resaltar las celdas seleccionadas
-  private highlightSelection(): void {
-    if (this.startCell && this.endCell) {
-      const startTimeIndex = this.hoursArray.indexOf(this.startCell.time);
-      const endTimeIndex = this.hoursArray.indexOf(this.endCell.time);
-      const startSeatIndex = this.startCell.seat - 1;
-      const endSeatIndex = this.endCell.seat - 1;
-
-      // Resaltar las celdas dentro del rango de horas y asientos
-      for (let timeIndex = Math.min(startTimeIndex, endTimeIndex); timeIndex <= Math.max(startTimeIndex, endTimeIndex); timeIndex++) {
-        for (let seatIndex = Math.min(startSeatIndex, endSeatIndex); seatIndex <= Math.max(startSeatIndex, endSeatIndex); seatIndex++) {
-          const cellId = `time-${this.hoursArray[timeIndex]}-seat-${seatIndex + 1}`;
-          const cell = document.getElementById(cellId);
-          if (cell) {
-            cell.classList.add('highlighted');
-          }
-        }
-      }
-    }
-  }
-
-  // Función para realizar la reserva de las citas en el rango seleccionado
-  private bookCitaRange(): void {
-    // Aquí puedes hacer el procesamiento para reservar las citas
-    // Ejemplo: Actualizar el modelo de datos con las citas reservadas
-    if (this.startCell && this.endCell) {
-      const startTimeIndex = this.hoursArray.indexOf(this.startCell.time);
-      const endTimeIndex = this.hoursArray.indexOf(this.endCell.time);
-      const startSeatIndex = this.startCell.seat - 1;
-      const endSeatIndex = this.endCell.seat - 1;
-
-      // Realizar las reservas en el rango de celdas
-      for (let timeIndex = Math.min(startTimeIndex, endTimeIndex); timeIndex <= Math.max(startTimeIndex, endTimeIndex); timeIndex++) {
-        for (let seatIndex = Math.min(startSeatIndex, endSeatIndex); seatIndex <= Math.max(startSeatIndex, endSeatIndex); seatIndex++) {
-          const time = this.hoursArray[timeIndex];
-          const seat = seatIndex + 1;
-          // Lógica para reservar la cita, por ejemplo:
-          this.seleccionar_citaCrear(seat, time);
-        }
-      }
-    }
+  isCellHighlighted(time: string, seat: number): boolean {
+    return this.highlightedCells.some(cell => cell.time === time && cell.seat === seat);
   }
 
    // Función: seleccionar_citaCrear
-   seleccionar_citaCrear(eserlekua: number, time: string) {
-    if (this.citaCrear.data) {
-      if (this.citaCrear.data !== this.dataSelec) {
-        if (confirm("¿Desea cambiar el día?")) {
-          this.citaCrear.data = this.dataSelec;
-          this.citaCrear.hasieraOrdua = time;
-          this.citaCrear.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
-          this.citaCrear.eserlekua = eserlekua;
-        }
-      } else {
-        if (this.citaCrear.eserlekua !== eserlekua) {
-          if (confirm("¿Desea cambiar el asiento?")) {
-            this.citaCrear.hasieraOrdua = time;
-            this.citaCrear.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
-            this.citaCrear.eserlekua = eserlekua;
-          }
+  reserbar_cita(eserlekua: number, time: string) {
+    
+    if(this.citaEditar.eserlekua == 0){
+      if (this.firstCell && this.firstCell.seat !== eserlekua) {
+        if (confirm("¿Desea cambiar de asiento?")) {
+          this.resetSelection();
+          this.limpiar_campos();
         } else {
-          if (this.citaCrear.hasieraOrdua < time) {
-            this.citaCrear.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
-          } else {
-            this.citaCrear.hasieraOrdua = time;
-          }
+          return;
         }
       }
-    } else {
-      this.citaCrear.data = this.dataSelec;
-      this.citaCrear.hasieraOrdua = time;
-      this.citaCrear.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
-      this.citaCrear.eserlekua = eserlekua;
+      if(this.verificarSuperposicion(eserlekua, time, this.dataSelec, this.citaCrear.hasieraOrdua, this.citaCrear.amaieraOrdua, 0)){
+        this.resetSelection();
+        this.citaCrear.data = this.dataSelec;
+        this.citaCrear.hasieraOrdua = time;
+        this.citaCrear.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
+        this.citaCrear.eserlekua = eserlekua;
+        this.firstCell = { time, seat: eserlekua };
+        this.highlightedCells = [{ time, seat: eserlekua }];
+        return;
+      }
+      if (this.citaCrear.data) {
+        if (this.citaCrear.hasieraOrdua < time) {
+          this.citaCrear.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
+          this.secondCell = { time, seat: eserlekua };
+          this.updateHighlightedCells();
+        } else {
+          this.citaCrear.hasieraOrdua = time;
+          this.firstCell = { time, seat: eserlekua };
+          this.updateHighlightedCells();
+        }
+      } else {
+        this.citaCrear.data = this.dataSelec;
+        this.citaCrear.hasieraOrdua = time;
+        this.citaCrear.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
+        this.citaCrear.eserlekua = eserlekua;
+        this.firstCell = { time, seat: eserlekua };
+        this.highlightedCells = [{ time, seat: eserlekua }];
+      }
+    }else{
+      
+      if (this.citaEditar.data != this.dataSelec) {
+        if (confirm("¿Desea cambiar de día?")) {
+          this.resetSelection();
+          this.citaEditar.data = this.dataSelec;
+          this.citaEditar.hasieraOrdua = time;
+          this.citaEditar.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
+          this.citaEditar.eserlekua = eserlekua;
+          this.firstCell = { time, seat: eserlekua };
+          this.highlightedCells = [{ time, seat: eserlekua }];
+          return;
+        } else {
+          return;
+        }
+      }
+      if (this.citaEditar.eserlekua !== eserlekua) {
+        if (confirm("¿Desea cambiar de asiento?")) {
+          this.resetSelection();
+          this.citaEditar.data = this.dataSelec;
+          this.citaEditar.hasieraOrdua = time;
+          this.citaEditar.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
+          this.citaEditar.eserlekua = eserlekua;
+          this.firstCell = { time, seat: eserlekua };
+          this.highlightedCells = [{ time, seat: eserlekua }];
+          return;
+        } else {
+          return;
+        }
+      }
+      if(this.verificarSuperposicion(eserlekua, time, this.dataSelec, this.citaEditar.hasieraOrdua, this.citaEditar.amaieraOrdua, this.citaEditar.id)){
+        this.resetSelection();
+        this.citaEditar.data = this.dataSelec;
+        this.citaEditar.hasieraOrdua = time;
+        this.citaEditar.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
+        this.citaEditar.eserlekua = eserlekua;
+        this.firstCell = { time, seat: eserlekua };
+        this.highlightedCells = [{ time, seat: eserlekua }];
+        return;
+      }
+      if (this.citaEditar.hasieraOrdua < time) {
+        this.citaEditar.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
+        this.secondCell = { time, seat: eserlekua };
+        this.updateHighlightedCells();
+      } else {
+        this.citaEditar.hasieraOrdua = time;
+        this.firstCell = { time, seat: eserlekua };
+        this.updateHighlightedCells();
+      }
     }
   }
+
+  // Función para verificar si dos rangos de tiempo se solapan
+  verificarSuperposicion(eserlekua: number, time: string, eguna: any, horaIniCita:any, horaFinCita:any,   id: number | null) {
+    let horaInicio;
+    let horaFin;
+    if (horaIniCita > time || !horaIniCita) {
+      horaInicio = time;
+      horaFin = horaFinCita;
+    } else {
+      horaInicio = horaIniCita;
+      horaFin = time;
+    }
+    const citasDelDia = this.hitzorduak.filter((hitzordu: any) => 
+      (!hitzordu.ezabatze_data || hitzordu.ezabatze_data === "0000-00-00 00:00:00") && 
+      hitzordu.data === eguna && 
+      hitzordu.eserlekua === eserlekua &&
+      (id ? hitzordu.id !== id : true)
+    );
+    const solapamiento = citasDelDia.some((cita: any) => {
+      const citaInicio = cita.hasieraOrdua;
+      const citaFin = cita.amaieraOrdua;
+      return (
+        (horaInicio < citaFin && horaFin > citaInicio)
+      );
+    });
+    return solapamiento;
+  }
+  
 
 
   constructor(private translate: TranslateService) {
@@ -258,7 +291,6 @@ export class HitzorduakPage implements OnInit {
           )
         };
       });
-      console.log(this.tratamenduArray)
     } catch (error) {
       console.log("Error al cargar tratamientos:", error);
     }
@@ -290,11 +322,15 @@ export class HitzorduakPage implements OnInit {
         hasieraDate <= egunaDate && amaieraDate >= egunaDate && ordu.eguna === diaSemana
       );
     });
-    if(this.langileArray.length == 0){
+    if (this.langileArray.length == 0 && langileak.length > 0) {
       this.langileArray = langileak[0].taldea.langileak;
     }
-    this.asientos = langileak[0].taldea.langileak.length - 1;
+    this.asientos = langileak.length > 0 ? langileak[0].taldea.langileak.length - 1 : 0;
+    this.resetSelection();
+    this.citaCrear = {"data":null, "hasieraOrdua":null, "amaieraOrdua":null, "eserlekua" :0, "izena":'', "telefonoa":'', "deskribapena":'', "etxekoa":false };
+    // this.limpiar_campos();
   }
+  
   
   // Función: getHoursInRange
   getHoursInRange(): void {
@@ -416,7 +452,6 @@ export class HitzorduakPage implements OnInit {
         "deskribapena": this.citaEditar.deskribapena,
         "etxekoa": etxeko
       };
-      console.log(JSON.stringify(json_data));
       const response = await fetch(`${environment.url}hitzorduak`, {
         headers: {
           'Content-Type': 'application/json',
@@ -474,6 +509,7 @@ async eliminar_cita() {
     this.idLangile = null;
     this.citaCrear = {"data":null, "hasieraOrdua":null, "amaieraOrdua":null, "eserlekua" :0, "izena":'', "telefonoa":'', "deskribapena":'', "etxekoa":false };
     this.citaEditar = {"data":null, "hasieraOrdua":null, "amaieraOrdua":null, "eserlekua" :0, "izena":'', "telefonoa":'', "deskribapena":'', "etxekoa":false };
+    this.resetSelection();
   }
 
   today(): string {
@@ -486,6 +522,7 @@ async eliminar_cita() {
 
   cargar_cita_selec(citaSelec:any) {
     this.citaEditar = citaSelec;
+    this.resetSelection();
   }
 
   actualizarServiciosSeleccionados(servicio:any, extra:boolean) {
@@ -500,7 +537,6 @@ async eliminar_cita() {
     } else if (!servicio.selected && index !== -1) {
       this.serviciosSeleccionados.splice(index, 1);
     }
-    console.log(this.serviciosSeleccionados);
   }
 
   async asignar_cita() {
@@ -544,7 +580,6 @@ async eliminar_cita() {
         },
         "prezioa": servicio.precio
       }));
-      console.log(JSON.stringify(json_data));
       const response = await fetch(`${environment.url}ticket_lerroak`, {
         headers: {
           'Content-Type': 'application/json',

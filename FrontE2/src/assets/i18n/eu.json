@@ -84,6 +84,7 @@
             "generar": "Sarrera Sortu"
         },
         "modal":{
+            "vacio":"Ez dago ordutegirik definituta gaurkorako",
             "nombre":"Izena",
             "descripcion":"Deskribapena",
             "fecha":"Data",

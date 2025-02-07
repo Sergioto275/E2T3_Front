@@ -84,6 +84,7 @@
       "generar":"Generar Ticket"
     },
     "modal": {
+        "vacio":"No hay horarios definidos para hoy",
         "nombre": "Nombre",
         "descripcion": "Descripción",
         "fecha": "Fecha",
