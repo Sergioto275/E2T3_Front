@@ -29,9 +29,40 @@
   <ion-content [fullscreen]="true">
   <ion-segment-view>
     <ion-segment-content id="prod">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{ "historial.modal.filtroFecha" | translate }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-grid>
+            <ion-row class="ion-align-items-center">
+              <ion-col size="5">
+                <ion-item>
+                  <ion-label position="stacked">{{ "historial.modal.fechaInicio" | translate }}</ion-label>
+                  <ion-input type="date" [(ngModel)]="fechaInicioFilterProd" (ionChange)="filterProduktos()"></ion-input>
+                </ion-item>
+              </ion-col>
+      
+              <ion-col size="5">
+                <ion-item>
+                  <ion-label position="stacked">{{ "historial.modal.fechaFin" | translate }}</ion-label>
+                  <ion-input type="date" [(ngModel)]="fechaFinFilterProd" (ionChange)="filterProduktos()"></ion-input>
+                </ion-item>
+              </ion-col>
+      
+              <ion-col size="2" class="ion-text-center">
+                <ion-button color="danger" fill="outline" (click)="resetProduktos()">
+                  <ion-icon slot="start" name="close-circle"></ion-icon>
+                  {{ "historial.modal.reset" | translate }}
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
       <ion-grid>
         <ion-row>
-          <ion-col size="12" size-md="6" size-lg="4" *ngFor="let prod of produktuMugimendu">
+          <ion-col size="12" size-md="6" size-lg="4" *ngFor="let prod of produktuMugimenduFiltered">
             <ion-card>
               <ion-card-header>
                 <ion-card-title>{{ prod.produktu.izena }}</ion-card-title>
@@ -40,7 +71,7 @@
               <ion-card-content>
                 <ion-row>
                   <ion-col size="6">
-                    <ion-label><strong>{{ prod.langile.izena }} {{ prod.langile.abizenak }} | {{ prod.langile.taldeaKodea }}</strong></ion-label>
+                    <ion-label><strong>{{ prod.langile.izena }} {{ prod.langile.abizenak }} | {{ prod.langile.taldeKodea }}</strong></ion-label>
                   </ion-col>
                   <ion-col size="6">
                     <ion-label><strong>{{ "historial.modal.cantidad" | translate }}:</strong> -{{ prod.kopurua }}</ion-label>
@@ -54,9 +85,40 @@
     </ion-segment-content>
 
     <ion-segment-content id="material">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{ "historial.modal.filtroFecha" | translate }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-grid>
+            <ion-row class="ion-align-items-center">
+              <ion-col size="5">
+                <ion-item>
+                  <ion-label position="stacked">{{ "historial.modal.fechaInicio" | translate }}</ion-label>
+                  <ion-input type="date" [(ngModel)]="fechaInicioFilterMat" (ionChange)="filterMateriales()"></ion-input>
+                </ion-item>
+              </ion-col>
+      
+              <ion-col size="5">
+                <ion-item>
+                  <ion-label position="stacked">{{ "historial.modal.fechaFin" | translate }}</ion-label>
+                  <ion-input type="date" [(ngModel)]="fechaFinFilterMat" (ionChange)="filterMateriales()"></ion-input>
+                </ion-item>
+              </ion-col>
+      
+              <ion-col size="2" class="ion-text-center">
+                <ion-button color="danger" fill="outline" (click)="resetMateriales()">
+                  <ion-icon slot="start" name="close-circle"></ion-icon>
+                  {{ "historial.modal.reset" | translate }}
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
       <ion-grid>
         <ion-row>
-          <ion-col size="12" size-md="6" size-lg="4" *ngFor="let movimiento of materialMugimendu">
+          <ion-col size="12" size-md="6" size-lg="4" *ngFor="let movimiento of materialMugimenduFiltered">
             <ion-card>
               <ion-card-header>
                 <ion-card-title>{{ movimiento.materiala.izena }}</ion-card-title>
@@ -89,7 +151,7 @@
                   <ion-col>
                     <ion-label>
                       <strong>{{ "historial.modal.grupo" | translate }}:</strong> 
-                      {{ movimiento.langilea.taldeaKodea }}
+                      {{ movimiento.langilea.taldeKodea }}
                     </ion-label>
                   </ion-col>
                 </ion-row>
@@ -102,9 +164,40 @@
     
     
     <ion-segment-content id="ticket">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{ "historial.modal.filtroFecha" | translate }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-grid>
+            <ion-row class="ion-align-items-center">
+              <ion-col size="5">
+                <ion-item>
+                  <ion-label position="stacked">{{ "historial.modal.fechaInicio" | translate }}</ion-label>
+                  <ion-input type="date" [(ngModel)]="fechaInicioFilterTicket" (ionChange)="filterTickets()"></ion-input>
+                </ion-item>
+              </ion-col>
+      
+              <ion-col size="5">
+                <ion-item>
+                  <ion-label position="stacked">{{ "historial.modal.fechaFin" | translate }}</ion-label>
+                  <ion-input type="date" [(ngModel)]="fechaFinFilterTicket" (ionChange)="filterTickets()"></ion-input>
+                </ion-item>
+              </ion-col>
+      
+              <ion-col size="2" class="ion-text-center">
+                <ion-button color="danger" fill="outline" (click)="resetTickets()">
+                  <ion-icon slot="start" name="close-circle"></ion-icon>
+                  {{ "historial.modal.reset" | translate }}
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
       <ion-grid>
         <ion-row>
-          <ion-col size="12" size-md="6" size-lg="4" *ngFor="let ticket of tickets">
+          <ion-col size="12" size-md="6" size-lg="4" *ngFor="let ticket of ticketsFiltered">
             <ion-card>
               <ion-card-header>
                 <ion-card-title>{{ ticket.izena }}</ion-card-title>
@@ -185,11 +278,21 @@
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{ "historial.modal.filtroFecha" | translate }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item>
+            <ion-searchbar [(ngModel)]="filtroIzena" (ngModelChange)="filterBezero()" animated="true" placeholder="{{ 'historial.modal.filtroBezero' | translate }}"></ion-searchbar>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
     
       <ion-content>
         <!-- Lista de Bezero -->
         <ion-list id="bezero-list">
-          <ion-item *ngFor="let bezero of bezeroak">
+          <ion-item *ngFor="let bezero of bezeroakFiltered">
             <ion-label>
               <h2>{{ bezero.izena }} {{ bezero.abizena }}</h2>
               <p>{{ "historial.modal.telefono" | translate }}: {{ bezero.telefonoa }}</p>

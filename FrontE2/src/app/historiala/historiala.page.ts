@@ -15,9 +15,13 @@ export class HistorialaPage implements OnInit {
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   selectedLanguage: string = 'es';
   produktuMugimendu: any[] = [];
+  produktuMugimenduFiltered: any[] = [];
   materialMugimendu: any[] = [];
+  materialMugimenduFiltered: any[] = [];
   tickets: any[] = [];
+  ticketsFiltered: any[] = [];
   bezeroak: any[] = [];
+  bezeroakFiltered: any[] = [];
   produktuak: any[] = [];
   crearNombre!:String;
   crearApellido!:String;
@@ -30,6 +34,13 @@ export class HistorialaPage implements OnInit {
   viewingBezero: any = null;        // Cliente cuyos detalles se están viendo
   isViewingHistorial: boolean = false; // Controla si se muestra el historial
   bezeroForm: FormGroup;
+  fechaInicioFilterProd: any = null;
+  fechaFinFilterProd: any = null;
+  fechaInicioFilterMat: any = null;
+  fechaFinFilterMat: any = null;
+  fechaInicioFilterTicket: any = null;
+  fechaFinFilterTicket: any = null;
+  filtroIzena!:string;
 
   constructor(
     private translate: TranslateService,
@@ -44,6 +55,104 @@ export class HistorialaPage implements OnInit {
       telefonoa: ['', Validators.required],
       azalSentikorra: ['', Validators.required]
     });
+  }
+
+  filterProduktos() {
+    this.produktuMugimenduFiltered = this.produktuMugimendu.map(prod => ({
+      ...prod,
+      // cualquier otra transformación que necesites
+    }));
+  
+    this.produktuMugimenduFiltered = this.produktuMugimenduFiltered.filter(prod => {
+      const horarioFecha = this.convertToDate(prod.data); // Convertir a objeto Date
+      const inicio = this.fechaInicioFilterProd ? this.convertToDate(this.fechaInicioFilterProd) : null;
+      const fin = this.fechaFinFilterProd ? this.convertToDate(this.fechaFinFilterProd) : null;
+  
+      return (
+        (!inicio || horarioFecha >= inicio) &&
+        (!fin || horarioFecha <= fin)
+      );
+    });
+  }
+
+  filterMateriales() {
+    this.materialMugimenduFiltered = this.materialMugimendu.map(mat => ({
+      ...mat,
+    }));
+  
+    this.materialMugimenduFiltered = this.materialMugimenduFiltered.filter(mat => {
+      const horarioFecha = this.convertToDate(mat.hasieraData); // Convertir a objeto Date
+      const inicio = this.fechaInicioFilterMat ? this.convertToDate(this.fechaInicioFilterMat) : null;
+      const fin = this.fechaFinFilterMat ? this.convertToDate(this.fechaFinFilterMat) : null;
+  
+      return (
+        (!inicio || horarioFecha >= inicio) &&
+        (!fin || horarioFecha <= fin)
+      );
+    });
+  }
+
+  filterTickets() {
+    this.ticketsFiltered = this.tickets.map(ticket => ({
+      ...ticket,
+    }));
+  
+    this.ticketsFiltered = this.ticketsFiltered.filter(ticket => {
+      const horarioFecha = this.convertToDate(ticket.data); // Convertir a objeto Date
+      const inicio = this.fechaInicioFilterTicket ? this.convertToDate(this.fechaInicioFilterTicket) : null;
+      const fin = this.fechaFinFilterTicket ? this.convertToDate(this.fechaFinFilterTicket) : null;
+  
+      return (
+        (!inicio || horarioFecha >= inicio) &&
+        (!fin || horarioFecha <= fin)
+      );
+    });
+  }
+
+  filterBezero() {
+    this.bezeroakFiltered = this.bezeroak.map(bezero => ({
+      ...bezero,
+    }));
+  
+    if (this.filtroIzena !== '') {
+      this.bezeroakFiltered = this.bezeroakFiltered.filter(bezero =>
+        (this.filtroIzena === '' ||
+          bezero.izena.toLowerCase().includes(this.filtroIzena.toLowerCase()) ||
+          bezero.abizena.toLowerCase().includes(this.filtroIzena.toLowerCase()))
+      );
+    }
+  }
+  
+  
+  // Función para convertir la fecha a un objeto Date sin hora
+  convertToDate(date: any): Date {
+    const d = new Date(date);
+    d.setHours(0, 0, 0, 0); // Asegúrate de que las horas, minutos, segundos y milisegundos sean 0
+    return d;
+  }
+  
+  resetProduktos() {
+    this.fechaInicioFilterProd = null;
+    this.fechaFinFilterProd = null;
+    this.produktuMugimenduFiltered = this.produktuMugimendu.map(prod => ({
+      ...prod,
+    }));  
+  }
+
+  resetMateriales() {
+    this.fechaInicioFilterMat = null;
+    this.fechaFinFilterMat = null;
+    this.materialMugimenduFiltered = this.materialMugimendu.map(mat => ({
+      ...mat,
+    }));  
+  }
+
+  resetTickets() {
+    this.fechaInicioFilterTicket = null;
+    this.fechaFinFilterTicket = null;
+    this.ticketsFiltered = this.tickets.map(ticket => ({
+      ...ticket,
+    }));  
   }
 
   // Función: cargarHitzordu
@@ -62,6 +171,7 @@ export class HistorialaPage implements OnInit {
       }
       const datuak = await response.json();
       this.produktuMugimendu = datuak.filter((prod:any) => prod.ezabatzeData === null);
+      this.produktuMugimenduFiltered = this.produktuMugimendu;
     } catch (error) {
       console.log("Error al cargar citas:", error);
     }
@@ -82,6 +192,7 @@ export class HistorialaPage implements OnInit {
       }
       const datuak = await response.json();
       this.materialMugimendu = datuak.filter((mat:any) => mat.ezabatzeData === null);
+      this.materialMugimenduFiltered = this.materialMugimendu;
     } catch (error) {
       console.log("Error al cargar material:", error);
     }
@@ -103,6 +214,7 @@ export class HistorialaPage implements OnInit {
       }
       const datuak = await response.json();
       this.tickets = datuak.filter((citas:any) => citas.ezabatzeData === null);
+      this.ticketsFiltered = this.tickets;
     } catch (error) {
       console.log("Error al cargar citas:", error);
     }
@@ -186,6 +298,7 @@ export class HistorialaPage implements OnInit {
       }
       const datuak = await response.json();
       this.bezeroak = datuak.filter((bezero: any) => bezero.ezabatzeData === null)
+      this.bezeroakFiltered = this.bezeroak;
       } catch (error) {
       console.log("Error al cargar clientes:", error);
     }

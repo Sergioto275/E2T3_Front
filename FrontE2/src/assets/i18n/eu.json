@@ -91,6 +91,7 @@
             "generar": "Sarrera Sortu"
         },
         "modal":{
+            "vacio":"Ez dago ordutegirik definituta gaurkorako",
             "nombre":"Izena",
             "descripcion":"Deskribapena",
             "fecha":"Data",
@@ -134,7 +135,10 @@
             "producto":"Produktua",
             "fecha":"Data",
             "volumen":"Bolumena",
-            "comentarios":"Oharrak"
+            "comentarios":"Oharrak",
+            "reset":"Reset",
+            "filtroFecha":"Data Filtratu",
+            "filtroBezero":"Bilatu izena edo abizena"
         }
     },
     "informes":{
