@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <ion-content class="ion-page" id="main-content">
-  <ion-toolbar>
+  <ion-toolbar class="Headeraaa">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -11,45 +11,99 @@
       <ion-select-option value="eu">Euskera</ion-select-option>
     </ion-select>
   </ion-toolbar>
-
-  <ion-content [fullscreen]="true">
     <!-- Botón para añadir nueva txanda -->
-    <ion-button expand="full" color="success" id="txanda-sortu-modal">
+    <ion-button id="txanda-sortu-modal" class="Botoiak">
       Añadir Txanda
     </ion-button>
 
-    <!-- Filtro de tipo de txanda -->
-    <ion-item>
-      <ion-label>Filtrar por tipo de Txanda</ion-label>
-      <ion-select [(ngModel)]="selectedType" (ionChange)="filterTxandas()">
-        <ion-select-option value="all">Todas</ion-select-option>
-        <ion-select-option value="G">Garbiketa</ion-select-option>
-        <ion-select-option value="M">Mahaia</ion-select-option>
-      </ion-select>
-    </ion-item>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Filtrar por Fecha</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row class="ion-align-items-center">
+            <ion-col size="5">
+              <ion-item>
+                <ion-label position="stacked">Fecha Inicio</ion-label>
+                <ion-input type="date" [(ngModel)]="fechaInicio" (ionChange)="filterByDate()"></ion-input>
+              </ion-item>
+            </ion-col>
+    
+            <ion-col size="5">
+              <ion-item>
+                <ion-label position="stacked">Fecha Fin</ion-label>
+                <ion-input type="date" [(ngModel)]="fechaFin" (ionChange)="filterByDate()"></ion-input>
+              </ion-item>
+            </ion-col>
+    
+            <!-- Botón Hoy -->
+            <ion-col size="2" class="ion-text-center">
+              <ion-button color="primary" fill="solid" (click)="filterToday()">
+                Hoy
+              </ion-button>
+              <ion-button color="danger" fill="outline" (click)="resetFilters()">
+                <ion-icon slot="start" name="close-circle"></ion-icon>
+                Reset
+              </ion-button>
+            </ion-col>            
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+    
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Filtrar por Tipo de Txanda</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row class="ion-align-items-center">
+            <ion-col size="12">
+              <ion-item>
+                <ion-label>Filtrar por tipo de Txanda</ion-label>
+                <ion-select [(ngModel)]="selectedType" (ionChange)="filterTxandas()">
+                  <ion-select-option value="all">Todas</ion-select-option>
+                  <ion-select-option value="G">Garbiketa</ion-select-option>
+                  <ion-select-option value="M">Mahaia</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+    
 
-    <!-- Lista de Txandas -->
-    <ion-list>
-      <ion-item *ngFor="let txanda of filteredTxandak">
-        <ion-label>
-          <h2>{{ txanda.mota === 'G' ? 'Garbiketa' : txanda.mota === 'M' ? 'Mahaia' : txanda.mota }}</h2>
-          <p>Txandaren data: {{ txanda.data }}</p>
-
-          <!-- Mostrar alumno directamente -->
-          <p><strong>Alumno:</strong> 
-            <span *ngIf="txanda.alumno">
-              {{ txanda.alumno.izena }} {{ txanda.alumno.abizenak }}
-            </span>
-            <span *ngIf="!txanda.alumno?.izena">
-              Desconocido
-            </span>
-          </p>
-        </ion-label>        
-        <!-- Botón para eliminar -->
-        <ion-button (click)="deleteTxanda(txanda.id!)" color="danger" slot="end">Eliminar</ion-button>
-      </ion-item>
-    </ion-list>
-  </ion-content>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Txanda Lista</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <!-- Lista de Txandas -->
+        <ion-list>
+          <ion-item *ngFor="let txanda of filteredTxandak">
+            <ion-label>
+              <h2>{{ txanda.mota === 'G' ? 'Garbiketa' : txanda.mota === 'M' ? 'Mahaia' : txanda.mota }}</h2>
+              <p>Txandaren data: {{ txanda.data }}</p>
+    
+              <!-- Mostrar alumno directamente -->
+              <p><strong>Alumno:</strong> 
+                <span *ngIf="txanda.alumno">
+                  {{ txanda.alumno.izena }} {{ txanda.alumno.abizenak }}
+                </span>
+                <span *ngIf="!txanda.alumno?.izena">
+                  Desconocido
+                </span>
+              </p>
+            </ion-label>        
+            <!-- Botón para eliminar -->
+            <ion-button (click)="deleteTxanda(txanda.id!)" color="danger" slot="end">Eliminar</ion-button>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+    
 
   <!-- Modal para añadir una nueva txanda -->
   <ion-modal trigger="txanda-sortu-modal">
