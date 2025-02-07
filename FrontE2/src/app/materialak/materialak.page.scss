@@ -23,3 +23,20 @@ $color-light-blue-alt: #C4E7F1;
   border: 1px solid red;
   border-radius: 10px; 
 }
+
+.header{
+  background-color: $color-light-teal;
+  color: white;
+}
+
+ion-header {
+  background-color: $color-light-teal;
+  color: $color-white;
+  --ion-toolbar-background: $color-light-teal;
+  --ion-toolbar-color: $color-white;
+}
+
+ion-toolbar {
+  --ion-toolbar-background: $color-light-teal;
+  --ion-toolbar-color: $color-white;
+}
