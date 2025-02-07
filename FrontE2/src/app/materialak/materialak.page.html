@@ -138,7 +138,7 @@
           </ion-item>
           <ion-item>
             <ion-select [(ngModel)]="selecAlumno" label="{{ 'materiales.modal.alumno' | translate }}"
-              placeholder="{{ 'materiales.modal.seleccionaAlumno' | translate }}">
+              placeholder="{{ 'materiales.modal.seleccionaAlumno' | translate }}" [disabled]="!selecTaldea">
               <ion-select-option *ngFor="let alumno of filteredAlumnos" [value]="alumno.id">
                 {{ alumno.id }} : {{ alumno.izena }}
               </ion-select-option>

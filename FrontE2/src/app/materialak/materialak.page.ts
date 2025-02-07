@@ -28,10 +28,10 @@ export class MaterialakPage implements OnInit {
   materialak!:any[];
   materialaDevolver!:any;
 
-  crearKatNombre!:String;
-  crearNombre!:String;
-  crearEtiqueta!:String;
-  crearCategoria!:Number;
+  crearKatNombre:String| null = null;
+  crearNombre:String| null = null;
+  crearEtiqueta:String| null = null;
+  crearCategoria:Number| null = null;
 
   editarKatNombre!:String;
   editarNombre!:String;
@@ -114,10 +114,8 @@ export class MaterialakPage implements OnInit {
     await observableRest.subscribe(datuak => {
       console.log(datuak);
       this.materialakLortu();
+      this.vaciarDatos();
     });
-    this.crearEtiqueta = '';
-    this.crearNombre = '';
-    this.crearCategoria = 0;
   }
 
   async kategoriaSortu(){
@@ -128,8 +126,8 @@ export class MaterialakPage implements OnInit {
     await observableRest.subscribe(datuak => {
       console.log(datuak);
       this.materialakLortu();
+      this.vaciarDatos();
     });
-    this.crearKatNombre = '';
   }
 
   materialaEditatu(id:number){
@@ -148,11 +146,21 @@ export class MaterialakPage implements OnInit {
 	  });
   }
 
+
+  vaciarDatos(){
+    this.crearEtiqueta = null;
+    this.crearNombre = null;
+    this.crearCategoria = null;
+    this.crearKatNombre = null;
+    this.materialesSeleccionados = [];
+  }
+
   materialaEzabatu(id:number){
     let observableRest: Observable<any> = this.restServer.delete<any>(`http://localhost:8080/api/materialak/id/${id}`);
     observableRest.subscribe(datuak => {
       console.log(datuak);
       this.materialakLortu();
+      this.vaciarDatos();
     });
   }  
 
@@ -175,6 +183,33 @@ export class MaterialakPage implements OnInit {
     });
   }
 
+  materialakLortu(){
+    let observableRest: Observable<any> = this.restServer.get<any>('http://localhost:8080/api/material_kategoria');
+    observableRest.subscribe(datuak => {
+      console.log(datuak);
+
+    this.materialak = datuak
+    .filter((categoria:any) => categoria.ezabatzeData === null)
+    .map((categoria:any) => ({
+      ...categoria,
+      materialak: categoria.materialak
+        .filter((material:any) => material.ezabatzeData === null)
+    }));
+    this.filteredMaterialak = this.materialak;
+    });
+  }
+
+  materialakLortuDevolver() {
+    let observableRest: Observable<any> = this.restServer.get<any>('http://localhost:8080/api/material_mailegua');
+
+    observableRest.subscribe(datuak => {
+        this.materialaDevolver = datuak.filter((mailegu:any) => 
+            mailegu.hasieraData && !mailegu.amaieraData
+        );
+        console.log(this.materialaDevolver);
+    });
+  }
+
   materialakAtera(){
     let data = this.materialesSeleccionados.map(materiala => ({
       "materiala": {
@@ -193,35 +228,6 @@ export class MaterialakPage implements OnInit {
     });
   }
 
-  materialakLortu(){
-    let observableRest: Observable<any> = this.restServer.get<any>('http://localhost:8080/api/material_kategoria');
-    observableRest.subscribe(datuak => {
-      console.log(datuak);
-
-    this.materialak = datuak
-    .filter((categoria:any) => categoria.ezabatzeData === null)
-    .map((categoria:any) => ({
-      ...categoria,
-      materialak: categoria.materialak
-        .filter((material:any) => material.ezabatzeData === null)
-    }));
-    this.filteredMaterialak = this.materialak;
-    });
-
-  }
-
-  materialakLortuDevolver() {
-    let observableRest: Observable<any> = this.restServer.get<any>('http://localhost:8080/api/material_mailegua');
-
-    observableRest.subscribe(datuak => {
-        this.materialaDevolver = datuak.filter((mailegu:any) => 
-            mailegu.hasieraData && !mailegu.amaieraData
-        );
-        console.log(this.materialaDevolver);
-    });
-}
-
-  
   materialakBueltatu(){
     let data = this.materialesSeleccionadosDevolver.map(mailegu => ({
       "id": mailegu.id
