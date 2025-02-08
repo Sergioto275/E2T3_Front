@@ -77,7 +77,6 @@ export class IkasleakPage implements OnInit {
           return !horario.ezabatzeData && !isDeletedTalde; // Filtra los horarios cuyo taldea no ha sido eliminado
         })
         this.ordutegiArrayFiltered = this.ordutegiArray;
-        console.log('Horarios obtenidos y filtrados:', this.ordutegiArray);
       },
       (error) => {
         console.error('Error al obtener los horarios:', error);
@@ -115,15 +114,14 @@ export class IkasleakPage implements OnInit {
   
 
   filterGroups() {
-    console.log('Buscando:', this.searchQuery); // 👈 Verifica que la función se ejecuta
   
     if (this.searchQuery.trim() === '') {
-      this.filteredGroups = [...this.ikasleArray];
+      this.filteredGroups = [...this.grupoArray];
     } else {
-      this.filteredGroups = this.ikasleArray.filter(grupo =>
-        grupo.izena.toLowerCase().includes(this.searchQuery.toLowerCase()) || 
-        grupo.kodea.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
+      this.filteredGroups = this.grupoArray.filter(grupo =>
+        (grupo.izena && grupo.izena.toLowerCase().includes(this.searchQuery.toLowerCase())) || 
+        (grupo.kodea && grupo.kodea.toLowerCase().includes(this.searchQuery.toLowerCase()))
+      );      
     }
   }
   
@@ -132,7 +130,7 @@ export class IkasleakPage implements OnInit {
 
   resetFilterGroup() {
     this.searchQuery = '';
-    this.filteredGroups = this.ikasleArray;
+    this.filteredGroups = this.grupoArray;
   }
 
 
@@ -155,21 +153,31 @@ export class IkasleakPage implements OnInit {
   // Método para obtener los alumnos de la API
   getAlumnos() {
     this.ikasleService.getAlumnos().subscribe((data: Ikaslea[]) => {
-      this.filteredAlumnos = data.filter((ikaslea) => !ikaslea.ezabatzeData); // Asignar los alumnos a la propiedad ikasleak
-    });
-  }
+      this.ikasleArray = data; // Guarda todos los alumnos
+      this.filteredAlumnos = this.ikasleArray.filter(
+        (ikaslea) => !ikaslea.ezabatzeData
+      );
+    });    
+}
+
+grupoArray: Taldea[] = [];
 
   getGrupos() {
     this.ikasleService.getGrupos().subscribe((data: any[]) => {
-      this.ikasleArray = data
-        .filter((grupo: any) => grupo.ezabatzeData === null); // Asegúrate de filtrar por los que no están eliminados
-      this.filteredGroups = [...this.ikasleArray]; // Al principio, muestra todos los grupos
+      this.grupoArray = data
+        .filter((grupo: any) => grupo.ezabatzeData === null)
+        .map((grupo: any) => ({
+          ...grupo,
+          langileak: grupo.langileak.filter((ikaslea: any) => !ikaslea.ezabatzeData) // 🔥 Filtrar alumnos eliminados
+        }));
+  
+      this.filteredGroups = [...this.grupoArray]; 
     });
   }
+  
 
   openEditModal(ikaslea: any) {
     this.selectedAlumno = ikaslea;
-    console.log(this.selectedAlumno)
     this.isEditModalOpen = true;
   }
 
@@ -213,7 +221,6 @@ export class IkasleakPage implements OnInit {
         kodea: this.nuevoAlumno.taldea.kodea,
       },
     };
-    console.log(data);
     this.ikasleService.agregarAlumno(data).subscribe((data) => {
       this.getAlumnos();
       this.getGrupos();
@@ -243,7 +250,6 @@ export class IkasleakPage implements OnInit {
   // Abre el modal para editar un talde
   openEditTaldeModal(talde: any) {
     this.selectedTalde = talde; // Clonar el objeto seleccionado
-    console.log('selectedTalde al abrir modal:', this.selectedTalde);
     this.isEditTaldeModalOpen = true;
   }
 
@@ -320,10 +326,6 @@ export class IkasleakPage implements OnInit {
     );
   }
 
-  getAlumnosPorKodea(kodea: string): Ikaslea[] {
-    return this.ikasleak.filter((ikaslea) => ikaslea.taldea.kodea === kodea);
-  }
-
   onAlumnoSelected(alumnoId: number | undefined) {
     if (alumnoId !== undefined) {
       if (this.selectedIkasleak.has(alumnoId)) {
@@ -353,7 +355,6 @@ export class IkasleakPage implements OnInit {
       hasieraOrdua: formattedHoraInicio, // Asegúrate de que está en formato HH:mm:ss
       amaieraOrdua: formattedHoraFin, // Asegúrate de que está en formato HH:mm:ss
     };
-    console.log(JSON.stringify(this.ordutegia));
     // Usamos subscribe para manejar la respuesta
     this.ikasleService.guardarHorario(this.ordutegia).subscribe(
       (data) => {
@@ -376,12 +377,10 @@ export class IkasleakPage implements OnInit {
         this.fechaFin = ''; // Resetea la fecha de fin
         this.horaInicio = null; // Resetea la hora de inicio
         this.horaFin = null; // Resetea la hora de fin
-        console.log(data);
         // Verifica si el horario se ha guardado correctamente
         if (data && data.id) {
           this.showAlert('Éxito', 'Horario guardado correctamente');
         } else {
-          console.log('Error al guardar');
           this.showAlert('Error', 'Hubo un error al guardar el horario');
         }
       },
@@ -419,7 +418,6 @@ export class IkasleakPage implements OnInit {
   }
 
   openModal(horario: any, modal: IonModal) {
-    console.log(horario)
     // Asignar los valores del horario seleccionado al formulario
     this.selectedHorario = horario;
     this.idHorario = horario.id;
@@ -442,7 +440,6 @@ export class IkasleakPage implements OnInit {
 
   actualizarHorario() {
     if (this.selectedHorario) {
-      console.log('Horario seleccionado:', this.selectedHorario); // Verifica que el id esté presente
       const horarioActualizado: any = {
         ...this.selectedHorario,
         taldea: this.grupoSeleccionado,
@@ -490,9 +487,7 @@ export class IkasleakPage implements OnInit {
           {
             text: this.translate.instant('ikaslePage.Cancel'),
             role: 'cancel',
-            handler: () => {
-              console.log('Eliminación cancelada');
-            },
+            
           },
           {
             text: this.translate.instant('ikaslePage.Aceptar'),
@@ -501,7 +496,6 @@ export class IkasleakPage implements OnInit {
                 .eliminarHorario(horario.id)
                 .subscribe((response) => {
                   this.getHorarios();
-                  console.log('Horario eliminado', response);
                 });
             },
           },
