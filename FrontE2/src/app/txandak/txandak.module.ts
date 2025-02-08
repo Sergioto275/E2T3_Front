@@ -8,6 +8,7 @@ import { TxandakPageRoutingModule } from './txandak-routing.module';
 
 import { TxandakPage } from './txandak.page';
 import { ComponentsModule } from "../components/components.module";
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { ComponentsModule } from "../components/components.module";
     IonicModule,
     TxandakPageRoutingModule,
     ComponentsModule,
-    ReactiveFormsModule  
+    ReactiveFormsModule  ,
+    TranslateModule
 ],
   declarations: [TxandakPage]
 })

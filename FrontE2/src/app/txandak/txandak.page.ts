@@ -43,7 +43,8 @@ export class TxandakPage implements OnInit {
     alumno: null, // ID del alumno
   };
   selectedType = 'all';  // Tipo de txanda seleccionado
-
+  fechaInicio: string = '';
+  fechaFin: string = '';
 
   constructor(private translate: TranslateService, 
               private http: HttpClient,
@@ -84,11 +85,7 @@ export class TxandakPage implements OnInit {
   
         this.txandak = data
           .filter(txanda => !txanda.ezabatzeData) // Filtramos las txandas eliminadas
-          .map(txanda => {
-            if (!txanda.id) {
-              console.error('Txanda sin ID:', txanda); // Aquí se verá si alguna txanda tiene ID undefined
-            }
-  
+          .map(txanda => {  
             const alumno = txanda.langileak;  // Ahora accedemos a langileak, que contiene al alumno completo
             console.log("Alumno encontrado:", alumno);
   
@@ -127,25 +124,16 @@ export class TxandakPage implements OnInit {
   async deleteTxanda(txandaId: number) {
     // Crear la alerta de confirmación
     const alert = await this.alertCtrl.create({
-      header: 'Eliminar Txanda',
-      message: '¿Estás seguro de que deseas eliminar esta txanda?',
+      header: this.translate.instant('txandakPage.MessageEliminar'),
+      message: this.translate.instant('txandakPage.MessageSeguroEliminar'),
       buttons: [
         {
           text: 'Cancelar',
           role: 'cancel',
-          handler: () => {
-            console.log('Eliminación cancelada');
-          }
         },
         {
           text: 'Eliminar',
           handler: () => {
-            // Verificar que el id está disponible
-            if (!txandaId) {
-              console.error('El id de la txanda no está definido');
-              return;
-            }
-  
             // Realizar la solicitud DELETE
             const apiUrl = `http://localhost:8080/api/txandak/${txandaId}`; // URL de la API para eliminar la txanda
             this.http.delete<Txanda>(apiUrl).subscribe(
@@ -154,7 +142,6 @@ export class TxandakPage implements OnInit {
                 const index = this.txandak.findIndex(t => t.id === txandaId);
                 if (index !== -1) {
                   this.txandak.splice(index, 1);  // Eliminar la txanda de la lista local
-                  console.log('Txanda eliminada correctamente:', response);
                 }
               },
               (error) => {
@@ -185,7 +172,6 @@ export class TxandakPage implements OnInit {
   // Función para guardar la nueva txanda
   guardarTxanda() {
     if (!this.nuevaTxanda.mota || !this.nuevaTxanda.data || !this.nuevaTxanda.alumno) {
-      console.log('Faltan datos');
       return; // Validar que no haya campos vacíos
     }
 
@@ -199,7 +185,7 @@ export class TxandakPage implements OnInit {
     // Realizar la solicitud HTTP POST para crear la txanda
     this.http.post(apiUrl, txandaToSave).subscribe(response => {
         if (response) {
-          console.log('Txanda guardada correctamente', response);
+          this.getTxandak();
           this.closeModal(); // Cerrar el modal si la txanda se guarda correctamente
         } else {
           console.error('No se pudo guardar la txanda');
@@ -207,5 +193,33 @@ export class TxandakPage implements OnInit {
       });
   }
 
-  
+  // Método para filtrar las txandas por fecha
+  filterByDate() {
+    // Filtrar txandas por el rango de fechas si ambos están presentes
+    if (this.fechaInicio && this.fechaFin) {
+      this.filteredTxandak = this.txandak.filter(txanda => {
+        return (
+          new Date(txanda.data) >= new Date(this.fechaInicio) &&
+          new Date(txanda.data) <= new Date(this.fechaFin)
+        );
+      });
+    } else {
+      // Si no hay fechas seleccionadas, mostrar todas las txandas
+      this.filteredTxandak = [...this.txandak];
+    }
+  }
+
+  resetFilters() {
+    this.fechaInicio = '';
+    this.fechaFin = '';
+    this.filteredTxandak = [...this.txandak];
+  }
+
+  filterToday() {
+    const today = new Date().toISOString().split('T')[0]; // Obtener la fecha de hoy en formato 'YYYY-MM-DD'
+
+    this.filteredTxandak = this.txandak.filter(txanda => {
+      return txanda.data === today; // Filtrar las txandas que tengan la fecha igual a la de hoy
+    });
+  }
 }

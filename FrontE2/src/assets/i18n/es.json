@@ -1,6 +1,6 @@
 {
   "menu": {
-    "title":"Menu",
+    "title": "Menu",
     "hitzorduak": "Citas",
     "txostenak": "Informes",
     "materialak": "Materiales",
@@ -16,7 +16,7 @@
       "sacarProductos": "Sacar Productos",
       "crearProductos": "Crear Productos",
       "editarProductos": "Editar Productos",
-      "crearCategoria":"Crear Categoria",
+      "crearCategoria": "Crear Categoria",
       "editarCategoria": "Editar Categoria",
       "confirmar": "Confirmar",
       "crear": "Crear",
@@ -28,15 +28,15 @@
       "seleccionaAlumno": "Selecciona a un alumno",
       "producto": "Producto",
       "categoria": "Categoría",
-      "nombre":"Nombre",
+      "nombre": "Nombre",
       "marca": "Marca",
       "stock": "Stock",
       "stockAlerta": "Stock Alerta",
       "descripcion": "Descripción",
-      "vacio":"No hay productos seleccionados",
-      "filtroCat":"Filtrar por Nombre de Categoria",
-      "filtroProd":"Filtrar por Nombre de Producto",
-      "stockBajo":"Productos Bajo Stock"
+      "vacio": "No hay productos seleccionados",
+      "filtroCat": "Filtrar por Nombre de Categoria",
+      "filtroProd": "Filtrar por Nombre de Producto",
+      "stockBajo": "Productos Bajo Stock"
     },
     "categorias": {
       "electronica": "Electrónica"
@@ -52,36 +52,43 @@
       "crearMateriales": "Agregar Materiales",
       "editarMateriales": "Editar Materiales",
       "crearCategoria":"Crear Categoria",
-      "confirmar": "Confirmar",
-      "crear": "Crear",
-      "cerrar": "Cerrar"
+      "editarCategoria": "Editar Categoria",
+      "borrar":"Borrar",
+      "cancelar": "Cancelar"
     },
     "modal": {
       "sacarMateriales": "Sacar Materiales",
       "alumno": "Alumno",
+      "grupo": "Grupo",
       "seleccionaAlumno": "Selecciona a un alumno",
+      "seleccionaGrupo": "Selecciona a un grupo",
+      "seleccionaCategoria": "Selecciona una categoría",
       "material": "Material",
       "categoria": "Categoría",
-      "nombre":"Nombre",
+      "nombre": "Nombre",
       "etiqueta": "Etiqueta",
-      "vacio":"No hay materiales seleccionados"
-    },
-    "categorias": {
-      "electronica": "Electrónica"
-    }
+      "vacio":"No hay materiales seleccionados",
+      "fechaSalida": "Fecha de salida",
+      "filtroMat":"Filtrar por Nombre del Material",
+      "listaMatsSacar": "Lista de materiales a sacar",
+      "listaMatsDevolver": "Lista de materiales a devolver",
+      "confirmacion": "Confirmación",
+      "mensajeAlertaBorrarMats": "¿Estás seguro de querer eliminar el material",
+      "mensajeAlertaBorrarCats": "¿Estás seguro de querer eliminar la categoría"
+      }
   },
   "citas": {
     "titulo": "Citas",
     "horas": "Horas",
-    "asientos":"Asientos",
-    "botones":{
+    "asientos": "Asientos",
+    "botones": {
       "confirmar": "Confirmar",
       "editar": "Editar",
       "guardar": "Guardar",
       "borrar": "Borrar",
       "crear": "Crear",
-      "asignar":"Asignar Alumno",
-      "generar":"Generar Ticket"
+      "asignar": "Asignar Alumno",
+      "generar": "Generar Ticket"
     },
     "modal": {
         "vacio":"No hay horarios definidos para hoy",
@@ -134,7 +141,7 @@
         "filtroBezero":"Busca nombre o apellido"
       }
   },
-  "informes":{
+  "informes": {
     "title": "Informes",
     "cliente": "Cliente",
     "botones": {
@@ -150,26 +157,113 @@
       "pSensible": "Pelo Sensible"
     }
   },
-  "servicios":{
-    "title":"Servicios",
-    "modal":{
-      "dentro":"Precio interno",
-      "fuera":"Precio externo",
-      "nombre":"Nombre",
-      "extra":"Extra",
-      "color":"Color",
-      "select":"Seleccione una Categoria",
-      "categoria":"Categoría"
+  "servicios": {
+    "title": "Servicios",
+    "modal": {
+      "dentro": "Precio interno",
+      "fuera": "Precio externo",
+      "nombre": "Nombre",
+      "extra": "Extra",
+      "color": "Color",
+      "select": "Seleccione una Categoria",
+      "categoria": "Categoría"
     },
     "botones": {
       "crearServicio": "Añadir servicio",
       "editarServicio": "Editar Servicio",
-      "crearCategoria":"Crear Categoria",
+      "crearCategoria": "Crear Categoria",
       "editarCategoria": "Editar Categoria",
       "confirmar": "Confirmar",
       "crear": "Crear",
       "editar": "Editar"
     }
+  },
+"ikaslePage": {
+    "ikasleak": "Estudiantes",
+    "taldeenKudeaketa": "Gestión de Grupos",
+    "ordutegienKudeaketa": "Gestión de Horarios",
+    "SartuIzenaEdoKodea": "Sartu taldearen izena edo kodea",
+    "SortuTaldea": "Crear Grupo",
+    "SortuIkaslea": "Crear Estudiante",
+    "IkasleakBistaratu": "Ver Estudiantes",
+    "TaldearenTaldearen": "Filtrar por nombre o código del grupo",
+    "IzenaOKodea": "Buscar por nombre o código",
+    "CrearEstudiante": "Crear Estudiante",
+    "TaldeIzena": "Nombre del Grupo",
+    "Kodea": "Código",
+    "GordeAldaketak": "Guardar Cambios",
+    "SartuIzenBerria": "Ingresa Nuevo Nombre",
+    "EditIkaslea": "Editar Estudiante",
+    "Izena": "Nombre",
+    "Fecha": "Fecha",
+    "Abizena": "Apellido",
+    "Ezabatu": "Eliminar",
+    "SartuIzenaBerria": "Ingresar Nombre del Alumno",
+    "SartuAbizenBerriak": "Ingresar Nuevos Apellidos",
+    "ErabakiKodeBerriBat": "Seleccionar un Nuevo Código",
+    "TaldeKodea": "Código del Grupo",
+    "EliminacionGrupo": "Confirmación para Eliminar Grupo",
+    "SortuOrdutegia": "Crear Horario",
+    "Filtratu": "Filtrar por Fecha",
+    "HasieraOrdua": "Hora de Inicio",
+    "AmaierakoOrdua": "Hora de Fin",
+    "Reset": "Restablecer",
+    "NoHayHorarios": "No hay horarios.",
+    "Gorde": "Guardar",
+    "Eguneratzen": "Actualizando",
+    "HasieraFecha": "Fecha de Inicio",
+    "FinFecha": "Fecha de Fin",
+    "HasieraHora": "Hora de Inicio",
+    "FinHora": "Hora de Fin",
+    "Taldea": "Grupo",
+    "Eguna": "Día",
+    "Ordua": "Hora",
+    "Ekintza": "Acción",
+    "Astelehena": "Lunes",
+    "Asteartea": "Martes",
+    "Asteazkena": "Miércoles",
+    "Osteguna": "Jueves",
+    "Ostirala": "Viernes",
+    "Ordutegiak": "Horarios",
+    "Astekoa": "Dia de la semana",
+    "Egutegia": "Horario",
+    "Itxi": "Cerrar",
+    "Segurtasuna": "Seguridad",
+    "Message1": "Estas seguro de que quieres eliminar este grupo?",
+    "Message2": "Confirmar Eliminación",
+    "Message3": "¿Estás seguro de que quieres eliminar el horario del grupo: ",
+    "Cancel": "Cancelar",
+    "Aceptar": "Aceptar",
+    "Borrar": "Borrar"
+  },
+  "txandakPage": {
+    "titulo": "Txandak",
+    "botonAñadir": "Añadir Txanda",
+    "filtrarFecha": "Filtrar por Fecha",
+    "fechaInicio": "Fecha Inicio",
+    "fechaFin": "Fecha Fin",
+    "botonHoy": "Hoy",
+    "botonReset": "Reset",
+    "filtrarTipo": "Filtrar por Tipo",
+    "tipoPlaceholder": "Selecciona tipo de Txanda",
+    "todas": "Todas",
+    "garbiketa": "Limpieza",
+    "mahaia": "Mostrador",
+    "listaTxandas": "Lista de Txandas",
+    "fechaTxanda": "Fecha de la Txanda",
+    "alumno": "Alumno:",
+    "desconocido": "Desconocido",
+    "botonEliminar": "Eliminar",
+    "modalTitulo": "Añadir Txanda",
+    "tipoTxanda": "Tipo de Txanda",
+    "fecha": "Fecha",
+    "alumnoSeleccion": "Alumno",
+    "botonGuardar": "Guardar Txanda",
+    "guardarDeshabilitado": "Guardar Txanda",
+    "tipoPlaceholderModal": "Selecciona tipo de txanda",
+    "fechaPlaceholderModal": "Selecciona la fecha",
+    "alumnoPlaceholderModal": "Selecciona un alumno",
+    "MessageEliminar": "Eliminar turno",
+    "MessageSeguroEliminar": "¿Estás seguro de que deseas eliminar esta txanda?"
   }
 }
-  
