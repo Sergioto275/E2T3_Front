@@ -44,14 +44,11 @@
                   <tr *ngFor="let time of hoursArray">
                     <td>{{ time }}</td>
                     <ng-container *ngFor="let i of [].constructor(asientos); let idx = index">
-                      <td 
-                        id="{{ 'time-' + time + '-seat-' + (idx + 1) }}" 
-                        *ngIf="citaSartuta(time, idx + 1)" 
+                      <td id="{{ 'time-' + time + '-seat-' + (idx + 1) }}" *ngIf="citaSartuta(time, idx + 1)" 
                         [attr.rowspan]="rowspanManagement(time, idx + 1)" 
                         [ngClass]="{ 'highlighted': isCellHighlighted(time, idx + 1) }">
                         <ng-container *ngIf="getCitasAtTimeAndSeat(time, idx + 1).length > 0; else emptySeat">
-                          <ion-card *ngFor="let cita of getCitasAtTimeAndSeat(time, idx + 1)" 
-                                    (click)="cargar_cita_selec(cita)" 
+                          <ion-card *ngFor="let cita of getCitasAtTimeAndSeat(time, idx + 1)" (click)="cargar_cita_selec(cita)" 
                                     [ngClass]="{
                                       'bg-grey-blue-light': cita.prezioTotala,
                                       'bg-blue-green-light': cita.langilea && !cita.prezioTotala,
@@ -131,8 +128,8 @@
                 </ion-item>
                 <ion-text color="danger" *ngIf="telefono.invalid && telefono.touched">{{ "citas.validaciones.telefono" | translate }}</ion-text>
                 <ion-item>
-                  <ion-checkbox [(ngModel)]="citaCrear.etxekoa" name="casa" required #casa="ngModel"></ion-checkbox>
                   <ion-label>{{ "citas.modal.casa" | translate }}</ion-label>
+                  <ion-checkbox [(ngModel)]="citaCrear.etxekoa" name="casa" required #casa="ngModel"></ion-checkbox>
                 </ion-item>
                 <ion-text color="danger" *ngIf="casa.invalid && casa.touched">{{ "citas.validaciones.seleccion" | translate }}</ion-text>
                 <ion-button type="submit" [disabled]="citaForm.invalid">{{ "citas.botones.crear" | translate }}</ion-button>
@@ -176,8 +173,8 @@
                 </ion-item>
                 <ion-text color="danger" *ngIf="telefono.invalid && telefono.touched">{{ "citas.validaciones.telefono" | translate }}</ion-text>
                 <ion-item>
-                  <ion-checkbox [(ngModel)]="citaEditar.etxekoa" name="casa" required #casa="ngModel"></ion-checkbox>
                   <ion-label>{{ "citas.modal.casa" | translate }}</ion-label>
+                  <ion-checkbox [(ngModel)]="citaEditar.etxekoa" name="casa" required #casa="ngModel"></ion-checkbox>
                 </ion-item>
                 <ion-text color="danger" *ngIf="casa.invalid && casa.touched">{{ "citas.validaciones.seleccion" | translate }}</ion-text>
                 <ion-text color="danger" *ngIf="citaEditar.langilea && !citaEditar.prezioTotala">{{ "citas.validaciones.iniciada" | translate }}</ion-text>
