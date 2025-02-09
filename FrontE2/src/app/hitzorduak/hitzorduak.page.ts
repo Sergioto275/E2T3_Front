@@ -26,14 +26,34 @@ export class HitzorduakPage implements OnInit {
   hoursArray: any[] = [];
   rowspanAux: any[] = [];
   citaCrear:any = {"data":null, "hasieraOrdua":null, "amaieraOrdua":null, "eserlekua" :0, "izena":'', "telefonoa":'', "deskribapena":'', "etxekoa":false };
-  citaEditar:any = {"data":null, "hasieraOrdua":null, "amaieraOrdua":null, "eserlekua" :0, "izena":'', "telefonoa":'', "deskribapena":'', "etxekoa":false };
+  citaEditar:any = {"data":null, "hasieraOrdua":null, "amaieraOrdua":null, "eserlekua" :0, "izena":'', "telefonoa":'', "deskribapena":'', "etxekoa":false};
   idLangile: any = null;
   dataSelec!: any;
+  todayDate!: any;
   selectedLanguage: string = 'es';
 
   firstCell: { time: string, seat: number } | null = null;
   secondCell: { time: string, seat: number } | null = null;
   highlightedCells: { time: string, seat: number }[] = [];
+
+  servicioSeleccionado(): boolean {
+    return this.tratamenduArray.some(katTrat => 
+      katTrat.zerbitzuak.some((trat:any) => trat.selected)
+    );
+  }
+  
+  preciosValidos(): boolean {
+    return this.tratamenduSelec.every(katTrat => 
+      !katTrat.extra || katTrat.zerbitzuak.every((trat:any) => 
+        !trat.selected || (trat.precio && trat.precio > 0)
+      )
+    );
+  }
+  
+  citaValida(): boolean {
+    return this.citaEditar && this.citaEditar.data !== null;
+  }
+  
 
   updateHighlightedCells() {
     if (this.firstCell && this.secondCell) {
@@ -190,6 +210,7 @@ export class HitzorduakPage implements OnInit {
   
   ngOnInit() {
     this.dataSelec = this.lortuData();
+    this.todayDate = this.lortuData();
     this.cargarHitzordu();
     this.getHoursInRange();
     this.cargar_alumnos();
@@ -522,6 +543,7 @@ async eliminar_cita() {
 
   cargar_cita_selec(citaSelec:any) {
     this.citaEditar = citaSelec;
+    console.log(this.citaEditar);
     this.resetSelection();
   }
 
@@ -593,6 +615,7 @@ async eliminar_cita() {
         throw new Error('Errorea eskaera egiterakoan');
       }
       await this.cargarHitzordu();
+      this.limpiar_campos();
       const datuak = await response.json();
       if(confirm("Desea descargar el ticket de la cita?")){
         this.descargar_ticket(datuak);
