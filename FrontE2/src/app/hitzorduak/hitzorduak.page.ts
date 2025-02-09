@@ -84,7 +84,9 @@ export class HitzorduakPage implements OnInit {
 
    // Función: seleccionar_citaCrear
   reserbar_cita(eserlekua: number, time: string) {
-    
+    if(this.citaEditar.hasieraOrduaErreala){
+      return;
+    }
     if(this.citaEditar.eserlekua == 0){
       if (this.firstCell && this.firstCell.seat !== eserlekua) {
         if (confirm("¿Desea cambiar de asiento?")) {
@@ -542,8 +544,11 @@ async eliminar_cita() {
   }  
 
   cargar_cita_selec(citaSelec:any) {
+    if(this.citaEditar.id == citaSelec.id){
+      this.citaEditar = {"data":null, "hasieraOrdua":null, "amaieraOrdua":null, "eserlekua" :0, "izena":'', "telefonoa":'', "deskribapena":'', "etxekoa":false };
+      return;
+    }
     this.citaEditar = citaSelec;
-    console.log(this.citaEditar);
     this.resetSelection();
   }
 

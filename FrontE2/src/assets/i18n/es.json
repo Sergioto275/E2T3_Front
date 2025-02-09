@@ -102,6 +102,25 @@
         "telefono": "Teléfono",
         "casa": "Del centro",
         "trabajador":"Trabajador"
+    },
+    "validaciones":{
+      "fecha":"La fecha es obligatoria",
+      "horaInicio":"La hora de inicio es obligatoria",
+      "horaFin":"La hora de fin es obligatoria",
+      "asiento":"El asiento es obligatorio",
+      "cliente":"El nombre del cliente es obligatorio",
+      "descripcion":"La descripción es obligatoria",
+      "telefono":"Introduce un teléfono válido de al menos 9 dígitos",
+      "seleccion":"Selecciona una opcion",
+      "iniciada":"No puedes editar esta cita porque ya está iniciada.",
+      "selectTrabajador":"Es obligatorio seleccionar un trabajador.",
+      "asignarTicket":"No puedes asignar una cita con ticket ya generado.",
+      "fechaDiferente":"No puedes generar ni asignar una cita en una fecha diferente a hoy.",
+      "selectCita":"Debe seleccionar una cita",
+      "precioValido":"Todos los servicios extra deben tener un precio válido.",
+      "generado":"Esta cita ya tiene el ticket generado.",
+      "noAsignada":"No puede generar un ticket de una cita no asignada.",
+      "selectService":"Debe seleccionar al menos un servicio para generar el ticket."
     }
   },
   "historial": {
@@ -265,5 +284,8 @@
     "alumnoPlaceholderModal": "Selecciona un alumno",
     "MessageEliminar": "Eliminar turno",
     "MessageSeguroEliminar": "¿Estás seguro de que deseas eliminar esta txanda?"
+  },
+  "graficos":{
+    "title":"Graficos"
   }
 }
