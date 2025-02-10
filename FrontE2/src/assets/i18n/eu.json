@@ -88,7 +88,7 @@
             "borrar": "Ezabatu",
             "crear": "Sortu",
             "asignar": "Ikaslea Esleitu",
-            "generar": "Sarrera Sortu"
+            "generar": "Ticket-a Sortu"
         },
         "modal":{
             "vacio":"Ez dago ordutegirik definituta gaurkorako",
@@ -102,6 +102,25 @@
             "telefono":"Telefonoa",
             "casa":"Etxekoa",
             "trabajador":"Langilea"
+        },
+        "validaciones": {
+            "fecha": "Data derrigorrezkoa da",
+            "horaInicio": "Hasiera ordua derrigorrezkoa da",
+            "horaFin": "Amaiera ordua derrigorrezkoa da",
+            "asiento": "Eserlekua derrigorrezkoa da",
+            "cliente": "Bezeroaren izena derrigorrezkoa da",
+            "descripcion": "Deskribapena derrigorrezkoa da",
+            "telefono": "Gutxienez 9 digitu dituen telefono baliodun bat sartu",
+            "seleccion": "Aukera bat hautatu",
+            "iniciada": "Ezin duzu hitzordu hau editatu, dagoeneko hasita dagoelako.",
+            "selectTrabajador": "Langile bat hautatzea derrigorrezkoa da.",
+            "asignarTicket": "Ezin duzu tiketa sortua duen hitzordu bati esleitu.",
+            "fechaDiferente": "Ezin duzu gaurko ez den data batean hitzordu bat sortu edo esleitu.",
+            "selectCita": "Hitzordu bat hautatu behar duzu",
+            "precioValido": "Ekstra zerbitzu guztiek prezio balioduna izan behar dute.",
+            "generado": "Hitzordu honek dagoeneko tiketa sortua du.",
+            "noAsignada": "Ezin duzu esleituta ez dagoen hitzordu baten tiketa sortu.",
+            "selectService": "Tiketa sortzeko gutxienez zerbitzu bat hautatu behar duzu."
         }
     },
     "historial": {
@@ -265,5 +284,8 @@
     "alumnoPlaceholderModal": "Hautatu ikasle bat",
     "MessageEliminar": "Txanda ezabatu",
     "MessageSeguroEliminar": "¿Ziur zaude txanda hau ezabatu nahi duzula?"
+  },
+  "graficos":{
+    "title":"Grafikoak"
   }
 }
