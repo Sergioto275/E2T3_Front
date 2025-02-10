@@ -54,6 +54,8 @@
 
             <ion-searchbar [(ngModel)]="filtroMaterial" (ngModelChange)="filtrarMateriales()" animated="true"
               placeholder="{{ 'materiales.modal.filtroMat' | translate }}"></ion-searchbar>
+
+            <ion-checkbox slot="start" [checked]=""></ion-checkbox>
           </div>
         </ion-card>
 
