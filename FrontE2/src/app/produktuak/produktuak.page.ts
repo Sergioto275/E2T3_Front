@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
 import { HeaderComponent } from '../components/header/header.component';
+import { HttpClient } from '@angular/common/http';
 
 // import { IonButton, IonContent, IonHeader, IonLabel, IonModal, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
@@ -74,59 +75,55 @@ export class ProduktuakPage implements OnInit {
     return this.categoriasAbiertas[categoria] || false;
   }
 
-  async crearProducto(){
-    try {
-      const json_data = {
-          "izena": this.crearNombre,
-          "produktuKategoria": {
-              "id": this.crearCategoria
-          },
-          "deskribapena": this.crearDescripcion,
-          "marka": this.crearMarca,
-          "stock": this.crearStock,
-          "stockAlerta": this.crearStockAlerta
+  crearProducto() {
+    const json_data = {
+      "izena": this.crearNombre,
+      "produktuKategoria": {
+        "id": this.crearCategoria
+      },
+      "deskribapena": this.crearDescripcion,
+      "marka": this.crearMarca,
+      "stock": this.crearStock,
+      "stockAlerta": this.crearStockAlerta
+    };
+
+    console.log(json_data);
+
+    this.http.post(`${environment.url}produktuak`, json_data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-      console.log(json_data);
-      const response = await fetch(`${environment.url}produktuak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "POST",
-        body: JSON.stringify(json_data)
-      });
-  
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
+    }).subscribe(
+      async (response) => {
+        await this.produktuakLortu();
+      },
+      (error) => {
+        console.error("Error al crear el producto:", error);
       }
-      await this.produktuakLortu();  
-    } catch (e) {
-      console.error("Errorea produktuak kargatzerakoan:", e);
-    }
+    );
   }
 
-  async kategoriaSortu(){
-    try {
-      const json_data = {
-          "izena": this.crearKatNombre
+  kategoriaSortu() {
+    const json_data = {
+      "izena": this.crearKatNombre
+    };
+
+    console.log(json_data);
+
+    this.http.post(`${environment.url}produktu_kategoria`, json_data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-      console.log(json_data);
-      const response = await fetch(`${environment.url}produktu_kategoria`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "POST",
-        body: JSON.stringify(json_data)
-      });
-  
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
+    }).subscribe(
+      async (response) => {
+        await this.produktuakLortu();
+      },
+      (error) => {
+        console.error("Error al crear la categoría:", error);
       }
-      await this.produktuakLortu();  
-    } catch (e) {
-      console.error("Errorea produktuak kargatzerakoan:", e);
-    }
+    );
   }
 
   openProdModal(product:any, idKat:number){
@@ -150,234 +147,218 @@ export class ProduktuakPage implements OnInit {
     this.isEditingKategoria = false;
   }
 
-  async editarProducto(){
-    try {
-      const json_data = {
-          "id": this.editingProduct.id,
-          "izena": this.editingProduct.izena,
-          "produktuKategoria": {
-              "id": this.editingProduct.idKategoria
-          },
-          "deskribapena": this.editingProduct.deskribapena,
-          "marka": this.editingProduct.marka,
-          "stock": this.editingProduct.stock,
-          "stockAlerta": this.editingProduct.stockAlerta
+  editarProducto() {
+    const json_data = {
+      "id": this.editingProduct.id,
+      "izena": this.editingProduct.izena,
+      "produktuKategoria": {
+        "id": this.editingProduct.idKategoria
+      },
+      "deskribapena": this.editingProduct.deskribapena,
+      "marka": this.editingProduct.marka,
+      "stock": this.editingProduct.stock,
+      "stockAlerta": this.editingProduct.stockAlerta
+    };
+
+    console.log(json_data);
+
+    this.http.put(`${environment.url}produktuak`, json_data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-      console.log(json_data);
-      const response = await fetch(`${environment.url}produktuak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "PUT",
-        body: JSON.stringify(json_data)
-      });
-  
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
+    }).subscribe(
+      async (response) => {
+        await this.produktuakLortu();
+        this.closeProdModal();
+      },
+      (error) => {
+        console.error("Error al editar el producto:", error);
       }
-      await this.produktuakLortu();
-      this.closeProdModal();
-    } catch (e) {
-      console.error("Errorea produktuak kargatzerakoan:", e);
-    }
+    );
   }
 
   
 
-  async eliminarProducto(id:number){
+  eliminarProducto(id: number) {
     const confirmacion = confirm('¿Estás seguro de que quieres eliminar este producto?');
     if (!confirmacion) {
       console.log('Operación cancelada por el usuario.');
       return;
     }
-    try {
-      const json_data = {
-          "id": id
+
+    const json_data = {
+      "id": id
+    };
+
+    console.log(json_data);
+
+    this.http.delete(`${environment.url}produktuak`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify(json_data)
+    }).subscribe(
+      async (response) => {
+        await this.produktuakLortu();
+      },
+      (error) => {
+        console.error("Error al eliminar el producto:", error);
       }
-      console.log(json_data);
-      const response = await fetch(`${environment.url}produktuak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "DELETE",
-        body: JSON.stringify(json_data)
-      });
-  
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
-      }
-      await this.produktuakLortu();  
-    } catch (e) {
-      console.error("Errorea produktuak kargatzerakoan:", e);
-    }
+    );
   }
 
-  async eliminarKategoriaProducto(id:number){
+  eliminarKategoriaProducto(id: number) {
     const confirmacion = confirm('¿Estás seguro de que quieres eliminar esta categoría?');
     if (!confirmacion) {
       console.log('Operación cancelada por el usuario.');
       return;
     }
-    try {
-      const json_data = {
-          "id": id
+
+    const json_data = {
+      "id": id
+    };
+
+    console.log(json_data);
+
+    this.http.delete(`${environment.url}produktu_kategoria`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify(json_data)
+    }).subscribe(
+      async (response) => {
+        await this.produktuakLortu();
+      },
+      (error) => {
+        console.error("Error al eliminar la categoría del producto:", error);
       }
-      console.log(json_data);
-      const response = await fetch(`${environment.url}produktu_kategoria`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "DELETE",
-        body: JSON.stringify(json_data)
-      });
-  
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
-      }
-      await this.produktuakLortu();  
-    } catch (e) {
-      console.error("Errorea produktuak kargatzerakoan:", e);
-    }
+    );
   }
 
-  async editarKategoriaProducto() {
-    try {
-      const json_data = { izena: this.editingKategoria.izena }; 
-      console.log(json_data);
-  
-      const response = await fetch(`http://localhost:8080/api/produktu_kategoria/id/${this.editingKategoria.id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-        method: 'PUT',
-        body: JSON.stringify(json_data),
-      });
-  
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
+  editarKategoriaProducto() {
+    const json_data = { izena: this.editingKategoria.izena };
+
+    console.log(json_data);
+
+    this.http.put(`${environment.url}produktu_kategoria/id/${this.editingKategoria.id}`, json_data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-  
-      console.log('Categoría actualizada correctamente');
-      await this.produktuakLortu();
-      this.closeKatModal();
-    } catch (e) {
-      console.error('Errorea produktuak kargatzerakoan:', e);
-    }
+    }).subscribe(
+      async (response) => {
+        console.log('Categoría actualizada correctamente');
+        await this.produktuakLortu();
+        this.closeKatModal();
+      },
+      (error) => {
+        console.error('Error al editar la categoría del producto:', error);
+      }
+    );
   }
 
-  async sacarProductos() {
-    try {
-      const movimientos = this.productosSeleccionados.map(producto => ({
-        "produktu": {
-          "id": producto.id // El ID del producto dentro de un objeto
-        },
-        "langile": {
-          "id": this.selecAlumno // El ID del alumno dentro de un objeto
-        },
-        "data": new Date().toISOString(), // Fecha en formato ISO
-        "kopurua": producto.kantitatea // La cantidad del producto
-      }));
-      
-      // Asegúrate de que el JSON sea un array válido antes de enviarlo.      
-      console.log(JSON.stringify(movimientos));
-      const response = await fetch(`${environment.url}produktu_mugimenduak`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-        body: JSON.stringify(movimientos),
-      });
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
+  sacarProductos() {
+    const movimientos = this.productosSeleccionados.map(producto => ({
+      "produktu": {
+        "id": producto.id // El ID del producto dentro de un objeto
+      },
+      "langile": {
+        "id": this.selecAlumno // El ID del alumno dentro de un objeto
+      },
+      "data": new Date().toISOString(), // Fecha en formato ISO
+      "kopurua": producto.kantitatea // La cantidad del producto
+    }));
+
+    // Asegúrate de que el JSON sea un array válido antes de enviarlo.
+    console.log(JSON.stringify(movimientos));
+
+    this.http.post(`${environment.url}produktu_mugimenduak`, movimientos, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
       }
-      await this.produktuakLortu(); 
-    } catch (error) {
-      console.error('Error al registrar los movimientos', error);
-    }
+    }).subscribe(
+      async (response) => {
+        console.log('Movimiento registrado correctamente');
+        await this.produktuakLortu();
+      },
+      (error) => {
+        console.error('Error al registrar los movimientos', error);
+      }
+    );
   }
   
 
-  async produktuakLortu() {
-    try {
-      const response = await fetch(`${environment.url}produktu_kategoria`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "GET"
-      });
-  
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
+  produktuakLortu() {
+    this.http.get(`${environment.url}produktu_kategoria`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
       }
-  
-      const datuak = await response.json();
-      
-      // Filtramos las categorías y productos activos (sin `ezabatzeData`)
-      this.produktuak = datuak
-        .filter((categoria:any) => categoria.ezabatzeData === null)
-        .map((categoria:any) => ({
-          id: categoria.id,
-          izena: categoria.izena,
-          sortzeData: categoria.sortzeData,
-          produktuak: categoria.produktuak
-            .filter((producto:any) => producto.ezabatzeData === null)
-            .map((producto:any) => ({
-              id: producto.id,
-              izena: producto.izena,
-              deskribapena: producto.deskribapena,
-              marka: producto.marka,
-              stock: producto.stock,
-              stockAlerta: producto.stockAlerta,
-              sortzeData: producto.sortzeData
-            }))
-        }));
-  
-      console.log('Produktuak kargatu:', this.produktuak);
-  
-    } catch (e) {
-      console.error("Errorea produktuak kargatzerakoan:", e);
-    }
+    }).subscribe(
+      (datuak: any) => {
+        // Filtramos las categorías y productos activos (sin `ezabatzeData`)
+        this.produktuak = datuak
+          .filter((categoria: any) => categoria.ezabatzeData === null)
+          .map((categoria: any) => ({
+            id: categoria.id,
+            izena: categoria.izena,
+            sortzeData: categoria.sortzeData,
+            produktuak: categoria.produktuak
+              .filter((producto: any) => producto.ezabatzeData === null)
+              .map((producto: any) => ({
+                id: producto.id,
+                izena: producto.izena,
+                deskribapena: producto.deskribapena,
+                marka: producto.marka,
+                stock: producto.stock,
+                stockAlerta: producto.stockAlerta,
+                sortzeData: producto.sortzeData
+              }))
+          }));
+
+        console.log('Produktuak kargatu:', this.produktuak);
+      },
+      (error) => {
+        console.error("Errorea produktuak kargatzerakoan:", error);
+      }
+    );
   }
 
-  async langileakLortu() {
-    try {
-      const response = await fetch(`${environment.url}taldeak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-        method: 'GET',
-      });
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
+  langileakLortu() {
+    this.http.get(`${environment.url}taldeak`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
       }
-      const datuak = await response.json();
-      this.alumnos = datuak
-        .filter((kategoria: any) => kategoria.ezabatzeData === null)
-        .map((kategoria: any) => ({
-          kodea: kategoria.kodea,
-          izena: kategoria.izena,
-          sortzeData: kategoria.sortzeData,
-          langileak: kategoria.langileak
-            .filter((langilea: any) => langilea.ezabatzeData === null)
-            .map((langilea: any) => ({
-              id: langilea.id,
-              izena: langilea.izena,
-              abizenak: langilea.abizenak,
-              sortzeData: langilea.sortzeData,
-              eguneratzeData: langilea.eguneratzeData,
-            })),
-        }));
-      console.log('Kategoriak eta langileak:', this.alumnos);
-  } catch (e) {
-        console.error('Errorea langileak kargatzerakoan:', e);
-    }
+    }).subscribe(
+      (datuak: any) => {
+        this.alumnos = datuak
+          .filter((kategoria: any) => kategoria.ezabatzeData === null)
+          .map((kategoria: any) => ({
+            kodea: kategoria.kodea,
+            izena: kategoria.izena,
+            sortzeData: kategoria.sortzeData,
+            langileak: kategoria.langileak
+              .filter((langilea: any) => langilea.ezabatzeData === null)
+              .map((langilea: any) => ({
+                id: langilea.id,
+                izena: langilea.izena,
+                abizenak: langilea.abizenak,
+                sortzeData: langilea.sortzeData,
+                eguneratzeData: langilea.eguneratzeData,
+              }))
+          }));
+
+        console.log('Kategoriak eta langileak:', this.alumnos);
+      },
+      (error) => {
+        console.error('Errorea langileak kargatzerakoan:', error);
+      }
+    );
   }
 
   onGrupoChange() {
@@ -391,7 +372,7 @@ export class ProduktuakPage implements OnInit {
   }
 
 
-  constructor(private translate: TranslateService) {
+  constructor(private translate: TranslateService, private http: HttpClient) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }

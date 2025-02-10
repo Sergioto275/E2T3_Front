@@ -17,17 +17,18 @@ export class HeaderComponent implements OnInit {
 
   public loadTranslations() {
     this.translate.get([
-      'menu.hitzorduak', 'menu.txostenak', 'menu.materialak', 
+      'menu.hitzorduak', 'menu.grafikoak', 'menu.materialak', 
       'menu.produktuak', 'menu.historiala', 'menu.ikasleak', 'menu.zerbitzuak'
     ]).subscribe(translations => {
       this.appPages = [
         { title: translations['menu.hitzorduak'], url: '/hitzorduak', icon: 'calendar-number' },
-        { title: translations['menu.txostenak'], url: '/txostenak', icon: 'document-text' },
         { title: translations['menu.materialak'], url: '/materialak', icon: 'cut' },
         { title: translations['menu.produktuak'], url: '/produktuak', icon: 'color-fill' },
-        { title: translations['menu.historiala'], url: '/historiala', icon: 'albums' },
+        { title: translations['menu.zerbitzuak'], url: '/tratamenduak', icon: 'color-palette' },
         { title: translations['menu.ikasleak'], url: '/ikasleak', icon: 'people' },
-        { title: translations['menu.zerbitzuak'], url: '/tratamenduak', icon: 'cut' },
+        { title: translations['menu.historiala'], url: '/historiala', icon: 'document-text' },
+        { title: translations['menu.grafikoak'], url: '/grafikoak', icon: 'stats-chart' },
+
       ];
     });
   }
