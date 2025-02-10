@@ -16,17 +16,14 @@ $color-light-blue-alt: #C4E7F1;
 
 .tarjetaVerde{
   border: 1px solid #5fb84d;
+  background-color: $color-light-blue;
   border-radius: 10px; 
 }
 
 .tarjetaRoja{
   border: 1px solid red;
+  background-color: $color-light-blue;
   border-radius: 10px; 
-}
-
-.header{
-  background-color: $color-light-teal;
-  color: white;
 }
 
 ion-header {
@@ -36,7 +33,14 @@ ion-header {
   --ion-toolbar-color: $color-white;
 }
 
-ion-toolbar {
-  --ion-toolbar-background: $color-light-teal;
-  --ion-toolbar-color: $color-white;
+ion-segment-button {
+  color: $color-black;
+}
+
+ion-card-header{
+  background-color: $color-light-blue;
+}
+
+ion-card-content{
+  color: #000000;
 }

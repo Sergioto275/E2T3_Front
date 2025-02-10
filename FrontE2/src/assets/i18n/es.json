@@ -74,7 +74,9 @@
       "listaMatsDevolver": "Lista de materiales a devolver",
       "confirmacion": "Confirmación",
       "mensajeAlertaBorrarMats": "¿Estás seguro de querer eliminar el material",
-      "mensajeAlertaBorrarCats": "¿Estás seguro de querer eliminar la categoría"
+      "mensajeAlertaBorrarCats": "¿Estás seguro de querer eliminar la categoría",
+      "materiales": "Materiales",
+      "filtros": "Filtros"
       }
   },
   "citas": {

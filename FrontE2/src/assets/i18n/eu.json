@@ -74,7 +74,9 @@
             "listaMatsDevolver": "Bueltatu beharreko materialen zerrenda",
             "confirmacion": "Konfirmazioa",
             "mensajeAlertaBorrarMats": "Ziur zaude material hau ezabatu nahi duzula:",
-            "mensajeAlertaBorrarCats": "Ziur zaude kategoria hau ezabatu nahi duzula:"
+            "mensajeAlertaBorrarCats": "Ziur zaude kategoria hau ezabatu nahi duzula:",
+            "materiales": "Materialak",
+            "filtros": "Filtroak"
         }
     },
     "citas": {
