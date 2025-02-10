@@ -64,6 +64,9 @@ export class MaterialakPage implements OnInit {
   filtroCategoria: string = '';
   filtroMaterial: string = '';
 
+  checkboxHabilitado = false;
+  mostrarCheckbox: boolean = false;
+
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
     if (this.headerComponent) {
@@ -93,6 +96,9 @@ export class MaterialakPage implements OnInit {
     console.log('Materiales seleccionados:', this.materialesSeleccionadosDevolver);
   }
   
+  toggleMostrarCheckbox() {
+    this.mostrarCheckbox = !this.mostrarCheckbox;
+  }
 
   toggleCategoria(categoria: string) {
     this.categoriasAbiertas[categoria] = !this.categoriasAbiertas[categoria];
@@ -143,6 +149,7 @@ export class MaterialakPage implements OnInit {
     observableRest.subscribe(datuak => {
       console.log(datuak);
       this.materialakLortu();
+      this.vaciarDatos();
 	  });
   }
 
@@ -169,6 +176,7 @@ export class MaterialakPage implements OnInit {
     observableRest.subscribe(datuak => {
       console.log(datuak);
       this.materialakLortu();
+      this.vaciarDatos();
     });
   }  
 
@@ -180,7 +188,33 @@ export class MaterialakPage implements OnInit {
     observableRest.subscribe(datuak => {
       console.log(datuak);
       this.materialakLortu();
+      this.vaciarDatos();
     });
+  }
+
+  materialakLortuAtera() {
+    let observableRest: Observable<any> = this.restServer.get<any>('http://localhost:8080/api/material_kategoria');
+    observableRest.subscribe(datuak => {
+      console.log(datuak);
+      const materialaDevolverIds = this.materialaDevolver.map((material: any) => material.id);
+
+      this.materialak = datuak
+        .filter((categoria: any) => categoria.ezabatzeData === null)
+        .map((categoria: any) => ({
+          ...categoria,
+          materialak: categoria.materialak
+            .filter((material: any) => 
+              material.ezabatzeData === null &&
+              !materialaDevolverIds.includes(material.id)
+            )
+        }));
+
+      this.filteredMaterialak = this.materialak;
+    });
+  }
+
+  toggleMaterialakLortu(){
+    this.mostrarFiltros
   }
 
   materialakLortu(){
@@ -223,6 +257,7 @@ export class MaterialakPage implements OnInit {
     let observableRest: Observable<any> = this.restServer.post<any>("http://localhost:8080/api/material_mailegua",data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
+      this.vaciarDatos();
       this.materialakLortu();
       this.materialakLortuDevolver();
     });
@@ -240,7 +275,12 @@ export class MaterialakPage implements OnInit {
       this.materialaDevolver = datuak
       this.materialakLortu();
       this.materialakLortuDevolver();
+      this.vaciarDatos();
     });
+  }
+
+  materialakAteraKargatu(){
+    
   }
 
   langileakLortu(){

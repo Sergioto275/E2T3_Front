@@ -2,7 +2,7 @@
     "menu": {
         "title":"Menua",
         "hitzorduak": "Hitzorduak",
-        "txostenak": "Txostenak",
+        "grafikoak": "Grafikoak",
         "materialak": "Materialak",
         "produktuak": "Produktuak",
         "historiala": "Historiala",
@@ -74,7 +74,9 @@
             "listaMatsDevolver": "Bueltatu beharreko materialen zerrenda",
             "confirmacion": "Konfirmazioa",
             "mensajeAlertaBorrarMats": "Ziur zaude material hau ezabatu nahi duzula:",
-            "mensajeAlertaBorrarCats": "Ziur zaude kategoria hau ezabatu nahi duzula:"
+            "mensajeAlertaBorrarCats": "Ziur zaude kategoria hau ezabatu nahi duzula:",
+            "materiales": "Materialak",
+            "filtros": "Filtroak"
         }
     },
     "citas": {
@@ -88,7 +90,9 @@
             "borrar": "Ezabatu",
             "crear": "Sortu",
             "asignar": "Ikaslea Esleitu",
-            "generar": "Ticket-a Sortu"
+            "generar": "Ticket-a Sortu",
+            "cancelar":"Utzi",
+            "descargar":"Deskargatu"
         },
         "modal":{
             "vacio":"Ez dago ordutegirik definituta gaurkorako",
@@ -101,7 +105,15 @@
             "cliente":"Bezeroa",
             "telefono":"Telefonoa",
             "casa":"Etxekoa",
-            "trabajador":"Langilea"
+            "trabajador":"Langilea",
+            "ticket": "Ticket-a deskargatu",
+            "messageDownload": "Hitzorduaren ticket-a deskargatu nahi duzu?",
+            "redirect": "Bideraketa",
+            "messageRedirect": "Hitzordu honetan tindagaiak erabili dira. Erregistratzera bideratu nahi duzu?",
+            "cambioAsiento":"Eserleku Aldaketa",
+            "messageCambioAsiento":"Eserlekuz aldatu nahi duzu?",
+            "cambioDia":"Egun aldaketa",
+            "messageCambioDia":"Egunez aldatu nahi duzu?"
         },
         "validaciones": {
             "fecha": "Data derrigorrezkoa da",
@@ -159,23 +171,6 @@
             "filtroFecha":"Data Filtratu",
             "filtroBezero":"Bilatu izena edo abizena"
         }
-    },
-    "informes":{
-        "title": "Txostenak",
-        "cliente": "Bezero",
-        "botones": {
-          "datos": "Datuak ikusi",
-          "cerrar": "Itxi"
-
-      },
-      "modal": {
-        "idCliente": "Bezeroaren ID",
-        "nombre": "Izen",
-        "apellido": "Abizena",
-        "telefono": "Teléfonoa",
-        "tinte": "Tintea",
-        "pSensible": "Ile Sentikorra"
-      }
     },
     "servicios":{
         "title":"Zerbitzuak",

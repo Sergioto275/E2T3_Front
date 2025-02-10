@@ -10,7 +10,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { TxostenaModalComponent } from './txostena-modal/txostena-modal.component';
 
 // Función para cargar los archivos de traducción
 export function HttpLoaderFactory(http: HttpClient) {
@@ -18,7 +17,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [AppComponent, TxostenaModalComponent],  
+  declarations: [AppComponent],  
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
