@@ -1,51 +1,49 @@
-<ion-content [fullscreen]="true">
-
-  <div class="ion-text-center">
-    <img src="assets/logo.png" alt="Santurtzi Logo" class="logo" />
-  </div>
-
-  <div class="content">
+  <ion-content [fullscreen]="true">
 
     <div class="ion-text-center">
-      <ion-grid>
-        <ion-col>
-          <app-home-botoiak-konponentea kolorea="light" botoiTitulua="Hitzorduak" iconIzena="calendar-number" routerLink="/hitzorduak"></app-home-botoiak-konponentea>
-        </ion-col>
-        <ion-col>
-          <app-home-botoiak-konponentea kolorea="light" botoiTitulua="Txostenak" iconIzena="document-text" routerLink="/txostenak"></app-home-botoiak-konponentea>
-        </ion-col>
-      </ion-grid>
+      <img src="assets/IMP_Logotipoa.png" alt="Santurtzi Logo" class="logo" />
     </div>
 
-    <ion-card class="ion-text-center">
-      <ion-icon size="large" name="cube"></ion-icon>
-      <h4><b>Inbentarioa</b></h4>
+    <div class="content">
 
-      <ion-grid>
-        <ion-col>
-          <app-home-botoiak-konponentea kolorea="light" botoiTitulua="Materialak" iconIzena="cut" routerLink="/materialak"></app-home-botoiak-konponentea>
-        </ion-col>
+      <div class="ion-text-center">
+        <ion-list>
+            <app-home-botoiak-konponentea kolorea="light" botoiTitulua="Hitzorduak" iconIzena="calendar-number" routerLink="/hitzorduak"></app-home-botoiak-konponentea>
+  
+            <app-home-botoiak-konponentea kolorea="light" botoiTitulua="Txostenak" iconIzena="document-text" routerLink="/txostenak"></app-home-botoiak-konponentea>
+    
+            <app-home-botoiak-konponentea kolorea="light" botoiTitulua="Txandak" iconIzena="repeat" routerLink="/txandak"></app-home-botoiak-konponentea>
+          </ion-list>
+      </div>
 
-        <ion-col>
-          <app-home-botoiak-konponentea kolorea="light" botoiTitulua="Produktuak" iconIzena="color-fill" routerLink="/produktuak"></app-home-botoiak-konponentea>
-        </ion-col>
-      </ion-grid>
-    </ion-card>
+      <ion-card class="ion-text-center">
+        <ion-icon size="large" name="cube" color="dark"></ion-icon>
+        <h4><b>Inbentarioa</b></h4>
 
-    <ion-card class="ion-text-center">
-        <ion-icon size="large" name="cog"></ion-icon>
-        <h4><b>Parametrizazioa</b></h4>
+        <ion-grid>
+          <ion-col>
+            <app-home-botoiak-konponentea kolorea="light" botoiTitulua="Materialak" iconIzena="cut" routerLink="/materialak"></app-home-botoiak-konponentea>
+          </ion-col>
 
-      <ion-grid>
-        <ion-col>
-          <app-home-botoiak-konponentea kolorea="light" botoiTitulua="Inbentarioa" iconIzena="albums" routerLink="/inbentarioa"></app-home-botoiak-konponentea>
-        </ion-col>
+          <ion-col>
+            <app-home-botoiak-konponentea kolorea="light" botoiTitulua="Produktuak" iconIzena="color-fill" routerLink="/produktuak"></app-home-botoiak-konponentea>
+          </ion-col>
+        </ion-grid>
+      </ion-card>
 
-        <ion-col>
-          <app-home-botoiak-konponentea kolorea="light" botoiTitulua="Ikasleak" iconIzena="people" routerLink="/ikasleak"></app-home-botoiak-konponentea>
-        </ion-col>
-      </ion-grid>
-    </ion-card>
+      <ion-card class="ion-text-center">
+          <ion-icon size="large" name="cog" color="dark"></ion-icon>
+          <h4><b>Parametrizazioa</b></h4>
 
-  </div>
-</ion-content>
+        <ion-grid>
+          <ion-col>
+            <app-home-botoiak-konponentea kolorea="light" botoiTitulua="Historiala" iconIzena="albums" routerLink="/historiala"></app-home-botoiak-konponentea>
+          </ion-col>
+
+          <ion-col>
+            <app-home-botoiak-konponentea kolorea="light" botoiTitulua="Ikasleak" iconIzena="people" routerLink="/ikasleak"></app-home-botoiak-konponentea>
+          </ion-col>
+        </ion-grid>
+      </ion-card>
+    </div>
+  </ion-content>

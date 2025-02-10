@@ -6,6 +6,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { GrafikoakPageRoutingModule } from './grafikoak-routing.module';
 import { GrafikoakPage } from './grafikoak.page';
+import { ComponentsModule } from "../components/components.module";
+import { TranslateModule } from '@ngx-translate/core';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -14,10 +16,10 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule,
     FormsModule,
     IonicModule,
+    GrafikoakPageRoutingModule,
     TranslateModule,
-    GrafikoakPageRoutingModule,  // ← AQUÍ FALTABA LA COMA
-    HttpClientModule
-  ],
+    ComponentsModule
+],
   declarations: [GrafikoakPage]
 })
 export class GrafikoakPageModule {}

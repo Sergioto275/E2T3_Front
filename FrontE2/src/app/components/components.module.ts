@@ -4,17 +4,18 @@ import { HeaderComponent } from './header/header.component';
 import { IonicModule } from '@ionic/angular';
 import { HomeBotoiakKonponenteaComponent } from './home-botoiak-konponentea/home-botoiak-konponentea.component';
 import { RouterModule } from '@angular/router';
-import { ToastMezuaComponent } from './toast-mezua/toast-mezua.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 
 @NgModule({
-  declarations: [HeaderComponent, HomeBotoiakKonponenteaComponent, ToastMezuaComponent],
+  declarations: [HeaderComponent, HomeBotoiakKonponenteaComponent],
   imports: [
     CommonModule,
     IonicModule,
-    RouterModule
+    RouterModule,
+    TranslateModule,
   ],
-  exports: [HeaderComponent, HomeBotoiakKonponenteaComponent, ToastMezuaComponent]
+  exports: [HeaderComponent, HomeBotoiakKonponenteaComponent]
 })
 export class ComponentsModule { }

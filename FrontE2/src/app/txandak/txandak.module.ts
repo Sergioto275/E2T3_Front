@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { IkasleakPageRoutingModule } from './ikasleak-routing.module';
+import { TxandakPageRoutingModule } from './txandak-routing.module';
 
-import { IkasleakPage } from './ikasleak.page';
+import { TxandakPage } from './txandak.page';
 import { ComponentsModule } from "../components/components.module";
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -15,10 +15,11 @@ import { TranslateModule } from '@ngx-translate/core';
     CommonModule,
     FormsModule,
     IonicModule,
-    IkasleakPageRoutingModule,
-    TranslateModule,
-    ComponentsModule
+    TxandakPageRoutingModule,
+    ComponentsModule,
+    ReactiveFormsModule  ,
+    TranslateModule
 ],
-  declarations: [IkasleakPage]
+  declarations: [TxandakPage]
 })
-export class IkasleakPageModule {}
+export class TxandakPageModule {}

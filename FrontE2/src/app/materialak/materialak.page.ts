@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonModal, AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/internal/Observable';
+import { HeaderComponent } from '../components/header/header.component';
 
 export interface Alumno {
   nombre: string;
@@ -14,50 +16,62 @@ export interface Alumno {
   styleUrls: ['./materialak.page.scss'],
 })
 export class MaterialakPage implements OnInit {
+  @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
+
   selectedLanguage: string = 'es';
   modal!:string;
 
   materialesSeleccionados:any[]=[];
-  materialak!:any;
+  materialesSeleccionadosDevolver:any[]=[];
+  filteredMaterialak: any[] = []; 
 
-  crearKatNombre!:String;
-  crearNombre!:String;
-  crearEtiqueta!:String;
-  crearCategoria!:Number;
+  materialak!:any[];
+  materialaDevolver!:any;
+
+  crearKatNombre:String| null = null;
+  crearNombre:String| null = null;
+  crearEtiqueta:String| null = null;
+  crearCategoria:Number| null = null;
 
   editarKatNombre!:String;
-  editarId!:Number;
   editarNombre!:String;
   editarEtiqueta!:String;
   editarCategoria!:Number;
-  
+  matDevolverId!:Number;
+
+  seleccionarId!:Number;
+
   selectedCategoryId!:number;
 
   alumnos!: any[];
   selecTaldea!:number;
   selecAlumno!:number;
 
+  mostrarFiltros: boolean = false;
+
+  @ViewChild('modaleditarcat', { static: true })
+  modaleditarcat!: IonModal;
+  @ViewChild('modalEditar', { static: true })
+  modalEditar!: IonModal;
+  selectedCategory: any = {};
+  selectedMateriala: any = {};
+
   modalAtera = false;
   alumne = '';
   categoriasAbiertas: { [key: string]: boolean } = {};
   filteredAlumnos!: any[];
 
-  public alertButtons = [
-    {
-      text: 'Ez',
-    },
-    {
-      text: 'Bai',
-    },
-  ];
+  filtroCategoria: string = '';
+  filtroMaterial: string = '';
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
+    if (this.headerComponent) {
+      this.headerComponent.loadTranslations();
+    }
   }
 
   actualizarMaterialesSeleccionados(material:any, kategoria_id: number) {
-    material.kategoria_id = kategoria_id;
-    material.kantitatea = 1;
     const index = this.materialesSeleccionados.findIndex(p => p.id === material.id);
     if (material.selected && index === -1) {
       this.materialesSeleccionados.push(material);
@@ -67,6 +81,19 @@ export class MaterialakPage implements OnInit {
     console.log('Materiales seleccionados:', this.materialesSeleccionados);
   }
 
+  actualizarMaterialesSeleccionadosDevolver(material: any, isChecked: boolean) {
+    const index = this.materialesSeleccionadosDevolver.findIndex(p => p.id === material.id);
+  
+    if (isChecked && index === -1) {
+      this.materialesSeleccionadosDevolver.push(material);
+    } else if (!isChecked && index !== -1) {
+      this.materialesSeleccionadosDevolver.splice(index, 1);
+    }
+    material.selected = isChecked;
+    console.log('Materiales seleccionados:', this.materialesSeleccionadosDevolver);
+  }
+  
+
   toggleCategoria(categoria: string) {
     this.categoriasAbiertas[categoria] = !this.categoriasAbiertas[categoria];
   }
@@ -75,7 +102,7 @@ export class MaterialakPage implements OnInit {
     return this.categoriasAbiertas[categoria] || false;
   }
 
-  materialaSortu(){
+  async materialaSortu(){
     let data = {
       "etiketa": this.crearEtiqueta,
       "izena": this.crearNombre,
@@ -84,26 +111,27 @@ export class MaterialakPage implements OnInit {
       }
   }
     let observableRest: Observable<any> = this.restServer.post<any>("http://localhost:8080/api/materialak", data);
-    observableRest.subscribe(datuak => {
+    await observableRest.subscribe(datuak => {
       console.log(datuak);
+      this.materialakLortu();
+      this.vaciarDatos();
     });
-    this.materialakLortu();
   }
 
-  kategoriaSortu(){
+  async kategoriaSortu(){
     let data = {
       "izena": this.crearKatNombre,
     } 
     let observableRest: Observable<any> = this.restServer.post<any>('http://localhost:8080/api/material_kategoria', data);
-    observableRest.subscribe(datuak => {
+    await observableRest.subscribe(datuak => {
       console.log(datuak);
+      this.materialakLortu();
+      this.vaciarDatos();
     });
-    this.materialakLortu();
   }
 
-  materialaEditatu(){
+  materialaEditatu(id:number){
     let data = {
-      "id": this.editarId,
       "etiketa": this.editarEtiqueta,
       "izena": this.editarNombre,
       "materialKategoria": {
@@ -111,63 +139,48 @@ export class MaterialakPage implements OnInit {
       },
     }
 
-    let observableRest: Observable<any> = this.restServer.put<any>("http://localhost:8080/api/materialak",data);
+    let observableRest: Observable<any> = this.restServer.put<any>(`http://localhost:8080/api/materialak/id/${id}`, data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
+      this.materialakLortu();
 	  });
-    this.materialakLortu();
+  }
+
+
+  vaciarDatos(){
+    this.crearEtiqueta = null;
+    this.crearNombre = null;
+    this.crearCategoria = null;
+    this.crearKatNombre = null;
+    this.materialesSeleccionados = [];
   }
 
   materialaEzabatu(id:number){
     let observableRest: Observable<any> = this.restServer.delete<any>(`http://localhost:8080/api/materialak/id/${id}`);
     observableRest.subscribe(datuak => {
       console.log(datuak);
+      this.materialakLortu();
+      this.vaciarDatos();
     });
-    this.materialakLortu();
   }  
 
   kategoriaEzabatu(id:number){
     let observableRest: Observable<any> = this.restServer.delete<any>(`http://localhost:8080/api/material_kategoria/id/${id}`);
     observableRest.subscribe(datuak => {
       console.log(datuak);
+      this.materialakLortu();
     });
-    this.materialakLortu();
   }  
 
   kategoriaEditatu(id: number){
     let data = {
-      izena: this.editarKatNombre
+      "izena": this.editarKatNombre
     }
     let observableRest: Observable<any> = this.restServer.put<any>(`http://localhost:8080/api/material_kategoria/id/${id}`, data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
+      this.materialakLortu();
     });
-    this.materialakLortu();
-  }
-  
-  cargarEditarMateriales() {
-    this.editarId = this.materialesSeleccionados[0].id;
-    this.editarNombre = this.materialesSeleccionados[0].izena;
-    this.editarEtiqueta = this.materialesSeleccionados[0].etiketa;
-    this.editarCategoria = this.materialesSeleccionados[0].kategoria_id;
-  }
-
-  materialakAtera(){
-    let data = this.materialesSeleccionados.map(material => ({
-      "material": {
-        "id": material.id
-      },
-      "langile": {
-        "id": this.selecAlumno
-      },
-      "data": new Date().toISOString(),
-    }));
-
-    let observableRest: Observable<any> = this.restServer.post<any>("http://localhost:8080/api/material_mugimenduak",data);
-    observableRest.subscribe(datuak => {
-      console.log(datuak);
-    });
-    this.materialakLortu();
   }
 
   materialakLortu(){
@@ -178,18 +191,55 @@ export class MaterialakPage implements OnInit {
     this.materialak = datuak
     .filter((categoria:any) => categoria.ezabatzeData === null)
     .map((categoria:any) => ({
-      id: categoria.id,
-      izena: categoria.izena,
-      sortzeData: categoria.sortzeData,
+      ...categoria,
       materialak: categoria.materialak
         .filter((material:any) => material.ezabatzeData === null)
-        .map((material:any) => ({
-          id: material.id,
-          etiketa: material.etiketa,
-          izena: material.izena,
-          sortzeData: material.sortzeData
-        }))
     }));
+    this.filteredMaterialak = this.materialak;
+    });
+  }
+
+  materialakLortuDevolver() {
+    let observableRest: Observable<any> = this.restServer.get<any>('http://localhost:8080/api/material_mailegua');
+
+    observableRest.subscribe(datuak => {
+        this.materialaDevolver = datuak.filter((mailegu:any) => 
+            mailegu.hasieraData && !mailegu.amaieraData
+        );
+        console.log(this.materialaDevolver);
+    });
+  }
+
+  materialakAtera(){
+    let data = this.materialesSeleccionados.map(materiala => ({
+      "materiala": {
+        "id": materiala.id
+    },
+      "langilea": {
+        "id": this.selecAlumno
+    }
+  }));
+
+    let observableRest: Observable<any> = this.restServer.post<any>("http://localhost:8080/api/material_mailegua",data);
+    observableRest.subscribe(datuak => {
+      console.log(datuak);
+      this.materialakLortu();
+      this.materialakLortuDevolver();
+    });
+  }
+
+  materialakBueltatu(){
+    let data = this.materialesSeleccionadosDevolver.map(mailegu => ({
+      "id": mailegu.id
+  }));
+
+    let observableRest: Observable<any> = this.restServer.put<any>('http://localhost:8080/api/material_mailegua', data);
+    observableRest.subscribe(datuak => {
+      console.log(datuak);
+
+      this.materialaDevolver = datuak
+      this.materialakLortu();
+      this.materialakLortuDevolver();
     });
   }
 
@@ -201,21 +251,27 @@ export class MaterialakPage implements OnInit {
       this.alumnos = datuak
       .filter((kategoria: any) => kategoria.ezabatzeData === null)
       .map((kategoria: any) => ({
-        kodea: kategoria.kodea,
-        izena: kategoria.izena,
-        sortzeData: kategoria.sortzeData,
+        ...kategoria,
         langileak: kategoria.langileak
           .filter((langilea: any) => langilea.ezabatzeData === null)
-          .map((langilea: any) => ({
-            id: langilea.id,
-            izena: langilea.izena,
-            abizenak: langilea.abizenak,
-            sortzeData: langilea.sortzeData,
-            eguneratzeData: langilea.eguneratzeData,
-          })),
       }));
     });
   }  
+
+  abrirEditarCategoria(categoria:any) {
+    this.modaleditarcat.present();
+    this.selectedCategory = {...categoria};
+    this.editarKatNombre = this.selectedCategory.izena;
+  }
+
+  abrirEditarMaterial(material:any) {
+    console.log(material);
+    this.modalEditar.present();
+    this.selectedMateriala = {...material};
+    this.editarNombre = material.izena;
+    this.editarEtiqueta = material.etiketa;
+    this.editarCategoria = material.kategoriaId;
+  }
 
   onGrupoChange() {
     if (!this.alumnos || this.alumnos.length === 0) {
@@ -227,8 +283,72 @@ export class MaterialakPage implements OnInit {
     this.filteredAlumnos = grupoSeleccionado ? grupoSeleccionado.langileak : [];
   }
 
+  async confirmarEliminarMaterial(id: number, izena:string) {
+    const alert = await this.alertController.create({
+      header: this.translate.instant('materiales.modal.confirmacion'),
+      message: this.translate.instant('materiales.modal.mensajeAlertaBorrarMats') + " '" + izena + "'?",
+      buttons: [
+        {
+          text: this.translate.instant('materiales.botones.cancelar'),
+          role: 'cancel',
+        },
+        {
+          text: this.translate.instant('materiales.botones.borrar'),
+          handler: () => {
+            this.materialaEzabatu(id);
+          },
+        },
+      ],
+    });
 
-  constructor(private translate: TranslateService, private restServer:HttpClient) {
+    await alert.present();
+  }
+
+  async confirmarEliminarCategoria(id: number, izena:string) {
+    const alert = await this.alertController.create({
+      header: this.translate.instant('materiales.modal.confirmacion'),
+      message: this.translate.instant('materiales.modal.mensajeAlertaBorrarCats') + " '" + izena + "'?",
+      buttons: [
+        {
+          text: this.translate.instant('materiales.botones.cancelar'),
+          role: 'cancel',
+        },
+        {
+          text: this.translate.instant('materiales.botones.borrar'),
+          handler: () => {
+            this.kategoriaEzabatu(id);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  filtrarMateriales() {
+    this.filteredMaterialak = this.materialak.map(categoria => ({
+      ...categoria,
+      materialak: categoria.materialak.map((material: any) => ({ ...material }))
+    }));
+
+    if(this.filtroCategoria !== '')
+    {
+      this.filteredMaterialak = this.filteredMaterialak.filter(categoria =>
+        (this.filtroCategoria === '' || categoria.izena.toLowerCase().includes(this.filtroCategoria.toLowerCase()))
+      );
+    }
+
+    if (this.filtroMaterial !== '') {
+      this.filteredMaterialak = this.filteredMaterialak.map(categoria => ({
+        ...categoria,
+        materialak: categoria.materialak.filter((materiala: any) =>
+          materiala.izena.toLowerCase().includes(this.filtroMaterial.toLowerCase())
+        )
+      }));
+    }
+  }
+
+  constructor(private translate: TranslateService, private restServer:HttpClient, private alertController: AlertController) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
@@ -236,6 +356,7 @@ export class MaterialakPage implements OnInit {
   ngOnInit() {
     this.materialakLortu();
     this.langileakLortu();
+    this.materialakLortuDevolver();
   }
 
 }

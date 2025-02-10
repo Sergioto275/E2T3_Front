@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
+import { HeaderComponent } from '../components/header/header.component';
 
 // import { IonButton, IonContent, IonHeader, IonLabel, IonModal, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
@@ -17,11 +18,16 @@ export interface Alumno {
 })
 export class ProduktuakPage implements OnInit {
 
+  @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   selectedLanguage: string = 'es';
   modal!:string;
   produktuak!:any[];
 
   productosSeleccionados:any[]=[];
+  isEditingProduct: boolean = false;
+  editingProduct:any = null;
+  isEditingKategoria: boolean = false;
+  editingKategoria:any = null;
 
   crearKatNombre!:String;
   crearNombre!:String;
@@ -30,14 +36,6 @@ export class ProduktuakPage implements OnInit {
   crearMarca!:String;
   crearStock!:Number;
   crearStockAlerta!:Number;
-  editarKatNombre!:String;
-  editarId!:Number;
-  editarNombre!:String;
-  editarDescripcion!:String;
-  editarCategoria!:Number;
-  editarMarca!:String;
-  editarStock!:Number;
-  editarStockAlerta!:Number;
 
   alumnos!: any[];
   selecTaldea!:number;
@@ -51,6 +49,9 @@ export class ProduktuakPage implements OnInit {
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
+    if (this.headerComponent) {
+      this.headerComponent.loadTranslations();
+    }
   }
 
   actualizarProductosSeleccionados(producto:any, kategoria_id: number) {
@@ -128,18 +129,39 @@ export class ProduktuakPage implements OnInit {
     }
   }
 
+  openProdModal(product:any, idKat:number){
+    this.isEditingProduct = true;
+    this.editingProduct = product;
+    this.editingProduct.idKategoria = idKat;
+    console.log(this.editingProduct);
+  }
+  
+  closeProdModal(){
+    this.isEditingProduct = false;
+  }
+
+  openKatModal(kategoria:any){
+    this.isEditingKategoria = true;
+    this.editingKategoria = kategoria;
+    console.log(this.editingKategoria);
+  }
+  
+  closeKatModal(){
+    this.isEditingKategoria = false;
+  }
+
   async editarProducto(){
     try {
       const json_data = {
-          "id": this.editarId,
-          "izena": this.editarNombre,
+          "id": this.editingProduct.id,
+          "izena": this.editingProduct.izena,
           "produktuKategoria": {
-              "id": this.editarCategoria
+              "id": this.editingProduct.idKategoria
           },
-          "deskribapena": this.editarDescripcion,
-          "marka": this.editarMarca,
-          "stock": this.editarStock,
-          "stockAlerta": this.editarStockAlerta
+          "deskribapena": this.editingProduct.deskribapena,
+          "marka": this.editingProduct.marka,
+          "stock": this.editingProduct.stock,
+          "stockAlerta": this.editingProduct.stockAlerta
       }
       console.log(json_data);
       const response = await fetch(`${environment.url}produktuak`, {
@@ -154,7 +176,8 @@ export class ProduktuakPage implements OnInit {
       if (!response.ok) {
         throw new Error('Errorea eskaera egiterakoan');
       }
-      await this.produktuakLortu();  
+      await this.produktuakLortu();
+      this.closeProdModal();
     } catch (e) {
       console.error("Errorea produktuak kargatzerakoan:", e);
     }
@@ -220,12 +243,12 @@ export class ProduktuakPage implements OnInit {
     }
   }
 
-  async editarKategoriaProducto(id: number) {
+  async editarKategoriaProducto() {
     try {
-      const json_data = { izena: this.editarKatNombre }; 
+      const json_data = { izena: this.editingKategoria.izena }; 
       console.log(json_data);
   
-      const response = await fetch(`http://localhost:8080/api/produktu_kategoria/id/${id}`, {
+      const response = await fetch(`http://localhost:8080/api/produktu_kategoria/id/${this.editingKategoria.id}`, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
@@ -240,25 +263,11 @@ export class ProduktuakPage implements OnInit {
   
       console.log('Categoría actualizada correctamente');
       await this.produktuakLortu();
+      this.closeKatModal();
     } catch (e) {
       console.error('Errorea produktuak kargatzerakoan:', e);
     }
   }
-
-  setSelectedCategory(id:number){
-    this.selectedCategoryId = id;
-  }
-
-  cargarEditarProducto() {
-    this.editarId = this.productosSeleccionados[0].id;
-    this.editarNombre = this.productosSeleccionados[0].izena;
-    this.editarDescripcion = this.productosSeleccionados[0].deskribapena;
-    this.editarCategoria = this.productosSeleccionados[0].kategoria_id;
-    this.editarMarca = this.productosSeleccionados[0].marka;
-    this.editarStock = this.productosSeleccionados[0].stock;
-    this.editarStockAlerta = this.productosSeleccionados[0].stockAlerta;
-  }
-
 
   async sacarProductos() {
     try {

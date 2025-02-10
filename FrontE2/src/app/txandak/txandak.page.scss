@@ -32,16 +32,6 @@ ion-toolbar {
   ;
 }
 
-.ikasle-item {
-  --background: white; /* Color de fondo normal */
-  transition: background-color 0.3s ease-in-out;
-}
-
-.ikasle-item:hover {
-  --background: rgba(0, 0, 0, 0.1); /* Se oscurece al pasar el ratón */
-}
-
-
 ion-segment-button {
   color: $color-black;
 }
@@ -72,13 +62,11 @@ ion-label {
 
 .Botoiak {
   --background: $color-dark-teal;
-  --color: $color-light-teal;
+  --color: $color-white;
+  &:hover {
+    --background: $color-black;
+  }
 }
-
-.Botoiak:hover {
-  --background: $color-black;  
-}
-
 
 ion-searchbar {
   margin-bottom: 20px;
@@ -129,7 +117,13 @@ ion-select {
   font-weight: bold;
 }
 
-
+ion-button[expand="full"] {
+  background-color: $color-dark-teal;
+  color: $color-white;
+  &:disabled {
+    background-color: $color-light-gray;
+  }
+}
 
 ion-card-content {
   background-color: $color-white;
@@ -154,4 +148,14 @@ ion-label {
 
 ion-segment-content {
   background-color: $color-white;
+}
+
+ion-button[slot="start"] {
+  background-color: $color-dark-teal;
+  color: $color-white;
+}
+
+ion-button[slot="end"] {
+  background-color: $color-dark-teal;
+  color: $color-white;
 }

@@ -1,7 +1,11 @@
 import { formatDate } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import 'jspdf-autotable';
 import { environment } from 'src/environments/environment';
+import { HeaderComponent } from '../components/header/header.component';
 
 @Component({
   selector: 'app-hitzorduak',
@@ -9,65 +13,210 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./hitzorduak.page.scss'],
 })
 export class HitzorduakPage implements OnInit {
-  
-  startHour: string = '10:00:00';
-  endHour: string = '16:00:00';
+  @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   loading: boolean = true;
+  serviciosSeleccionados: any[] = [];
+  ordutegiak: any[] = [];
+  asientos!:number;
   hitzorduArray: any[] = [];
   hitzorduak: any[] = [];
-  langile_asignado: string = 'nadie Asignado';
-  generado: boolean = false;
-  asignado: boolean = false;
-  langileTratamenduak: any[] = [];
-  tratamenduKategoria: any[] = [];
-  tratamenduKategoriaTaula: any[] = [];
-  precioextra: any = null;
-  citasEditarArray: any[] = [];
   tratamenduArray: any[] = [];
   tratamenduSelec: any[] = [];
-  taldeArray: any[] = [];
   langileArray: any[] = [];
-  eserlekuKop: any[] = [];
   hoursArray: any[] = [];
   rowspanAux: any[] = [];
+  citaCrear:any = {"data":null, "hasieraOrdua":null, "amaieraOrdua":null, "eserlekua" :0, "izena":'', "telefonoa":'', "deskribapena":'', "etxekoa":false };
+  citaEditar:any = {"data":null, "hasieraOrdua":null, "amaieraOrdua":null, "eserlekua" :0, "izena":'', "telefonoa":'', "deskribapena":'', "etxekoa":false};
   idLangile: any = null;
-  idTalde: any = null;
-  dataTest: any = null;
-  citaSelec: any = null;
-  idSelec: any = null;
-  izenaSelec: any = null;
-  hasOrduaTest: any = null;
-  amaOrduaTest: any = null;
-  eserlekuaCrear: any = null;
-  eserlekuaEditar: any = null;
-  izenaCrear: any = null;
-  telfCrear: any = null;
-  deskCrear: any = null;
-  etxekoCrear: any = null;
   dataSelec!: any;
-  dataEditar: any = null;
-  hasOrduaEditar: any = null;
-  amaOrduaEditar: any = null;
-  izenaEditar: any = null;
-  telfEditar: any = null;
-  deskEditar: any = null;
-  etxekoEditar: any = null;
-  citasDisponible: any = null;
-  currentLocale: string = 'es';
-  translations: any = {}; // Aquí deberían ir las traducciones
+  todayDate!: any;
   selectedLanguage: string = 'es';
-  error: boolean = false;
-  environment: string = 'http://localhost'; // O la URL de tu API
+
+  firstCell: { time: string, seat: number } | null = null;
+  secondCell: { time: string, seat: number } | null = null;
+  highlightedCells: { time: string, seat: number }[] = [];
+
+  servicioSeleccionado(): boolean {
+    return this.tratamenduArray.some(katTrat => 
+      katTrat.zerbitzuak.some((trat:any) => trat.selected)
+    );
+  }
+  
+  preciosValidos(): boolean {
+    return this.tratamenduSelec.every(katTrat => 
+      !katTrat.extra || katTrat.zerbitzuak.every((trat:any) => 
+        !trat.selected || (trat.precio && trat.precio > 0)
+      )
+    );
+  }
+  
+  citaValida(): boolean {
+    return this.citaEditar && this.citaEditar.data !== null;
+  }
+  
+
+  updateHighlightedCells() {
+    if (this.firstCell && this.secondCell) {
+      const minTimeIndex = Math.min(
+        this.hoursArray.indexOf(this.firstCell.time),
+        this.hoursArray.indexOf(this.secondCell.time)
+      );
+      const maxTimeIndex = Math.max(
+        this.hoursArray.indexOf(this.firstCell.time),
+        this.hoursArray.indexOf(this.secondCell.time)
+      );
+      this.highlightedCells = [];
+      for (let i = minTimeIndex; i <= maxTimeIndex; i++) {
+        this.highlightedCells.push({ time: this.hoursArray[i], seat: this.firstCell.seat });
+      }
+    }
+  }
+
+  resetSelection() {
+    this.firstCell = null;
+    this.secondCell = null;
+    this.highlightedCells = [];
+  }
+
+  isCellHighlighted(time: string, seat: number): boolean {
+    return this.highlightedCells.some(cell => cell.time === time && cell.seat === seat);
+  }
+
+   // Función: seleccionar_citaCrear
+  reserbar_cita(eserlekua: number, time: string) {
+    if(this.citaEditar.hasieraOrduaErreala){
+      return;
+    }
+    if(this.citaEditar.eserlekua == 0){
+      if (this.firstCell && this.firstCell.seat !== eserlekua) {
+        if (confirm("¿Desea cambiar de asiento?")) {
+          this.resetSelection();
+          this.limpiar_campos();
+        } else {
+          return;
+        }
+      }
+      if(this.verificarSuperposicion(eserlekua, time, this.dataSelec, this.citaCrear.hasieraOrdua, this.citaCrear.amaieraOrdua, 0)){
+        this.resetSelection();
+        this.citaCrear.data = this.dataSelec;
+        this.citaCrear.hasieraOrdua = time;
+        this.citaCrear.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
+        this.citaCrear.eserlekua = eserlekua;
+        this.firstCell = { time, seat: eserlekua };
+        this.highlightedCells = [{ time, seat: eserlekua }];
+        return;
+      }
+      if (this.citaCrear.data) {
+        if (this.citaCrear.hasieraOrdua < time) {
+          this.citaCrear.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
+          this.secondCell = { time, seat: eserlekua };
+          this.updateHighlightedCells();
+        } else {
+          this.citaCrear.hasieraOrdua = time;
+          this.firstCell = { time, seat: eserlekua };
+          this.updateHighlightedCells();
+        }
+      } else {
+        this.citaCrear.data = this.dataSelec;
+        this.citaCrear.hasieraOrdua = time;
+        this.citaCrear.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
+        this.citaCrear.eserlekua = eserlekua;
+        this.firstCell = { time, seat: eserlekua };
+        this.highlightedCells = [{ time, seat: eserlekua }];
+      }
+    }else{
+      
+      if (this.citaEditar.data != this.dataSelec) {
+        if (confirm("¿Desea cambiar de día?")) {
+          this.resetSelection();
+          this.citaEditar.data = this.dataSelec;
+          this.citaEditar.hasieraOrdua = time;
+          this.citaEditar.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
+          this.citaEditar.eserlekua = eserlekua;
+          this.firstCell = { time, seat: eserlekua };
+          this.highlightedCells = [{ time, seat: eserlekua }];
+          return;
+        } else {
+          return;
+        }
+      }
+      if (this.citaEditar.eserlekua !== eserlekua) {
+        if (confirm("¿Desea cambiar de asiento?")) {
+          this.resetSelection();
+          this.citaEditar.data = this.dataSelec;
+          this.citaEditar.hasieraOrdua = time;
+          this.citaEditar.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
+          this.citaEditar.eserlekua = eserlekua;
+          this.firstCell = { time, seat: eserlekua };
+          this.highlightedCells = [{ time, seat: eserlekua }];
+          return;
+        } else {
+          return;
+        }
+      }
+      if(this.verificarSuperposicion(eserlekua, time, this.dataSelec, this.citaEditar.hasieraOrdua, this.citaEditar.amaieraOrdua, this.citaEditar.id)){
+        this.resetSelection();
+        this.citaEditar.data = this.dataSelec;
+        this.citaEditar.hasieraOrdua = time;
+        this.citaEditar.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
+        this.citaEditar.eserlekua = eserlekua;
+        this.firstCell = { time, seat: eserlekua };
+        this.highlightedCells = [{ time, seat: eserlekua }];
+        return;
+      }
+      if (this.citaEditar.hasieraOrdua < time) {
+        this.citaEditar.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
+        this.secondCell = { time, seat: eserlekua };
+        this.updateHighlightedCells();
+      } else {
+        this.citaEditar.hasieraOrdua = time;
+        this.firstCell = { time, seat: eserlekua };
+        this.updateHighlightedCells();
+      }
+    }
+  }
+
+  // Función para verificar si dos rangos de tiempo se solapan
+  verificarSuperposicion(eserlekua: number, time: string, eguna: any, horaIniCita:any, horaFinCita:any,   id: number | null) {
+    let horaInicio;
+    let horaFin;
+    if (horaIniCita > time || !horaIniCita) {
+      horaInicio = time;
+      horaFin = horaFinCita;
+    } else {
+      horaInicio = horaIniCita;
+      horaFin = time;
+    }
+    const citasDelDia = this.hitzorduak.filter((hitzordu: any) => 
+      (!hitzordu.ezabatze_data || hitzordu.ezabatze_data === "0000-00-00 00:00:00") && 
+      hitzordu.data === eguna && 
+      hitzordu.eserlekua === eserlekua &&
+      (id ? hitzordu.id !== id : true)
+    );
+    const solapamiento = citasDelDia.some((cita: any) => {
+      const citaInicio = cita.hasieraOrdua;
+      const citaFin = cita.amaieraOrdua;
+      return (
+        (horaInicio < citaFin && horaFin > citaInicio)
+      );
+    });
+    return solapamiento;
+  }
+  
+
 
   constructor(private translate: TranslateService) {
     this.translate.setDefaultLang('es');
-    this.translate.use(this.currentLocale);
+    this.translate.use(this.selectedLanguage);
   }
   
   ngOnInit() {
     this.dataSelec = this.lortuData();
+    this.todayDate = this.lortuData();
     this.cargarHitzordu();
     this.getHoursInRange();
+    this.cargar_alumnos();
+    this.cargarTratamenduak();
   }
 
   // Función: lortuData
@@ -83,7 +232,6 @@ export class HitzorduakPage implements OnInit {
     if (hilabetea < 10) {
       hilabetea = '0' + hilabetea;
     }
-  
     return `${urtea}-${hilabetea}-${eguna}`;
   }
 
@@ -113,82 +261,34 @@ export class HitzorduakPage implements OnInit {
     } finally {
       this.loading = false;
     }
-    // this.cargar_asientos();
   }
 
   // Función: cargar_asientos
-  // async cargar_asientos() {
-  //   try {
-  //     const response2 = await fetch(`${this.environment}/public/api/langileak/count/${this.dataSelec}`, {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Access-Control-Allow-Origin': '*'
-  //       },
-  //       method: "GET"
-  //     });
-  //     if (!response2.ok) {
-  //       throw new Error('Error al obtener el número de asientos');
-  //     }
-  //     const datuak2 = await response2.json();
-  //     this.eserlekuKop = [];
-  //     const totalSeats = datuak2 <= 0 ? 20 : datuak2;
-  //     for (let i = 1; i <= totalSeats; i++) {
-  //       this.eserlekuKop.push({ id: i });
-  //     }
-  //   } catch (error) {
-  //     console.log("Error al cargar los asientos:", error);
-  //   }
-  // }
-
-  // Función: cargarComboBox
-  async cargarComboBox() {
+  async cargar_alumnos() {
     try {
-      const response = await fetch(`${this.environment}/public/api/taldeak`, {
+      const response = await fetch(`${environment.url}ordutegiak`, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
-        }
+        },
+        method: "GET"
       });
-
       if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
+        throw new Error('Error al obtener el número de asientos');
       }
-
       const datuak = await response.json();
-      this.taldeArray = datuak.filter((talde:any) => !talde.ezabatze_data || talde.ezabatze_data === "0000-00-00 00:00:00");
+      this.ordutegiak = datuak.filter((ordu:any) => ordu.ezabatzeData === null);
+      console.log(this.ordutegiak);
     } catch (error) {
-      console.error("Error cargando el listado de equipos:", error);
+      console.log("Error al cargar los asientos:", error);
     }
-
-    try {
-      const response = await fetch(`${this.environment}/public/api/langileak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
-      }
-
-      const datuak = await response.json();
-      this.langileArray = datuak.filter((langile:any) => 
-        !langile.ezabatze_data && langile.kodea == this.idTalde ||
-        (langile.ezabatze_data === "0000-00-00 00:00:00" && langile.kodea == this.idTalde)
-      );
-    } catch (error) {
-      console.error("Error cargando el listado de trabajadores:", error);
-    }
-
-    // Llamar a la función que filtra los tratamientos por trabajador
-    this.tratamenduByLangile();
+    this.cargar_dia_seleccionado();
   }
 
   // Función: cargarTratamenduak
   async cargarTratamenduak() {
     try {
-      const response = await fetch(`${this.environment}/public/api/tratamenduak`, {
+      const response = await fetch(`${environment.url}zerbitzu_kategoria`, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
@@ -201,51 +301,21 @@ export class HitzorduakPage implements OnInit {
       }
 
       const datuak = await response.json();
-      this.tratamenduArray = datuak.filter((tratamendua:any) => !tratamendua.ezabatze_data || tratamendua.ezabatze_data === '0000-00-00 00:00:00');
+      this.tratamenduArray = datuak.filter((tratamendua:any) => {
+        const filteredZerbitzuak = tratamendua.zerbitzuak.filter(
+          (zerbitzu:any) => zerbitzu.ezabatzeData === null
+        );
+        return filteredZerbitzuak;
+      }).map((tratamendua:any) => {
+        return {
+          ...tratamendua,
+          zerbitzuak: tratamendua.zerbitzuak.filter(
+            (zerbitzu:any) => zerbitzu.ezabatzeData === null
+          )
+        };
+      });
     } catch (error) {
       console.log("Error al cargar tratamientos:", error);
-    }
-
-    try {
-      const response2 = await fetch(`${this.environment}/public/api/kategoriaTratamendu`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "GET"
-      });
-
-      if (!response2.ok) {
-        throw new Error('Error al obtener categorías de tratamientos');
-      }
-
-      const datuak2 = await response2.json();
-      this.tratamenduKategoria = datuak2.filter((katTratamendu:any) => !katTratamendu.ezabatze_data || katTratamendu.ezabatze_data === '0000-00-00 00:00:00');
-    } catch (error) {
-      console.log("Error al cargar categorías de tratamientos:", error);
-    }
-  }
-
-  // Función: tratamenduByLangile
-  async tratamenduByLangile() {
-    try {
-      const response = await fetch(`${this.environment}/public/api/tratamenduByLangile/${this.idTalde}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "GET"
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al obtener tratamientos por trabajador');
-      }
-
-      const datuak = await response.json();
-      this.langileTratamenduak = datuak;
-      this.tratamenduKategoriaTaula = this.tratamenduKategoria.filter(kategoria => kategoria.extra === 'n');
-    } catch (error) {
-      console.log("Error al obtener tratamientos del trabajador:", error);
     }
   }
 
@@ -262,18 +332,34 @@ export class HitzorduakPage implements OnInit {
   // Función: cargar_dia_seleccionado
   cargar_dia_seleccionado() {
     const eguna = formatDate(this.dataSelec, 'yyyy-MM-dd', 'en-US');
-    this.hitzorduArray = this.hitzorduak.filter((hitzordu:any) => 
+    const egunaDate = new Date(eguna);
+    let diaSemana = egunaDate.getDay();
+    diaSemana = diaSemana === 0 ? 7 : diaSemana;
+    this.hitzorduArray = this.hitzorduak.filter((hitzordu: any) => 
       (!hitzordu.ezabatze_data || hitzordu.ezabatze_data === "0000-00-00 00:00:00") && hitzordu.data.includes(eguna)
     );
-    // this.cargar_asientos();
+    const langileak = this.ordutegiak.filter((ordu: any) => {
+      const hasieraDate = new Date(ordu.hasieraData);
+      const amaieraDate = new Date(ordu.amaieraData);
+      return (
+        hasieraDate <= egunaDate && amaieraDate >= egunaDate && ordu.eguna === diaSemana
+      );
+    });
+    if (this.langileArray.length == 0 && langileak.length > 0) {
+      this.langileArray = langileak[0].taldea.langileak;
+    }
+    this.asientos = langileak.length > 0 ? langileak[0].taldea.langileak.length - 1 : 0;
+    this.resetSelection();
+    this.citaCrear = {"data":null, "hasieraOrdua":null, "amaieraOrdua":null, "eserlekua" :0, "izena":'', "telefonoa":'', "deskribapena":'', "etxekoa":false };
+    // this.limpiar_campos();
   }
-
+  
+  
   // Función: getHoursInRange
   getHoursInRange(): void {
     const startTime = new Date('2022-01-01T09:00:00');
     const endTime = new Date('2022-01-01T14:30:00');
     this.hoursArray = [];
-
     while (startTime <= endTime) {
       const formattedHour = startTime.toLocaleTimeString([], {
         hour: '2-digit',
@@ -287,18 +373,14 @@ export class HitzorduakPage implements OnInit {
 
   // Función: cita_sartuta
   citaSartuta(time: string, seatId: number): boolean {
-    // console.log(time + " | " + seatId);
-
     if (time === this.hoursArray[0] && seatId === 1) {
       this.rowspanAux = [];
     }
-    // console.log(this.hitzorduArray)
     const filteredCitas = this.hitzorduArray.filter((cita:any) => 
       cita.hasieraOrdua <= time 
       && cita.amaieraOrdua > time 
       && cita.eserlekua == seatId
     );
-
     if (filteredCitas.length == 0) {
       return true;
     }
@@ -338,14 +420,14 @@ export class HitzorduakPage implements OnInit {
   // Función: createCita
   async createCita() {
     try {
-      const data = this.dataTest;
-      const hasOrdua = this.hasOrduaTest;
-      const amaOrdua = this.amaOrduaTest;
-      const eserlekua = this.eserlekuaCrear;
-      const izena = this.izenaCrear;
-      const telefonoa = this.telfCrear;
-      const deskribapena = this.deskCrear;
-      const etxeko = this.etxekoCrear ? "E" : "K";
+      const data = this.citaCrear.data;
+      const hasOrdua = this.citaCrear.hasieraOrdua;
+      const amaOrdua = this.citaCrear.amaieraOrdua;
+      const eserlekua = this.citaCrear.eserlekua;
+      const izena = this.citaCrear.izena;
+      const telefonoa = this.citaCrear.telefonoa;
+      const deskribapena = this.citaCrear.deskribapena;
+      const etxeko = this.citaCrear.etxekoa ? "E" : "K";
 
       const json_data = {
         "data":data,
@@ -357,7 +439,6 @@ export class HitzorduakPage implements OnInit {
         "deskribapena":deskribapena,
         "etxekoa":etxeko
       };
-
       const response = await fetch(`${environment.url}hitzorduak`, {
         headers: {
           'Content-Type': 'application/json',
@@ -370,8 +451,6 @@ export class HitzorduakPage implements OnInit {
       if (!response.ok) {
         throw new Error('Error al crear la cita');
       }
-
-      // this.toastr.success(this.translations[this.currentLocale].default.crear);
       await this.cargarHitzordu();
       this.limpiar_campos();
     } catch (error) {
@@ -384,19 +463,18 @@ export class HitzorduakPage implements OnInit {
 
   async editar_cita() {
     try {
-      const etxeko = this.etxekoEditar ? "E" : "K";
+      const etxeko = this.citaEditar.etxekoa ? "E" : "K";
       const json_data = {
-        "id": this.idSelec,
-        "data": this.dataEditar,
-        "hasieraOrdua": this.hasOrduaEditar,
-        "amaieraOrdua": this.amaOrduaEditar,
-        "eserlekua": this.eserlekuaEditar,
-        "izena": this.izenaEditar,
-        "telefonoa": this.telfEditar,
-        "deskribapena": this.deskEditar,
+        "id": this.citaEditar.id,
+        "data": this.citaEditar.data,
+        "hasieraOrdua": this.citaEditar.hasieraOrdua,
+        "amaieraOrdua": this.citaEditar.amaieraOrdua,
+        "eserlekua": this.citaEditar.eserlekua,
+        "izena": this.citaEditar.izena,
+        "telefonoa": this.citaEditar.telefonoa,
+        "deskribapena": this.citaEditar.deskribapena,
         "etxekoa": etxeko
       };
-      console.log(JSON.stringify(json_data));
       const response = await fetch(`${environment.url}hitzorduak`, {
         headers: {
           'Content-Type': 'application/json',
@@ -409,7 +487,6 @@ export class HitzorduakPage implements OnInit {
       if (!response.ok) {
         throw new Error('Error al editar la cita');
       }
-      // toastr.success(this.translations[this.currentLocale].default.actualizar);
       await this.cargarHitzordu();
       this.limpiar_campos();
     } catch (error) {
@@ -421,8 +498,7 @@ export class HitzorduakPage implements OnInit {
 
 async eliminar_cita() {
   try {
-    const json_data = { "id": this.idSelec };
-
+    const json_data = { "id": this.citaEditar.id };
     const response = await fetch(`${environment.url}hitzorduak`, {
       headers: {
         'Content-Type': 'application/json',
@@ -435,7 +511,6 @@ async eliminar_cita() {
     if (!response.ok) {
       throw new Error('Error al eliminar la cita');
     }
-    // toastr.success(this.translations[this.currentLocale].default.eliminar);
     await this.cargarHitzordu();
     this.limpiar_campos();
   } catch (error) {
@@ -447,41 +522,17 @@ async eliminar_cita() {
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
-  }
-
-  retroceder() { 
-    window.history.back(); 
+    if (this.headerComponent) {
+      this.headerComponent.loadTranslations();
+    }
   }
 
   limpiar_campos() {
-    this.langile_asignado = 'nadie Asignado';
-    this.langileTratamenduak = [];
-    this.tratamenduKategoriaTaula = [];
-    this.precioextra = null;
     this.tratamenduSelec = [];
-    this.langileArray = [];
     this.idLangile = null;
-    this.idTalde = null;
-    this.dataTest = null;
-    this.citaSelec = null;
-    this.idSelec = null;
-    this.izenaSelec = null;
-    this.hasOrduaTest = null;
-    this.amaOrduaTest = null;
-    this.eserlekuaCrear = null;
-    this.eserlekuaEditar = null;
-    this.izenaCrear = null;
-    this.telfCrear = null;
-    this.deskCrear = null;
-    this.etxekoCrear = null;
-    this.dataEditar = null;
-    this.hasOrduaEditar = null;
-    this.amaOrduaEditar = null;
-    this.izenaEditar = null;
-    this.telfEditar = null;
-    this.deskEditar = null;
-    this.etxekoEditar = null;
-    this.citasDisponible = null;
+    this.citaCrear = {"data":null, "hasieraOrdua":null, "amaieraOrdua":null, "eserlekua" :0, "izena":'', "telefonoa":'', "deskribapena":'', "etxekoa":false };
+    this.citaEditar = {"data":null, "hasieraOrdua":null, "amaieraOrdua":null, "eserlekua" :0, "izena":'', "telefonoa":'', "deskribapena":'', "etxekoa":false };
+    this.resetSelection();
   }
 
   today(): string {
@@ -492,36 +543,36 @@ async eliminar_cita() {
     return `${year}-${month}-${day}`;
   }  
 
-  cargar_cita_selec(id: string) {
-    const cita = this.hitzorduArray.filter(citas => citas.id === id);
-    this.idSelec = id;
-    this.dataEditar = cita[0].data;
-    this.hasOrduaEditar = cita[0].hasieraOrdua;
-    this.amaOrduaEditar = cita[0].amaieraOrdua;
-    this.izenaSelec = cita[0].izena;
-    this.izenaEditar = cita[0].izena;
-    this.telfEditar = cita[0].telefonoa;
-    this.deskEditar = cita[0].deskribapena;
-    this.eserlekuaEditar = cita[0].eserlekua;
-    this.etxekoEditar = cita[0].etxekoa === "E";
-    if (cita[0].id_langilea) {
-      this.langile_asignado = `${cita[0].kodea} - ${cita[0].l_izena}`;
-      this.asignado = true;
-    } else {
-      this.langile_asignado = 'nadie Asignado';
-      this.asignado = false;
+  cargar_cita_selec(citaSelec:any) {
+    if(this.citaEditar.id == citaSelec.id){
+      this.citaEditar = {"data":null, "hasieraOrdua":null, "amaieraOrdua":null, "eserlekua" :0, "izena":'', "telefonoa":'', "deskribapena":'', "etxekoa":false };
+      return;
     }
-    this.generado = !!cita[0].prezio_totala;
+    this.citaEditar = citaSelec;
+    this.resetSelection();
+  }
+
+  actualizarServiciosSeleccionados(servicio:any, extra:boolean) {
+    if (servicio.selected) {
+      if (!extra) {
+        servicio.precio = this.citaEditar.etxekoa ? servicio.etxekoPrezioa : servicio.kanpokoPrezioa;
+      }
+    }
+    const index = this.serviciosSeleccionados.findIndex(s => s.id === servicio.id);
+    if (servicio.selected && index === -1) {
+      this.serviciosSeleccionados.push(servicio);
+    } else if (!servicio.selected && index !== -1) {
+      this.serviciosSeleccionados.splice(index, 1);
+    }
   }
 
   async asignar_cita() {
     try {
       const json_data = {
-        "id": this.idSelec,
-        "id_langilea": this.idLangile
+        "id": this.citaEditar.id
       };
   
-      const response = await fetch(`${this.environment}/public/api/hitzorduesleitu`, {
+      const response = await fetch(`${environment.url}hitzorduak/asignar/${this.idLangile}`, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
@@ -533,7 +584,6 @@ async eliminar_cita() {
       if (!response.ok) {
         throw new Error('Error al asignar la cita');
       }
-      // toastr.success(this.translations[this.currentLocale].default.actualizar);
       await this.cargarHitzordu();
       this.limpiar_campos();
     } catch (error) {
@@ -544,43 +594,20 @@ async eliminar_cita() {
   // Función: generar_ticket
   async generar_ticket() {
     let prezio_totala = 0;
-
-    // Calcular el precio total de los tratamientos seleccionados
     this.tratamenduSelec.forEach(tratamendu => {
       prezio_totala = Number(prezio_totala) + Number(tratamendu.prezioa);
     });
-
-    // Actualizar cita con el precio total
     try {
-      const json_data = {
-        "id": this.idSelec,
-        "prezio_totala": prezio_totala
-      };
-      const response = await fetch(`${this.environment}/public/api/hitzorduaamaitu`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
+      const json_data = this.serviciosSeleccionados.map(servicio => ({
+        "hitzordua": {
+          "id": this.citaEditar.id 
         },
-        method: "PUT",
-        body: JSON.stringify(json_data)
-      });
-
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
-      }
-      await this.cargarHitzordu();
-    } catch (error) {
-      console.error("Error en generación de cita:", error);
-    }
-
-    // Crear ticket
-    try {
-      const json_data = {
-        "id_hitzordu": this.idSelec,
-        "tratamendua": this.tratamenduSelec
-      };
-
-      const response = await fetch(`${this.environment}/public/api/ticket_lerro`, {
+        "zerbitzuak": {
+          "id": servicio.id 
+        },
+        "prezioa": servicio.precio
+      }));
+      const response = await fetch(`${environment.url}ticket_lerroak`, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
@@ -592,168 +619,104 @@ async eliminar_cita() {
       if (!response.ok) {
         throw new Error('Errorea eskaera egiterakoan');
       }
-
-      // toastr.success(this.translations[this.currentLocale].default.actualizar);
-      // toastr.info(this.translations[this.currentLocale].citas.precioMessage + prezio_totala);
-
-      for (let tratamendu of this.tratamenduSelec) {
-        const tratamiento = this.tratamenduArray.filter(element => element.id == tratamendu.tratamendu_id);
-        const kategoria = this.tratamenduKategoria.filter(el => el.id == tratamiento[0].id_katTratamendu);
-
-        if (kategoria[0].kolorea === 's') {
-          // toastr.warning(this.translations[this.currentLocale].citas.registrarCliente);
-          if (confirm(this.translations[this.currentLocale].citas.redireccionCliente)) {
-            window.location.href = 'BezeroFitxak.html';
-          } else {
-            this.cargarHitzordu();
-          }
-          break; // Detener el bucle si se redirige
-        }
-      }
-
+      await this.cargarHitzordu();
       this.limpiar_campos();
-    } catch (error) {
-      console.error("Error en generación de ticket:", error);
-    }
-  }
+      const datuak = await response.json();
+      if(confirm("Desea descargar el ticket de la cita?")){
+        this.descargar_ticket(datuak);
 
-  
-  // Función: seleccionar_citaCrear
-  seleccionar_citaCrear(eserlekua: number, time: string) {
-    if (this.dataTest) {
-      if (this.dataTest !== this.dataSelec) {
-        if (confirm("¿Desea cambiar el día?")) {
-          this.dataTest = this.dataSelec;
-          this.hasOrduaTest = time;
-          this.amaOrduaTest = this.hoursArray[this.hoursArray.indexOf(time) + 1];
-          this.eserlekuaCrear = eserlekua;
-        }
-      } else {
-        if (this.eserlekuaCrear !== eserlekua) {
-          if (confirm("¿Desea cambiar el asiento?")) {
-            this.hasOrduaTest = time;
-            this.amaOrduaTest = this.hoursArray[this.hoursArray.indexOf(time) + 1];
-            this.eserlekuaCrear = eserlekua;
-          }
-        } else {
-          if (this.hasOrduaTest < time) {
-            this.amaOrduaTest = this.hoursArray[this.hoursArray.indexOf(time) + 1];
-          } else {
-            this.hasOrduaTest = time;
-          }
-        }
       }
-    } else {
-      this.dataTest = this.dataSelec;
-      this.hasOrduaTest = time;
-      this.amaOrduaTest = this.hoursArray[this.hoursArray.indexOf(time) + 1];
-      this.eserlekuaCrear = eserlekua;
+    } catch (error) {
+      console.error("Error en generación de cita:", error);
     }
   }
 
-  
-
-  
-
-  // Función para comprobar extras en una categoría de tratamiento
-  comprobar_extras(id_kategoria: number): boolean {
-    const kategoria = this.tratamenduKategoria.filter(katTratamendu => katTratamendu.id == id_kategoria);
-    return kategoria.length > 0 && kategoria[0].extra === 's';
+  descargar_ticket(datuak: any) {
+    const pdf = new jsPDF();
+    const margenIzquierdo = 10;
+    let posicionY = 20;
+    pdf.setFontSize(18);
+    pdf.setFont("helvetica", "bold");
+    pdf.text("Ticket de Cita", margenIzquierdo, posicionY);
+    posicionY += 10;
+    pdf.setFontSize(12);
+    pdf.setFont("helvetica", "normal");
+    pdf.text(`Data: ${datuak.data}`, margenIzquierdo, posicionY);
+    posicionY += 7;
+    pdf.text(`Hasiera Ordua: ${datuak.hasieraOrduaErreala}`, margenIzquierdo, posicionY);
+    posicionY += 7;
+    pdf.text(`Amaiera Ordua: ${datuak.amaieraOrduaErreala}`, margenIzquierdo, posicionY);
+    posicionY += 7;
+    pdf.text(`Langilea: ${datuak.langilea?.izena}`, margenIzquierdo, posicionY);
+    posicionY += 10;
+    const head = [
+      ['Zerbitzua', 'Prezioa (€)']
+    ];
+    const body = datuak.lerroak.map((lerro: any) => [
+      lerro.zerbitzuak.izena,
+      lerro.prezioa.toFixed(2)
+    ]);
+    autoTable(pdf, {
+      startY: posicionY,
+      margin: { left: margenIzquierdo, right: margenIzquierdo },
+      head: head,
+      body: body,
+      theme: 'grid',
+      styles: { fontSize: 10, halign: 'center' },
+      headStyles: { fillColor: [0, 102, 204], textColor: [255, 255, 255] }
+    });
+    posicionY = (pdf as any).lastAutoTable.finalY + 10;
+    pdf.setFont("helvetica", "bold");
+    pdf.text(
+      `PREZIO TOTALA: ${datuak.prezioTotala.toFixed(2)} €`,
+      margenIzquierdo,
+      posicionY
+    );
+    pdf.save(`ticket_${datuak.id}.pdf`);
   }
 
   // Función: roundDownHour_hasieraData_crear
-  roundDownHour_hasieraData_crear() {
-    const parts = this.hasOrduaTest.split(":");
-    let hour = parseInt(parts[0], 10);
-    let minute = parseInt(parts[1], 10);
+  // roundDownHour_hasieraData_crear() {
+  //   const parts = this.hasOrduaTest.split(":");
+  //   let hour = parseInt(parts[0], 10);
+  //   let minute = parseInt(parts[1], 10);
 
-    const roundedMinute = minute >= 45 ? "00" : minute >= 15 ? "30" : "00";
-    const roundedHour = minute >= 45 ? hour + 1 : hour;
-    this.hasOrduaTest = `${roundedHour.toString().padStart(2, "0")}:${roundedMinute}`;
-  }
+  //   const roundedMinute = minute >= 45 ? "00" : minute >= 15 ? "30" : "00";
+  //   const roundedHour = minute >= 45 ? hour + 1 : hour;
+  //   this.hasOrduaTest = `${roundedHour.toString().padStart(2, "0")}:${roundedMinute}`;
+  // }
 
-  // Función: roundDownHour_amaieraData_crear
-  roundDownHour_amaieraData_crear() {
-    const parts = this.amaOrduaTest.split(":");
-    let hour = parseInt(parts[0], 10);
-    let minute = parseInt(parts[1], 10);
+  // // Función: roundDownHour_amaieraData_crear
+  // roundDownHour_amaieraData_crear() {
+  //   const parts = this.amaOrduaTest.split(":");
+  //   let hour = parseInt(parts[0], 10);
+  //   let minute = parseInt(parts[1], 10);
 
-    const roundedMinute = minute >= 45 ? "00" : minute >= 15 ? "30" : "00";
-    const roundedHour = minute >= 45 ? hour + 1 : hour;
-    this.amaOrduaTest = `${roundedHour.toString().padStart(2, "0")}:${roundedMinute}`;
-  }
+  //   const roundedMinute = minute >= 45 ? "00" : minute >= 15 ? "30" : "00";
+  //   const roundedHour = minute >= 45 ? hour + 1 : hour;
+  //   this.amaOrduaTest = `${roundedHour.toString().padStart(2, "0")}:${roundedMinute}`;
+  // }
 
-  // Función: roundDownHour_hasieraData_editar
-  roundDownHour_hasieraData_editar() {
-    const parts = this.hasOrduaTest.split(":");
-    let hour = parseInt(parts[0], 10);
-    let minute = parseInt(parts[1], 10);
+  // // Función: roundDownHour_hasieraData_editar
+  // roundDownHour_hasieraData_editar() {
+  //   const parts = this.hasOrduaTest.split(":");
+  //   let hour = parseInt(parts[0], 10);
+  //   let minute = parseInt(parts[1], 10);
 
-    const roundedMinute = minute >= 45 ? "00" : minute >= 15 ? "30" : "00";
-    const roundedHour = minute >= 45 ? hour + 1 : hour;
-    this.hasOrduaTest = `${roundedHour.toString().padStart(2, "0")}:${roundedMinute}`;
-  }
+  //   const roundedMinute = minute >= 45 ? "00" : minute >= 15 ? "30" : "00";
+  //   const roundedHour = minute >= 45 ? hour + 1 : hour;
+  //   this.hasOrduaTest = `${roundedHour.toString().padStart(2, "0")}:${roundedMinute}`;
+  // }
 
-  // Función: roundDownHour_amaieraData_editar
-  roundDownHour_amaieraData_editar() {
-    const parts = this.amaOrduaTest.split(":");
-    let hour = parseInt(parts[0], 10);
-    let minute = parseInt(parts[1], 10);
+  // // Función: roundDownHour_amaieraData_editar
+  // roundDownHour_amaieraData_editar() {
+  //   const parts = this.amaOrduaTest.split(":");
+  //   let hour = parseInt(parts[0], 10);
+  //   let minute = parseInt(parts[1], 10);
 
-    const roundedMinute = minute >= 45 ? "00" : minute >= 15 ? "30" : "00";
-    const roundedHour = minute >= 45 ? hour + 1 : hour;
-    this.amaOrduaTest = `${roundedHour.toString().padStart(2, "0")}:${roundedMinute}`;
-  }  
-
-   
-
-  // Función: getCantKategoria
-  getCantKategoria(katId: number, lanId: number): string {
-    const cant = this.langileTratamenduak.filter(tratamendu => tratamendu.langile_id === lanId && tratamendu.kategoria_id === katId);
-    return cant.length > 0 ? cant[0].cant : "0";
-  }
-
-  // Función: comprobar_cita_editar
-  comprobar_cita_editar() {
-    const eguna = new Date(this.dataEditar).toISOString().substring(0, 10);
-    const filtrarCitas = this.hitzorduak.filter(cita => 
-      ((cita.hasiera_ordua >= this.hasOrduaEditar && cita.hasiera_ordua < this.amaOrduaEditar) || 
-      (cita.amaiera_ordua >= this.hasOrduaEditar && cita.amaiera_ordua < this.amaOrduaEditar)) && 
-      cita.eserlekua === this.eserlekuaEditar && cita.data.includes(eguna)
-    );
-
-    if (filtrarCitas.length > 0) {
-      this.error = true;
-      // this.toastr.error(this.translations[this.currentLocale].default.citaReservada);
-    } else {
-      this.error = false;
-    }
-  }
-
-  // Función: comprobar_cita_crear
-  comprobar_cita_crear() {
-    const eguna = new Date(this.dataTest).toISOString().substring(0, 10);
-    const filtrarCitas = this.hitzorduak.filter(cita => 
-      ((cita.hasiera_ordua >= this.hasOrduaTest && cita.hasiera_ordua < this.amaOrduaTest) || 
-      (cita.amaiera_ordua >= this.hasOrduaTest && cita.amaiera_ordua < this.amaOrduaTest)) && 
-      cita.eserlekua === this.eserlekuaCrear && cita.data.includes(eguna)
-    );
-
-    if (filtrarCitas.length > 0) {
-      this.error = true;
-      // this.toastr.error(this.translations[this.currentLocale].default.citaReservada);
-    } else {
-      this.error = false;
-    }
-  }
-
-  // Función: checkCookie
-  checkCookie() {
-    if (document.cookie === "") {
-      window.location.href = "http://localhost/Erronka2/Front/Login.html";
-    } else if (document.cookie === "lanbide") {
-      window.location.href = "http://localhost/Erronka2/Front/Home.html";
-    }
-  }
+  //   const roundedMinute = minute >= 45 ? "00" : minute >= 15 ? "30" : "00";
+  //   const roundedHour = minute >= 45 ? hour + 1 : hour;
+  //   this.amaOrduaTest = `${roundedHour.toString().padStart(2, "0")}:${roundedMinute}`;
+  // }  
 
 }

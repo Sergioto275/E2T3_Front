@@ -1,185 +1,166 @@
-import { Component, ViewChild, ElementRef, OnInit, AfterViewInit } from '@angular/core';
-import { Chart } from 'chart.js/auto';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ApiService } from '../services/api.service';
+import { environment } from 'src/environments/environment';
+import { HeaderComponent } from '../components/header/header.component';
+
+declare var Chart: any; 
 
 @Component({
   selector: 'app-grafikoak',
   templateUrl: './grafikoak.page.html',
   styleUrls: ['./grafikoak.page.scss'],
 })
-export class GrafikoakPage implements OnInit, AfterViewInit {
-  
-  @ViewChild('citasChart', { static: false }) citasChart!: ElementRef;
-  @ViewChild('tintesChart', { static: false }) tintesChart!: ElementRef;
-  @ViewChild('clientesChart', { static: false }) clientesChart!: ElementRef;
+export class GrafikoakPage implements OnInit {
+  @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
+  langileak:any[] = [];
+  chart: any;
+  categoriasAbiertas: { [key: string]: boolean } = {};
+  langileService:any[]=[];
+  isGraphOpen:boolean = false;
+  selectedLanguage: string = 'es'; 
 
-  graficos = [
-    { nombre: 'CITAS' },
-    { nombre: 'TINTES' },
-    { nombre: 'CLIENTES' }
-  ];
-
-  showCitas = false;
-  showTintes = false;
-  showClientes = false;
-
-  citasData: number[] = [];
-  tintesData: number[] = [];
-  clientesData: number[] = [];
-
-  private citasChartInstance: Chart | null = null;
-  private tintesChartInstance: Chart | null = null;
-  private clientesChartInstance: Chart | null = null;
-  
-  searchText: string = '';
-  selectedLanguage: string = 'es';
-
-  constructor(private apiService: ApiService, private translate: TranslateService) {
-    // Recuperamos el idioma guardado o establecemos por defecto 'es'
-    this.selectedLanguage = localStorage.getItem('language') || 'es';
-    this.translate.setDefaultLang(this.selectedLanguage);
+  constructor(private translate: TranslateService) {
+    this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
 
-  ngOnInit() {
-    this.loadData();
-  }
-
-  ngAfterViewInit() {
+  openGraphModal(id: string) {
+    this.isGraphOpen = true;
     setTimeout(() => {
-      if (this.showCitas) this.renderBarChart();
-      if (this.showTintes) this.renderLineChart();
-      if (this.showClientes) this.renderPieChart();
-    }, 500);
+      this.mostrarDatos(id); // Esperamos un poco antes de crear el gráfico
+    }, 300); 
   }
-
-  graficosFiltrados() {
-    return this.searchText
-      ? this.graficos.filter(grafico =>
-          this.translate.instant(grafico.nombre).toLowerCase().includes(this.searchText.toLowerCase())
-        )
-      : this.graficos;
+  
+  
+  closeGraphModal(){
+    this.isGraphOpen = false;
   }
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
-    localStorage.setItem('language', this.selectedLanguage);
-  }
-
-  loadData() {
-    this.apiService.getCitas().subscribe((data: any[]) => {
-      this.citasData = data.map(item => item.cantidad);
-    });
-
-    this.apiService.getTintes().subscribe((data: any[]) => {
-      this.tintesData = data.map(item => item.cantidad);
-    });
-
-    this.apiService.getClientes().subscribe((data: any[]) => {
-      this.clientesData = data.map(item => item.cantidad);
-    });
-  }
-
-  toggleGraph(type: string) {
-    if (type === 'citas') {
-      this.showCitas = !this.showCitas;
-      if (this.showCitas) {
-        setTimeout(() => this.renderBarChart(), 500);
-      } else {
-        this.destroyChart(this.citasChartInstance);
-      }
-    } else if (type === 'tintes') {
-      this.showTintes = !this.showTintes;
-      if (this.showTintes) {
-        setTimeout(() => this.renderLineChart(), 500);
-      } else {
-        this.destroyChart(this.tintesChartInstance);
-      }
-    } else if (type === 'clientes') {
-      this.showClientes = !this.showClientes;
-      if (this.showClientes) {
-        setTimeout(() => this.renderPieChart(), 500);
-      } else {
-        this.destroyChart(this.clientesChartInstance);
-      }
+    if (this.headerComponent) {
+      this.headerComponent.loadTranslations();
     }
   }
 
-  renderBarChart() {
-    this.destroyChart(this.citasChartInstance);
-    this.citasChartInstance = new Chart(this.citasChart.nativeElement, {
-      type: 'bar',
-      data: {
-        labels: this.getMonthLabels(),
-        datasets: [{
-          label: this.translate.instant('CITAS_POR_MES'),
-          data: this.citasData,
-          backgroundColor: 'rgba(54, 162, 235, 0.6)',
-          borderColor: 'rgba(54, 162, 235, 1)',
-          borderWidth: 1
-        }]
-      },
-      options: { responsive: true, maintainAspectRatio: false }
-    });
+  ngOnInit() {
+    this.langileakLortu();
+    this.langile_serviceLortu();
   }
 
-  renderLineChart() {
-    this.destroyChart(this.tintesChartInstance);
-    this.tintesChartInstance = new Chart(this.tintesChart.nativeElement, {
-      type: 'line',
-      data: {
-        labels: this.getMonthLabels(),
-        datasets: [{
-          label: this.translate.instant('TINTES_APLICADOS'),
-          data: this.tintesData,
-          borderColor: 'rgba(255, 99, 132, 1)',
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderWidth: 2,
-          fill: true
-        }]
-      },
-      options: { responsive: true, maintainAspectRatio: false }
-    });
+  toggleCategoria(categoria: string) {
+    this.categoriasAbiertas[categoria] = !this.categoriasAbiertas[categoria];
   }
 
-  renderPieChart() {
-    this.destroyChart(this.clientesChartInstance);
-    this.clientesChartInstance = new Chart(this.clientesChart.nativeElement, {
-      type: 'pie',
-      data: {
-        labels: [
-          this.translate.instant('CLIENTES_CENTRO'),
-          this.translate.instant('CLIENTES_EXTERIOR')
-        ],
-        datasets: [{
-          label: this.translate.instant('DISTRIBUCION_CLIENTES'),
-          data: this.clientesData,
-          backgroundColor: ['#ff6384', '#36a2eb']
-        }]
-      },
-      options: { responsive: true, maintainAspectRatio: false }
-    });
+  isCategoriaAbierta(categoria: string): boolean {
+    return this.categoriasAbiertas[categoria] || false;
   }
 
-  getMonthLabels(): string[] {
-    return [
-      this.translate.instant('SEPTIEMBRE'),
-      this.translate.instant('OCTUBRE'),
-      this.translate.instant('NOVIEMBRE'),
-      this.translate.instant('DICIEMBRE'),
-      this.translate.instant('ENERO'),
-      this.translate.instant('FEBRERO'),
-      this.translate.instant('MARZO'),
-      this.translate.instant('ABRIL'),
-      this.translate.instant('MAYO'),
-      this.translate.instant('JUNIO')
-    ];
+  mostrarDatos(trabajadorId: string) {
+    setTimeout(() => {
+      const ctx = document.getElementById('myChart') as HTMLCanvasElement;
+      if (!ctx) {
+        console.error('No se encontró el canvas');
+        return;
+      }
+  
+      if (this.chart) {
+        this.chart.destroy(); // Destruir gráfico anterior si existe
+      }
+  
+      const trabajador = this.langileService.find(t => t.id == trabajadorId);
+      let servicios = { corte: 0, tinte: 0 };
+      let trabajadorNombre = trabajador ? trabajador.nombre : "Desconocido";
+  
+      if (trabajador) {
+        servicios = trabajador.servicios;
+      }
+  
+      this.chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: Object.keys(servicios),
+          datasets: [{
+            label: `${trabajadorNombre} - Servicios`,
+            data: Object.values(servicios),
+            backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
+            borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }, 500);
   }
+  
+  
+  
 
-  private destroyChart(chartInstance: Chart | null) {
-    if (chartInstance) {
-      chartInstance.destroy();
+  async langile_serviceLortu() {
+    try {
+      const response = await fetch(`${environment.url}hitzorduak/langileZerbitzuak`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        method: "GET"
+      });
+  
+      if (!response.ok) {
+        throw new Error('Errorea eskaera egiterakoan');
+      }
+  
+      const datuak = await response.json();
+  
+      // Transformamos los datos de la API en un formato más usable
+      this.langileService = Object.entries(datuak).map(([key, value]: [string, any]) => ({
+        id: key,
+        nombre: value.nombre,
+        servicios: value.servicios
+      }));
+  
+      console.log('Langile Zerbitzuak kargatu:', this.langileService);
+    } catch (e) {
+      console.error("Errorea langile zerbitzuak kargatzerakoan:", e);
+    }
+  }  
+
+  async langileakLortu() {
+    try {
+      const response = await fetch(`${environment.url}taldeak`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        method: "GET"
+      });
+  
+      if (!response.ok) {
+        throw new Error('Errorea eskaera egiterakoan');
+      }
+  
+      const datuak = await response.json();
+      
+      // Filtramos las categorías y productos activos (sin `ezabatzeData`)
+      this.langileak = datuak
+        .filter((taldea:any) => taldea.ezabatzeData === null)
+        .map((taldea:any) => ({
+          ...taldea,
+          langileak: taldea.langileak.filter((langile:any) => langile.ezabatzeData === null)}));
+  
+      console.log('Produktuak kargatu:', this.langileak);
+  
+    } catch (e) {
+      console.error("Errorea produktuak kargatzerakoan:", e);
     }
   }
 }
+
+

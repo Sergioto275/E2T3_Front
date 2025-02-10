@@ -7,6 +7,8 @@ export interface Ikaslea {
   izena: string;
   abizenak: string;
   taldea: Taldea;
+  taldeIzena?:String;
+  taldeKodea?:String;
   sortzeData?: string;
   eguneratzeData?: string;
   ezabatzeData?: null;
@@ -16,10 +18,27 @@ export interface Ikaslea {
 export interface Taldea {
   kodea: string;
   izena?: string;
+  langileak?:Ikaslea[];
   sortzeData?: string;
   eguneratzeData?: string;
   ezabatzeData?: null;
 }
+
+export interface Horario {
+  id?:number;
+  taldea: {
+    kodea: string;
+  };
+  eguna: number;  // Esto debe ser un número
+  hasieraData: string;
+  amaieraData: string;
+  hasieraOrdua: string;
+  amaieraOrdua: string;
+  sortzeData?: string;
+  eguneratzeData?: string;
+  ezabatzeData?: string | null;
+}
+
 
 @Injectable({
   providedIn: 'root',
@@ -51,7 +70,7 @@ export class IkasleZerbitzuakService {
   }
 
   // Actualizar un alumno
-  updateAlumno(updatedAlumno: Ikaslea): Observable<Ikaslea> {
+  updateAlumno(updatedAlumno: any): Observable<Ikaslea> {
     return this.http.put<Ikaslea>('http://localhost:8080/api/langileak/' + updatedAlumno.id, updatedAlumno);
   }
 
@@ -67,5 +86,23 @@ export class IkasleZerbitzuakService {
   updateGrupo(updatedGrupo: Taldea): Observable<Taldea> {
     return this.http.put<Taldea>('http://localhost:8080/api/taldeak/' + updatedGrupo.kodea, updatedGrupo);
   }
+
+  getHorarios(): Observable<Horario[]> {
+    return this.http.get<Horario[]>('http://localhost:8080/api/ordutegiak');
+  }
+  // Guardar un nuevo horario
+  guardarHorario(nuevoHorario: Horario): Observable<Horario> {
+    return this.http.post<Horario>('http://localhost:8080/api/ordutegiak', nuevoHorario);
+  }
+  // Actualizar un horario existente
+  actualizarHorario(updatedHorario: Horario): Observable<Horario> {
+    return this.http.put<Horario>('http://localhost:8080/api/ordutegiak/id/' + updatedHorario.id, updatedHorario);
+  }
+
+  // Eliminar un horario
+  eliminarHorario(id: number): Observable<string> {
+    return this.http.delete('http://localhost:8080/api/ordutegiak/id/' + id, { responseType: 'text' });
+  }
   
 }
+

@@ -1,58 +1,175 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { IkasleZerbitzuakService, Ikaslea, Taldea } from './../zerbitzuak/ikasle-zerbitzuak.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AlertController, IonModal, ModalController } from '@ionic/angular';
+import {IkasleZerbitzuakService, Ikaslea, Taldea, Horario,} from './../zerbitzuak/ikasle-zerbitzuak.service';
+import { TranslateService } from '@ngx-translate/core';
+import { HeaderComponent } from '../components/header/header.component';
 
 @Component({
   selector: 'app-ikasleak',
   templateUrl: './ikasleak.page.html',
   styleUrls: ['./ikasleak.page.scss'],
 })
+
+
 export class IkasleakPage implements OnInit {
-  selectedIkasleak: Set<number> = new Set();
+  @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
+  selectedLanguage: string = 'es';
   searchQuery: string = '';
   ikasleak: Ikaslea[] = [];
-  filteredAlumnos: Ikaslea[] = [];
-  taldeak: Taldea[]=[];
-  gruposDisponibles: Taldea[] = [];
-  selectedAlumno: Ikaslea = { id: 0, izena: '', abizenak: '', taldea: { kodea: ''}};
+  ikasleArray: any[] = [];
+  filteredAlumnos: any[] = [];
+  selectedAlumno: any = null;
+  selectedIkasleak: Set<number> = new Set();
+  nuevoAlumno: any = {izena: '', abizenak: '', taldea: { kodea: '' },};
   isEditModalOpen: boolean = false;
-  nuevoAlumno: Ikaslea = { id: 0, izena: '', abizenak: '', taldea: { kodea: ''}};
-  nuevoGrupo: Taldea = { kodea: '', izena: '' };
-  kodeak: Taldea[] = [];
+  nuevoGrupo: any = { kodea: '', izena: '' };
+  selectedTalde: any = null;
+  ordutegiArray: any[] = [];
+  ordutegiArrayFiltered: any[] = [];
+  isEditTaldeModalOpen: boolean = false;
+  fecha: string = '';
+  horaInicio: any = null;
+  horaFin: any = null;
+  fechaInicioFilter: any = null;
+  fechaFinFilter: any = null;
+  fechaInicio: any = null;
+  fechaFin: any = null;
+  idHorario: any = null;
+  grupoSeleccionado: Taldea = { kodea: '', izena: '' };
+  diaSeleccionado: number = 0;
+  ordutegia: Horario = {taldea: {kodea: '',},eguna: 0,hasieraData: '',amaieraData: '',hasieraOrdua: '',amaieraOrdua: '',};
+  selectedHorario: Horario = {id: 0,hasieraData: '',hasieraOrdua: '',amaieraData: '',amaieraOrdua: '',eguna: 0,taldea: { kodea: '' },};
+  filteredGroups: any[] = [];
+
 
   constructor(
+    private translate: TranslateService,
     private modalController: ModalController,
-    private ikasleService: IkasleZerbitzuakService
-  ) {}
+    private ikasleService: IkasleZerbitzuakService,
+    private alertController: AlertController
+  ) {
+    this.translate.setDefaultLang('es');
+    this.translate.use(this.selectedLanguage);
+  }
 
   ngOnInit() {
-    
     this.getGrupos();
     // Obtener alumnos
     this.getAlumnos();
+    this.getHorarios();
+  }
+
+  changeLanguage() {
+    this.translate.use(this.selectedLanguage);
+    if (this.headerComponent) {
+      this.headerComponent.loadTranslations();
+    }
+  }
+
+  getHorarios(): void {
+    this.ikasleService.getHorarios().subscribe(
+      (horarios) => {
+        // Filtrar los horarios que no tienen datos en 'ezabatze_data' (null, undefined o vacío)
+        this.ordutegiArray = horarios.filter((horario) => {
+          const isDeletedTalde = this.ikasleArray.some(
+            (grupo) => grupo.kodea === horario.taldea.kodea && grupo.ezabatzeData
+          );
+          return !horario.ezabatzeData && !isDeletedTalde; // Filtra los horarios cuyo taldea no ha sido eliminado
+        })
+        this.ordutegiArrayFiltered = this.ordutegiArray;
+        console.log('Horarios obtenidos y filtrados:', this.ordutegiArray);
+      },
+      (error) => {
+        console.error('Error al obtener los horarios:', error);
+      }
+    );
+  }
+
+  filterHorarios()
+  {
+    this.ordutegiArrayFiltered = this.ordutegiArray.map(ordutegi => ({
+      ...ordutegi,
+      // zerbitzuak: categoria.zerbitzuak.map((zerbitzua: any) => ({ ...zerbitzua }))
+    }));
+
+    this.ordutegiArrayFiltered = this.ordutegiArrayFiltered.filter(ordutegi => {
+      const horarioFecha = new Date(ordutegi.hasieraData); // Convertir a objeto Date
+      const inicio = this.fechaInicioFilter ? new Date(this.fechaInicioFilter) : null;
+      const fin = this.fechaFinFilter ? new Date(this.fechaFinFilter) : null;
+  
+      return (
+        (!inicio || horarioFecha >= inicio) &&
+        (!fin || horarioFecha <= fin)
+      );
+    });
+  }
+
+  resetFilters() {
+    this.fechaInicioFilter = null;
+    this.fechaFinFilter = null;
+    this.ordutegiArrayFiltered = this.ordutegiArray.map(ordutegi => ({
+      ...ordutegi,
+      // zerbitzuak: categoria.zerbitzuak.map((zerbitzua: any) => ({ ...zerbitzua }))
+    }));  
+  }
+  
+
+  filterGroups() {
+    console.log('Buscando:', this.searchQuery); // 👈 Verifica que la función se ejecuta
+  
+    if (this.searchQuery.trim() === '') {
+      this.filteredGroups = [...this.ikasleArray];
+    } else {
+      this.filteredGroups = this.ikasleArray.filter(grupo =>
+        grupo.izena.toLowerCase().includes(this.searchQuery.toLowerCase()) || 
+        grupo.kodea.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    }
+  }
+  
+
+
+
+  resetFilterGroup() {
+    this.searchQuery = '';
+    this.filteredGroups = this.ikasleArray;
   }
 
 
-  
+  getDayName(k: number): string {
+    if (k === 1) {
+      return this.translate.instant('ikaslePage.Astelehena'); // Lunes
+    } else if (k === 2) {
+      return this.translate.instant('ikaslePage.Asteartea'); // Martes
+    } else if (k === 3) {
+      return this.translate.instant('ikaslePage.Asteazkena'); // Miércoles
+    } else if (k === 4) {
+      return this.translate.instant('ikaslePage.Osteguna'); // Jueves
+    } else if (k === 5) {
+      return this.translate.instant('ikaslePage.Ostirala'); // Viernes
+    } else {
+      return ''; // Si no es un valor válido de 1 a 7
+    }
+  }
+
   // Método para obtener los alumnos de la API
   getAlumnos() {
     this.ikasleService.getAlumnos().subscribe((data: Ikaslea[]) => {
-      
-      this.ikasleak = data.filter((ikaslea) => !ikaslea.ezabatzeData);  // Asignar los alumnos a la propiedad ikasleak
-      this.filteredAlumnos = [...this.ikasleak]; // Inicializar la lista filtrada con todos los alumnos
+      this.filteredAlumnos = data.filter((ikaslea) => !ikaslea.ezabatzeData); // Asignar los alumnos a la propiedad ikasleak
     });
   }
 
-  getGrupos(){
-    this.ikasleService.getGrupos().subscribe((data: Taldea[]) => {
-      this.taldeak = data.filter((grupo) => !grupo.ezabatzeData);  // Cargar los grupos en la variable
-      console.log(this.taldeak); // Esto es solo para verificar que se están cargando correctamente
-      this.gruposDisponibles = [...this.taldeak]
+  getGrupos() {
+    this.ikasleService.getGrupos().subscribe((data: any[]) => {
+      this.ikasleArray = data
+        .filter((grupo: any) => grupo.ezabatzeData === null); // Asegúrate de filtrar por los que no están eliminados
+      this.filteredGroups = [...this.ikasleArray]; // Al principio, muestra todos los grupos
     });
   }
 
-  openEditModal(ikaslea: Ikaslea) {
-    this.selectedAlumno = { ...ikaslea };
+  openEditModal(ikaslea: any) {
+    this.selectedAlumno = ikaslea;
+    console.log(this.selectedAlumno)
     this.isEditModalOpen = true;
   }
 
@@ -60,103 +177,144 @@ export class IkasleakPage implements OnInit {
     this.isEditModalOpen = false;
   }
 
-  updateAlumno() {
-    if (this.selectedAlumno && this.selectedAlumno.taldea.kodea) {
-      // Creamos el objeto con los datos actualizados
-      let updatedData = {
-        "id": this.selectedAlumno.id, // Mantén el ID del alumno
-        "izena": this.selectedAlumno.izena, // Nombre
-        "abizenak": this.selectedAlumno.abizenak, // Apellidos
-        taldea: {
-          "kodea": this.selectedAlumno.taldea.kodea, // Código del grupo
-          "izena": this.selectedAlumno.taldea.izena // Nombre del grupo (si es necesario)
-        }
-      };
-  
-      console.log('Datos actualizados:', updatedData);
-  
-      // Llamada al servicio para actualizar el alumno
-      this.ikasleService.updateAlumno(updatedData).subscribe((updatedAlumno) => {
-        // Actualizamos el alumno en la lista de alumnos
-        this.ikasleak = this.ikasleak.map((alumno) =>
-          alumno.id === updatedAlumno.id ? updatedAlumno : alumno
-        );
-  
-        // Cerramos el modal de edición después de la actualización
-        this.closeEditModal();
-      }, (error) => {
-        console.error('Error al actualizar el alumno:', error);
-      });
-    } else {
-      console.error("No se ha seleccionado un código de grupo o alumno.");
-    }
-  }
-  
-  
-  
-
   filterAlumnos() {
     const query = this.searchQuery.trim().toLowerCase();
-    this.filteredAlumnos = query
-      ? this.ikasleak.filter(
-          (ikaslea) =>
-            `${ikaslea.izena} ${ikaslea.abizenak} ${ikaslea.taldea.kodea}`.toLowerCase().includes(query)
+    if(this.searchQuery !== ''){
+      this.filteredAlumnos = query
+      ? this.filteredAlumnos.filter((ikaslea) =>
+          `${ikaslea.izena} ${ikaslea.abizenak} ${ikaslea.taldeKodea} ${ikaslea.taldeIzena}`
+            .toLowerCase()
+            .includes(query)
         )
-      : [...this.ikasleak];
+      : [...this.filteredAlumnos];
+    }else{
+      this.getAlumnos();
+    }
+    
   }
 
   eliminarAlumnos() {
     this.selectedIkasleak.forEach((id) => {
       this.ikasleService.eliminarAlumno(id).subscribe(() => {
         // Eliminar el alumno de la lista
-        this.ikasleak = this.ikasleak.filter((alumno) => alumno.id !== id);
-        this.filteredAlumnos = [...this.ikasleak];  // Actualizar la lista filtrada
+        this.getAlumnos();
+        this.getGrupos();
+        this.closeModal();
       });
     });
-    this.selectedIkasleak.clear();  // Limpiar la selección después de eliminar
+    this.selectedIkasleak.clear(); // Limpiar la selección después de eliminar
   }
 
   async agregarAlumno() {
     let data = {
-      "izena": this.nuevoAlumno.izena,
-      "abizenak": this.nuevoAlumno.abizenak,
+      izena: this.nuevoAlumno.izena,
+      abizenak: this.nuevoAlumno.abizenak,
       taldea: {
-        "kodea": this.nuevoAlumno.taldea.kodea
-      }
-  }
-  console.log(data);
-
+        kodea: this.nuevoAlumno.taldea.kodea,
+      },
+    };
+    console.log(data);
     this.ikasleService.agregarAlumno(data).subscribe((data) => {
-      this.ikasleak.push(data);
-      this.filteredAlumnos = [...this.ikasleak];
+      this.getAlumnos();
+      this.getGrupos();
       this.modalController.dismiss();
     });
-    this.nuevoAlumno = { izena: '', abizenak: '', taldea: { kodea: '', izena: '' }};
+    this.nuevoAlumno = {
+      izena: '',
+      abizenak: '',
+      taldea: { kodea: '', izena: '' },
+    };
   }
 
   async agregarGrupo() {
     let data = {
-      "kodea": this.nuevoGrupo.kodea,
-      "izena": this.nuevoGrupo.izena
-    }
+      kodea: this.nuevoGrupo.kodea,
+      izena: this.nuevoGrupo.izena,
+    };
 
     this.ikasleService.agregarGrupo(data).subscribe((data) => {
-      this.gruposDisponibles.push(data);
+      this.getGrupos();
+      this.getAlumnos();
       this.modalController.dismiss();
     });
     this.nuevoGrupo = { kodea: '', izena: '' };
   }
 
+  // Abre el modal para editar un talde
+  openEditTaldeModal(talde: any) {
+    this.selectedTalde = talde; // Clonar el objeto seleccionado
+    console.log('selectedTalde al abrir modal:', this.selectedTalde);
+    this.isEditTaldeModalOpen = true;
+  }
+
+  // Cierra el modal de edición
+  closeEditTaldeModal() {
+    this.isEditTaldeModalOpen = false;
+  }
+
+  updateTalde() {
+    const updatedTalde = {
+      kodea: this.selectedTalde.kodea,
+      izena: this.selectedTalde.izena,
+    };
+
+    this.ikasleService.updateGrupo(updatedTalde).subscribe(() => {
+      this.getAlumnos();
+      this.getGrupos();
+      this.closeEditTaldeModal();
+    });
+  }
+
+  updateAlumno() {
+    const updatedAlumno = {
+      id: this.selectedAlumno.id,
+      izena: this.selectedAlumno.izena,
+      abizenak: this.selectedAlumno.abizenak,
+      taldea: { 
+        kodea:this.selectedAlumno.taldeKodea
+      },
+    };
+
+    this.ikasleService.updateAlumno(updatedAlumno).subscribe(() => {
+      this.getGrupos();
+      this.getAlumnos();
+      this.closeEditModal();
+    });
+  }
+
+  async confirmarEliminacionGrupo(grupoKodea: string) {
+    const alert = await this.alertController.create({
+      header: this.translate.instant('ikaslePage.Segurtasuna'),
+      message: this.translate.instant('ikaslePage.Message1'),
+      buttons: [
+        {
+          text: this.translate.instant('ikaslePage.Cancel'),
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: this.translate.instant('ikaslePage.Borrar'),
+          handler: () => {
+            this.eliminarGrupo(grupoKodea);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
   eliminarGrupo(grupoKodea: string) {
     // Llamamos al servicio que gestiona la eliminación de grupos
     this.ikasleService.eliminarGrupo(grupoKodea).subscribe(
-      response => {
-        // Aquí, actualizas la lista de grupos disponibles después de eliminar
-        this.gruposDisponibles = this.gruposDisponibles.filter(grupo => grupo.kodea !== grupoKodea);
-        alert('Grupo eliminado exitosamente');
+      (response) => {
+        this.getGrupos();
+        this.getAlumnos();
+        this.getHorarios();
+        alert('Taldea ezabatuta');
       },
-      error => {
-        alert('Hubo un error al eliminar el grupo');
+      (error) => {
+        alert('Arazo bat egon da taldea ezabatzerakoan');
         console.error(error);
       }
     );
@@ -175,5 +333,180 @@ export class IkasleakPage implements OnInit {
       }
     }
   }
+
+  // Función para guardar los horarios
+  guardarHorario() {
+    // Verifica si todos los campos necesarios están completos
+    // Formatear las fechas a 'yyyy-MM-dd' y las horas a 'HH:mm:ss'
+    const formattedFechaInicio = this.formatDate(this.fechaInicio);
+    const formattedFechaFin = this.formatDate(this.fechaFin);
+    const formattedHoraInicio = this.horaInicio + ':00';
+    const formattedHoraFin = this.horaFin + ':00';
   
+    this.ordutegia = {
+      taldea: {
+        kodea: this.grupoSeleccionado.kodea,
+      },
+      eguna: this.diaSeleccionado,
+      hasieraData: formattedFechaInicio, // Convierte a formato YYYY-MM-DD
+      amaieraData: formattedFechaFin, // Convierte a formato YYYY-MM-DD
+      hasieraOrdua: formattedHoraInicio, // Asegúrate de que está en formato HH:mm:ss
+      amaieraOrdua: formattedHoraFin, // Asegúrate de que está en formato HH:mm:ss
+    };
+    console.log(JSON.stringify(this.ordutegia));
+    // Usamos subscribe para manejar la respuesta
+    this.ikasleService.guardarHorario(this.ordutegia).subscribe(
+      (data) => {
+        // Si el horario se guarda correctamente, agrega a la lista de horarios
+        this.getHorarios();
+        // Reseteo de los campos después de guardar
+        this.ordutegia = {
+          taldea: {
+            kodea: '', // Vacia el código de grupo
+          },
+          eguna: 0, // Resetea el día seleccionado
+          hasieraData: '', // Resetea la fecha de inicio
+          amaieraData: '', // Resetea la fecha de fin
+          hasieraOrdua: '', // Resetea la hora de inicio
+          amaieraOrdua: '', // Resetea la hora de fin
+        };
+        this.grupoSeleccionado.kodea = ''; // Resetea el grupo seleccionado
+        this.diaSeleccionado = 0; // Resetea el día seleccionado
+        this.fechaInicio = ''; // Resetea la fecha de inicio
+        this.fechaFin = ''; // Resetea la fecha de fin
+        this.horaInicio = null; // Resetea la hora de inicio
+        this.horaFin = null; // Resetea la hora de fin
+        console.log(data);
+        // Verifica si el horario se ha guardado correctamente
+        if (data && data.id) {
+          this.showAlert('Éxito', 'Horario guardado correctamente');
+        } else {
+          console.log('Error al guardar');
+          this.showAlert('Error', 'Hubo un error al guardar el horario');
+        }
+      },
+      (error) => {
+        console.error('Error al guardar el horario:', error);
+        this.showAlert('Error', 'Hubo un problema con la conexión');
+      }
+    );
+    this.closeModal();
+  }
+  
+
+  // Función para formatear la fecha a 'yyyy-MM-dd'
+  formatDate(date: string): string {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0'); // Los meses empiezan desde 0
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  // Mostrar alerta en caso de éxito o error
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+  // Función para cerrar el modal
+  closeModal() {
+    this.modalController.dismiss();
+  }
+
+  openModal(horario: any, modal: IonModal) {
+    console.log(horario)
+    // Asignar los valores del horario seleccionado al formulario
+    this.selectedHorario = horario;
+    this.idHorario = horario.id;
+    this.grupoSeleccionado = horario.taldea;
+    this.diaSeleccionado = horario.eguna;
+    this.fechaInicio = horario.hasieraData;
+    this.fechaFin = horario.amaieraData;
+    this.horaInicio = horario.hasieraOrdua;
+    this.horaFin = horario.amaieraOrdua;
+    // Abrir el modal manualmente
+    modal.present();
+  }
+
+  horarioSeleccionado: any; // Asegúrate de tener un horario seleccionado
+  // Otras propiedades del componente
+  seleccionarHorario(horario: any) {
+    this.horarioSeleccionado = horario;
+    // Aquí puedes agregar lógica adicional si es necesario
+  }
+
+  actualizarHorario() {
+    if (this.selectedHorario) {
+      console.log('Horario seleccionado:', this.selectedHorario); // Verifica que el id esté presente
+      const horarioActualizado: any = {
+        ...this.selectedHorario,
+        taldea: this.grupoSeleccionado,
+        eguna: this.diaSeleccionado,
+        hasieraData: this.fechaInicio,
+        amaieraData: this.fechaFin,
+        hasieraOrdua: this.horaInicio,
+        amaieraOrdua: this.horaFin,
+        eguneratzeData: new Date().toISOString(),
+      };
+      // Si el id es undefined aquí, podría ser que no se esté asignando correctamente
+      if (horarioActualizado.id) {
+        this.ikasleService.actualizarHorario(horarioActualizado).subscribe(
+          (response) => {
+            this.getHorarios();
+            // Resetear el horario seleccionado
+            this.selectedHorario = {
+              id: 0,
+              hasieraData: '',
+              hasieraOrdua: '',
+              amaieraData: '',
+              amaieraOrdua: '',
+              eguna: 0,
+              taldea: { kodea: '' },
+            };
+            this.closeModal();
+          },
+          (error) => {
+            console.error('Error al actualizar el horario:', error);
+          }
+        );
+      } else {
+        console.error('El id del horario es undefined');
+      }
+    }
+  }
+
+  deleteHorario(horario: any): void {
+    // Crear la alerta de confirmación
+    this.alertController
+      .create({
+        header: this.translate.instant('ikaslePage.Message2'),
+        message: this.translate.instant('ikaslePage.Message3')  + horario.taldea.kodea + "?",
+        buttons: [
+          {
+            text: this.translate.instant('ikaslePage.Cancel'),
+            role: 'cancel',
+            handler: () => {
+              console.log('Eliminación cancelada');
+            },
+          },
+          {
+            text: this.translate.instant('ikaslePage.Aceptar'),
+            handler: () => {
+              this.ikasleService
+                .eliminarHorario(horario.id)
+                .subscribe((response) => {
+                  this.getHorarios();
+                  console.log('Horario eliminado', response);
+                });
+            },
+          },
+        ],
+      })
+      .then((alert) => alert.present());
+  }
 }

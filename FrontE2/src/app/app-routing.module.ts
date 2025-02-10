@@ -37,8 +37,16 @@ const routes: Routes = [
     loadChildren: () => import('./txostena/txostena.module').then( m => m.TxostenaPageModule)
   },
   {
-    path: 'grafikoak',
-    loadChildren: () => import('./grafikoak/grafikoak.module').then( m => m.GrafikoakPageModule)
+    path: 'txandak',
+    loadChildren: () => import('./txandak/txandak.module').then( m => m.TxandakPageModule)
+  },
+  {
+    path: 'tratamenduak',
+    loadChildren: () => import('./tratamenduak/tratamenduak.module').then( m => m.TratamenduakPageModule)
+  },
+  {
+    path: 'historiala',
+    loadChildren: () => import('./historiala/historiala.module').then( m => m.HistorialaPageModule)
   },
 
 
