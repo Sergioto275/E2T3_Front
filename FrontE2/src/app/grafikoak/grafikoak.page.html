@@ -1,13 +1,48 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Grafikoak</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+<app-header></app-header>
+<ion-content class="ion-page" id="main-content">
+  <ion-header>
     <ion-toolbar>
-      <ion-title size="large">grafikoak</ion-title>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>{{ 'graficos.title' | translate }}</ion-title>
+      <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">
+        <ion-select-option value="es">Español</ion-select-option>
+        <ion-select-option value="eu">Euskera</ion-select-option>
+      </ion-select>
     </ion-toolbar>
   </ion-header>
+  <ion-content [fullscreen]="true">
+    <ng-container *ngFor="let taldea of langileak">
+      <!-- Categoría -->
+      <ion-card>
+        <ion-item button (click)="toggleCategoria(taldea.izena)" detail="false">
+          <ion-label><strong>{{ taldea.izena }}</strong></ion-label>
+          <ion-icon [name]="isCategoriaAbierta(taldea.izena) ? 'chevron-up' : 'chevron-down'" slot="end"></ion-icon>
+        </ion-item>
+  
+        <!-- Lista de productos dentro de la categoría -->
+        <ion-list *ngIf="isCategoriaAbierta(taldea.izena)">
+          <ion-item *ngFor="let langile of taldea.langileak" (click)="openGraphModal(langile.id)">
+            <ion-label> {{ langile.izena }}</ion-label>
+            <ion-label> {{ langile.abizenak }} </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card>
+    </ng-container>
+  
+    <ion-modal [isOpen]="isGraphOpen" (ionModalDidDismiss)="closeGraphModal()">
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Gráfico de Servicios</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeGraphModal()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <canvas *ngIf="isGraphOpen" id="myChart"></canvas>
+      </ion-content>
+    </ion-modal>
+  </ion-content>
 </ion-content>
