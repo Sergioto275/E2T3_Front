@@ -2,7 +2,7 @@
   "menu": {
     "title": "Menu",
     "hitzorduak": "Citas",
-    "txostenak": "Informes",
+    "grafikoak": "Graficos",
     "materialak": "Materiales",
     "produktuak": "Productos",
     "historiala": "Historial",
@@ -90,7 +90,9 @@
       "borrar": "Borrar",
       "crear": "Crear",
       "asignar": "Asignar Alumno",
-      "generar": "Generar Ticket"
+      "generar": "Generar Ticket",
+      "cancelar":"Cancelar",
+      "descargar":"Descargar"
     },
     "modal": {
         "vacio":"No hay horarios definidos para hoy",
@@ -103,7 +105,15 @@
         "cliente": "Cliente",
         "telefono": "Teléfono",
         "casa": "Del centro",
-        "trabajador":"Trabajador"
+        "trabajador":"Trabajador",
+        "ticket":"Descargar Ticket",
+        "messageDownload":"¿Desea descargar el ticket de la cita?",
+        "redirect":"Redireccion",
+        "messageRedirect":"Se ha utilizado tintes en esta cita. ¿Desea ser redireccionado a registrarlo?",
+        "cambioAsiento":"Cambio Asiento",
+        "messageCambioAsiento":"¿Desea cambiar el asiento?",
+        "cambioDia":"Cambio Dia",
+        "messageCambioDia":"¿Desea cambiar de Dia?"
     },
     "validaciones":{
       "fecha":"La fecha es obligatoria",
@@ -250,7 +260,7 @@
     "Egutegia": "Horario",
     "Itxi": "Cerrar",
     "Segurtasuna": "Seguridad",
-    "Message1": "Estas seguro de que quieres eliminar este grupo?",
+    "Message1": "¿Estas seguro de que quieres eliminar este grupo?",
     "Message2": "Confirmar Eliminación",
     "Message3": "¿Estás seguro de que quieres eliminar el horario del grupo: ",
     "Cancel": "Cancelar",

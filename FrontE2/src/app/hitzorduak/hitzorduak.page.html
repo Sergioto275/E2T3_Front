@@ -198,14 +198,14 @@
                   <ion-text color="danger">{{ "citas.validaciones.asignarTicket" | translate }}</ion-text>
                 </ng-container>
                 <ng-template #validarFecha>
-                  <ng-container *ngIf="citaCrear?.data !== todayDate; else validarTrabajador">
+                  <ng-container *ngIf="citaEditar?.data != todayDate; else validarTrabajador">
                     <ion-text color="danger">{{ "citas.validaciones.fechaDiferente" | translate }}</ion-text>
                   </ng-container>
                 </ng-template>
                 <ng-template #validarTrabajador>
                   <ion-text color="danger" *ngIf="trabajador?.invalid && trabajador?.touched">{{ "citas.validaciones.selectTrabajador" | translate }}</ion-text>
                 </ng-template>                
-                <ion-button type="submit" [disabled]="asignarCitaForm.invalid || !citaValida() || citaEditar.prezioTotala || (citaCrear?.data !== todayDate)">
+                <ion-button type="submit" [disabled]="asignarCitaForm.invalid || !citaValida() || citaEditar.prezioTotala || (citaEditar?.data !== todayDate)">
                   {{ "citas.botones.asignar" | translate }}
                 </ion-button>
               </form>
@@ -218,7 +218,7 @@
                   <ion-label>{{ katTrat.izena }}</ion-label>
                   <ion-item *ngFor="let trat of katTrat.zerbitzuak">
                     <ion-checkbox slot="start" [(ngModel)]="trat.selected" name="trat_{{trat.id}}"
-                      (ionChange)="actualizarServiciosSeleccionados(trat, katTrat.extra)">
+                      (ionChange)="actualizarServiciosSeleccionados(trat, katTrat.extra, katTrat.kolorea)">
                     </ion-checkbox>
                     <ion-label>{{ trat.izena }}
                       <ng-container *ngIf="!katTrat.extra">
@@ -243,7 +243,7 @@
                   <ion-text color="danger">{{ "citas.validaciones.generado" | translate }}</ion-text>
                 </ng-container>
                 <ng-template #validarFecha>
-                  <ng-container *ngIf="citaCrear?.data !== todayDate; else validarAsignacion">
+                  <ng-container *ngIf="citaEditar?.data !== todayDate; else validarAsignacion">
                     <ion-text color="danger">{{ "citas.validaciones.fechaDiferente" | translate }}</ion-text>
                   </ng-container>
                 </ng-template>
@@ -255,7 +255,7 @@
                 <ng-template #validarServicio>
                   <ion-text color="danger" *ngIf="!servicioSeleccionado()">{{ "citas.validaciones.selectService" | translate }}</ion-text>
                 </ng-template>
-                <ion-button type="submit" [disabled]="ticketForm.invalid || !citaValida() || !servicioSeleccionado() || !preciosValidos() || this.citaEditar.prezioTotala || !citaEditar.hasieraOrduaErreala || (citaCrear?.data !== todayDate)">
+                <ion-button type="submit" [disabled]="ticketForm.invalid || !citaValida() || !servicioSeleccionado() || !preciosValidos() || this.citaEditar.prezioTotala || !citaEditar.hasieraOrduaErreala || (citaEditar?.data !== todayDate)">
                   {{ "citas.botones.generar" | translate }}
                 </ion-button>
               </form>

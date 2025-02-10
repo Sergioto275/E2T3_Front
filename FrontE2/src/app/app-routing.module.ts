@@ -1,4 +1,3 @@
-import { TxostenaPageModule } from './txostena/txostena.module';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
@@ -37,8 +36,8 @@ const routes: Routes = [
     loadChildren: () => import('./materialak/materialak.module').then( m => m.MaterialakPageModule)
   },
   {
-    path: 'txostenak',
-    loadChildren: () => import('./txostena/txostena.module').then( m => m.TxostenaPageModule)
+    path: 'grafikoak',
+    loadChildren: () => import('./grafikoak/grafikoak.module').then( m => m.GrafikoakPageModule)
   },
   {
     path: 'txandak',

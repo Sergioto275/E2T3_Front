@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
 import { HeaderComponent } from '../components/header/header.component';
+import { HttpClient } from '@angular/common/http';
 
 declare var Chart: any; 
 
@@ -19,7 +20,7 @@ export class GrafikoakPage implements OnInit {
   isGraphOpen:boolean = false;
   selectedLanguage: string = 'es'; 
 
-  constructor(private translate: TranslateService) {
+  constructor(private translate: TranslateService, private http: HttpClient) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
@@ -103,63 +104,51 @@ export class GrafikoakPage implements OnInit {
   
   
 
-  async langile_serviceLortu() {
-    try {
-      const response = await fetch(`${environment.url}hitzorduak/langileZerbitzuak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "GET"
-      });
-  
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
+  langile_serviceLortu() {
+    this.http.get(`${environment.url}hitzorduak/langileZerbitzuak`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-  
-      const datuak = await response.json();
-  
-      // Transformamos los datos de la API en un formato más usable
-      this.langileService = Object.entries(datuak).map(([key, value]: [string, any]) => ({
-        id: key,
-        nombre: value.nombre,
-        servicios: value.servicios
-      }));
-  
-      console.log('Langile Zerbitzuak kargatu:', this.langileService);
-    } catch (e) {
-      console.error("Errorea langile zerbitzuak kargatzerakoan:", e);
-    }
-  }  
+    }).subscribe(
+      (datuak: any) => {
+        // Transformamos los datos de la API en un formato más usable
+        this.langileService = Object.entries(datuak).map(([key, value]: [string, any]) => ({
+          id: key,
+          nombre: value.nombre,
+          servicios: value.servicios
+        }));
 
-  async langileakLortu() {
-    try {
-      const response = await fetch(`${environment.url}taldeak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "GET"
-      });
-  
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
+        console.log('Langile Zerbitzuak kargatu:', this.langileService);
+      },
+      (error) => {
+        console.error("Errorea langile zerbitzuak kargatzerakoan:", error);
       }
-  
-      const datuak = await response.json();
-      
-      // Filtramos las categorías y productos activos (sin `ezabatzeData`)
-      this.langileak = datuak
-        .filter((taldea:any) => taldea.ezabatzeData === null)
-        .map((taldea:any) => ({
-          ...taldea,
-          langileak: taldea.langileak.filter((langile:any) => langile.ezabatzeData === null)}));
-  
-      console.log('Produktuak kargatu:', this.langileak);
-  
-    } catch (e) {
-      console.error("Errorea produktuak kargatzerakoan:", e);
-    }
+    );
+  }
+
+  langileakLortu() {
+    this.http.get(`${environment.url}taldeak`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    }).subscribe(
+      (datuak: any) => {
+        // Filtramos las categorías y productos activos (sin `ezabatzeData`)
+        this.langileak = datuak
+          .filter((taldea: any) => taldea.ezabatzeData === null)
+          .map((taldea: any) => ({
+            ...taldea,
+            langileak: taldea.langileak.filter((langile: any) => langile.ezabatzeData === null)
+          }));
+
+        console.log('Langileak kargatu:', this.langileak);
+      },
+      (error) => {
+        console.error("Errorea langileak kargatzerakoan:", error);
+      }
+    );
   }
 }
 
