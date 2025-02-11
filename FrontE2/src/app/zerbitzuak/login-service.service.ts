@@ -1,73 +1,56 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage-angular';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginServiceService {
 
-  private authState = new BehaviorSubject<boolean>(false);
-  private userRole = new BehaviorSubject<string | null>(null);
+  user:any = null;
 
-  constructor(private storage: Storage, private router: Router) {
-    this.init();
+  constructor(private storage: Storage, private router: Router, private http: HttpClient) {
   }
 
-  async init() {
-    await this.storage.create(); // Inicializar Storage
-    const token = await this.storage.get('token');
-    const role = await this.storage.get('role');
-    if (token) {
-      this.authState.next(true);
-      this.userRole.next(role);
-    }
+  init() {}
+
+  login(username: string, password: string): Observable<boolean> {
+    const json_data = { "username": username, "pasahitza": password };
+    
+    return this.http.post<any>(`${environment.url}erabiltzaileak/login`, json_data, {
+      headers: { 'Content-Type': 'application/json' }
+    }).pipe(
+      map(response => {
+        if (response && response.status === true) {
+          this.user = response;
+          
+          localStorage.setItem('username', response.username);
+          localStorage.setItem('role', response.rola);
+          
+          return true;
+        }
+        return false;
+      }),
+      catchError(error => {
+        console.error("Error en la petición de login:", error);
+        return of(false);
+      })
+    );
   }
-
-  async login(username: string, password: string) {
-    // Simulación de autenticación (aquí harías una petición a tu backend)
-    if (username === 'admin' && password === '1234') {
-      const token = 'fake-jwt-token'; // Reemplázalo por un token real
-      const role = 'admin'; // El backend debe devolver el rol
-
-      await this.storage.set('token', token);
-      await this.storage.set('role', role);
-      this.authState.next(true);
-      this.userRole.next(role);
-      return true;
-    } else if (username === 'user' && password === '1234') {
-      const token = 'fake-jwt-token';
-      const role = 'user';
-
-      await this.storage.set('token', token);
-      await this.storage.set('role', role);
-      this.authState.next(true);
-      this.userRole.next(role);
-      return true;
-    }
-
-    return false;
+  
+  logout() {
+    // Eliminar los datos de login del localStorage
+    localStorage.removeItem('username');
+    localStorage.removeItem('role');
+    this.router.navigate(['/login']); // Redirigir al login
   }
-
-  async logout() {
-    await this.storage.remove('token');
-    await this.storage.remove('role');
-    this.authState.next(false);
-    this.userRole.next(null);
-    this.router.navigate(['/login']);
+  
+  isAlumno(): boolean {
+    const role = localStorage.getItem('role'); // Obtén el rol desde el localStorage
+    return role === 'ik'; // Devuelve true si el rol es 'ik' (alumno), false en caso contrario
   }
-
-  isAuthenticated(): Observable<boolean> {
-    return this.authState.asObservable();
-  }
-
-  getRole(): Observable<string | null> {
-    return this.userRole.asObservable();
-  }
-
-  async hasRole(role: string): Promise<boolean> {
-    const currentRole = await this.storage.get('role');
-    return currentRole === role;
-  }
+  
 }

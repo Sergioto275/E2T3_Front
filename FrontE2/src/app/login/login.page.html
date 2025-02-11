@@ -9,18 +9,17 @@
         <ion-label position="stacked">
           Erabiltzailea:<ion-text color="danger">*</ion-text>
         </ion-label>
-        <ion-input type="text" placeholder="Zure erabiltzailea"></ion-input>
+        <ion-input type="text" placeholder="Zure erabiltzailea" [(ngModel)]="username"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">
           Pasahitza:<ion-text color="danger">*</ion-text>
         </ion-label>
-        <ion-input type="password" placeholder="Zure pasahitza"></ion-input>
+        <ion-input type="password" placeholder="Zure pasahitza" [(ngModel)]="password"></ion-input>
       </ion-item>
     </ion-list>
-    <ion-button expand="block" class="login-button" routerLink="/home">
+    <ion-button expand="block" class="login-button" (click)="onLogin()">
       <b>Saioa Hasi</b>
     </ion-button>    
   </div>
 </ion-content>
-
