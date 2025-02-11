@@ -77,6 +77,14 @@
       "mensajeAlertaBorrarCats": "¿Estás seguro de querer eliminar la categoría",
       "materiales": "Materiales",
       "filtros": "Filtros"
+      },
+      "toasts": {
+        "mensajeSacarMats": "Los materiales se han sacado correctamente",
+        "mensajeMatsCrear": "El material se ha creado correctamente",
+        "mensajeEditarMats": "El material ha sido actualizado correctamente",
+        "mensajeCrearCat": "La categoría ha sido creada correctamente",
+        "mensajeEditarCat": "La categoría se ha editado correctamente",
+        "mensajeDevolverMat": "El material se ha devuelto correctamente"
       }
   },
   "citas": {

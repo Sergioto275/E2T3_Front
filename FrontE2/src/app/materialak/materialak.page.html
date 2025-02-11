@@ -40,8 +40,8 @@
           </ion-buttons>
 
           <ion-buttons slot="end">
-            <ion-checkbox slot="start" (click)="toggleMostrarCheckbox()"
-              [(ngModel)]="checkboxHabilitado"></ion-checkbox>
+            <ion-toggle [checked]="false" slot="start" (click)="toggleMostrarCheckbox()"
+              [(ngModel)]="checkboxHabilitado"></ion-toggle>
             <ion-button id="atera-modal-mat" [disabled]="materialesSeleccionados.length == 0 || !checkboxHabilitado">{{
               'materiales.botones.sacarMateriales' | translate }}</ion-button>
           </ion-buttons>
@@ -88,7 +88,7 @@
                   <ion-label> {{ material.izena }}</ion-label>
                   <ion-label class="etiketa"> {{ material.etiketa }}</ion-label>
                   <ion-checkbox *ngIf="mostrarCheckbox" slot="start" [(ngModel)]="material.selected"
-                    (ionChange)="actualizarMaterialesSeleccionados(material, categoria.id)"></ion-checkbox>
+                    (ionChange)="actualizarMaterialesSeleccionados(material)"></ion-checkbox>
                   <ion-button slot="end" color="light" (click)="abrirEditarMaterial(material)" *ngIf="!mostrarCheckbox">
                     <ion-icon name="create"></ion-icon>
                   </ion-button>
@@ -181,7 +181,8 @@
           <ion-grid>
             <ion-row>
               <ion-col>
-                <ion-button expand="block" color="success" (click)="materialakAtera();modalAteraMat.dismiss()" [disabled]="!selecTaldea || !selecAlumno">
+                <ion-button id="open-toast" expand="block" color="success"
+                  (click)="materialakAtera();modalAteraMat.dismiss()" [disabled]="!selecTaldea || !selecAlumno">
                   <ion-icon name="checkmark"></ion-icon>
                 </ion-button>
               </ion-col>
@@ -193,6 +194,7 @@
             </ion-row>
           </ion-grid>
         </ion-content>
+        <app-toasts mezua="{{ 'materiales.toasts.mensajeSacarMats' | translate }}"></app-toasts>
       </ng-template>
     </ion-modal>
 
@@ -222,7 +224,8 @@
           <ion-grid>
             <ion-row>
               <ion-col>
-                <ion-button expand="block" color="success" (click)="materialaSortu();modalSortuMat.dismiss()"
+                <ion-button id="open-toast" expand="block" color="success"
+                  (click)="materialaSortu();modalSortuMat.dismiss()"
                   [disabled]="!crearNombre || crearNombre.trim() === '' || !crearEtiqueta || crearEtiqueta.trim() === '' || !crearCategoria">
                   <ion-icon name="checkmark"></ion-icon>
                 </ion-button>
@@ -235,6 +238,7 @@
             </ion-row>
           </ion-grid>
         </ion-content>
+        <app-toasts mezua="{{ 'materiales.toasts.mensajeMatsCrear' | translate }}"></app-toasts>
       </ng-template>
     </ion-modal>
 
@@ -264,7 +268,7 @@
           <ion-grid>
             <ion-row>
               <ion-col>
-                <ion-button expand="block" color="success"
+                <ion-button id="open-toast" expand="block" color="success"
                   (click)="materialaEditatu(selectedMateriala.id);modalEditar.dismiss()"
                   [disabled]="!editarNombre || editarNombre.trim() === '' || !editarEtiqueta || editarEtiqueta.trim() === '' || !editarCategoria">
                   <ion-icon name="checkmark"></ion-icon>
@@ -278,6 +282,7 @@
             </ion-row>
           </ion-grid>
         </ion-content>
+        <app-toasts mezua="{{ 'materiales.toasts.mensajeEditarMats' | translate }}"></app-toasts>
       </ng-template>
     </ion-modal>
 
@@ -297,7 +302,8 @@
           <ion-grid>
             <ion-row>
               <ion-col>
-                <ion-button expand="block" color="success" (click)="kategoriaSortu();modalKatMatSortu.dismiss()"
+                <ion-button id="open-toast" expand="block" color="success"
+                  (click)="kategoriaSortu();modalKatMatSortu.dismiss()"
                   [disabled]="!crearKatNombre || crearKatNombre.trim() === ''">
                   <ion-icon name="checkmark"></ion-icon>
                 </ion-button>
@@ -310,6 +316,7 @@
             </ion-row>
           </ion-grid>
         </ion-content>
+        <app-toasts mezua="{{ 'materiales.toasts.mensajeCrearCat' | translate }}"></app-toasts>
       </ng-template>
     </ion-modal>
 
@@ -331,7 +338,7 @@
           <ion-grid>
             <ion-row>
               <ion-col>
-                <ion-button expand="block" color="success"
+                <ion-button id="open-toast" expand="block" color="success"
                   (click)="kategoriaEditatu(selectedCategory.id);modaleditarcat.dismiss()"
                   [disabled]="!editarKatNombre || editarKatNombre.trim() === ''">
                   <ion-icon name="checkmark"></ion-icon>
@@ -345,6 +352,7 @@
             </ion-row>
           </ion-grid>
         </ion-content>
+        <app-toasts mezua="{{ 'materiales.toasts.mensajeEditarCat' | translate }}"></app-toasts>
       </ng-template>
     </ion-modal>
 
@@ -378,7 +386,8 @@
           <ion-grid>
             <ion-row>
               <ion-col>
-                <ion-button expand="block" color="success" (click)="materialakBueltatu();modalmatdevolver.dismiss()">
+                <ion-button id="open-toast" expand="block" color="success"
+                  (click)="materialakBueltatu();modalmatdevolver.dismiss()">
                   <ion-icon name="checkmark"></ion-icon>
                 </ion-button>
               </ion-col>
@@ -390,6 +399,7 @@
             </ion-row>
           </ion-grid>
         </ion-content>
+        <app-toasts mezua="{{ 'materiales.toasts.mensajeDevolverMat' | translate }}"></app-toasts>
       </ng-template>
     </ion-modal>
   </ion-content>

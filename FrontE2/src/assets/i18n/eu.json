@@ -77,6 +77,14 @@
             "mensajeAlertaBorrarCats": "Ziur zaude kategoria hau ezabatu nahi duzula:",
             "materiales": "Materialak",
             "filtros": "Filtroak"
+        },
+        "toasts": {
+          "mensajeSacarMats": "Materialak ondo atera dira",
+          "mensajeMatsCrear": "Materiala ondo sortu da",
+          "mensajeEditarMats": "Materiala ondo editatu da",
+          "mensajeCrearCat": "Kategoria ondo sortu da",
+          "mensajeEditarCat": "Kategoria ondo editatu da",
+          "mensajeDevolverMat": "Materiala ondo bueltatu da"
         }
     },
     "citas": {
