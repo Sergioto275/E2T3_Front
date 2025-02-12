@@ -5,6 +5,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { environment } from 'src/environments/environment';
 import { HeaderComponent } from '../components/header/header.component';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-historiala',
@@ -44,7 +45,8 @@ export class HistorialaPage implements OnInit {
 
   constructor(
     private translate: TranslateService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private http: HttpClient
   ) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
@@ -156,87 +158,77 @@ export class HistorialaPage implements OnInit {
   }
 
   // Función: cargarHitzordu
-  async cargarMovimientoProductos() {
+  cargarMovimientoProductos() {
     this.produktuMugimendu = [];
-    try {
-      const response = await fetch(`${environment.url}produktu_mugimenduak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "GET"
-      });
-      if (!response.ok) {
-        throw new Error('Error al obtener las citas');
+    this.http.get(`${environment.url}produktu_mugimenduak`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-      const datuak = await response.json();
-      this.produktuMugimendu = datuak.filter((prod:any) => prod.ezabatzeData === null);
-      this.produktuMugimenduFiltered = this.produktuMugimendu;
-    } catch (error) {
-      console.log("Error al cargar citas:", error);
-    }
+    }).subscribe(
+      (datuak: any) => {
+        // Filtramos los productos activos (sin `ezabatzeData`)
+        this.produktuMugimendu = datuak.filter((prod: any) => prod.ezabatzeData === null);
+        this.produktuMugimenduFiltered = this.produktuMugimendu;
+      },
+      (error) => {
+        console.error("Error al cargar productos:", error);
+      }
+    );
   }
 
-  async cargarMovimientoMateriales() {
+  cargarMovimientoMateriales() {
     this.materialMugimendu = [];
-    try {
-      const response = await fetch(`${environment.url}material_mailegua`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "GET"
-      });
-      if (!response.ok) {
-        throw new Error('Error al obtener las materiales');
+    this.http.get(`${environment.url}material_mailegua`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-      const datuak = await response.json();
-      this.materialMugimendu = datuak.filter((mat:any) => mat.ezabatzeData === null);
-      this.materialMugimenduFiltered = this.materialMugimendu;
-    } catch (error) {
-      console.log("Error al cargar material:", error);
-    }
+    }).subscribe(
+      (datuak: any) => {
+        // Filtramos los materiales activos (sin `ezabatzeData`)
+        this.materialMugimendu = datuak.filter((mat: any) => mat.ezabatzeData === null);
+        this.materialMugimenduFiltered = this.materialMugimendu;
+      },
+      (error) => {
+        console.error("Error al cargar materiales:", error);
+      }
+    );
   }
 
-   // Función: cargarHitzordu
-   async cargarTickets() {
+  cargarTickets() {
     this.tickets = [];
-    try {
-      const response = await fetch(`${environment.url}hitzorduak/ticket`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "GET"
-      });
-      if (!response.ok) {
-        throw new Error('Error al obtener las citas');
+    this.http.get(`${environment.url}hitzorduak/ticket`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-      const datuak = await response.json();
-      this.tickets = datuak.filter((citas:any) => citas.ezabatzeData === null);
-      this.ticketsFiltered = this.tickets;
-    } catch (error) {
-      console.log("Error al cargar citas:", error);
-    }
+    }).subscribe(
+      (datuak: any) => {
+        // Filtramos los tickets activos (sin `ezabatzeData`)
+        this.tickets = datuak.filter((citas: any) => citas.ezabatzeData === null);
+        this.ticketsFiltered = this.tickets;
+      },
+      (error) => {
+        console.error("Error al cargar tickets:", error);
+      }
+    );
   }
 
-  async cargarCita(id:number) {
-    try {
-      const response = await fetch(`${environment.url}hitzorduak/id/${id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "GET"
-      });
-      if (!response.ok) {
-        throw new Error('Error al obtener las citas');
+  cargarCita(id: number) {
+    this.http.get(`${environment.url}hitzorduak/id/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-      const datuak = await response.json();
-      this.descargar_ticket(datuak);
-    } catch (error) {
-      console.log("Error al cargar citas:", error);
-    }
+    }).subscribe(
+      (datuak: any) => {
+        this.descargar_ticket(datuak);
+      },
+      (error) => {
+        console.error("Error al cargar cita:", error);
+      }
+    );
   }
 
   descargar_ticket(datuak: any) {
@@ -283,50 +275,47 @@ export class HistorialaPage implements OnInit {
     pdf.save(`ticket_${datuak.id}.pdf`);
   }
 
-  async cargarClientes() {
+  cargarClientes() {
     this.bezeroak = [];
-    try {
-      const response = await fetch(`${environment.url}bezero_fitxak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "GET"
-      });
-      if (!response.ok) {
-        throw new Error('Error al obtener las clientes');
+    this.http.get(`${environment.url}bezero_fitxak`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-      const datuak = await response.json();
-      this.bezeroak = datuak.filter((bezero: any) => bezero.ezabatzeData === null)
-      this.bezeroakFiltered = this.bezeroak;
-      } catch (error) {
-      console.log("Error al cargar clientes:", error);
-    }
+    }).subscribe(
+      (datuak: any) => {
+        // Filtramos los clientes activos (sin `ezabatzeData`)
+        this.bezeroak = datuak.filter((bezero: any) => bezero.ezabatzeData === null);
+        this.bezeroakFiltered = this.bezeroak;
+      },
+      (error) => {
+        console.error("Error al cargar clientes:", error);
+      }
+    );
   }
   
-  async cargarProductos() {
-    this.bezeroak = [];
-    try {
-      const response = await fetch(`${environment.url}produktuak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "GET"
-      });
-      if (!response.ok) {
-        throw new Error('Error al obtener las clientes');
+  cargarProductos() {
+    this.produktuak = [];
+    this.http.get(`${environment.url}produktuak`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-      const datuak = await response.json();
-      this.produktuak = datuak.filter((prod:any) => prod.ezabatzeData === null);
-    } catch (error) {
-      console.log("Error al cargar clientes:", error);
-    }
+    }).subscribe(
+      (datuak: any) => {
+        // Filtramos los productos activos (sin `ezabatzeData`)
+        this.produktuak = datuak.filter((prod: any) => prod.ezabatzeData === null);
+      },
+      (error) => {
+        console.error("Error al cargar productos:", error);
+      }
+    );
   }
 
   openBezero(bezero: any) {
     this.isEditingBezero = true;
     this.editingBezero = bezero;
+    console.log(this.editingBezero)
   }
 
   cerrarModal() {
@@ -354,79 +343,70 @@ export class HistorialaPage implements OnInit {
     }
   }
   
-  async guardar_bezero() {
-    try {
-      console.log(JSON.stringify(this.editingBezero))
-      const response = await fetch(`${environment.url}bezero_fitxak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "PUT",
-        body: JSON.stringify(this.editingBezero)
-      });
-  
-      if (!response.ok) {
-        throw new Error('Error al asignar la cita');
+  guardarBezero() {
+    console.log(JSON.stringify(this.editingBezero));
+    this.http.put(`${environment.url}bezero_fitxak`, this.editingBezero, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-      await this.cargarClientes();
-      this.cerrarModal();
-    } catch (error) {
-      console.error("Error al asignar la cita:", error);
-    }
+    }).subscribe(
+      () => {
+        this.cargarClientes();
+        this.cerrarModal();
+      },
+      (error) => {
+        console.error("Error al asignar la cita:", error);
+      }
+    );
   }
 
-  async crear_bezero() {
-    try {
-      const json_data = {
-        "izena": this.crearNombre,
-        "abizena": this.crearApellido,
-        "telefonoa": this.crearTelefono,
-        "azalSentikorra": this.crearPiel ? "B" : "E",
-      };
-      console.log(JSON.stringify(json_data))
-      const response = await fetch(`${environment.url}bezero_fitxak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "POST",
-        body: JSON.stringify(json_data)
-      });
-  
-      if (!response.ok) {
-        throw new Error('Error al asignar la cita');
+  crearBezero() {
+    const json_data = {
+      "izena": this.crearNombre,
+      "abizena": this.crearApellido,
+      "telefonoa": this.crearTelefono,
+      "azalSentikorra": this.crearPiel ? "B" : "E",
+    };
+    console.log(JSON.stringify(json_data));
+
+    this.http.post(`${environment.url}bezero_fitxak`, json_data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-      // toastr.success(this.translations[this.currentLocale].default.actualizar);
-      await this.cargarClientes();
-      // this.limpiar_campos();
-    } catch (error) {
-      console.error("Error al asignar la cita:", error);
-    }
+    }).subscribe(
+      () => {
+        this.cargarClientes();
+        // Puedes limpiar los campos o mostrar un mensaje de éxito aquí si lo deseas
+        // this.limpiarCampos();
+      },
+      (error) => {
+        console.error("Error al asignar la cita:", error);
+      }
+    );
   }
 
-  async deleteBezero(id:number) {
-    try {
-      const json_data = {
-        "id": id
-      };
-      console.log(JSON.stringify(json_data))
-      const response = await fetch(`${environment.url}bezero_fitxak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "DELETE",
-        body: JSON.stringify(json_data)
-      });
-  
-      if (!response.ok) {
-        throw new Error('Error al asignar la cita');
+  deleteBezero(id: number) {
+    const json_data = {
+      "id": id
+    };
+    console.log(JSON.stringify(json_data));
+
+    this.http.delete(`${environment.url}bezero_fitxak`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: json_data
+    }).subscribe(
+      () => {
+        this.cargarClientes();
+      },
+      (error) => {
+        console.error("Error al eliminar el cliente:", error);
       }
-      await this.cargarClientes();
-    } catch (error) {
-      console.error("Error al asignar la cita:", error);
-    }
+    );
   }
 
   changeLanguage() {

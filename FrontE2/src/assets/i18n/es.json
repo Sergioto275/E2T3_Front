@@ -2,7 +2,7 @@
   "menu": {
     "title": "Menu",
     "hitzorduak": "Citas",
-    "txostenak": "Informes",
+    "grafikoak": "Graficos",
     "materialak": "Materiales",
     "produktuak": "Productos",
     "historiala": "Historial",
@@ -74,7 +74,17 @@
       "listaMatsDevolver": "Lista de materiales a devolver",
       "confirmacion": "Confirmación",
       "mensajeAlertaBorrarMats": "¿Estás seguro de querer eliminar el material",
-      "mensajeAlertaBorrarCats": "¿Estás seguro de querer eliminar la categoría"
+      "mensajeAlertaBorrarCats": "¿Estás seguro de querer eliminar la categoría",
+      "materiales": "Materiales",
+      "filtros": "Filtros"
+      },
+      "toasts": {
+        "mensajeSacarMats": "Los materiales se han sacado correctamente",
+        "mensajeMatsCrear": "El material se ha creado correctamente",
+        "mensajeEditarMats": "El material ha sido actualizado correctamente",
+        "mensajeCrearCat": "La categoría ha sido creada correctamente",
+        "mensajeEditarCat": "La categoría se ha editado correctamente",
+        "mensajeDevolverMat": "El material se ha devuelto correctamente"
       }
   },
   "citas": {
@@ -88,7 +98,9 @@
       "borrar": "Borrar",
       "crear": "Crear",
       "asignar": "Asignar Alumno",
-      "generar": "Generar Ticket"
+      "generar": "Generar Ticket",
+      "cancelar":"Cancelar",
+      "descargar":"Descargar"
     },
     "modal": {
         "vacio":"No hay horarios definidos para hoy",
@@ -101,7 +113,34 @@
         "cliente": "Cliente",
         "telefono": "Teléfono",
         "casa": "Del centro",
-        "trabajador":"Trabajador"
+        "trabajador":"Trabajador",
+        "ticket":"Descargar Ticket",
+        "messageDownload":"¿Desea descargar el ticket de la cita?",
+        "redirect":"Redireccion",
+        "messageRedirect":"Se ha utilizado tintes en esta cita. ¿Desea ser redireccionado a registrarlo?",
+        "cambioAsiento":"Cambio Asiento",
+        "messageCambioAsiento":"¿Desea cambiar el asiento?",
+        "cambioDia":"Cambio Dia",
+        "messageCambioDia":"¿Desea cambiar de Dia?"
+    },
+    "validaciones":{
+      "fecha":"La fecha es obligatoria",
+      "horaInicio":"La hora de inicio es obligatoria",
+      "horaFin":"La hora de fin es obligatoria",
+      "asiento":"El asiento es obligatorio",
+      "cliente":"El nombre del cliente es obligatorio",
+      "descripcion":"La descripción es obligatoria",
+      "telefono":"Introduce un teléfono válido de al menos 9 dígitos",
+      "seleccion":"Selecciona una opcion",
+      "iniciada":"No puedes editar esta cita porque ya está iniciada.",
+      "selectTrabajador":"Es obligatorio seleccionar un trabajador.",
+      "asignarTicket":"No puedes asignar una cita con ticket ya generado.",
+      "fechaDiferente":"No puedes generar ni asignar una cita en una fecha diferente a hoy.",
+      "selectCita":"Debe seleccionar una cita",
+      "precioValido":"Todos los servicios extra deben tener un precio válido.",
+      "generado":"Esta cita ya tiene el ticket generado.",
+      "noAsignada":"No puede generar un ticket de una cita no asignada.",
+      "selectService":"Debe seleccionar al menos un servicio para generar el ticket."
     }
   },
   "historial": {
@@ -229,7 +268,7 @@
     "Egutegia": "Horario",
     "Itxi": "Cerrar",
     "Segurtasuna": "Seguridad",
-    "Message1": "Estas seguro de que quieres eliminar este grupo?",
+    "Message1": "¿Estas seguro de que quieres eliminar este grupo?",
     "Message2": "Confirmar Eliminación",
     "Message3": "¿Estás seguro de que quieres eliminar el horario del grupo: ",
     "Cancel": "Cancelar",
@@ -265,5 +304,8 @@
     "alumnoPlaceholderModal": "Selecciona un alumno",
     "MessageEliminar": "Eliminar turno",
     "MessageSeguroEliminar": "¿Estás seguro de que deseas eliminar esta txanda?"
+  },
+  "graficos":{
+    "title":"Graficos"
   }
 }

@@ -8,6 +8,7 @@ import { GrafikoakPageRoutingModule } from './grafikoak-routing.module';
 
 import { GrafikoakPage } from './grafikoak.page';
 import { ComponentsModule } from "../components/components.module";
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { ComponentsModule } from "../components/components.module";
     FormsModule,
     IonicModule,
     GrafikoakPageRoutingModule,
+    TranslateModule,
     ComponentsModule
 ],
   declarations: [GrafikoakPage]

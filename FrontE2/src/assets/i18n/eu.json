@@ -2,7 +2,7 @@
     "menu": {
         "title":"Menua",
         "hitzorduak": "Hitzorduak",
-        "txostenak": "Txostenak",
+        "grafikoak": "Grafikoak",
         "materialak": "Materialak",
         "produktuak": "Produktuak",
         "historiala": "Historiala",
@@ -74,7 +74,17 @@
             "listaMatsDevolver": "Bueltatu beharreko materialen zerrenda",
             "confirmacion": "Konfirmazioa",
             "mensajeAlertaBorrarMats": "Ziur zaude material hau ezabatu nahi duzula:",
-            "mensajeAlertaBorrarCats": "Ziur zaude kategoria hau ezabatu nahi duzula:"
+            "mensajeAlertaBorrarCats": "Ziur zaude kategoria hau ezabatu nahi duzula:",
+            "materiales": "Materialak",
+            "filtros": "Filtroak"
+        },
+        "toasts": {
+          "mensajeSacarMats": "Materialak ondo atera dira",
+          "mensajeMatsCrear": "Materiala ondo sortu da",
+          "mensajeEditarMats": "Materiala ondo editatu da",
+          "mensajeCrearCat": "Kategoria ondo sortu da",
+          "mensajeEditarCat": "Kategoria ondo editatu da",
+          "mensajeDevolverMat": "Materiala ondo bueltatu da"
         }
     },
     "citas": {
@@ -88,7 +98,9 @@
             "borrar": "Ezabatu",
             "crear": "Sortu",
             "asignar": "Ikaslea Esleitu",
-            "generar": "Sarrera Sortu"
+            "generar": "Ticket-a Sortu",
+            "cancelar":"Utzi",
+            "descargar":"Deskargatu"
         },
         "modal":{
             "vacio":"Ez dago ordutegirik definituta gaurkorako",
@@ -101,7 +113,34 @@
             "cliente":"Bezeroa",
             "telefono":"Telefonoa",
             "casa":"Etxekoa",
-            "trabajador":"Langilea"
+            "trabajador":"Langilea",
+            "ticket": "Ticket-a deskargatu",
+            "messageDownload": "Hitzorduaren ticket-a deskargatu nahi duzu?",
+            "redirect": "Bideraketa",
+            "messageRedirect": "Hitzordu honetan tindagaiak erabili dira. Erregistratzera bideratu nahi duzu?",
+            "cambioAsiento":"Eserleku Aldaketa",
+            "messageCambioAsiento":"Eserlekuz aldatu nahi duzu?",
+            "cambioDia":"Egun aldaketa",
+            "messageCambioDia":"Egunez aldatu nahi duzu?"
+        },
+        "validaciones": {
+            "fecha": "Data derrigorrezkoa da",
+            "horaInicio": "Hasiera ordua derrigorrezkoa da",
+            "horaFin": "Amaiera ordua derrigorrezkoa da",
+            "asiento": "Eserlekua derrigorrezkoa da",
+            "cliente": "Bezeroaren izena derrigorrezkoa da",
+            "descripcion": "Deskribapena derrigorrezkoa da",
+            "telefono": "Gutxienez 9 digitu dituen telefono baliodun bat sartu",
+            "seleccion": "Aukera bat hautatu",
+            "iniciada": "Ezin duzu hitzordu hau editatu, dagoeneko hasita dagoelako.",
+            "selectTrabajador": "Langile bat hautatzea derrigorrezkoa da.",
+            "asignarTicket": "Ezin duzu tiketa sortua duen hitzordu bati esleitu.",
+            "fechaDiferente": "Ezin duzu gaurko ez den data batean hitzordu bat sortu edo esleitu.",
+            "selectCita": "Hitzordu bat hautatu behar duzu",
+            "precioValido": "Ekstra zerbitzu guztiek prezio balioduna izan behar dute.",
+            "generado": "Hitzordu honek dagoeneko tiketa sortua du.",
+            "noAsignada": "Ezin duzu esleituta ez dagoen hitzordu baten tiketa sortu.",
+            "selectService": "Tiketa sortzeko gutxienez zerbitzu bat hautatu behar duzu."
         }
     },
     "historial": {
@@ -140,23 +179,6 @@
             "filtroFecha":"Data Filtratu",
             "filtroBezero":"Bilatu izena edo abizena"
         }
-    },
-    "informes":{
-        "title": "Txostenak",
-        "cliente": "Bezero",
-        "botones": {
-          "datos": "Datuak ikusi",
-          "cerrar": "Itxi"
-
-      },
-      "modal": {
-        "idCliente": "Bezeroaren ID",
-        "nombre": "Izen",
-        "apellido": "Abizena",
-        "telefono": "Teléfonoa",
-        "tinte": "Tintea",
-        "pSensible": "Ile Sentikorra"
-      }
     },
     "servicios":{
         "title":"Zerbitzuak",
@@ -265,5 +287,8 @@
     "alumnoPlaceholderModal": "Hautatu ikasle bat",
     "MessageEliminar": "Txanda ezabatu",
     "MessageSeguroEliminar": "¿Ziur zaude txanda hau ezabatu nahi duzula?"
+  },
+  "graficos":{
+    "title":"Grafikoak"
   }
 }

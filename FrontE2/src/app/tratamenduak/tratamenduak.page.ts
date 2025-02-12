@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
 import { HeaderComponent } from '../components/header/header.component';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-tratamenduak',
@@ -30,7 +31,7 @@ export class TratamenduakPage implements OnInit {
   filtroCategoria: string = '';
   filtroZerbitzua: string = '';
 
-  constructor(private translate: TranslateService) {
+  constructor(private translate: TranslateService, private http: HttpClient) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
@@ -109,190 +110,173 @@ export class TratamenduakPage implements OnInit {
     return this.categoriasAbiertas[categoria] || false;
   }
 
-  async zerbiztuakLortu() {
-    try {
-      const response = await fetch(`${environment.url}zerbitzu_kategoria`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "GET"
-      });
-  
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
+  zerbiztuakLortu() {
+    this.http.get(`${environment.url}zerbitzu_kategoria`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
       }
-  
-      const datuak = await response.json();
-      
-      // Filtramos las categorías y productos activos (sin `ezabatzeData`)
-      this.zerbitzuak = datuak
-        .filter((categoria:any) => categoria.ezabatzeData === null)
-        .map((categoria:any) => ({
-          ...categoria,
-          zerbitzuak: categoria.zerbitzuak
-            .filter((zerbitzua:any) => zerbitzua.ezabatzeData === null)
-        }));
-      this.filteredZerbitzuak = this.zerbitzuak;
-      console.log('zerbitzuak kargatu:', this.zerbitzuak);
-  
-    } catch (e) {
-      console.error("Errorea zerbitzuak kargatzerakoan:", e);
-    }
+    }).subscribe(
+      (datuak: any) => {
+        this.zerbitzuak = datuak
+          .filter((categoria: any) => categoria.ezabatzeData === null)
+          .map((categoria: any) => ({
+            ...categoria,
+            zerbitzuak: categoria.zerbitzuak
+              .filter((zerbitzua: any) => zerbitzua.ezabatzeData === null)
+          }));
+        
+        this.filteredZerbitzuak = this.zerbitzuak;
+        console.log('zerbitzuak kargatu:', this.zerbitzuak);
+      },
+      (error) => {
+        console.error('Errorea zerbitzuak kargatzerakoan:', error);
+      }
+    );
   }
 
-  async sortuZerbitzua(){
-    try {
-      const json_data = {
-        "izena": this.crearServicio.izena,
-        "zerbitzuKategoria":{
-            "id": this.crearServicio.idKategoria
-        },
-        "etxekoPrezioa": this.crearServicio.etxekoPrezioa,
-        "kanpokoPrezioa": this.crearServicio.kanpokoPrezioa
+  sortuZerbitzua() {
+    const json_data = {
+      "izena": this.crearServicio.izena,
+      "zerbitzuKategoria": {
+        "id": this.crearServicio.idKategoria
+      },
+      "etxekoPrezioa": this.crearServicio.etxekoPrezioa,
+      "kanpokoPrezioa": this.crearServicio.kanpokoPrezioa
+    };
+
+    console.log(json_data);
+
+    this.http.post(`${environment.url}zerbitzuak`, json_data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-    
-      console.log(json_data);
-      const response = await fetch(`${environment.url}zerbitzuak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "POST",
-        body: JSON.stringify(json_data)
-      });
-  
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
+    }).subscribe(
+      (response) => {
+        console.log('Servicio creado correctamente');
+        this.zerbiztuakLortu();  // Actualizar la lista de servicios
+      },
+      (error) => {
+        console.error('Errorea zerbitzua sortzerakoan:', error);
       }
-      await this.zerbiztuakLortu();
-    } catch (e) {
-      console.error("Errorea zerbitzuak kargatzerakoan:", e);
-    }
+    );
   }
 
-  async editarServicios(){
-    try {
-      const json_data = {
-        "id": this.editarServicio.id,
-        "izena": this.editarServicio.izena,
-        "zerbitzuKategoria":{
-            "id": this.editarServicio.idKategoria
-        },
-        "etxekoPrezioa": this.editarServicio.etxekoPrezioa,
-        "kanpokoPrezioa": this.editarServicio.kanpokoPrezioa
+  editarServicios() {
+    const json_data = {
+      "id": this.editarServicio.id,
+      "izena": this.editarServicio.izena,
+      "zerbitzuKategoria": {
+        "id": this.editarServicio.idKategoria
+      },
+      "etxekoPrezioa": this.editarServicio.etxekoPrezioa,
+      "kanpokoPrezioa": this.editarServicio.kanpokoPrezioa
+    };
+
+    console.log(json_data);
+
+    this.http.put(`${environment.url}zerbitzuak`, json_data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-    
-      console.log(json_data);
-      const response = await fetch(`${environment.url}zerbitzuak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "PUT",
-        body: JSON.stringify(json_data)
-      });
-  
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
+    }).subscribe(
+      (response) => {
+        console.log('Servicio actualizado correctamente');
+        this.zerbiztuakLortu();  // Actualizar la lista de servicios
+      },
+      (error) => {
+        console.error('Errorea zerbitzua eguneratzerakoan:', error);
       }
-      await this.zerbiztuakLortu();
-    } catch (e) {
-      console.error("Errorea zerbitzuak kargatzerakoan:", e);
-    }
+    );
   }
 
-  async eliminarServicio(id:number){
-    try {
-      const response = await fetch(`${environment.url}zerbitzuak/${id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "DELETE"
-      });
-  
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
+  eliminarServicio(id: number) {
+    const url = `${environment.url}zerbitzuak/${id}`;
+
+    this.http.delete(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-      await this.zerbiztuakLortu();
-    } catch (e) {
-      console.error("Errorea zerbitzuak kargatzerakoan:", e);
-    }
+    }).subscribe(
+      (response) => {
+        console.log('Servicio eliminado correctamente');
+        this.zerbiztuakLortu();  // Actualizar la lista de servicios
+      },
+      (error) => {
+        console.error('Errorea zerbitzua ezabatzerakoan:', error);
+      }
+    );
   }
 
-  async crearKategoria(){
-    try {
-      const json_data = {
-        "izena": this.crearCategoria.izena,
-        "kolorea": this.crearCategoria.kolorea,
-        "extra": this.crearCategoria.extra
+  crearKategoria() {
+    const json_data = {
+      "izena": this.crearCategoria.izena,
+      "kolorea": this.crearCategoria.kolorea,
+      "extra": this.crearCategoria.extra
+    };
+    console.log(json_data);
+
+    this.http.post(`${environment.url}zerbitzu_kategoria`, json_data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-      console.log(json_data);
-      const response = await fetch(`${environment.url}zerbitzu_kategoria`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "POST",
-        body: JSON.stringify(json_data)
-      });
-  
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
+    }).subscribe(
+      (response) => {
+        console.log('Categoría creada correctamente');
+        this.zerbiztuakLortu(); // Actualizar la lista de servicios
+        this.closeKatModal();   // Cerrar el modal
+      },
+      (error) => {
+        console.error('Errorea zerbitzuak kargatzerakoan:', error);
       }
-      await this.zerbiztuakLortu();
-      this.closeKatModal();
-    } catch (e) {
-      console.error("Errorea zerbitzuak kargatzerakoan:", e);
-    }
+    );
   }
 
-  async editarKategoria(){
-    try {
-      const json_data = {
-        "id": this.editarCategoria.id,
-        "izena": this.editarCategoria.izena,
-        "kolorea": this.editarCategoria.kolorea,
-        "extra": this.editarCategoria.extra
+  editarKategoria() {
+    const json_data = {
+      "id": this.editarCategoria.id,
+      "izena": this.editarCategoria.izena,
+      "kolorea": this.editarCategoria.kolorea,
+      "extra": this.editarCategoria.extra
+    };
+    console.log(json_data);
+
+    this.http.put(`${environment.url}zerbitzu_kategoria`, json_data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-      console.log(json_data);
-      const response = await fetch(`${environment.url}zerbitzu_kategoria`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "PUT",
-        body: JSON.stringify(json_data)
-      });
-  
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
+    }).subscribe(
+      (response) => {
+        console.log('Categoría editada correctamente');
+        this.zerbiztuakLortu(); // Actualizar la lista de servicios
+        this.closeKatModal();   // Cerrar el modal
+      },
+      (error) => {
+        console.error('Errorea zerbitzuak kargatzerakoan:', error);
       }
-      await this.zerbiztuakLortu();
-      this.closeKatModal();
-    } catch (e) {
-      console.error("Errorea zerbitzuak kargatzerakoan:", e);
-    }
+    );
   }
 
-  async eliminarKategoria(id:number){
-    try {
-      const response = await fetch(`${environment.url}zerbitzu_kategoria/${id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "DELETE"
-      });
-  
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
+  eliminarKategoria(id: number) {
+    this.http.delete(`${environment.url}zerbitzu_kategoria/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-      await this.zerbiztuakLortu();
-    } catch (e) {
-      console.error("Errorea zerbitzuak kargatzerakoan:", e);
-    }
+    }).subscribe(
+      (response) => {
+        console.log('Categoría eliminada correctamente');
+        this.zerbiztuakLortu(); // Actualizar la lista de servicios
+      },
+      (error) => {
+        console.error('Errorea zerbitzuak kargatzerakoan:', error);
+      }
+    );
   }
 
 }

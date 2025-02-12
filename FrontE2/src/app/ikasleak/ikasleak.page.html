@@ -45,8 +45,6 @@
           </ion-card-content>
         </ion-card>
         
-      
-        
         <ion-list>
           <ion-card *ngFor="let grupo of filteredGroups">
             <ion-card-header>
@@ -57,11 +55,7 @@
             <ion-card-content>
               <!-- Lista de alumnos dentro de items -->
               <ion-list>
-                <ion-item 
-                  *ngFor="let ikaslea of grupo.langileak" 
-                  class="ikasle-item"
-                  (click)="openEditModal(ikaslea)"
-                >
+                <ion-item *ngFor="let ikaslea of grupo.langileak" class="ikasle-item" (click)="openEditModal(ikaslea)">
                   <ion-label>
                     <h3>{{ ikaslea.izena }} {{ ikaslea.abizenak }} {{ ikaslea.ezabatzeData }}</h3>
                   </ion-label>
@@ -80,10 +74,6 @@
             </ion-card-content>
           </ion-card>
         </ion-list>
-        
-        
-        
-
       <!-- Modal para editar un Ikaslea -->
       <ion-modal [isOpen]="isEditModalOpen" (ionModalDidDismiss)="closeEditModal()">
         <ng-template>

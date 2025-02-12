@@ -6,6 +6,8 @@ import autoTable from 'jspdf-autotable';
 import 'jspdf-autotable';
 import { environment } from 'src/environments/environment';
 import { HeaderComponent } from '../components/header/header.component';
+import { AlertController, NavController } from '@ionic/angular';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-hitzorduak',
@@ -26,14 +28,34 @@ export class HitzorduakPage implements OnInit {
   hoursArray: any[] = [];
   rowspanAux: any[] = [];
   citaCrear:any = {"data":null, "hasieraOrdua":null, "amaieraOrdua":null, "eserlekua" :0, "izena":'', "telefonoa":'', "deskribapena":'', "etxekoa":false };
-  citaEditar:any = {"data":null, "hasieraOrdua":null, "amaieraOrdua":null, "eserlekua" :0, "izena":'', "telefonoa":'', "deskribapena":'', "etxekoa":false };
+  citaEditar:any = {"data":null, "hasieraOrdua":null, "amaieraOrdua":null, "eserlekua" :0, "izena":'', "telefonoa":'', "deskribapena":'', "etxekoa":false};
   idLangile: any = null;
   dataSelec!: any;
+  todayDate!: any;
   selectedLanguage: string = 'es';
 
   firstCell: { time: string, seat: number } | null = null;
   secondCell: { time: string, seat: number } | null = null;
   highlightedCells: { time: string, seat: number }[] = [];
+
+  servicioSeleccionado(): boolean {
+    return this.tratamenduArray.some(katTrat => 
+      katTrat.zerbitzuak.some((trat:any) => trat.selected)
+    );
+  }
+  
+  preciosValidos(): boolean {
+    return this.tratamenduSelec.every(katTrat => 
+      !katTrat.extra || katTrat.zerbitzuak.every((trat:any) => 
+        !trat.selected || (trat.precio && trat.precio > 0)
+      )
+    );
+  }
+  
+  citaValida(): boolean {
+    return this.citaEditar && this.citaEditar.data !== null;
+  }
+  
 
   updateHighlightedCells() {
     if (this.firstCell && this.secondCell) {
@@ -62,19 +84,20 @@ export class HitzorduakPage implements OnInit {
     return this.highlightedCells.some(cell => cell.time === time && cell.seat === seat);
   }
 
-   // Función: seleccionar_citaCrear
-  reserbar_cita(eserlekua: number, time: string) {
-    
-    if(this.citaEditar.eserlekua == 0){
+  async reserbar_cita(eserlekua: number, time: string) {
+    if (this.citaEditar.hasieraOrduaErreala) {
+      return;
+    }
+  
+    if (this.citaEditar.eserlekua === 0) {
       if (this.firstCell && this.firstCell.seat !== eserlekua) {
-        if (confirm("¿Desea cambiar de asiento?")) {
-          this.resetSelection();
-          this.limpiar_campos();
-        } else {
-          return;
-        }
+        const cambiar = await this.mostrarAlertaCambioAsiento();
+        if (!cambiar) return;
+        this.resetSelection();
+        this.limpiar_campos();
       }
-      if(this.verificarSuperposicion(eserlekua, time, this.dataSelec, this.citaCrear.hasieraOrdua, this.citaCrear.amaieraOrdua, 0)){
+  
+      if (this.verificarSuperposicion(eserlekua, time, this.dataSelec, this.citaCrear.hasieraOrdua, this.citaCrear.amaieraOrdua, 0)) {
         this.resetSelection();
         this.citaCrear.data = this.dataSelec;
         this.citaCrear.hasieraOrdua = time;
@@ -84,6 +107,7 @@ export class HitzorduakPage implements OnInit {
         this.highlightedCells = [{ time, seat: eserlekua }];
         return;
       }
+  
       if (this.citaCrear.data) {
         if (this.citaCrear.hasieraOrdua < time) {
           this.citaCrear.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
@@ -102,37 +126,11 @@ export class HitzorduakPage implements OnInit {
         this.firstCell = { time, seat: eserlekua };
         this.highlightedCells = [{ time, seat: eserlekua }];
       }
-    }else{
-      
-      if (this.citaEditar.data != this.dataSelec) {
-        if (confirm("¿Desea cambiar de día?")) {
-          this.resetSelection();
-          this.citaEditar.data = this.dataSelec;
-          this.citaEditar.hasieraOrdua = time;
-          this.citaEditar.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
-          this.citaEditar.eserlekua = eserlekua;
-          this.firstCell = { time, seat: eserlekua };
-          this.highlightedCells = [{ time, seat: eserlekua }];
-          return;
-        } else {
-          return;
-        }
-      }
-      if (this.citaEditar.eserlekua !== eserlekua) {
-        if (confirm("¿Desea cambiar de asiento?")) {
-          this.resetSelection();
-          this.citaEditar.data = this.dataSelec;
-          this.citaEditar.hasieraOrdua = time;
-          this.citaEditar.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
-          this.citaEditar.eserlekua = eserlekua;
-          this.firstCell = { time, seat: eserlekua };
-          this.highlightedCells = [{ time, seat: eserlekua }];
-          return;
-        } else {
-          return;
-        }
-      }
-      if(this.verificarSuperposicion(eserlekua, time, this.dataSelec, this.citaEditar.hasieraOrdua, this.citaEditar.amaieraOrdua, this.citaEditar.id)){
+    } else {
+      if (this.citaEditar.data !== this.dataSelec) {
+        const cambiarDia = await this.mostrarAlertaCambioDia();
+        if (!cambiarDia) return;
+  
         this.resetSelection();
         this.citaEditar.data = this.dataSelec;
         this.citaEditar.hasieraOrdua = time;
@@ -142,6 +140,32 @@ export class HitzorduakPage implements OnInit {
         this.highlightedCells = [{ time, seat: eserlekua }];
         return;
       }
+  
+      if (this.citaEditar.eserlekua !== eserlekua) {
+        const cambiarAsiento = await this.mostrarAlertaCambioAsiento();
+        if (!cambiarAsiento) return;
+  
+        this.resetSelection();
+        this.citaEditar.data = this.dataSelec;
+        this.citaEditar.hasieraOrdua = time;
+        this.citaEditar.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
+        this.citaEditar.eserlekua = eserlekua;
+        this.firstCell = { time, seat: eserlekua };
+        this.highlightedCells = [{ time, seat: eserlekua }];
+        return;
+      }
+  
+      if (this.verificarSuperposicion(eserlekua, time, this.dataSelec, this.citaEditar.hasieraOrdua, this.citaEditar.amaieraOrdua, this.citaEditar.id)) {
+        this.resetSelection();
+        this.citaEditar.data = this.dataSelec;
+        this.citaEditar.hasieraOrdua = time;
+        this.citaEditar.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
+        this.citaEditar.eserlekua = eserlekua;
+        this.firstCell = { time, seat: eserlekua };
+        this.highlightedCells = [{ time, seat: eserlekua }];
+        return;
+      }
+  
       if (this.citaEditar.hasieraOrdua < time) {
         this.citaEditar.amaieraOrdua = this.hoursArray[this.hoursArray.indexOf(time) + 1];
         this.secondCell = { time, seat: eserlekua };
@@ -153,6 +177,48 @@ export class HitzorduakPage implements OnInit {
       }
     }
   }
+
+  async mostrarAlertaCambioAsiento(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const alert = await this.alertCtrl.create({
+        header: this.translate.instant('citas.modal.cambioAsiento'),
+        message: this.translate.instant('citas.modal.messageCambioAsiento'),
+        buttons: [
+          {
+            text: this.translate.instant('citas.botones.cancelar'),
+            role: 'cancel',
+            handler: () => resolve(false),
+          },
+          {
+            text: this.translate.instant('citas.botones.confirmar'),
+            handler: () => resolve(true),
+          }
+        ]
+      });
+      await alert.present();
+    });
+  }
+  
+  async mostrarAlertaCambioDia(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const alert = await this.alertCtrl.create({
+        header: this.translate.instant('citas.modal.cambioDia'),
+        message: this.translate.instant('citas.modal.messageCambioDia'),
+        buttons: [
+          {
+            text: this.translate.instant('citas.botones.cancelar'),
+            role: 'cancel',
+            handler: () => resolve(false),
+          },
+          {
+            text: this.translate.instant('citas.botones.confirmar'),
+            handler: () => resolve(true),
+          }
+        ]
+      });
+      await alert.present();
+    });
+  }  
 
   // Función para verificar si dos rangos de tiempo se solapan
   verificarSuperposicion(eserlekua: number, time: string, eguna: any, horaIniCita:any, horaFinCita:any,   id: number | null) {
@@ -180,16 +246,15 @@ export class HitzorduakPage implements OnInit {
     });
     return solapamiento;
   }
-  
 
-
-  constructor(private translate: TranslateService) {
+  constructor(private translate: TranslateService, private alertCtrl: AlertController, private navCtrl: NavController, private http: HttpClient) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
   
   ngOnInit() {
     this.dataSelec = this.lortuData();
+    this.todayDate = this.lortuData();
     this.cargarHitzordu();
     this.getHoursInRange();
     this.cargar_alumnos();
@@ -211,89 +276,78 @@ export class HitzorduakPage implements OnInit {
     }
     return `${urtea}-${hilabetea}-${eguna}`;
   }
-
 // ---------------------------------------------------------------------- CARGA DE DATOS --------------------------------------------------------------------------------
 
   // Función: cargarHitzordu
-  async cargarHitzordu() {
+  cargarHitzordu() {
     this.hitzorduArray = [];
     this.hitzorduak = [];
-    try {
-      const response = await fetch(`${environment.url}hitzorduak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "GET"
-      });
-      if (!response.ok) {
-        throw new Error('Error al obtener las citas');
+    
+    this.http.get(`${environment.url}hitzorduak`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-      const datuak = await response.json();
-      this.hitzorduak = datuak.filter((hitzordu:any) => hitzordu.ezabatzeData === null);
-      const eguna = formatDate(this.dataSelec, 'yyyy-MM-dd', 'en-US');
-      this.hitzorduArray = this.hitzorduak.filter((hitzordu:any) => hitzordu.data.includes(eguna));
-    } catch (error) {
-      console.log("Error al cargar citas:", error);
-    } finally {
-      this.loading = false;
-    }
+    }).subscribe(
+      (datuak:any) => {
+        this.hitzorduak = datuak.filter((hitzordu: any) => hitzordu.ezabatzeData === null);
+        const eguna = formatDate(this.dataSelec, 'yyyy-MM-dd', 'en-US');
+        this.hitzorduArray = this.hitzorduak.filter((hitzordu: any) => hitzordu.data.includes(eguna));
+      },
+      (error) => {
+        console.error("Error al cargar citas:", error);
+      },
+      () => {
+        this.loading = false;
+      }
+    );
   }
 
   // Función: cargar_asientos
-  async cargar_alumnos() {
-    try {
-      const response = await fetch(`${environment.url}ordutegiak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "GET"
-      });
-      if (!response.ok) {
-        throw new Error('Error al obtener el número de asientos');
+  cargar_alumnos() {
+    this.http.get(`${environment.url}ordutegiak`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-      const datuak = await response.json();
-      this.ordutegiak = datuak.filter((ordu:any) => ordu.ezabatzeData === null);
-      console.log(this.ordutegiak);
-    } catch (error) {
-      console.log("Error al cargar los asientos:", error);
-    }
-    this.cargar_dia_seleccionado();
+    }).subscribe(
+      (datuak:any) => {
+        this.ordutegiak = datuak.filter((ordu: any) => ordu.ezabatzeData === null);
+        this.cargar_dia_seleccionado();
+      },
+      (error) => {
+        console.log("Error al cargar los asientos:", error);
+      }
+    );
   }
 
   // Función: cargarTratamenduak
-  async cargarTratamenduak() {
-    try {
-      const response = await fetch(`${environment.url}zerbitzu_kategoria`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "GET"
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al obtener tratamientos');
+  cargarTratamenduak() {
+    this.http.get(`${environment.url}zerbitzu_kategoria`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-
-      const datuak = await response.json();
-      this.tratamenduArray = datuak.filter((tratamendua:any) => {
-        const filteredZerbitzuak = tratamendua.zerbitzuak.filter(
-          (zerbitzu:any) => zerbitzu.ezabatzeData === null
-        );
-        return filteredZerbitzuak;
-      }).map((tratamendua:any) => {
-        return {
-          ...tratamendua,
-          zerbitzuak: tratamendua.zerbitzuak.filter(
-            (zerbitzu:any) => zerbitzu.ezabatzeData === null
-          )
-        };
-      });
-    } catch (error) {
-      console.log("Error al cargar tratamientos:", error);
-    }
+    }).subscribe(
+      (datuak:any) => {
+        this.tratamenduArray = datuak.filter((tratamendua: any) => {
+          const filteredZerbitzuak = tratamendua.zerbitzuak.filter(
+            (zerbitzu: any) => zerbitzu.ezabatzeData === null
+          );
+          return filteredZerbitzuak.length > 0;
+        }).map((tratamendua: any) => {
+          return {
+            ...tratamendua,
+            zerbitzuak: tratamendua.zerbitzuak.filter(
+              (zerbitzu: any) => zerbitzu.ezabatzeData === null
+            )
+          };
+        });
+      },
+      (error) => {
+        console.log("Error al cargar tratamientos:", error);
+      }
+    );
   }
 
   // ---------------------------------------------------------------------- VISTA DE DATOS --------------------------------------------------------------------------------
@@ -395,104 +449,98 @@ export class HitzorduakPage implements OnInit {
   // -------------------------------------------------------------------- CREAR DATOS -------------------------------------------------------------------------
 
   // Función: createCita
-  async createCita() {
-    try {
-      const data = this.citaCrear.data;
-      const hasOrdua = this.citaCrear.hasieraOrdua;
-      const amaOrdua = this.citaCrear.amaieraOrdua;
-      const eserlekua = this.citaCrear.eserlekua;
-      const izena = this.citaCrear.izena;
-      const telefonoa = this.citaCrear.telefonoa;
-      const deskribapena = this.citaCrear.deskribapena;
-      const etxeko = this.citaCrear.etxekoa ? "E" : "K";
+  createCita() {
+    const data = this.citaCrear.data;
+    const hasOrdua = this.citaCrear.hasieraOrdua;
+    const amaOrdua = this.citaCrear.amaieraOrdua;
+    const eserlekua = this.citaCrear.eserlekua;
+    const izena = this.citaCrear.izena;
+    const telefonoa = this.citaCrear.telefonoa;
+    const deskribapena = this.citaCrear.deskribapena;
+    const etxeko = this.citaCrear.etxekoa ? "E" : "K";
 
-      const json_data = {
-        "data":data,
-        "hasieraOrdua":hasOrdua,
-        "amaieraOrdua":amaOrdua,
-        "eserlekua" :eserlekua,
-        "izena":izena,
-        "telefonoa":telefonoa,
-        "deskribapena":deskribapena,
-        "etxekoa":etxeko
-      };
-      const response = await fetch(`${environment.url}hitzorduak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "POST",
-        body: JSON.stringify(json_data)
-      });
+    const json_data = {
+      "data": data,
+      "hasieraOrdua": hasOrdua,
+      "amaieraOrdua": amaOrdua,
+      "eserlekua": eserlekua,
+      "izena": izena,
+      "telefonoa": telefonoa,
+      "deskribapena": deskribapena,
+      "etxekoa": etxeko
+    };
 
-      if (!response.ok) {
-        throw new Error('Error al crear la cita');
+    this.http.post(`${environment.url}hitzorduak`, json_data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-      await this.cargarHitzordu();
-      this.limpiar_campos();
-    } catch (error) {
-      console.error("Error al crear la cita:", error);
-      throw new Error("No se ha creado la cita.");
-    }
+    }).subscribe(
+      async () => {
+        await this.cargarHitzordu(); // Asegúrate de que esta función sea adecuada para manejar la carga de citas
+        this.limpiar_campos(); // Asegúrate de que esta función esté definida correctamente
+      },
+      (error) => {
+        console.error("Error al crear la cita:", error);
+        throw new Error("No se ha creado la cita.");
+      }
+    );
   }
 
   // ------------------------------------------------------------------ EDITAR DATOS ---------------------------------------------------------------
 
-  async editar_cita() {
-    try {
-      const etxeko = this.citaEditar.etxekoa ? "E" : "K";
-      const json_data = {
-        "id": this.citaEditar.id,
-        "data": this.citaEditar.data,
-        "hasieraOrdua": this.citaEditar.hasieraOrdua,
-        "amaieraOrdua": this.citaEditar.amaieraOrdua,
-        "eserlekua": this.citaEditar.eserlekua,
-        "izena": this.citaEditar.izena,
-        "telefonoa": this.citaEditar.telefonoa,
-        "deskribapena": this.citaEditar.deskribapena,
-        "etxekoa": etxeko
-      };
-      const response = await fetch(`${environment.url}hitzorduak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "PUT",
-        body: JSON.stringify(json_data)
-      });
-  
-      if (!response.ok) {
-        throw new Error('Error al editar la cita');
+  editar_cita() {
+    const etxeko = this.citaEditar.etxekoa ? "E" : "K";
+    const json_data = {
+      "id": this.citaEditar.id,
+      "data": this.citaEditar.data,
+      "hasieraOrdua": this.citaEditar.hasieraOrdua,
+      "amaieraOrdua": this.citaEditar.amaieraOrdua,
+      "eserlekua": this.citaEditar.eserlekua,
+      "izena": this.citaEditar.izena,
+      "telefonoa": this.citaEditar.telefonoa,
+      "deskribapena": this.citaEditar.deskribapena,
+      "etxekoa": etxeko
+    };
+
+    this.http.put(`${environment.url}hitzorduak`, json_data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-      await this.cargarHitzordu();
-      this.limpiar_campos();
-    } catch (error) {
-      console.error("Error al editar la cita:", error);
-    }
+    }).subscribe(
+      async () => {
+        await this.cargarHitzordu(); // Asegúrate de que esta función sea adecuada para manejar la carga de citas
+        this.limpiar_campos(); // Asegúrate de que esta función esté definida correctamente
+      },
+      (error) => {
+        console.error("Error al editar la cita:", error);
+        throw new Error("No se ha editado la cita.");
+      }
+    );
   }
 
 // ----------------------------------------------------------------- ELIMINAR DATOS -----------------------------------------------------------------
 
-async eliminar_cita() {
-  try {
-    const json_data = { "id": this.citaEditar.id };
-    const response = await fetch(`${environment.url}hitzorduak`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
-      method: "DELETE",
-      body: JSON.stringify(json_data)
-    });
+eliminar_cita() {
+  const json_data = { "id": this.citaEditar.id };
 
-    if (!response.ok) {
-      throw new Error('Error al eliminar la cita');
+  this.http.delete(`${environment.url}hitzorduak`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    },
+    body: JSON.stringify(json_data)
+  }).subscribe(
+    async () => {
+      await this.cargarHitzordu(); // Asegúrate de que esta función sea adecuada para manejar la carga de citas
+      this.limpiar_campos(); // Asegúrate de que esta función esté definida correctamente
+    },
+    (error) => {
+      console.error("Error al eliminar la cita:", error);
+      throw new Error("No se ha eliminado la cita.");
     }
-    await this.cargarHitzordu();
-    this.limpiar_campos();
-  } catch (error) {
-    console.error("Error al eliminar la cita:", error);
-  }
+  );
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -521,86 +569,112 @@ async eliminar_cita() {
   }  
 
   cargar_cita_selec(citaSelec:any) {
+    if(this.citaEditar.id == citaSelec.id){
+      this.citaEditar = {"data":null, "hasieraOrdua":null, "amaieraOrdua":null, "eserlekua" :0, "izena":'', "telefonoa":'', "deskribapena":'', "etxekoa":false };
+      return;
+    }
     this.citaEditar = citaSelec;
     this.resetSelection();
   }
 
-  actualizarServiciosSeleccionados(servicio:any, extra:boolean) {
+  actualizarServiciosSeleccionados(servicio:any, extra:boolean, color:boolean) {
     if (servicio.selected) {
       if (!extra) {
         servicio.precio = this.citaEditar.etxekoa ? servicio.etxekoPrezioa : servicio.kanpokoPrezioa;
       }
     }
+    servicio.color = color;
     const index = this.serviciosSeleccionados.findIndex(s => s.id === servicio.id);
     if (servicio.selected && index === -1) {
       this.serviciosSeleccionados.push(servicio);
     } else if (!servicio.selected && index !== -1) {
       this.serviciosSeleccionados.splice(index, 1);
     }
+    console.log(this.serviciosSeleccionados)
   }
 
-  async asignar_cita() {
-    try {
-      const json_data = {
-        "id": this.citaEditar.id
-      };
-  
-      const response = await fetch(`${environment.url}hitzorduak/asignar/${this.idLangile}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "PUT",
-        body: JSON.stringify(json_data)
-      });
-  
-      if (!response.ok) {
-        throw new Error('Error al asignar la cita');
+  asignar_cita() {
+    const json_data = { "id": this.citaEditar.id };
+
+    this.http.put(`${environment.url}hitzorduak/asignar/${this.idLangile}`, json_data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-      await this.cargarHitzordu();
-      this.limpiar_campos();
-    } catch (error) {
-      console.error("Error al asignar la cita:", error);
-    }
+    }).subscribe(
+      async () => {
+        await this.cargarHitzordu(); // Asegúrate de que esta función sea adecuada para manejar la carga de citas
+        this.limpiar_campos(); // Asegúrate de que esta función esté definida correctamente
+      },
+      (error) => {
+        console.error("Error al asignar la cita:", error);
+        throw new Error("No se ha asignado la cita.");
+      }
+    );
   }
 
   // Función: generar_ticket
-  async generar_ticket() {
-    let prezio_totala = 0;
-    this.tratamenduSelec.forEach(tratamendu => {
-      prezio_totala = Number(prezio_totala) + Number(tratamendu.prezioa);
-    });
-    try {
-      const json_data = this.serviciosSeleccionados.map(servicio => ({
-        "hitzordua": {
-          "id": this.citaEditar.id 
-        },
-        "zerbitzuak": {
-          "id": servicio.id 
-        },
-        "prezioa": servicio.precio
-      }));
-      const response = await fetch(`${environment.url}ticket_lerroak`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        method: "POST",
-        body: JSON.stringify(json_data)
-      });
+  generar_ticket() {
+    const color = this.serviciosSeleccionados.some(s => s.color === true);
 
-      if (!response.ok) {
-        throw new Error('Errorea eskaera egiterakoan');
-      }
-      await this.cargarHitzordu();
-      const datuak = await response.json();
-      if(confirm("Desea descargar el ticket de la cita?")){
-        this.descargar_ticket(datuak);
+    const json_data = this.serviciosSeleccionados.map(servicio => ({
+      "hitzordua": { "id": this.citaEditar.id },
+      "zerbitzuak": { "id": servicio.id },
+      "prezioa": servicio.precio
+    }));
 
+    this.http.post(`${environment.url}ticket_lerroak`, json_data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-    } catch (error) {
-      console.error("Error en generación de cita:", error);
-    }
+    }).subscribe(
+      async (datuak: any) => {
+        await this.cargarHitzordu();
+        this.limpiar_campos();
+
+        const alert = await this.alertCtrl.create({
+          header: this.translate.instant('citas.modal.ticket'),
+          message: this.translate.instant('citas.modal.messageDownload'),
+          buttons: [
+            {
+              text: this.translate.instant('citas.botones.cancelar'),
+              role: this.translate.instant('citas.botones.cancelar'),
+            },
+            {
+              text: this.translate.instant('citas.botones.descargar'),
+              handler: () => {
+                this.descargar_ticket(datuak);
+              }
+            }
+          ]
+        });
+        await alert.present();
+
+        if (color) {
+          const alert2 = await this.alertCtrl.create({
+            header: this.translate.instant('citas.modal.redirect'),
+            message: this.translate.instant('citas.modal.messageRedirect'),
+            buttons: [
+              {
+                text: this.translate.instant('citas.botones.cancelar'),
+                role: this.translate.instant('citas.botones.cancelar'),
+              },
+              {
+                text: this.translate.instant('citas.botones.confirmar'),
+                handler: () => {
+                  this.navCtrl.navigateForward('/historiala');
+                }
+              }
+            ]
+          });
+          await alert2.present();
+        }
+      },
+      (error) => {
+        console.error("Error en generación de cita:", error);
+      }
+    );
   }
 
   descargar_ticket(datuak: any) {
