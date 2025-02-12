@@ -4,6 +4,7 @@ import { IonModal, AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { HeaderComponent } from '../components/header/header.component';
+import { LoginServiceService } from '../zerbitzuak/login-service.service';
 
 export interface Alumno {
   nombre: string;
@@ -66,6 +67,7 @@ export class MaterialakPage implements OnInit {
 
   checkboxHabilitado = false;
   mostrarCheckbox: boolean = false;
+  isIkasle!:boolean;
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
@@ -388,12 +390,13 @@ export class MaterialakPage implements OnInit {
     }
   }
 
-  constructor(private translate: TranslateService, private restServer:HttpClient, private alertController: AlertController) {
+  constructor(private translate: TranslateService, private restServer:HttpClient, private alertController: AlertController, private loginService: LoginServiceService) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
   
   ngOnInit() {
+    this.isIkasle = this.loginService.isAlumno();
     this.materialakLortu();
     this.langileakLortu();
     this.materialakLortuDevolver();

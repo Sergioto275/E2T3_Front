@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LoginServiceService } from '../zerbitzuak/login-service.service';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +8,12 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
-  constructor() {}
+  ikasle!:boolean;
 
+  constructor(private loginService: LoginServiceService) {}
+
+  ngOnInit()
+  {
+    this.ikasle = this.loginService.isAlumno();
+  }
 }
