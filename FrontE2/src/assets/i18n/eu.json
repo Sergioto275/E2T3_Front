@@ -1,13 +1,17 @@
 {
     "menu": {
         "title":"Menua",
+        "home":"Home",
         "hitzorduak": "Hitzorduak",
         "grafikoak": "Grafikoak",
         "materialak": "Materialak",
         "produktuak": "Produktuak",
         "historiala": "Historiala",
         "ikasleak": "Ikasleak",
-        "zerbitzuak": "Zerbitzuak"
+        "zerbitzuak": "Zerbitzuak",
+        "txandak":"Txandak",
+        "inbentario":"Inbentarioa",
+        "parametrizacion":"Parametrizazioa"
     },
     "productos": {
         "title": "Produktuen kudeaketa",

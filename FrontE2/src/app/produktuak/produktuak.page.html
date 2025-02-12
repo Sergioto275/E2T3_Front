@@ -14,10 +14,10 @@
   </ion-header>
   <ion-content [fullscreen]="true">
     <ion-toolbar>
-      <ion-buttons slot="start">
+      <ion-buttons slot="start" *ngIf="!isIkasle">
         <ion-button id="cat-prod-sortu-modal">{{ 'productos.botones.crearCategoria' | translate }}</ion-button>
       </ion-buttons>
-      <ion-buttons slot="start">
+      <ion-buttons slot="start" *ngIf="!isIkasle">
         <ion-button id="prod-sortu-modal">{{ 'productos.botones.agregarProducto' | translate }}</ion-button>
       </ion-buttons>
       <ion-buttons slot="end">
@@ -52,10 +52,10 @@
       <ion-card>
       <ion-item button (click)="toggleCategoria(categoria.izena)" detail="false">
         <ion-label><strong>{{ categoria.izena }}</strong></ion-label>
-        <ion-button slot="end" (click)="openKatModal(categoria); $event.stopPropagation()">
+        <ion-button *ngIf="!isIkasle" slot="end" (click)="openKatModal(categoria); $event.stopPropagation()">
           <ion-icon name="create"></ion-icon>
         </ion-button>
-        <ion-button slot="end" color="danger" (click)="eliminarKategoriaProducto(categoria.id); $event.stopPropagation()">
+        <ion-button *ngIf="!isIkasle" slot="end" color="danger" (click)="eliminarKategoriaProducto(categoria.id); $event.stopPropagation()">
           <ion-icon name="trash"></ion-icon>
         </ion-button>
         <ion-icon [name]="isCategoriaAbierta(categoria.izena) ? 'chevron-up' : 'chevron-down'" slot="end"></ion-icon>
@@ -69,10 +69,10 @@
           <ion-label class="deskribapena"> {{ producto.deskribapena }}</ion-label>
           <ion-checkbox slot="start" [(ngModel)]="producto.selected"
             (ionChange)="actualizarProductosSeleccionados(producto, categoria.id)"></ion-checkbox>
-            <ion-button color="light" slot="end" (click)="openProdModal(producto, categoria.id)">
+            <ion-button *ngIf="!isIkasle" color="light" slot="end" (click)="openProdModal(producto, categoria.id)">
               <ion-icon name="create"></ion-icon>
             </ion-button>
-          <ion-button slot="end" color="danger" (click)="eliminarProducto(producto.id)">
+          <ion-button *ngIf="!isIkasle" slot="end" color="danger" (click)="eliminarProducto(producto.id)">
             <ion-icon name="trash"></ion-icon>
           </ion-button>
         </ion-item>

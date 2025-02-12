@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
 import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
+import { LoginServiceService } from '../zerbitzuak/login-service.service';
 
 // import { IonButton, IonContent, IonHeader, IonLabel, IonModal, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
@@ -47,6 +48,7 @@ export class ProduktuakPage implements OnInit {
   categoriasAbiertas: { [key: string]: boolean } = {};
   filteredAlumnos!: any[];
   selectedCategoryId!: number;
+  isIkasle!:boolean;
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
@@ -372,12 +374,13 @@ export class ProduktuakPage implements OnInit {
   }
 
 
-  constructor(private translate: TranslateService, private http: HttpClient) {
+  constructor(private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
   
   ngOnInit() {
+    this.isIkasle = this.loginService.isAlumno();
     this.produktuakLortu();
     this.langileakLortu();
   }
