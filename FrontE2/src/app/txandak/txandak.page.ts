@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
-import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs/internal/observable/of';
 import { catchError } from 'rxjs/operators';
-import { HeaderComponent } from '../components/header/header.component';
+import { IkasleZerbitzuakService } from '../zerbitzuak/ikasle-zerbitzuak.service';
 
 // Interfaz movida fuera de la clase
 export interface Txanda {
@@ -22,7 +22,24 @@ export interface Ikaslea {
   id?: number;
   izena: string;
   abizenak: string;
+  taldea?: any;
   ezabatzeData?: null;
+}
+
+export interface Horario {
+  id?:number;
+  taldea: {
+    kodea: string;
+    langileak?: Ikaslea[];
+  };
+  eguna: number;  // Esto debe ser un número
+  hasieraData: string;
+  amaieraData: string;
+  hasieraOrdua: string;
+  amaieraOrdua: string;
+  sortzeData?: string;
+  eguneratzeData?: string;
+  ezabatzeData?: string | null;
 }
 
 @Component({
@@ -32,11 +49,11 @@ export interface Ikaslea {
 })
 
 export class TxandakPage implements OnInit {
-  @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   selectedLanguage: string = 'es';
   txandak: Txanda[] = [];  // Lista de txandas
   filteredTxandak: Txanda[]=[];  // Lista filtrada de txandas
-
+  ordutegiArray: Horario[] = [];
+  ordutegiArrayFiltered: Horario[] = [];
   ikasleak: Ikaslea[] = [];
   filteredAlumnos: Ikaslea[] = [];
   nuevaTxanda = {
@@ -51,7 +68,9 @@ export class TxandakPage implements OnInit {
   constructor(private translate: TranslateService, 
               private http: HttpClient,
               private toastController: ToastController,              
-              private alertCtrl: AlertController) { }
+              private alertCtrl: AlertController,
+              private ikasleService: IkasleZerbitzuakService
+              ) { }
 
   ngOnInit() {
     // Iniciar traducción al idioma por defecto
@@ -59,20 +78,48 @@ export class TxandakPage implements OnInit {
     
     // Llamar al método para obtener los txandas
     this.getTxandak();
-    this.getAlumnos();
+    this.getHorarios();
     this.filterTxandas();  // Llamada inicial al filtro para mostrar todas las txandas
 
   }
 
   changeLanguage() {
-    this.translate.use(this.selectedLanguage);
-    if (this.headerComponent) {
-      this.headerComponent.loadTranslations();
-    }
+    this.translate.use(this.selectedLanguage);  // Cambiar el idioma según la selección
   }
 
   getAlumno(id: number) {
     return this.filteredAlumnos.find(ikaslea => ikaslea.id === id);
+  }
+
+  array: any[]= [];
+
+  getHorarios(): void {
+    this.ikasleService.getHorarios().subscribe(
+      (horarios) => {
+        // Filtrar los horarios que no tienen datos en 'ezabatze_data' (null, undefined o vacío)
+        this.ordutegiArray = horarios.filter((horario) => {
+          const isDeletedTalde = this.array.some(
+            (grupo) => grupo.kodea === horario.taldea.kodea && grupo.ezabatzeData
+          );
+          return !horario.ezabatzeData && !isDeletedTalde; // Filtra los horarios cuyo taldea no ha sido eliminado
+        })
+        this.ordutegiArrayFiltered = this.ordutegiArray;
+        this.filteredAlumnos = this.ordutegiArray
+  .map((horario: Horario) => horario.taldea.langileak || []) // Extrae langileak
+  .reduce((acc: Ikaslea[], curr: Ikaslea[]) => acc.concat(curr), []) // Aplana el array
+  .filter((ikaslea: Ikaslea, index: number, self: Ikaslea[]) => 
+    self.findIndex((i) => i.id === ikaslea.id) === index && // Elimina duplicados
+    !ikaslea.ezabatzeData // Filtra los alumnos que tengan ezabatzeData
+  );
+
+
+
+              console.log(this.ordutegiArrayFiltered);
+      },
+      (error) => {
+        console.error('Error al obtener los horarios:', error);
+      }
+    );
   }
   
   // Función para filtrar txandas por tipo
@@ -117,16 +164,8 @@ export class TxandakPage implements OnInit {
       }
     );
   }
+
   
-
-  getAlumnos() {
-    this.http.get<Ikaslea[]>('http://localhost:8080/api/langileak').subscribe((data: Ikaslea[]) => {
-      this.ikasleak = data.filter((ikaslea) => !ikaslea.ezabatzeData); // Filtramos los alumnos con ezabatzeData no nulo
-      this.filteredAlumnos = [...this.ikasleak]; // Inicializamos la lista filtrada con todos los alumnos
-      console.log(this.filteredAlumnos);
-    });
-  }
-
   async deleteTxanda(txandaId: number) {
     const alert = await this.alertCtrl.create({
       header: this.translate.instant('txandakPage.MessageEliminar'),

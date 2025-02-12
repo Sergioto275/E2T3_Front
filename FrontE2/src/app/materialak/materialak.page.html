@@ -77,7 +77,7 @@
                 <ion-item *ngFor="let material of categoria.materialak">
                   <ion-label> {{ material.izena }}</ion-label>
                   <ion-label class="etiketa"> {{ material.etiketa }}</ion-label>
-                  <ion-checkbox *ngIf="mostrarCheckbox" slot="start" [(ngModel)]="material.selected" (ionChange)="actualizarMaterialesSeleccionados(material, categoria.id)"></ion-checkbox>
+                  <ion-checkbox *ngIf="mostrarCheckbox" slot="start" [(ngModel)]="material.selected" (ionChange)="actualizarMaterialesSeleccionados(material)"></ion-checkbox>
                   <ion-button slot="end" color="light" (click)="abrirEditarMaterial(material)" *ngIf="!mostrarCheckbox && !isIkasle">
                     <ion-icon name="create"></ion-icon>
                   </ion-button>
