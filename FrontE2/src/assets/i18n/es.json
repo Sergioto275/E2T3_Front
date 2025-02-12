@@ -48,6 +48,7 @@
     "validaciones":{
         "seleccionaGrupo":"Debe seleccionar un grupo",
         "seleccionaAlumno":"Debe seleccionar un grupo",
+        "cantidad":"Inserta una cantidad valida",
         "nombre":"Debe insertar un nombre valido",
         "marca":"Debe insertar una marca valida",
         "descripcion":"La descripcion es obligatoria",
@@ -238,6 +239,12 @@
       "confirmar": "Confirmar",
       "crear": "Crear",
       "editar": "Editar"
+    },
+    "validaciones": {
+      "nombre": "Introduce un nombre valido",
+      "precioFuera": "Introduce el precio de fuera",
+      "precioDentro": "Introduce el precio de dentro",
+      "categoria":"Seleccione una categoria"            
     }
   },
 "ikaslePage": {

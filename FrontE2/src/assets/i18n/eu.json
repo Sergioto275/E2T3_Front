@@ -48,6 +48,7 @@
         "validaciones":{
             "seleccionaGrupo":"Talde bat aukeratu behar duzu",
             "seleccionaAlumno":"Langile bat aukeratu behar duzu",
+            "cantidad":"Baliozko kantitatea sartu behar da",
             "nombre":"Baliozko izen bat sartu behar da",
             "marca":"Baliozko marka sartu behar da",
             "descripcion":"Deskribapena derrigorrezkoa da",
@@ -222,6 +223,12 @@
             "confirmar": "Baieztatu",
             "crear": "Sortu",
             "editar": "Editatu"
+        },
+        "validaciones":{
+            "nombre":"Baliozko izen bat sartu behar da",
+            "precioFuera":"Kanpoko prezioa sartu behar da",
+            "precioDentro":"Etxeko prezioa sartu behar da",
+            "categoria":"Kategoria bat aukeratu"            
         }
     },
     
