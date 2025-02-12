@@ -81,7 +81,7 @@
                   <ion-button slot="end" color="light" (click)="abrirEditarMaterial(material)" *ngIf="!mostrarCheckbox && !isIkasle">
                     <ion-icon name="create"></ion-icon>
                   </ion-button>
-                  <ion-button slot="end" color="danger" (click)="confirmarEliminarMaterial(material.id, material.izena)" *ngIf="!mostrarCheckbox && !isIkasle">
+                  <ion-button slot="end" color="danger" (click)="confirmarEliminarMaterial(material.id, material.izena)"*ngIf="!mostrarCheckbox && !isIkasle">
                     <ion-icon name="trash"></ion-icon>
                   </ion-button>
                 </ion-item>
@@ -94,8 +94,7 @@
       <ion-segment-content id="bueltatu">
         <ion-toolbar>
           <ion-buttons slot="end">
-            <ion-button id="mat-devolver-modal" [disabled]="materialesSeleccionadosDevolver.length == 0">{{
-              'materiales.botones.devolverMateriales' | translate }}</ion-button>
+            <ion-button id="mat-devolver-modal" [disabled]="materialesSeleccionadosDevolver.length == 0">{{'materiales.botones.devolverMateriales' | translate }}</ion-button>
           </ion-buttons>
         </ion-toolbar>
         <ion-card>

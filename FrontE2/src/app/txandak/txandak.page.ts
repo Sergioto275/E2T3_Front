@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs/internal/observable/of';
 import { catchError } from 'rxjs/operators';
+import { HeaderComponent } from '../components/header/header.component';
 
 // Interfaz movida fuera de la clase
 export interface Txanda {
@@ -31,6 +32,7 @@ export interface Ikaslea {
 })
 
 export class TxandakPage implements OnInit {
+  @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   selectedLanguage: string = 'es';
   txandak: Txanda[] = [];  // Lista de txandas
   filteredTxandak: Txanda[]=[];  // Lista filtrada de txandas
@@ -62,7 +64,10 @@ export class TxandakPage implements OnInit {
   }
 
   changeLanguage() {
-    this.translate.use(this.selectedLanguage);  // Cambiar el idioma según la selección
+    this.translate.use(this.selectedLanguage);
+    if (this.headerComponent) {
+      this.headerComponent.loadTranslations();
+    }
   }
 
   getAlumno(id: number) {
