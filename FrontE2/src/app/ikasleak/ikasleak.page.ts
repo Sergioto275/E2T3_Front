@@ -51,7 +51,7 @@ export class IkasleakPage implements OnInit {
     private ikasleService: IkasleZerbitzuakService,
     private alertController: AlertController,
     private toastController: ToastController,
-    private router: Router
+    private router: Router,
     private loginService: LoginServiceService,
   ) {
     this.translate.setDefaultLang('es');
