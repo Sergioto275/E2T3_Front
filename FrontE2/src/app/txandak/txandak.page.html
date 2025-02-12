@@ -176,19 +176,6 @@
             >
           </ion-select>
         </ion-item>
-
-        <!-- Fecha de la txanda -->
-        <ion-item>
-          <ion-label position="stacked"
-            >{{ 'txandakPage.fecha' | translate }}</ion-label
-          >
-          <ion-input
-            type="date"
-            [(ngModel)]="nuevaTxanda.data"
-            placeholder="{{ 'txandakPage.fechaPlaceholderModal' | translate }}"
-          ></ion-input>
-        </ion-item>
-
         <!-- Selección del alumno -->
         <ion-item>
           <ion-label position="stacked"
@@ -211,7 +198,7 @@
         <ion-button
           expand="full"
           (click)="guardarTxanda()"
-          [disabled]="!nuevaTxanda.mota || !nuevaTxanda.data || !nuevaTxanda.alumno"
+          [disabled]="!nuevaTxanda.mota || !nuevaTxanda.alumno"
         >
           {{ 'txandakPage.botonGuardar' | translate }}
         </ion-button>

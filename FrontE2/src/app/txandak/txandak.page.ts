@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs/internal/observable/of';
 import { catchError } from 'rxjs/operators';
@@ -48,6 +48,7 @@ export class TxandakPage implements OnInit {
 
   constructor(private translate: TranslateService, 
               private http: HttpClient,
+              private toastController: ToastController,              
               private alertCtrl: AlertController) { }
 
   ngOnInit() {
@@ -122,7 +123,6 @@ export class TxandakPage implements OnInit {
   }
 
   async deleteTxanda(txandaId: number) {
-    // Crear la alerta de confirmación
     const alert = await this.alertCtrl.create({
       header: this.translate.instant('txandakPage.MessageEliminar'),
       message: this.translate.instant('txandakPage.MessageSeguroEliminar'),
@@ -134,26 +134,23 @@ export class TxandakPage implements OnInit {
         {
           text: 'Eliminar',
           handler: () => {
-            // Realizar la solicitud DELETE
-            const apiUrl = `http://localhost:8080/api/txandak/${txandaId}`; // URL de la API para eliminar la txanda
+            const apiUrl = `http://localhost:8080/api/txandak/${txandaId}`;
             this.http.delete<Txanda>(apiUrl).subscribe(
               (response) => {
-                // Eliminar la txanda de la lista local después de la eliminación en el servidor
                 const index = this.txandak.findIndex(t => t.id === txandaId);
                 if (index !== -1) {
-                  this.txandak.splice(index, 1);  // Eliminar la txanda de la lista local
+                  this.txandak.splice(index, 1);
+                  this.mostrarToast(this.translate.instant('txandakPage.TxandaEzabatuta'), 'success');
                 }
               },
               (error) => {
-                console.error('Error al eliminar la txanda', error);
+                this.mostrarToast(this.translate.instant('txandakPage.TxandaEzabatutaArazoa'), 'danger');
               }
             );
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
-  
-    // Presentar la alerta
     await alert.present();
   }
   
@@ -170,27 +167,46 @@ export class TxandakPage implements OnInit {
   }  
 
   // Función para guardar la nueva txanda
+  // Función para guardar la nueva txanda
   guardarTxanda() {
-    if (!this.nuevaTxanda.mota || !this.nuevaTxanda.data || !this.nuevaTxanda.alumno) {
-      return; // Validar que no haya campos vacíos
+    if (!this.nuevaTxanda.mota || !this.nuevaTxanda.alumno) {
+      return;
+    }
+
+    if (!this.nuevaTxanda.data) {
+      this.nuevaTxanda.data = new Date().toISOString().split('T')[0];
     }
 
     const txandaToSave = {
       mota: this.nuevaTxanda.mota,
       data: this.nuevaTxanda.data,
-      langileak: { id: this.nuevaTxanda.alumno }, // Aquí asumimos que el alumno tiene solo un ID
+      langileak: { id: this.nuevaTxanda.alumno },
     };
-    const apiUrl = `http://localhost:8080/api/txandak`; // URL de la API para eliminar la txanda
+
+    const apiUrl = `http://localhost:8080/api/txandak`;
     console.log(JSON.stringify(txandaToSave));
-    // Realizar la solicitud HTTP POST para crear la txanda
-    this.http.post(apiUrl, txandaToSave).subscribe(response => {
+
+    this.http.post(apiUrl, txandaToSave).subscribe(
+      (response) => {
         if (response) {
           this.getTxandak();
-          this.closeModal(); // Cerrar el modal si la txanda se guarda correctamente
-        } else {
-          console.error('No se pudo guardar la txanda');
-        }
-      });
+          this.closeModal();
+          this.mostrarToast(this.translate.instant('txandakPage.TxandaGuardada'), 'success');
+        } 
+      },
+      (error) => {
+        this.mostrarToast(this.translate.instant('txandakPage.TxandaEzGuardada'), 'danger');
+      }
+    );
+  }
+
+  async mostrarToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 3000,
+      color: color,
+    });
+    toast.present();
   }
 
   // Método para filtrar las txandas por fecha
