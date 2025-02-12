@@ -93,6 +93,13 @@
       "materiales": "Materiales",
       "filtros": "Filtros"
     },
+    "validaciones":{
+      "seleccionaGrupoError":"Debe seleccionar un grupo",
+      "seleccionaAlumnoError":"Debe seleccionar un grupo",
+      "nombre":"Debe insertar un nombre valido",
+      "etiqueta":"Debe insertar una etiqueta valida(10 char max)",
+      "categoria":"Seleccione una categoria"            
+    },
     "toasts": {
       "mensajeSacarMats": "Los materiales se han sacado correctamente",
       "mensajeMatsCrear": "El material se ha creado correctamente",

@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs/internal/observable/of';
 import { catchError } from 'rxjs/operators';
 import { IkasleZerbitzuakService } from '../zerbitzuak/ikasle-zerbitzuak.service';
+import { formatDate } from '@angular/common';
 
 // Interfaz movida fuera de la clase
 export interface Txanda {
@@ -56,6 +57,7 @@ export class TxandakPage implements OnInit {
   ordutegiArrayFiltered: Horario[] = [];
   ikasleak: Ikaslea[] = [];
   filteredAlumnos: Ikaslea[] = [];
+  Alumnos: any[] = [];
   nuevaTxanda = {
     mota: '', // Tipo de txanda
     data: '', // Fecha de la txanda
@@ -93,6 +95,21 @@ export class TxandakPage implements OnInit {
 
   array: any[]= [];
 
+  lortuData(): string {
+    const gaur = new Date();
+    const urtea = gaur.getFullYear();
+    let hilabetea: string | number = gaur.getMonth() + 1; // Los meses comienzan en 0
+    let eguna: string | number = gaur.getDate();
+  
+    if (eguna < 10) {
+      eguna = '0' + eguna;
+    }
+    if (hilabetea < 10) {
+      hilabetea = '0' + hilabetea;
+    }
+    return `${urtea}-${hilabetea}-${eguna}`;
+  }
+
   getHorarios(): void {
     this.ikasleService.getHorarios().subscribe(
       (horarios) => {
@@ -104,17 +121,27 @@ export class TxandakPage implements OnInit {
           return !horario.ezabatzeData && !isDeletedTalde; // Filtra los horarios cuyo taldea no ha sido eliminado
         })
         this.ordutegiArrayFiltered = this.ordutegiArray;
+        console.log(this.ordutegiArray)
         this.filteredAlumnos = this.ordutegiArray
-  .map((horario: Horario) => horario.taldea.langileak || []) // Extrae langileak
-  .reduce((acc: Ikaslea[], curr: Ikaslea[]) => acc.concat(curr), []) // Aplana el array
-  .filter((ikaslea: Ikaslea, index: number, self: Ikaslea[]) => 
-    self.findIndex((i) => i.id === ikaslea.id) === index && // Elimina duplicados
-    !ikaslea.ezabatzeData // Filtra los alumnos que tengan ezabatzeData
-  );
-
-
-
-              console.log(this.ordutegiArrayFiltered);
+        .map((horario: Horario) => horario.taldea.langileak || []) // Extrae langileak
+        .reduce((acc: Ikaslea[], curr: Ikaslea[]) => acc.concat(curr), []) // Aplana el array
+        .filter((ikaslea: Ikaslea, index: number, self: Ikaslea[]) => 
+          self.findIndex((i) => i.id === ikaslea.id) === index && // Elimina duplicados
+          !ikaslea.ezabatzeData // Filtra los alumnos que tengan ezabatzeData
+        );
+        const today = this.lortuData();
+        const eguna = formatDate(today, 'yyyy-MM-dd', 'en-US');
+        const egunaDate = new Date(eguna);
+        let diaSemana = egunaDate.getDay();
+        const langileak = this.ordutegiArray.filter((ordu: any) => {
+          const hasieraDate = new Date(ordu.hasieraData);
+          const amaieraDate = new Date(ordu.amaieraData);
+          return (
+            hasieraDate <= egunaDate && amaieraDate >= egunaDate && ordu.eguna === diaSemana
+          );
+        });
+        this.Alumnos = langileak[0]?.taldea?.langileak?.filter(langile => !langile.ezabatzeData) ?? [];
+        console.log(this.ordutegiArrayFiltered);
       },
       (error) => {
         console.error('Error al obtener los horarios:', error);
