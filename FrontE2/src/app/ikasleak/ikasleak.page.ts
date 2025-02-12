@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AlertController, IonModal, ModalController } from '@ionic/angular';
+import { AlertController, IonModal, ModalController, ToastController } from '@ionic/angular';
 import {IkasleZerbitzuakService, Ikaslea, Taldea, Horario,} from './../zerbitzuak/ikasle-zerbitzuak.service';
 import { TranslateService } from '@ngx-translate/core';
 import { HeaderComponent } from '../components/header/header.component';
@@ -50,8 +50,9 @@ export class IkasleakPage implements OnInit {
     private modalController: ModalController,
     private ikasleService: IkasleZerbitzuakService,
     private alertController: AlertController,
+    private toastController: ToastController,
+    private router: Router,
     private loginService: LoginServiceService,
-    private router: Router
   ) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
@@ -86,7 +87,6 @@ export class IkasleakPage implements OnInit {
           return !horario.ezabatzeData && !isDeletedTalde; // Filtra los horarios cuyo taldea no ha sido eliminado
         })
         this.ordutegiArrayFiltered = this.ordutegiArray;
-        console.log('Horarios obtenidos y filtrados:', this.ordutegiArray);
       },
       (error) => {
         console.error('Error al obtener los horarios:', error);
@@ -124,15 +124,14 @@ export class IkasleakPage implements OnInit {
   
 
   filterGroups() {
-    console.log('Buscando:', this.searchQuery); // 👈 Verifica que la función se ejecuta
   
     if (this.searchQuery.trim() === '') {
-      this.filteredGroups = [...this.ikasleArray];
+      this.filteredGroups = [...this.grupoArray];
     } else {
-      this.filteredGroups = this.ikasleArray.filter(grupo =>
-        grupo.izena.toLowerCase().includes(this.searchQuery.toLowerCase()) || 
-        grupo.kodea.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
+      this.filteredGroups = this.grupoArray.filter(grupo =>
+        (grupo.izena && grupo.izena.toLowerCase().includes(this.searchQuery.toLowerCase())) || 
+        (grupo.kodea && grupo.kodea.toLowerCase().includes(this.searchQuery.toLowerCase()))
+      );      
     }
   }
   
@@ -141,7 +140,7 @@ export class IkasleakPage implements OnInit {
 
   resetFilterGroup() {
     this.searchQuery = '';
-    this.filteredGroups = this.ikasleArray;
+    this.filteredGroups = this.grupoArray;
   }
 
 
@@ -164,21 +163,31 @@ export class IkasleakPage implements OnInit {
   // Método para obtener los alumnos de la API
   getAlumnos() {
     this.ikasleService.getAlumnos().subscribe((data: Ikaslea[]) => {
-      this.filteredAlumnos = data.filter((ikaslea) => !ikaslea.ezabatzeData); // Asignar los alumnos a la propiedad ikasleak
-    });
-  }
+      this.ikasleArray = data; // Guarda todos los alumnos
+      this.filteredAlumnos = this.ikasleArray.filter(
+        (ikaslea) => !ikaslea.ezabatzeData
+      );
+    });    
+}
+
+grupoArray: Taldea[] = [];
 
   getGrupos() {
     this.ikasleService.getGrupos().subscribe((data: any[]) => {
-      this.ikasleArray = data
-        .filter((grupo: any) => grupo.ezabatzeData === null); // Asegúrate de filtrar por los que no están eliminados
-      this.filteredGroups = [...this.ikasleArray]; // Al principio, muestra todos los grupos
+      this.grupoArray = data
+        .filter((grupo: any) => grupo.ezabatzeData === null)
+        .map((grupo: any) => ({
+          ...grupo,
+          langileak: grupo.langileak.filter((ikaslea: any) => !ikaslea.ezabatzeData) // 🔥 Filtrar alumnos eliminados
+        }));
+  
+      this.filteredGroups = [...this.grupoArray]; 
     });
   }
+  
 
   openEditModal(ikaslea: any) {
     this.selectedAlumno = ikaslea;
-    console.log(this.selectedAlumno)
     this.isEditModalOpen = true;
   }
 
@@ -202,6 +211,8 @@ export class IkasleakPage implements OnInit {
     
   }
 
+  
+
   eliminarAlumnos() {
     this.selectedIkasleak.forEach((id) => {
       this.ikasleService.eliminarAlumno(id).subscribe(() => {
@@ -209,50 +220,15 @@ export class IkasleakPage implements OnInit {
         this.getAlumnos();
         this.getGrupos();
         this.closeModal();
+        this.mostrarToast(this.translate.instant('ikaslePage.EliminarAlumnos'), 'danger');
       });
     });
     this.selectedIkasleak.clear(); // Limpiar la selección después de eliminar
   }
 
-  async agregarAlumno() {
-    let data = {
-      izena: this.nuevoAlumno.izena,
-      abizenak: this.nuevoAlumno.abizenak,
-      taldea: {
-        kodea: this.nuevoAlumno.taldea.kodea,
-      },
-    };
-    console.log(data);
-    this.ikasleService.agregarAlumno(data).subscribe((data) => {
-      this.getAlumnos();
-      this.getGrupos();
-      this.modalController.dismiss();
-    });
-    this.nuevoAlumno = {
-      izena: '',
-      abizenak: '',
-      taldea: { kodea: '', izena: '' },
-    };
-  }
-
-  async agregarGrupo() {
-    let data = {
-      kodea: this.nuevoGrupo.kodea,
-      izena: this.nuevoGrupo.izena,
-    };
-
-    this.ikasleService.agregarGrupo(data).subscribe((data) => {
-      this.getGrupos();
-      this.getAlumnos();
-      this.modalController.dismiss();
-    });
-    this.nuevoGrupo = { kodea: '', izena: '' };
-  }
-
   // Abre el modal para editar un talde
   openEditTaldeModal(talde: any) {
     this.selectedTalde = talde; // Clonar el objeto seleccionado
-    console.log('selectedTalde al abrir modal:', this.selectedTalde);
     this.isEditTaldeModalOpen = true;
   }
 
@@ -261,58 +237,9 @@ export class IkasleakPage implements OnInit {
     this.isEditTaldeModalOpen = false;
   }
 
-  updateTalde() {
-    const updatedTalde = {
-      kodea: this.selectedTalde.kodea,
-      izena: this.selectedTalde.izena,
-    };
+ 
 
-    this.ikasleService.updateGrupo(updatedTalde).subscribe(() => {
-      this.getAlumnos();
-      this.getGrupos();
-      this.closeEditTaldeModal();
-    });
-  }
-
-  updateAlumno() {
-    const updatedAlumno = {
-      id: this.selectedAlumno.id,
-      izena: this.selectedAlumno.izena,
-      abizenak: this.selectedAlumno.abizenak,
-      taldea: { 
-        kodea:this.selectedAlumno.taldeKodea
-      },
-    };
-
-    this.ikasleService.updateAlumno(updatedAlumno).subscribe(() => {
-      this.getGrupos();
-      this.getAlumnos();
-      this.closeEditModal();
-    });
-  }
-
-  async confirmarEliminacionGrupo(grupoKodea: string) {
-    const alert = await this.alertController.create({
-      header: this.translate.instant('ikaslePage.Segurtasuna'),
-      message: this.translate.instant('ikaslePage.Message1'),
-      buttons: [
-        {
-          text: this.translate.instant('ikaslePage.Cancel'),
-          role: 'cancel',
-          cssClass: 'secondary',
-        },
-        {
-          text: this.translate.instant('ikaslePage.Borrar'),
-          handler: () => {
-            this.eliminarGrupo(grupoKodea);
-          },
-        },
-      ],
-    });
-
-    await alert.present();
-  }
-
+  
   eliminarGrupo(grupoKodea: string) {
     // Llamamos al servicio que gestiona la eliminación de grupos
     this.ikasleService.eliminarGrupo(grupoKodea).subscribe(
@@ -320,17 +247,11 @@ export class IkasleakPage implements OnInit {
         this.getGrupos();
         this.getAlumnos();
         this.getHorarios();
-        alert('Taldea ezabatuta');
       },
       (error) => {
-        alert('Arazo bat egon da taldea ezabatzerakoan');
         console.error(error);
       }
     );
-  }
-
-  getAlumnosPorKodea(kodea: string): Ikaslea[] {
-    return this.ikasleak.filter((ikaslea) => ikaslea.taldea.kodea === kodea);
   }
 
   onAlumnoSelected(alumnoId: number | undefined) {
@@ -341,65 +262,6 @@ export class IkasleakPage implements OnInit {
         this.selectedIkasleak.add(alumnoId);
       }
     }
-  }
-
-  // Función para guardar los horarios
-  guardarHorario() {
-    // Verifica si todos los campos necesarios están completos
-    // Formatear las fechas a 'yyyy-MM-dd' y las horas a 'HH:mm:ss'
-    const formattedFechaInicio = this.formatDate(this.fechaInicio);
-    const formattedFechaFin = this.formatDate(this.fechaFin);
-    const formattedHoraInicio = this.horaInicio + ':00';
-    const formattedHoraFin = this.horaFin + ':00';
-  
-    this.ordutegia = {
-      taldea: {
-        kodea: this.grupoSeleccionado.kodea,
-      },
-      eguna: this.diaSeleccionado,
-      hasieraData: formattedFechaInicio, // Convierte a formato YYYY-MM-DD
-      amaieraData: formattedFechaFin, // Convierte a formato YYYY-MM-DD
-      hasieraOrdua: formattedHoraInicio, // Asegúrate de que está en formato HH:mm:ss
-      amaieraOrdua: formattedHoraFin, // Asegúrate de que está en formato HH:mm:ss
-    };
-    console.log(JSON.stringify(this.ordutegia));
-    // Usamos subscribe para manejar la respuesta
-    this.ikasleService.guardarHorario(this.ordutegia).subscribe(
-      (data) => {
-        // Si el horario se guarda correctamente, agrega a la lista de horarios
-        this.getHorarios();
-        // Reseteo de los campos después de guardar
-        this.ordutegia = {
-          taldea: {
-            kodea: '', // Vacia el código de grupo
-          },
-          eguna: 0, // Resetea el día seleccionado
-          hasieraData: '', // Resetea la fecha de inicio
-          amaieraData: '', // Resetea la fecha de fin
-          hasieraOrdua: '', // Resetea la hora de inicio
-          amaieraOrdua: '', // Resetea la hora de fin
-        };
-        this.grupoSeleccionado.kodea = ''; // Resetea el grupo seleccionado
-        this.diaSeleccionado = 0; // Resetea el día seleccionado
-        this.fechaInicio = ''; // Resetea la fecha de inicio
-        this.fechaFin = ''; // Resetea la fecha de fin
-        this.horaInicio = null; // Resetea la hora de inicio
-        this.horaFin = null; // Resetea la hora de fin
-        console.log(data);
-        // Verifica si el horario se ha guardado correctamente
-        if (data && data.id) {
-          this.showAlert('Éxito', 'Horario guardado correctamente');
-        } else {
-          console.log('Error al guardar');
-          this.showAlert('Error', 'Hubo un error al guardar el horario');
-        }
-      },
-      (error) => {
-        console.error('Error al guardar el horario:', error);
-        this.showAlert('Error', 'Hubo un problema con la conexión');
-      }
-    );
-    this.closeModal();
   }
   
 
@@ -428,7 +290,6 @@ export class IkasleakPage implements OnInit {
   }
 
   openModal(horario: any, modal: IonModal) {
-    console.log(horario)
     // Asignar los valores del horario seleccionado al formulario
     this.selectedHorario = horario;
     this.idHorario = horario.id;
@@ -449,10 +310,212 @@ export class IkasleakPage implements OnInit {
     // Aquí puedes agregar lógica adicional si es necesario
   }
 
+  async mostrarToast(mensaje: string, color: 'success' | 'danger' | 'warning') {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 2000,
+      color: color,
+    });
+    toast.present();
+  }
+  
+  deleteHorario(horario: any): void {
+    // Crear la alerta de confirmación
+    this.alertController
+      .create({
+        header: this.translate.instant('ikaslePage.ConfirmarEliminacion'),
+        message: this.translate.instant('ikaslePage.MensajeEliminarHorario') + horario.taldea.kodea + "?",
+        buttons: [
+          {
+            text: this.translate.instant('ikaslePage.Cancelar'),
+            role: 'cancel',
+          },
+          {
+            text: this.translate.instant('ikaslePage.Aceptar'),
+            handler: () => {
+              this.ikasleService
+                .eliminarHorario(horario.id)
+                .subscribe((response) => {
+                  this.getHorarios();
+                  this.mostrarToast(this.translate.instant('ikaslePage.HorarioEliminado'), 'danger');
+                });
+            },
+          },
+        ],
+      })
+      .then((alert) => alert.present());
+  }
+  
+  async confirmarEliminacionAlumno(alumnoId: number) {
+    const alert = await this.alertController.create({
+      header: this.translate.instant('ikaslePage.ConfirmarEliminacion'),
+      message: this.translate.instant('ikaslePage.MensajeEliminarAlumno'),
+      buttons: [
+        {
+          text: this.translate.instant('ikaslePage.Cancelar'),
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: this.translate.instant('ikaslePage.Aceptar'),
+          handler: async () => {
+            this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 'danger');
+            await this.ikasleService.eliminarAlumno(alumnoId);
+          },
+        },
+      ],
+    });
+  
+    await alert.present();
+  }
+  
+  async confirmarEliminacionGrupo(grupoKodea: string) {
+    const alert = await this.alertController.create({
+      header: this.translate.instant('ikaslePage.ConfirmarEliminacion'),
+      message: this.translate.instant('ikaslePage.MensajeEliminarGrupo'),
+      buttons: [
+        {
+          text: this.translate.instant('ikaslePage.Cancelar'),
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: this.translate.instant('ikaslePage.Aceptar'),
+          handler: async () => {
+            await this.eliminarGrupo(grupoKodea);
+            this.mostrarToast(this.translate.instant('ikaslePage.GrupoEliminado'), 'danger');
+          },
+        },
+      ],
+    });
+  
+    await alert.present();
+  }
+  
+  async agregarAlumno() {
+    let data = {
+      izena: this.nuevoAlumno.izena,
+      abizenak: this.nuevoAlumno.abizenak,
+      taldea: {
+        kodea: this.nuevoAlumno.taldea.kodea,
+      },
+    };
+  
+    this.ikasleService.agregarAlumno(data).subscribe(() => {
+      this.getAlumnos();
+      this.getGrupos();
+      this.modalController.dismiss();
+      this.mostrarToast(this.translate.instant('ikaslePage.AlumnoAgregado'), 'success');
+    });
+  
+    this.nuevoAlumno = {
+      izena: '',
+      abizenak: '',
+      taldea: { kodea: '', izena: '' },
+    };
+  }
+  
+  async agregarGrupo() {
+    let data = {
+      kodea: this.nuevoGrupo.kodea,
+      izena: this.nuevoGrupo.izena,
+    };
+  
+    this.ikasleService.agregarGrupo(data).subscribe(() => {
+      this.getGrupos();
+      this.getAlumnos();
+      this.modalController.dismiss();
+      this.mostrarToast(this.translate.instant('ikaslePage.GrupoAgregado'), 'success');
+    });
+  
+    this.nuevoGrupo = { kodea: '', izena: '' };
+  }
+  
+  updateAlumno() {
+    const updatedAlumno = {
+      id: this.selectedAlumno.id,
+      izena: this.selectedAlumno.izena,
+      abizenak: this.selectedAlumno.abizenak,
+      taldea: { 
+        kodea: this.selectedAlumno.taldeKodea
+      },
+    };
+  
+    this.ikasleService.updateAlumno(updatedAlumno).subscribe(() => {
+      this.getGrupos();
+      this.getAlumnos();
+      this.closeEditModal();
+      this.mostrarToast(this.translate.instant('ikaslePage.AlumnoActualizado'), 'success');
+    });
+  }
+  
+  updateTalde() {
+    const updatedTalde = {
+      kodea: this.selectedTalde.kodea,
+      izena: this.selectedTalde.izena,
+    };
+  
+    this.ikasleService.updateGrupo(updatedTalde).subscribe(() => {
+      this.getAlumnos();
+      this.getGrupos();
+      this.closeEditTaldeModal();
+      this.mostrarToast(this.translate.instant('ikaslePage.GrupoActualizado'), 'success');
+    });
+  }
+  
+  guardarHorario() {
+    const formattedFechaInicio = this.formatDate(this.fechaInicio);
+    const formattedFechaFin = this.formatDate(this.fechaFin);
+    const formattedHoraInicio = this.horaInicio + ':00';
+    const formattedHoraFin = this.horaFin + ':00';
+  
+    this.ordutegia = {
+      taldea: {
+        kodea: this.grupoSeleccionado.kodea,
+      },
+      eguna: this.diaSeleccionado,
+      hasieraData: formattedFechaInicio,
+      amaieraData: formattedFechaFin,
+      hasieraOrdua: formattedHoraInicio,
+      amaieraOrdua: formattedHoraFin,
+    };
+  
+    this.ikasleService.guardarHorario(this.ordutegia).subscribe(
+      (data) => {
+        this.getHorarios();
+        this.ordutegia = {
+          taldea: { kodea: '' },
+          eguna: 0,
+          hasieraData: '',
+          amaieraData: '',
+          hasieraOrdua: '',
+          amaieraOrdua: '',
+        };
+        this.grupoSeleccionado.kodea = '';
+        this.diaSeleccionado = 0;
+        this.fechaInicio = '';
+        this.fechaFin = '';
+        this.horaInicio = null;
+        this.horaFin = null;
+  
+        if (data && data.id) {
+          this.mostrarToast(this.translate.instant('ikaslePage.HorarioGuardado'), 'success');
+        } else {
+          this.mostrarToast(this.translate.instant('ikaslePage.ErrorGuardarHorario'), 'danger');
+        }
+      },
+      (error) => {
+        console.error('Error al guardar el horario:', error);
+        this.mostrarToast(this.translate.instant('ikaslePage.ErrorConexion'), 'danger');
+      }
+    );
+  
+    this.closeModal();
+  }
+  
   actualizarHorario() {
     if (this.selectedHorario) {
-      console.log('Horario seleccionado:', this.selectedHorario); // Verifica que el id esté presente
-      const horarioActualizado: any = {
+      const horarioActualizado = {
         ...this.selectedHorario,
         taldea: this.grupoSeleccionado,
         eguna: this.diaSeleccionado,
@@ -462,60 +525,27 @@ export class IkasleakPage implements OnInit {
         amaieraOrdua: this.horaFin,
         eguneratzeData: new Date().toISOString(),
       };
-      // Si el id es undefined aquí, podría ser que no se esté asignando correctamente
+  
       if (horarioActualizado.id) {
-        this.ikasleService.actualizarHorario(horarioActualizado).subscribe(
-          (response) => {
-            this.getHorarios();
-            // Resetear el horario seleccionado
-            this.selectedHorario = {
-              id: 0,
-              hasieraData: '',
-              hasieraOrdua: '',
-              amaieraData: '',
-              amaieraOrdua: '',
-              eguna: 0,
-              taldea: { kodea: '' },
-            };
-            this.closeModal();
-          },
-          (error) => {
-            console.error('Error al actualizar el horario:', error);
-          }
-        );
+        this.ikasleService.actualizarHorario(horarioActualizado).subscribe(() => {
+          this.getHorarios();
+          this.selectedHorario = {
+            id: 0,
+            hasieraData: '',
+            hasieraOrdua: '',
+            amaieraData: '',
+            amaieraOrdua: '',
+            eguna: 0,
+            taldea: { kodea: '' },
+          };
+          this.closeModal();
+          this.mostrarToast(this.translate.instant('ikaslePage.HorarioGuardado'), 'success');
+        });
       } else {
-        console.error('El id del horario es undefined');
+        this.mostrarToast(this.translate.instant('ikaslePage.ErrorActualizarHorario'), 'danger');
       }
     }
   }
-
-  deleteHorario(horario: any): void {
-    // Crear la alerta de confirmación
-    this.alertController
-      .create({
-        header: this.translate.instant('ikaslePage.Message2'),
-        message: this.translate.instant('ikaslePage.Message3')  + horario.taldea.kodea + "?",
-        buttons: [
-          {
-            text: this.translate.instant('ikaslePage.Cancel'),
-            role: 'cancel',
-            handler: () => {
-              console.log('Eliminación cancelada');
-            },
-          },
-          {
-            text: this.translate.instant('ikaslePage.Aceptar'),
-            handler: () => {
-              this.ikasleService
-                .eliminarHorario(horario.id)
-                .subscribe((response) => {
-                  this.getHorarios();
-                  console.log('Horario eliminado', response);
-                });
-            },
-          },
-        ],
-      })
-      .then((alert) => alert.present());
-  }
+  
+  
 }

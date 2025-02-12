@@ -57,7 +57,7 @@
               <ion-list>
                 <ion-item *ngFor="let ikaslea of grupo.langileak" class="ikasle-item" (click)="openEditModal(ikaslea)">
                   <ion-label>
-                    <h3>{{ ikaslea.izena }} {{ ikaslea.abizenak }}</h3>
+                    <h3>{{ ikaslea.izena }} {{ ikaslea.abizenak }} {{ ikaslea.ezabatzeData }}</h3>
                   </ion-label>
                 </ion-item>
               </ion-list>
@@ -94,7 +94,7 @@
             <ion-item>
               <ion-label position="stacked">{{ "ikaslePage.Kodea" | translate }}</ion-label>
               <ion-select [(ngModel)]="selectedAlumno.taldeKodea" placeholder="{{ 'ikaslePage.ErabakiKodeBerriBat' | translate }}">
-                <ion-select-option *ngFor="let grupo of ikasleArray" [value]="grupo.kodea">
+                <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
                   {{ grupo.kodea }}
                 </ion-select-option>
               </ion-select>
@@ -124,7 +124,7 @@
             <ion-item>
               <ion-label position="stacked">{{ 'ikaslePage.Kodea' | translate }}</ion-label>
               <ion-select [(ngModel)]="nuevoAlumno.taldea.kodea" placeholder="{{ 'ikaslePage.ErabakiKodeBerriBat' | translate }}">
-                <ion-select-option *ngFor="let grupo of ikasleArray" [value]="grupo.kodea">
+                <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
                   {{ grupo.kodea }}
                 </ion-select-option>
               </ion-select>
@@ -334,7 +334,7 @@
           <ion-item>
             <ion-label position="floating">{{ 'ikaslePage.Taldea' | translate }}</ion-label>
             <ion-select [(ngModel)]="grupoSeleccionado.kodea" name="grupo" required>
-              <ion-select-option *ngFor="let grupo of ikasleArray" [value]="grupo.kodea">
+              <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
                 {{ grupo.izena }}
               </ion-select-option>
             </ion-select>
@@ -389,7 +389,7 @@
           <ion-item>
             <ion-label position="floating">{{ 'ikaslePage.Taldea' | translate }}</ion-label>
             <ion-select [(ngModel)]="grupoSeleccionado.kodea" name="grupo" required>
-              <ion-select-option *ngFor="let grupo of ikasleArray" [value]="grupo.kodea">
+              <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
                 {{ grupo.izena }}
               </ion-select-option>
             </ion-select>

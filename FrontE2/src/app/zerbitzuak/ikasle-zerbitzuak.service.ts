@@ -18,7 +18,7 @@ export interface Ikaslea {
 export interface Taldea {
   kodea: string;
   izena?: string;
-  langileak?:Ikaslea[];
+  langileak?: Ikaslea[];
   sortzeData?: string;
   eguneratzeData?: string;
   ezabatzeData?: null;
