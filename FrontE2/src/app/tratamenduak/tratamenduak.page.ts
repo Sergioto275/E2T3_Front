@@ -3,6 +3,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
 import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
+import { LoginServiceService } from '../zerbitzuak/login-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tratamenduak',
@@ -30,13 +32,18 @@ export class TratamenduakPage implements OnInit {
   
   filtroCategoria: string = '';
   filtroZerbitzua: string = '';
+  isIkasle!:boolean;
 
-  constructor(private translate: TranslateService, private http: HttpClient) {
+  constructor(private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService, private router: Router) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
 
   ngOnInit() {
+    this.isIkasle = this.loginService.isAlumno();
+    if (this.isIkasle) {
+      this.router.navigate(['/home']);
+    }
     this.zerbiztuakLortu();
   }
 

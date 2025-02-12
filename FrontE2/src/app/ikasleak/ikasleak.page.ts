@@ -3,6 +3,8 @@ import { AlertController, IonModal, ModalController, ToastController } from '@io
 import {IkasleZerbitzuakService, Ikaslea, Taldea, Horario,} from './../zerbitzuak/ikasle-zerbitzuak.service';
 import { TranslateService } from '@ngx-translate/core';
 import { HeaderComponent } from '../components/header/header.component';
+import { LoginServiceService } from '../zerbitzuak/login-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-ikasleak',
@@ -40,6 +42,7 @@ export class IkasleakPage implements OnInit {
   ordutegia: Horario = {taldea: {kodea: '',},eguna: 0,hasieraData: '',amaieraData: '',hasieraOrdua: '',amaieraOrdua: '',};
   selectedHorario: Horario = {id: 0,hasieraData: '',hasieraOrdua: '',amaieraData: '',amaieraOrdua: '',eguna: 0,taldea: { kodea: '' },};
   filteredGroups: any[] = [];
+  isIkasle!:boolean;
 
 
   constructor(
@@ -48,12 +51,18 @@ export class IkasleakPage implements OnInit {
     private ikasleService: IkasleZerbitzuakService,
     private alertController: AlertController,
     private toastController: ToastController,
+    private router: Router
+    private loginService: LoginServiceService,
   ) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
 
   ngOnInit() {
+    this.isIkasle = this.loginService.isAlumno();
+    if (this.isIkasle) {
+      this.router.navigate(['/home']);
+    }
     this.getGrupos();
     // Obtener alumnos
     this.getAlumnos();

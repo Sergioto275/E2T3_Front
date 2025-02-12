@@ -1,13 +1,17 @@
 {
   "menu": {
     "title": "Menu",
+    "home":"Home",
     "hitzorduak": "Citas",
     "grafikoak": "Graficos",
     "materialak": "Materiales",
     "produktuak": "Productos",
     "historiala": "Historial",
     "ikasleak": "Estudiantes",
-    "zerbitzuak": "Servicios"
+    "zerbitzuak": "Servicios",
+    "txandak":"Turnos",
+    "inbentario":"Inventario",
+    "parametrizacion":"Parametrizacion"
   },
   "productos": {
     "title": "Gestion de productos",
