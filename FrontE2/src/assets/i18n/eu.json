@@ -44,6 +44,17 @@
         },
         "categorias": {
             "electronica": "Elektronika"
+        },
+        "validaciones":{
+            "seleccionaGrupo":"Talde bat aukeratu behar duzu",
+            "seleccionaAlumno":"Langile bat aukeratu behar duzu",
+            "cantidad":"Baliozko kantitatea sartu behar da",
+            "nombre":"Baliozko izen bat sartu behar da",
+            "marca":"Baliozko marka sartu behar da",
+            "descripcion":"Deskribapena derrigorrezkoa da",
+            "stockRequerido":"Baliozko stock-a sartu behar da",
+            "stockAlertaRequerido":"Baliozko stock alerta sartu behar da",
+            "categoria":"Kategoria bat aukeratu"            
         }
     },
     "materiales": {
@@ -81,6 +92,13 @@
             "mensajeAlertaBorrarCats": "Ziur zaude kategoria hau ezabatu nahi duzula:",
             "materiales": "Materialak",
             "filtros": "Filtroak"
+        },
+        "validaciones":{
+            "seleccionaGrupoError":"Talde bat aukeratu behar duzu",
+            "seleccionaAlumnoError":"Langile bat aukeratu behar duzu",
+            "nombre":"Baliozko izen bat sartu behar da",
+            "etiqueta":"Baliozko etika bat sartu (10 char max)",
+            "categoria":"Kategoria bat aukeratu"            
         }
     },
     "citas": {
@@ -174,6 +192,16 @@
             "reset":"Reset",
             "filtroFecha":"Data Filtratu",
             "filtroBezero":"Bilatu izena edo abizena"
+        },
+        "validaciones":{
+            "nombre":"Izena derrigorrezkoa da",
+            "apellido":"Abizena derrigorrezkoa da",
+            "telefono":"Gutxienez 9 digitu dituen telefono baliodun bat sartu",
+            "producto":"Produktua derrigorrezkoa da",
+            "fecha":"Data derrigorrezkoa da",
+            "cantidad":"Kantitatea derrigorrezkoa da",
+            "volumen":"Baliozko bolumena sartu",
+            "comentarios":"Baliozko oharra sartu"
         }
     },
     "servicios":{
@@ -195,6 +223,12 @@
             "confirmar": "Baieztatu",
             "crear": "Sortu",
             "editar": "Editatu"
+        },
+        "validaciones":{
+            "nombre":"Baliozko izen bat sartu behar da",
+            "precioFuera":"Kanpoko prezioa sartu behar da",
+            "precioDentro":"Etxeko prezioa sartu behar da",
+            "categoria":"Kategoria bat aukeratu"            
         }
     },
     
