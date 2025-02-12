@@ -139,7 +139,12 @@
                 {{ taldea.kodea }} : {{ taldea.izena }}
               </ion-select-option>
             </ion-select>
+            <!-- Validación: Mostrar mensaje de error si no hay grupo seleccionado -->
+            <ion-text color="danger" *ngIf="!selecTaldea">
+              {{ 'materiales.validaciones.seleccionaGrupoError' | translate }}
+            </ion-text>
           </ion-item>
+
           <ion-item>
             <ion-select [(ngModel)]="selecAlumno" label="{{ 'materiales.modal.alumno' | translate }}"
               placeholder="{{ 'materiales.modal.seleccionaAlumno' | translate }}" [disabled]="!selecTaldea">
@@ -147,7 +152,12 @@
                 {{ alumno.id }} : {{ alumno.izena }}
               </ion-select-option>
             </ion-select>
+            <!-- Validación: Mostrar mensaje de error si no hay alumno seleccionado -->
+            <ion-text color="danger" *ngIf="!selecAlumno">
+              {{ 'materiales.validaciones.seleccionaAlumnoError' | translate }}
+            </ion-text>
           </ion-item>
+
           <ion-item>
             <ion-grid>
               <ion-label><strong>{{ 'materiales.modal.listaMatsSacar' | translate }}:</strong></ion-label>
@@ -155,20 +165,20 @@
                 <ion-col size="6" *ngFor="let mat of materialesSeleccionados">
                   <ion-card class="tarjetaRoja">
                     <ion-card-content>
-                      <ion-label><strong>{{ 'materiales.modal.etiqueta' | translate }}: </strong>{{ mat.etiketa
-                        }}</ion-label>
-                      <ion-label><strong>{{ 'materiales.modal.nombre' | translate }}: </strong>{{ mat.izena
-                        }}</ion-label>
+                      <ion-label><strong>{{ 'materiales.modal.etiqueta' | translate }}: </strong>{{ mat.etiketa }}</ion-label>
+                      <ion-label><strong>{{ 'materiales.modal.nombre' | translate }}: </strong>{{ mat.izena }}</ion-label>
                     </ion-card-content>
                   </ion-card>
                 </ion-col>
               </ion-row>
             </ion-grid>
           </ion-item>
+
           <ion-grid>
             <ion-row>
               <ion-col>
-                <ion-button expand="block" color="success" (click)="materialakAtera();modalAteraMat.dismiss()" [disabled]="!selecTaldea || !selecAlumno">
+                <ion-button expand="block" color="success" (click)="materialakAtera();modalAteraMat.dismiss()"
+                  [disabled]="!selecTaldea || !selecAlumno">
                   <ion-icon name="checkmark"></ion-icon>
                 </ion-button>
               </ion-col>
@@ -183,6 +193,7 @@
       </ng-template>
     </ion-modal>
 
+
     <ion-modal #modalSortuMat trigger="mat-sortu-modal">
       <ng-template>
         <ion-header>
@@ -191,39 +202,53 @@
           </ion-toolbar>
         </ion-header>
         <ion-content>
-          <ion-item>
-            <ion-label position="stacked">{{ 'materiales.modal.nombre' | translate }}</ion-label>
-            <ion-input [(ngModel)]="crearNombre" placeholder="{{ 'materiales.modal.nombre' | translate }}"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">{{ 'materiales.modal.etiqueta' | translate }}</ion-label>
-            <ion-input [(ngModel)]="crearEtiqueta"
-              placeholder="{{ 'materiales.modal.etiqueta' | translate }}"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-select [(ngModel)]="crearCategoria" label="{{ 'materiales.modal.categoria' | translate }}"
-              placeholder="{{ 'materiales.modal.seleccionaCategoria' | translate }}">
-              <ion-select-option *ngFor="let cat of materialak" [value]="cat.id">{{cat.izena}}</ion-select-option>
-            </ion-select>
-          </ion-item>
-          <ion-grid>
-            <ion-row>
-              <ion-col>
-                <ion-button expand="block" color="success" (click)="materialaSortu();modalSortuMat.dismiss()"
-                  [disabled]="!crearNombre || crearNombre.trim() === '' || !crearEtiqueta || crearEtiqueta.trim() === '' || !crearCategoria">
-                  <ion-icon name="checkmark"></ion-icon>
-                </ion-button>
-              </ion-col>
-              <ion-col>
-                <ion-button expand="block" color="danger" (click)="modalSortuMat.dismiss()">
-                  <ion-icon name="close"></ion-icon>
-                </ion-button>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
+          <form #form="ngForm" (ngSubmit)="materialaSortu()" novalidate>
+            <ion-item>
+              <ion-label position="stacked">{{ 'materiales.modal.nombre' | translate }}</ion-label>
+              <ion-input [(ngModel)]="crearNombre" name="nombre" placeholder="{{ 'materiales.modal.nombre' | translate }}" required #nombre="ngModel">
+              </ion-input>
+            </ion-item>
+            <ion-text color="danger" *ngIf="nombre.invalid && nombre.touched">
+              {{ 'materiales.validaciones.nombre' | translate }}
+            </ion-text>
+    
+            <ion-item>
+              <ion-label position="stacked">{{ 'materiales.modal.etiqueta' | translate }}</ion-label>
+              <ion-input [(ngModel)]="crearEtiqueta" name="etiqueta" placeholder="{{ 'materiales.modal.etiqueta' | translate }}" required maxlength="10" #etiqueta="ngModel">
+              </ion-input>
+            </ion-item>
+            <ion-text color="danger" *ngIf="etiqueta.invalid && etiqueta.touched">
+              {{ 'materiales.validaciones.etiqueta' | translate }}
+            </ion-text>
+            <ion-item>
+              <ion-label position="stacked">{{ 'materiales.modal.categoria' | translate }}</ion-label>
+              <ion-select [(ngModel)]="crearCategoria" name="categoria" placeholder="{{ 'materiales.modal.seleccionaCategoria' | translate }}" required #categoria="ngModel">
+                <ion-select-option *ngFor="let cat of materialak" [value]="cat.id">{{cat.izena}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-text color="danger" *ngIf="categoria.invalid && categoria.touched">
+              {{ 'materiales.validaciones.categoria' | translate }}
+            </ion-text>
+    
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <ion-button expand="block" color="success" [disabled]="form.invalid" type="submit">
+                    <ion-icon name="checkmark"></ion-icon>
+                  </ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button expand="block" color="danger" (click)="modalSortuMat.dismiss()">
+                    <ion-icon name="close"></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </form>
         </ion-content>
       </ng-template>
     </ion-modal>
+    
 
     <ion-modal #modalEditar trigger="mat-editar-modal">
       <ng-template>
@@ -233,40 +258,53 @@
           </ion-toolbar>
         </ion-header>
         <ion-content>
-          <ion-item>
-            <ion-label position="stacked">{{ 'materiales.modal.nombre' | translate }}</ion-label>
-            <ion-input [(ngModel)]="editarNombre" placeholder="{{ 'materiales.modal.nombre' | translate }}"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">{{ 'materiales.modal.etiqueta' | translate }}</ion-label>
-            <ion-input [(ngModel)]="editarEtiqueta"
-              placeholder="{{ 'materiales.modal.etiqueta' | translate }}"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-select [(ngModel)]="editarCategoria" label="{{ 'materiales.modal.categoria' | translate }}"
-              placeholder="{{ 'materiales.modal.seleccionaCategoria' | translate }}">
-              <ion-select-option *ngFor="let cat of materialak" [value]="cat.id">{{cat.izena}}</ion-select-option>
-            </ion-select>
-          </ion-item>
-          <ion-grid>
-            <ion-row>
-              <ion-col>
-                <ion-button expand="block" color="success"
-                  (click)="materialaEditatu(selectedMateriala.id);modalEditar.dismiss()"
-                  [disabled]="!editarNombre || editarNombre.trim() === '' || !editarEtiqueta || editarEtiqueta.trim() === '' || !editarCategoria">
-                  <ion-icon name="checkmark"></ion-icon>
-                </ion-button>
-              </ion-col>
-              <ion-col>
-                <ion-button expand="block" color="danger" (click)="modalEditar.dismiss()">
-                  <ion-icon name="close"></ion-icon>
-                </ion-button>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
+          <form #form="ngForm" (ngSubmit)="materialaEditatu(selectedMateriala.id); modalEditar.dismiss()" novalidate>
+            <ion-item>
+              <ion-label position="stacked">{{ 'materiales.modal.nombre' | translate }}</ion-label>
+              <ion-input [(ngModel)]="editarNombre" name="nombre" placeholder="{{ 'materiales.modal.nombre' | translate }}" required #nombre="ngModel">
+              </ion-input>
+            </ion-item>
+            <ion-text color="danger" *ngIf="nombre.invalid && nombre.touched">
+              {{ 'materiales.validaciones.nombre' | translate }}
+            </ion-text>
+    
+            <ion-item>
+              <ion-label position="stacked">{{ 'materiales.modal.etiqueta' | translate }}</ion-label>
+              <ion-input [(ngModel)]="editarEtiqueta" name="etiqueta" placeholder="{{ 'materiales.modal.etiqueta' | translate }}" required maxlength="10" #etiqueta="ngModel">
+              </ion-input>
+            </ion-item>
+            <ion-text color="danger" *ngIf="etiqueta.invalid && etiqueta.touched">
+              {{ 'materiales.validaciones.etiqueta' | translate }}
+            </ion-text>    
+            <ion-item>
+              <ion-label position="stacked">{{ 'materiales.modal.categoria' | translate }}</ion-label>
+              <ion-select [(ngModel)]="editarCategoria" name="categoria" label="{{ 'materiales.modal.categoria' | translate }}" placeholder="{{ 'materiales.modal.seleccionaCategoria' | translate }}" required #categoria="ngModel">
+                <ion-select-option *ngFor="let cat of materialak" [value]="cat.id">{{ cat.izena }}</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-text color="danger" *ngIf="categoria.invalid && categoria.touched">
+              {{ 'materiales.validaciones.categoria' | translate }}
+            </ion-text>
+    
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <ion-button expand="block" color="success" type="submit" [disabled]="form.invalid">
+                    <ion-icon name="checkmark"></ion-icon>
+                  </ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button expand="block" color="danger" (click)="modalEditar.dismiss()">
+                    <ion-icon name="close"></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </form>
         </ion-content>
       </ng-template>
     </ion-modal>
+    
 
     <ion-modal #modalKatMatSortu trigger="cat-mat-sortu-modal">
       <ng-template>
@@ -276,30 +314,34 @@
           </ion-toolbar>
         </ion-header>
         <ion-content>
-          <ion-item>
-            <ion-label position="stacked">{{ 'materiales.modal.nombre' | translate }}</ion-label>
-            <ion-input [(ngModel)]="crearKatNombre"
-              placeholder="{{ 'materiales.modal.nombre' | translate }}"></ion-input>
-          </ion-item>
-          <ion-grid>
-            <ion-row>
-              <ion-col>
-                <ion-button expand="block" color="success" (click)="kategoriaSortu();modalKatMatSortu.dismiss()"
-                  [disabled]="!crearKatNombre || crearKatNombre.trim() === ''">
-                  <ion-icon name="checkmark"></ion-icon>
-                </ion-button>
-              </ion-col>
-              <ion-col>
-                <ion-button expand="block" color="danger" (click)="modalKatMatSortu.dismiss();vaciarDatos()">
-                  <ion-icon name="close"></ion-icon>
-                </ion-button>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
+          <form #form="ngForm" (ngSubmit)="kategoriaSortu(); modalKatMatSortu.dismiss()" novalidate>
+            <ion-item>
+              <ion-label position="stacked">{{ 'materiales.modal.nombre' | translate }}</ion-label>
+              <ion-input [(ngModel)]="crearKatNombre" name="nombre" placeholder="{{ 'materiales.modal.nombre' | translate }}" required maxlength="45" #nombre="ngModel">
+              </ion-input>
+            </ion-item>
+            <ion-text color="danger" *ngIf="nombre.invalid && nombre.touched">
+              {{ 'materiales.validaciones.nombre' | translate }}
+            </ion-text>
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <ion-button expand="block" color="success" type="submit" [disabled]="form.invalid">
+                    <ion-icon name="checkmark"></ion-icon>
+                  </ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button expand="block" color="danger" (click)="modalKatMatSortu.dismiss(); vaciarDatos()">
+                    <ion-icon name="close"></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </form>
         </ion-content>
       </ng-template>
     </ion-modal>
-
+    
     <ion-modal #modaleditarcat trigger="cat-mat-editar-modal">
       <ng-template>
         <ion-header>
@@ -310,30 +352,34 @@
           </ion-toolbar>
         </ion-header>
         <ion-content>
-          <ion-item>
-            <ion-label position="stacked">{{ 'materiales.modal.nombre' | translate }}</ion-label>
-            <ion-input [(ngModel)]="editarKatNombre"
-              placeholder="{{ 'materiales.modal.nombre' | translate }}"></ion-input>
-          </ion-item>
-          <ion-grid>
-            <ion-row>
-              <ion-col>
-                <ion-button expand="block" color="success"
-                  (click)="kategoriaEditatu(selectedCategory.id);modaleditarcat.dismiss()"
-                  [disabled]="!editarKatNombre || editarKatNombre.trim() === ''">
-                  <ion-icon name="checkmark"></ion-icon>
-                </ion-button>
-              </ion-col>
-              <ion-col>
-                <ion-button expand="block" color="danger" (click)="modaleditarcat.dismiss();">
-                  <ion-icon name="close"></ion-icon>
-                </ion-button>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
+          <form #form="ngForm" (ngSubmit)="kategoriaEditatu(selectedCategory.id); modaleditarcat.dismiss()" novalidate>
+            <ion-item>
+              <ion-label position="stacked">{{ 'materiales.modal.nombre' | translate }}</ion-label>
+              <ion-input [(ngModel)]="editarKatNombre" name="nombre" placeholder="{{ 'materiales.modal.nombre' | translate }}" required maxlength="50" #nombre="ngModel">
+              </ion-input>
+            </ion-item>
+            <ion-text color="danger" *ngIf="nombre.invalid && nombre.touched">
+              {{ 'materiales.validaciones.nombre' | translate }}
+            </ion-text>
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <ion-button expand="block" color="success" type="submit" [disabled]="form.invalid">
+                    <ion-icon name="checkmark"></ion-icon>
+                  </ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button expand="block" color="danger" (click)="modaleditarcat.dismiss()">
+                    <ion-icon name="close"></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </form>
         </ion-content>
       </ng-template>
     </ion-modal>
+    
 
     <ion-modal #modalmatdevolver trigger="mat-devolver-modal">
       <ng-template>

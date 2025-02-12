@@ -721,48 +721,4 @@ eliminar_cita() {
     pdf.save(`ticket_${datuak.id}.pdf`);
   }
 
-  // Función: roundDownHour_hasieraData_crear
-  // roundDownHour_hasieraData_crear() {
-  //   const parts = this.hasOrduaTest.split(":");
-  //   let hour = parseInt(parts[0], 10);
-  //   let minute = parseInt(parts[1], 10);
-
-  //   const roundedMinute = minute >= 45 ? "00" : minute >= 15 ? "30" : "00";
-  //   const roundedHour = minute >= 45 ? hour + 1 : hour;
-  //   this.hasOrduaTest = `${roundedHour.toString().padStart(2, "0")}:${roundedMinute}`;
-  // }
-
-  // // Función: roundDownHour_amaieraData_crear
-  // roundDownHour_amaieraData_crear() {
-  //   const parts = this.amaOrduaTest.split(":");
-  //   let hour = parseInt(parts[0], 10);
-  //   let minute = parseInt(parts[1], 10);
-
-  //   const roundedMinute = minute >= 45 ? "00" : minute >= 15 ? "30" : "00";
-  //   const roundedHour = minute >= 45 ? hour + 1 : hour;
-  //   this.amaOrduaTest = `${roundedHour.toString().padStart(2, "0")}:${roundedMinute}`;
-  // }
-
-  // // Función: roundDownHour_hasieraData_editar
-  // roundDownHour_hasieraData_editar() {
-  //   const parts = this.hasOrduaTest.split(":");
-  //   let hour = parseInt(parts[0], 10);
-  //   let minute = parseInt(parts[1], 10);
-
-  //   const roundedMinute = minute >= 45 ? "00" : minute >= 15 ? "30" : "00";
-  //   const roundedHour = minute >= 45 ? hour + 1 : hour;
-  //   this.hasOrduaTest = `${roundedHour.toString().padStart(2, "0")}:${roundedMinute}`;
-  // }
-
-  // // Función: roundDownHour_amaieraData_editar
-  // roundDownHour_amaieraData_editar() {
-  //   const parts = this.amaOrduaTest.split(":");
-  //   let hour = parseInt(parts[0], 10);
-  //   let minute = parseInt(parts[1], 10);
-
-  //   const roundedMinute = minute >= 45 ? "00" : minute >= 15 ? "30" : "00";
-  //   const roundedHour = minute >= 45 ? hour + 1 : hour;
-  //   this.amaOrduaTest = `${roundedHour.toString().padStart(2, "0")}:${roundedMinute}`;
-  // }  
-
 }

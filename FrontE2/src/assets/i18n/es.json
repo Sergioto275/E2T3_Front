@@ -44,6 +44,16 @@
     },
     "categorias": {
       "electronica": "Electrónica"
+    },
+    "validaciones":{
+        "seleccionaGrupo":"Debe seleccionar un grupo",
+        "seleccionaAlumno":"Debe seleccionar un grupo",
+        "nombre":"Debe insertar un nombre valido",
+        "marca":"Debe insertar una marca valida",
+        "descripcion":"La descripcion es obligatoria",
+        "stockRequerido":"Debe insertar un stock valido",
+        "stockAlertaRequerido":"Debe insertar un stock de lerta valido",
+        "categoria":"Seleccione una categoria"            
     }
   },
   "materiales": {
@@ -81,7 +91,14 @@
       "mensajeAlertaBorrarCats": "¿Estás seguro de querer eliminar la categoría",
       "materiales": "Materiales",
       "filtros": "Filtros"
-      }
+    },
+    "validaciones":{
+        "seleccionaGrupoError":"Debe seleccionar un grupo",
+        "seleccionaAlumnoError":"Debe seleccionar un grupo",
+        "nombre":"Debe insertar un nombre valido",
+        "etiqueta":"Debe insertar una etiqueta valida(10 char max)",
+        "categoria":"Seleccione una categoria"            
+    }
   },
   "citas": {
     "titulo": "Citas",
@@ -142,39 +159,49 @@
   "historial": {
     "titulo": "Historial",
     "botones":{
-        "productos": "Movimientos de productos",
-        "materiales":"Movimientos de materiales",
-        "ticket":"Tickets",
-        "cliente":"Historial del cliente",
-        "crear":"Crear",
-        "añadir":"Añadir",
-        "guardar":"Guardar",
-        "editar":"Editar"
-      },
-      "modal": {
-        "proceso":"En proceso",
-        "trabajador":"Trabajador",
-        "fechaInicio":"Fecha Inicio",
-        "fechaFin":"Fecha Fin",
-        "grupo":"Grupo",
-        "cantidad": "Cantidad",
-        "servicios":"Servicios",
-        "precio":"Precio",
-        "total":"Precio Total",
-        "ficha":"Ficha Cliente",
-        "añadir_cliente":"Añadir cliente",
-        "nombre":"Nombre",
-        "apellido":"Apellido",
-        "telefono":"Teléfono",
-        "piel":"Piel Sensible",
-        "producto":"Producto",
-        "fecha":"Fecha",
-        "volumen":"volumen",
-        "comentarios":"Comentarios",
-        "reset":"Reset",
-        "filtroFecha":"Filtrar por Fecha",
-        "filtroBezero":"Busca nombre o apellido"
-      }
+      "productos": "Movimientos de productos",
+      "materiales":"Movimientos de materiales",
+      "ticket":"Tickets",
+      "cliente":"Historial del cliente",
+      "crear":"Crear",
+      "añadir":"Añadir",
+      "guardar":"Guardar",
+      "editar":"Editar"
+    },
+    "modal": {
+      "proceso":"En proceso",
+      "trabajador":"Trabajador",
+      "fechaInicio":"Fecha Inicio",
+      "fechaFin":"Fecha Fin",
+      "grupo":"Grupo",
+      "cantidad": "Cantidad",
+      "servicios":"Servicios",
+      "precio":"Precio",
+      "total":"Precio Total",
+      "ficha":"Ficha Cliente",
+      "añadir_cliente":"Añadir cliente",
+      "nombre":"Nombre",
+      "apellido":"Apellido",
+      "telefono":"Teléfono",
+      "piel":"Piel Sensible",
+      "producto":"Producto",
+      "fecha":"Fecha",
+      "volumen":"volumen",
+      "comentarios":"Comentarios",
+      "reset":"Reset",
+      "filtroFecha":"Filtrar por Fecha",
+      "filtroBezero":"Busca nombre o apellido"
+    },
+    "validaciones": {
+        "nombre": "El nombre es obligatorio",
+        "apellido": "El apellido es obligatorio",
+        "telefono": "Introduce un teléfono válido con al menos 9 dígitos",
+        "producto": "El producto es obligatorio",
+        "fecha": "La fecha es obligatoria",
+        "cantidad": "La cantidad es obligatoria",
+        "volumen": "Introduce un volumen válido",
+        "comentarios": "Introduce un comentario válido"
+    }
   },
   "informes": {
     "title": "Informes",
