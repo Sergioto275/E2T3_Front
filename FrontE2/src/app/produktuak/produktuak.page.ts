@@ -283,8 +283,7 @@ export class ProduktuakPage implements OnInit {
         'Access-Control-Allow-Origin': '*',
       }
     }).subscribe(
-      async (response) => {
-        console.log('Movimiento registrado correctamente');
+      async () => {
         await this.produktuakLortu();
       },
       (error) => {

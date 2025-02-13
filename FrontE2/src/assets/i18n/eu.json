@@ -93,6 +93,13 @@
             "materiales": "Materialak",
             "filtros": "Filtroak"
         },
+        "validaciones":{
+            "seleccionaGrupoError":"Talde bat aukeratu behar duzu",
+            "seleccionaAlumnoError":"Langile bat aukeratu behar duzu",
+            "nombre":"Baliozko izen bat sartu behar da",
+            "etiqueta":"Baliozko etika bat sartu (10 char max)",
+            "categoria":"Kategoria bat aukeratu"            
+        },
         "toasts": {
             "mensajeSacarMats": "Materialak ondo atera dira",
             "mensajeMatsCrear": "Materiala ondo sortu da",

@@ -377,7 +377,7 @@ export class HitzorduakPage implements OnInit {
       );
     });
     if (this.langileArray.length == 0 && langileak.length > 0) {
-      this.langileArray = langileak[0].taldea.langileak;
+      this.langileArray = langileak[0].taldea.langileak.filter((langile:any) => !langile.ezabatzeData);
     }
     this.asientos = langileak.length > 0 ? langileak[0].taldea.langileak.length - 1 : 0;
     this.resetSelection();
