@@ -120,9 +120,9 @@
         <ion-item *ngFor="let txanda of filteredTxandak">
           <ion-label>
             <h2>
-              {{ txanda.mota === 'G' ? 'Garbiketa' : txanda.mota === 'M' ?
-              'Mahaia' : txanda.mota }}
+              {{ txanda.mota === 'G' ? ('txandakPage.garbiketa' | translate) : (txanda.mota === 'M' ? ('txandakPage.mahaia' | translate) : txanda.mota) }}
             </h2>
+            
             <p>
               {{ 'txandakPage.fechaTxanda' | translate }}: {{ txanda.data }}
             </p>
