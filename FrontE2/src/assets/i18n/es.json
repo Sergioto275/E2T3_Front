@@ -320,8 +320,20 @@
     "ErrorActualizarHorario": "Error al actualizar el horario",
     "Cancelar": "Cancelar",
     "GuardarCambios": "Guardar Cambios",
-    "EliminarAlumnos": "Alumno/s eliminados correctamente"
-
+    "EliminarAlumnos": "Alumno/s eliminados correctamente",
+    "validaciones":{
+      "kodea":"Inserta un codigo de grupo valido (5 char max)",
+      "kodeaSelec":"Selecciona un grupo",
+      "abizena":"Inserta un apellido valido",
+      "izena":"Inserta un nombre valido",
+      "dia":"Debe escoger un dia",
+      "FechaInicio":"Debe insertar una fecha de inicio",
+      "FechaFin":"Debe insertar una fecha fin",
+      "FechaInicioMenor":"La fecha final no puede ser menor que la de inicio",
+      "HoraInicio":"Debe insertar una hora de inicio",
+      "HoraFin":"Debe insertar una hora fin",
+      "HoraInicioMenor":"La hora inicio no puede ser menor que la hora fin"
+    }
   },
   "txandakPage": {
     "titulo": "Turnos",
