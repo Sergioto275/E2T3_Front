@@ -4,22 +4,24 @@
   </div>
 
   <div class="login-container ion-padding">
+    <ion-card *ngIf="loginMessage" [color]="loginMessageType === 'error' ? 'danger' : 'success'">
+      <ion-card-content>
+        <p>{{ loginMessage }}</p>
+      </ion-card-content>
+    </ion-card>
+
     <ion-list>
-      <ion-item>
-        <ion-label position="stacked">
-          Erabiltzailea:<ion-text color="danger">*</ion-text>
-        </ion-label>
-        <ion-input type="text" placeholder="Zure erabiltzailea" [(ngModel)]="username"></ion-input>
+      <ion-item [class.invalid]="submitted && !username">
+        <ion-label position="stacked">Erabiltzailea:<ion-text color="danger">*</ion-text></ion-label>
+        <ion-input type="text" placeholder="Zure erabiltzailea" [(ngModel)]="username" [class.invalid]="submitted && !username" ></ion-input>
       </ion-item>
-      <ion-item>
-        <ion-label position="stacked">
-          Pasahitza:<ion-text color="danger">*</ion-text>
-        </ion-label>
-        <ion-input type="password" placeholder="Zure pasahitza" [(ngModel)]="password"></ion-input>
+      <ion-item [class.invalid]="submitted && !password">
+        <ion-label position="stacked">Pasahitza:<ion-text color="danger">*</ion-text></ion-label>
+        <ion-input type="password" placeholder="Zure pasahitza" [(ngModel)]="password" [class.invalid]="submitted && !password"></ion-input>
       </ion-item>
     </ion-list>
     <ion-button expand="block" class="login-button" (click)="onLogin()">
       <b>Saioa Hasi</b>
-    </ion-button>    
+    </ion-button>
   </div>
 </ion-content>

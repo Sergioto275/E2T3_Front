@@ -186,7 +186,7 @@
             placeholder="{{ 'txandakPage.alumnoPlaceholderModal' | translate }}"
           >
             <ion-select-option
-              *ngFor="let alumno of filteredAlumnos"
+              *ngFor="let alumno of Alumnos"
               [value]="alumno.id"
             >
               {{ alumno.izena }} {{ alumno.abizenak }}

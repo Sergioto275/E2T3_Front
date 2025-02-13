@@ -91,7 +91,7 @@
           </ion-segment>
           <ion-segment-view>
             <ion-segment-content id="sortu">
-              <form #citaForm="ngForm" (ngSubmit)="createCita()" novalidate>
+              <form #citaForm="ngForm" (ngSubmit)="createCita()"  (ngSubmit)="citaForm.resetForm()" novalidate>
                 <ion-item>
                   <ion-label position="stacked">{{ "citas.modal.fecha" | translate }}</ion-label>
                   <ion-input [(ngModel)]="citaCrear.data" name="fecha" type="date" disabled="true" required #fecha="ngModel"></ion-input>
@@ -136,7 +136,7 @@
               </form>
             </ion-segment-content>
             <ion-segment-content id="editatu">
-              <form #editCitaForm="ngForm" (ngSubmit)="editar_cita()" novalidate>
+              <form #editCitaForm="ngForm" (ngSubmit)="editar_cita()" (ngSubmit)="editCitaForm.resetForm()" novalidate>
                 <ion-item>
                   <ion-label position="stacked">{{ "citas.modal.fecha" | translate }}</ion-label>
                   <ion-input [(ngModel)]="citaEditar.data" name="fecha" type="date" disabled="true" required #fecha="ngModel"></ion-input>
@@ -183,7 +183,7 @@
               </form>
             </ion-segment-content>            
             <ion-segment-content id="asignatu">
-              <form #asignarCitaForm="ngForm" (ngSubmit)="asignar_cita()" novalidate>
+              <form #asignarCitaForm="ngForm" (ngSubmit)="asignar_cita()" (ngSubmit)="asignarCitaForm.resetForm()" novalidate>
                 <!-- Mensaje de error si no hay una cita válida seleccionada -->
                 <ion-text color="danger" *ngIf="!citaValida()">{{ "citas.validaciones.selectCita" | translate }}</ion-text>
                 <ion-item>
@@ -211,7 +211,7 @@
               </form>
             </ion-segment-content>
             <ion-segment-content id="ticket">
-              <form #ticketForm="ngForm" (ngSubmit)="generar_ticket()" novalidate>
+              <form #ticketForm="ngForm" (ngSubmit)="generar_ticket()" (ngSubmit)="ticketForm.resetForm()" novalidate>
                 <!-- Mensaje de error si no hay una cita seleccionada -->
                 <ion-text color="danger" *ngIf="!citaValida()">{{ "citas.validaciones.selectCita" | translate }}</ion-text>
                 <ion-list *ngFor="let katTrat of tratamenduArray">

@@ -44,6 +44,17 @@
     },
     "categorias": {
       "electronica": "Electrónica"
+    },
+    "validaciones":{
+        "seleccionaGrupo":"Debe seleccionar un grupo",
+        "seleccionaAlumno":"Debe seleccionar un grupo",
+        "cantidad":"Inserta una cantidad valida",
+        "nombre":"Debe insertar un nombre valido",
+        "marca":"Debe insertar una marca valida",
+        "descripcion":"La descripcion es obligatoria",
+        "stockRequerido":"Debe insertar un stock valido",
+        "stockAlertaRequerido":"Debe insertar un stock de lerta valido",
+        "categoria":"Seleccione una categoria"            
     }
   },
   "materiales": {
@@ -81,6 +92,13 @@
       "mensajeAlertaBorrarCats": "¿Estás seguro de querer eliminar la categoría",
       "materiales": "Materiales",
       "filtros": "Filtros"
+    },
+    "validaciones":{
+      "seleccionaGrupoError":"Debe seleccionar un grupo",
+      "seleccionaAlumnoError":"Debe seleccionar un grupo",
+      "nombre":"Debe insertar un nombre valido",
+      "etiqueta":"Debe insertar una etiqueta valida(10 char max)",
+      "categoria":"Seleccione una categoria"            
     },
     "toasts": {
       "mensajeSacarMats": "Los materiales se han sacado correctamente",
@@ -219,6 +237,12 @@
       "confirmar": "Confirmar",
       "crear": "Crear",
       "editar": "Editar"
+    },
+    "validaciones": {
+      "nombre": "Introduce un nombre valido",
+      "precioFuera": "Introduce el precio de fuera",
+      "precioDentro": "Introduce el precio de dentro",
+      "categoria":"Seleccione una categoria"            
     }
   },
   "ikaslePage": {

@@ -100,6 +100,21 @@ export class MaterialakPage implements OnInit {
   
   toggleMostrarCheckbox() {
     this.mostrarCheckbox = !this.mostrarCheckbox;
+    if(this.mostrarCheckbox){
+      this.filteredMaterialak = this.filteredMaterialak.map(material => {
+        return {
+            ...material,
+            materialak: material.materialak.filter((m:any) => 
+                !this.materialaDevolver.some((devolver:any) => devolver.materiala.etiketa === m.etiketa)
+            )
+        };
+    }).filter(material => material.materialak.length > 0);
+    
+    }else{
+      this.filteredMaterialak = this.materialak;
+    }
+    console.log(this.filteredMaterialak)
+    console.log(this.materialaDevolver)
   }
 
   toggleCategoria(categoria: string) {

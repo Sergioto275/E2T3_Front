@@ -139,7 +139,12 @@
                 {{ taldea.kodea }} : {{ taldea.izena }}
               </ion-select-option>
             </ion-select>
+            <!-- Validación: Mostrar mensaje de error si no hay grupo seleccionado -->
+            <ion-text color="danger" *ngIf="!selecTaldea">
+              {{ 'materiales.validaciones.seleccionaGrupoError' | translate }}
+            </ion-text>
           </ion-item>
+
           <ion-item>
             <ion-select [(ngModel)]="selecAlumno" label="{{ 'materiales.modal.alumno' | translate }}"
               placeholder="{{ 'materiales.modal.seleccionaAlumno' | translate }}" [disabled]="!selecTaldea">
@@ -147,7 +152,12 @@
                 {{ alumno.id }} : {{ alumno.izena }}
               </ion-select-option>
             </ion-select>
+            <!-- Validación: Mostrar mensaje de error si no hay alumno seleccionado -->
+            <ion-text color="danger" *ngIf="!selecAlumno">
+              {{ 'materiales.validaciones.seleccionaAlumnoError' | translate }}
+            </ion-text>
           </ion-item>
+
           <ion-item>
             <ion-grid>
               <ion-label><strong>{{ 'materiales.modal.listaMatsSacar' | translate }}:</strong></ion-label>
@@ -155,16 +165,15 @@
                 <ion-col size="6" *ngFor="let mat of materialesSeleccionados">
                   <ion-card class="tarjetaRoja">
                     <ion-card-content>
-                      <ion-label><strong>{{ 'materiales.modal.etiqueta' | translate }}: </strong>{{ mat.etiketa
-                        }}</ion-label>
-                      <ion-label><strong>{{ 'materiales.modal.nombre' | translate }}: </strong>{{ mat.izena
-                        }}</ion-label>
+                      <ion-label><strong>{{ 'materiales.modal.etiqueta' | translate }}: </strong>{{ mat.etiketa }}</ion-label>
+                      <ion-label><strong>{{ 'materiales.modal.nombre' | translate }}: </strong>{{ mat.izena }}</ion-label>
                     </ion-card-content>
                   </ion-card>
                 </ion-col>
               </ion-row>
             </ion-grid>
           </ion-item>
+
           <ion-grid>
             <ion-row>
               <ion-col>
@@ -184,6 +193,7 @@
         <app-toasts mezua="{{ 'materiales.toasts.mensajeSacarMats' | translate }}"></app-toasts>
       </ng-template>
     </ion-modal>
+
 
     <ion-modal #modalSortuMat trigger="mat-sortu-modal">
       <ng-template>
@@ -228,6 +238,7 @@
         <app-toasts mezua="{{ 'materiales.toasts.mensajeMatsCrear' | translate }}"></app-toasts>
       </ng-template>
     </ion-modal>
+    
 
     <ion-modal #modalEditar trigger="mat-editar-modal">
       <ng-template>
@@ -272,6 +283,7 @@
         <app-toasts mezua="{{ 'materiales.toasts.mensajeEditarMats' | translate }}"></app-toasts>
       </ng-template>
     </ion-modal>
+    
 
     <ion-modal #modalKatMatSortu trigger="cat-mat-sortu-modal">
       <ng-template>
@@ -306,7 +318,7 @@
         <app-toasts mezua="{{ 'materiales.toasts.mensajeCrearCat' | translate }}"></app-toasts>
       </ng-template>
     </ion-modal>
-
+    
     <ion-modal #modaleditarcat trigger="cat-mat-editar-modal">
       <ng-template>
         <ion-header>
@@ -342,6 +354,7 @@
         <app-toasts mezua="{{ 'materiales.toasts.mensajeEditarCat' | translate }}"></app-toasts>
       </ng-template>
     </ion-modal>
+    
 
     <ion-modal #modalmatdevolver trigger="mat-devolver-modal">
       <ng-template>
