@@ -23,7 +23,7 @@
       <ion-buttons slot="end">
         <ion-button [disabled]="productosSeleccionados.length==0" id="atera-modal">{{ 'productos.botones.sacarProductos' | translate }}</ion-button>
       </ion-buttons>
-      <ion-buttons slot="end"> 
+      <ion-buttons slot="end">
         <ion-button id="bottom-center">
           <ion-icon name="cart" size="large"></ion-icon>
         </ion-button>
@@ -36,11 +36,16 @@
             <ion-item *ngFor="let producto of productosSeleccionados">
               <ion-label>
                 <h2>{{ producto.izena }}</h2>
-                <ion-input type="number" [(ngModel)]="producto.kantitatea" placeholder="Cantidad"></ion-input>
+                <ion-input 
+                  type="number" 
+                  [(ngModel)]="producto.kantitatea" 
+                  placeholder="Cantidad">
+                </ion-input>
               </ion-label>
             </ion-item>
           </ion-list>
-          <ion-label *ngIf="productosSeleccionados.length === 0">
+          
+          <ion-label *ngIf="productosSeleccionados?.length === 0">
             {{ 'productos.modal.vacio' | translate }}
           </ion-label>
         </ion-content>
@@ -113,19 +118,21 @@
               {{ "productos.validaciones.seleccionaAlumno" | translate }}
             </ion-text>
     
-            <ion-list>
-              <ion-item *ngFor="let prod of productosSeleccionados">
-                <ion-item>
-                  <ion-label position="stacked">{{ prod.izena }}</ion-label>
-                  <ion-input type="number" [(ngModel)]="prod.kantitatea" name="kantitatea-{{prod.id}}" 
-                    required min="1" #kantitateaCtrl="ngModel" placeholder="Cantidad">
-                  </ion-input>
-                </ion-item>
-                <ion-text color="danger" *ngIf="kantitateaCtrl.invalid && kantitateaCtrl.touched">
-                  {{ "productos.validaciones.seleccionaAlumno" | translate }}
-                </ion-text>
-              </ion-item>
-            </ion-list>
+            <ion-card>
+              <ion-card-content>
+                <ion-list>
+                  <ion-item *ngFor="let prod of productosSeleccionados">
+                    <ion-label position="stacked">{{ prod.izena }}</ion-label>
+                    <ion-input type="number" [(ngModel)]="prod.kantitatea" name="kantitatea-{{prod.id}}" 
+                      required min="1" #kantitateaCtrl="ngModel" placeholder="Cantidad">
+                    </ion-input>
+                    <ion-text color="danger" *ngIf="kantitateaCtrl.invalid && kantitateaCtrl.touched">
+                      {{ "productos.validaciones.ingresarCantidad" | translate }}
+                    </ion-text>
+                  </ion-item>
+                </ion-list>
+              </ion-card-content>
+            </ion-card>
     
             <ion-grid>
               <ion-row>

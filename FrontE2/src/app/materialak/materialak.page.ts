@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { HeaderComponent } from '../components/header/header.component';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 export interface Alumno {
   nombre: string;
@@ -135,7 +136,7 @@ export class MaterialakPage implements OnInit {
           "id": this.crearCategoria
       }
   }
-    let observableRest: Observable<any> = this.restServer.post<any>("http://localhost:8080/api/materialak", data);
+    let observableRest: Observable<any> = this.restServer.post<any>(`${environment.url}materialak`, data);
     await observableRest.subscribe(datuak => {
       console.log(datuak);
       this.materialakLortu();
@@ -147,7 +148,7 @@ export class MaterialakPage implements OnInit {
     let data = {
       "izena": this.crearKatNombre,
     } 
-    let observableRest: Observable<any> = this.restServer.post<any>('http://localhost:8080/api/material_kategoria', data);
+    let observableRest: Observable<any> = this.restServer.post<any>(`${environment.url}material_kategoria`, data);
     await observableRest.subscribe(datuak => {
       console.log(datuak);
       this.materialakLortu();
@@ -164,7 +165,7 @@ export class MaterialakPage implements OnInit {
       },
     }
 
-    let observableRest: Observable<any> = this.restServer.put<any>(`http://localhost:8080/api/materialak/id/${id}`, data);
+    let observableRest: Observable<any> = this.restServer.put<any>(`${environment.url}materialak/id/${id}`, data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
       this.materialakLortu();
@@ -182,7 +183,7 @@ export class MaterialakPage implements OnInit {
   }
 
   materialaEzabatu(id:number){
-    let observableRest: Observable<any> = this.restServer.delete<any>(`http://localhost:8080/api/materialak/id/${id}`);
+    let observableRest: Observable<any> = this.restServer.delete<any>(`${environment.url}materialak/id/${id}`);
     observableRest.subscribe(datuak => {
       console.log(datuak);
       this.materialakLortu();
@@ -191,7 +192,7 @@ export class MaterialakPage implements OnInit {
   }  
 
   kategoriaEzabatu(id:number){
-    let observableRest: Observable<any> = this.restServer.delete<any>(`http://localhost:8080/api/material_kategoria/id/${id}`);
+    let observableRest: Observable<any> = this.restServer.delete<any>(`${environment.url}material_kategoria/id/${id}`);
     observableRest.subscribe(datuak => {
       console.log(datuak);
       this.materialakLortu();
@@ -203,7 +204,7 @@ export class MaterialakPage implements OnInit {
     let data = {
       "izena": this.editarKatNombre
     }
-    let observableRest: Observable<any> = this.restServer.put<any>(`http://localhost:8080/api/material_kategoria/id/${id}`, data);
+    let observableRest: Observable<any> = this.restServer.put<any>(`${environment.url}material_kategoria/id/${id}`, data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
       this.materialakLortu();
@@ -216,7 +217,7 @@ export class MaterialakPage implements OnInit {
   }
 
   materialakLortu(){
-    let observableRest: Observable<any> = this.restServer.get<any>('http://localhost:8080/api/material_kategoria');
+    let observableRest: Observable<any> = this.restServer.get<any>(`${environment.url}material_kategoria`);
     observableRest.subscribe(datuak => {
       console.log(datuak);
 
@@ -232,7 +233,7 @@ export class MaterialakPage implements OnInit {
   }
 
   materialakLortuAtera() {
-    let observableRest: Observable<any> = this.restServer.get<any>('http://localhost:8080/api/material_kategoria');
+    let observableRest: Observable<any> = this.restServer.get<any>(`${environment.url}material_kategoria`);
     observableRest.subscribe(datuak => {
       console.log(datuak);
       const materialaDevolverIds = this.materialaDevolver.map((material: any) => material.id);
@@ -253,7 +254,7 @@ export class MaterialakPage implements OnInit {
   }
 
   materialakLortuDevolver() {
-    let observableRest: Observable<any> = this.restServer.get<any>('http://localhost:8080/api/material_mailegua');
+    let observableRest: Observable<any> = this.restServer.get<any>(`${environment.url}material_mailegua`);
 
     observableRest.subscribe(datuak => {
         this.materialaDevolver = datuak.filter((mailegu:any) => 
@@ -273,7 +274,7 @@ export class MaterialakPage implements OnInit {
     }
   }));
 
-    let observableRest: Observable<any> = this.restServer.post<any>("http://localhost:8080/api/material_mailegua",data);
+    let observableRest: Observable<any> = this.restServer.post<any>(`${environment.url}material_mailegua`,data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
       this.vaciarDatos();
@@ -287,7 +288,7 @@ export class MaterialakPage implements OnInit {
       "id": mailegu.id
   }));
 
-    let observableRest: Observable<any> = this.restServer.put<any>('http://localhost:8080/api/material_mailegua', data);
+    let observableRest: Observable<any> = this.restServer.put<any>(`${environment.url}material_mailegua`, data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
 
@@ -303,7 +304,7 @@ export class MaterialakPage implements OnInit {
   }
 
   langileakLortu(){
-    let observableRest: Observable<any> = this.restServer.get<any>('http://localhost:8080/api/taldeak');
+    let observableRest: Observable<any> = this.restServer.get<any>(`${environment.url}taldeak`);
     observableRest.subscribe(datuak => {
       console.log(datuak);
       

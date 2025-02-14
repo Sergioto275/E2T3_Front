@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 export interface Ikaslea {
   id?: number;
@@ -50,62 +51,62 @@ export class IkasleZerbitzuakService {
 
   // Obtener todos los alumnos
   getAlumnos(): Observable<Ikaslea[]> {
-    return this.http.get<Ikaslea[]>('http://localhost:8080/api/langileak');
+    return this.http.get<Ikaslea[]>(`${environment.url}langileak`);
   }
 
   // Obtener todos los grupos
   getGrupos(): Observable<Taldea[]> {
-    return this.http.get<Taldea[]>('http://localhost:8080/api/taldeak');
+    return this.http.get<Taldea[]>(`${environment.url}taldeak`);
   }
 
   // Crear un nuevo alumno
   agregarAlumno(nuevoAlumno: Ikaslea): Observable<Ikaslea> {
     console.log(nuevoAlumno);
-     return this.http.post<Ikaslea>('http://localhost:8080/api/langileak', nuevoAlumno);
+     return this.http.post<Ikaslea>(`${environment.url}langileak`, nuevoAlumno);
   }
 
   // Crear un nuevo grupo
   agregarGrupo(nuevoGrupo: Taldea): Observable<Taldea> {
-    return this.http.post<Taldea>('http://localhost:8080/api/taldeak', nuevoGrupo);
+    return this.http.post<Taldea>(`${environment.url}taldeak`, nuevoGrupo);
   }
 
   // Actualizar un alumno
   updateAlumno(updatedAlumno: any): Observable<Ikaslea> {
-    return this.http.put<Ikaslea>('http://localhost:8080/api/langileak/' + updatedAlumno.id, updatedAlumno);
+    return this.http.put<Ikaslea>(`${environment.url}langileak/` + updatedAlumno.id, updatedAlumno);
   }
 
   // Eliminar un alumno
   eliminarAlumno(id: number): Observable<void> {
-    return this.http.delete<void>('http://localhost:8080/api/langileak/'+id);
+    return this.http.delete<void>(`${environment.url}langileak/`+id);
   }
 
   eliminarGrupo(kodea: string): Observable<any> {
-    return this.http.delete('http://localhost:8080/api/taldeak/kodea/'+kodea);
+    return this.http.delete(`${environment.url}taldeak/kodea/`+kodea);
   }
 
   updateGrupo(updatedGrupo: Taldea): Observable<Taldea> {
-    return this.http.put<Taldea>('http://localhost:8080/api/taldeak/' + updatedGrupo.kodea, updatedGrupo);
+    return this.http.put<Taldea>(`${environment.url}taldeak/` + updatedGrupo.kodea, updatedGrupo);
   }
 
   getHorarios(): Observable<Horario[]> {
-    return this.http.get<Horario[]>(`http://localhost:8080/api/ordutegiak`);
+    return this.http.get<Horario[]>(`${environment.url}ordutegiak`);
   }
 
   getHorariosFilter(fechaInicio:any, fechaFin:any): Observable<Horario[]> {
-    return this.http.get<Horario[]>(`http://localhost:8080/api/ordutegiak/${fechaInicio}/${fechaFin}`);
+    return this.http.get<Horario[]>(`${environment.url}ordutegiak/${fechaInicio}/${fechaFin}`);
   }
   // Guardar un nuevo horario
   guardarHorario(nuevoHorario: Horario): Observable<Horario> {
-    return this.http.post<Horario>('http://localhost:8080/api/ordutegiak', nuevoHorario);
+    return this.http.post<Horario>(`${environment.url}ordutegiak`, nuevoHorario);
   }
   // Actualizar un horario existente
   actualizarHorario(updatedHorario: Horario): Observable<Horario> {
-    return this.http.put<Horario>('http://localhost:8080/api/ordutegiak/id/' + updatedHorario.id, updatedHorario);
+    return this.http.put<Horario>(`${environment.url}ordutegiak/id/` + updatedHorario.id, updatedHorario);
   }
 
   // Eliminar un horario
   eliminarHorario(id: number): Observable<string> {
-    return this.http.delete('http://localhost:8080/api/ordutegiak/id/' + id, { responseType: 'text' });
+    return this.http.delete(`${environment.url}ordutegiak/id/` + id, { responseType: 'text' });
   }
   
 }

@@ -2,8 +2,8 @@
     <ion-header>
       <ion-toolbar>
         <ion-buttons slot="start">
-          <ion-button (click)="logout()" color="danger">
-            <ion-icon name="log-out-outline"size="large"></ion-icon>
+          <ion-button class="logout" (click)="logout()">
+            <ion-icon color="light" name="log-out-outline"size="large"></ion-icon>
           </ion-button>
         </ion-buttons>
         <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">

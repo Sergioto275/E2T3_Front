@@ -209,6 +209,16 @@
       "reset": "Reset",
       "filtroFecha": "Filtrar por Fecha",
       "filtroBezero": "Busca nombre o apellido"
+    },
+    "validaciones": {
+        "nombre": "El nombre es obligatorio",
+        "apellido": "El apellido es obligatorio",
+        "telefono": "Introduce un teléfono válido con al menos 9 dígitos",
+        "producto": "El producto es obligatorio",
+        "fecha": "La fecha es obligatoria",
+        "cantidad": "La cantidad es obligatoria",
+        "volumen": "Introduce un volumen válido",
+        "comentarios": "Introduce un comentario válido"
     }
   },
   "informes": {
@@ -236,7 +246,8 @@
       "extra": "Extra",
       "color": "Color",
       "select": "Seleccione una Categoria",
-      "categoria": "Categoría"
+      "categoria": "Categoría",
+      "filtro": "Busca nombre o categoria"
     },
     "botones": {
       "crearServicio": "Añadir servicio",

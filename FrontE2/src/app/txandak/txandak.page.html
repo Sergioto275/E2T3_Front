@@ -1,24 +1,27 @@
 <app-header></app-header>
 
 <ion-content class="ion-page" id="main-content">
-  <ion-toolbar class="Headeraaa">
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title size="large">{{ 'txandakPage.titulo' | translate }}</ion-title>
-    <ion-select
-      slot="end"
-      [(ngModel)]="selectedLanguage"
-      (ionChange)="changeLanguage()"
-    >
-      <ion-select-option value="es"
-        >Español</ion-select-option
+  <ion-header>
+    <ion-toolbar class="Headeraaa">
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title size="large">{{ 'txandakPage.titulo' | translate }}</ion-title>
+      <ion-select
+        slot="end"
+        [(ngModel)]="selectedLanguage"
+        (ionChange)="changeLanguage()"
       >
-      <ion-select-option value="eu"
-        >Euskera</ion-select-option
-      >
-    </ion-select>
-  </ion-toolbar>
+        <ion-select-option value="es"
+          >Español</ion-select-option
+        >
+        <ion-select-option value="eu"
+          >Euskera</ion-select-option
+        >
+      </ion-select>
+    </ion-toolbar>
+  </ion-header>
+  
 
   <!-- Botón para añadir nueva txanda -->
   <ion-button id="txanda-sortu-modal" class="Botoiak">

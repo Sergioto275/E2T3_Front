@@ -26,7 +26,7 @@ export class ProduktuakPage implements OnInit {
   modal!:string;
   produktuak!:any[];
 
-  productosSeleccionados:any[]=[];
+  productosSeleccionados:any[] = [];
   isEditingProduct: boolean = false;
   editingProduct:any = null;
   isEditingKategoria: boolean = false;

@@ -1,4 +1,5 @@
 .table-container {
+  background-color: transparent;
   overflow:scroll;
   height:500px;
 }
@@ -24,11 +25,11 @@ th:first-child {
 }
 
 td:first-child{
-  background-color: white;
+  background: magenta;
 }
 
 th:first-child{
-  background-color: #f4f4f4 ;
+  background-color: #beb3b370 ;
 }
 
 td:not(:first-child),
@@ -60,32 +61,82 @@ th {
 }
 
 .highlighted {
-  background-color: #f0f8ff; /* Color de fondo para la selección */
+  background-color: #f0f8ff2d; /* Color de fondo para la selección */
   border: 1px solid #00bfff;
 }
 
+ion-item {
+  --background: transparent;
+}
+
+ion-list {
+  background-color: rgb(255,255,255,0);
+}
+
+
+ion-card-header{
+  background-color: transparent;
+}
+
+.flexbox {
+  background-color: rgba(255, 255, 255, 0); /* Fondo transparente */
+  padding: 20px;
+}
+
+/* Cabecera de la tabla */
+table thead th {
+  background-color: #ffffff; /* Fondo blanco sólido */
+  font-weight: bold;
+  color: #333; /* Color de texto oscuro */
+}
+
+/* Primera columna */
+table tbody td:first-child {
+  background-color: #ffffff; /* Fondo blanco sólido */
+  font-weight: bold;
+  color: #333; /* Color de texto oscuro */
+}
+
+/* Celdas con citas */
+table tbody td.ng-star-inserted {
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo ligero y opaco */
+  color: #333; /* Color de texto oscuro */
+  border-radius: 5px;
+}
+
+/* Botones */
+// ion-button {
+//   background-color: #ff6f61 !important; /* Color de fondo de botones */
+//   color: white; /* Color de texto en botones */
+//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombras suaves para los botones */
+// }
+// ion-button:hover {
+//   background-color: #ff4c3b; /* Cambiar color de fondo al pasar el ratón */
+// }
+
+
 // Colores
-$color-light-blue: #E4FEFF;
-$color-medium-blue: #88E4E8;
-$color-dark-teal: #00C7BE;
-$color-light-teal: #63D6F5;
-$color-white: #FFFFFF;
-$color-black: #000000;
-$color-light-gray: #E9E9E9;
-$color-light-blue-alt: #C4E7F1;
+// $color-light-blue: #E4FEFF;
+// $color-medium-blue: #88E4E8;
+// $color-dark-teal: #00C7BE;
+// $color-light-teal: #63D6F5;
+// $color-white: #FFFFFF;
+// $color-black: #000000;
+// $color-light-gray: #E9E9E9;
+// $color-light-blue-alt: #C4E7F1;
 
 // Estructura general
-ion-content {
-background-color: $color-white;
-padding: 16px;
-}
+// ion-content {
+// background-color: $color-white;
+// padding: 16px;
+// }
 
-ion-header {
-background-color: $color-light-teal;
-color: $color-white;
---ion-toolbar-background: $color-light-teal;
---ion-toolbar-color: $color-white;
-}
+// ion-header {
+// background-color: $color-light-teal;
+// color: $color-white;
+// --ion-toolbar-background: $color-light-teal;
+// --ion-toolbar-color: $color-white;
+// }
 
 ion-card{
   width: auto;

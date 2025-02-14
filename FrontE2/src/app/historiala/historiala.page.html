@@ -281,7 +281,7 @@
       </ion-header>
       <ion-card>
         <ion-card-header>
-          <ion-card-title>{{ "historial.modal.filtroFecha" | translate }}</ion-card-title>
+          <ion-card-title>{{ "historial.modal.filtroBezero" | translate }}</ion-card-title>
         </ion-card-header>
         <ion-card-content>
           <ion-item>
@@ -293,16 +293,18 @@
       <ion-content>
         <!-- Lista de Bezero -->
         <ion-list id="bezero-list">
-          <ion-item *ngFor="let bezero of bezeroakFiltered">
-            <ion-label>
-              <h2>{{ bezero.izena }} {{ bezero.abizena }}</h2>
-              <p>{{ "historial.modal.telefono" | translate }}: {{ bezero.telefonoa }}</p>
-            </ion-label>
-            <ion-buttons slot="end">
-              <ion-button color="primary" (click)="openBezero(bezero)">Editar</ion-button>
-              <ion-button color="danger" (click)="deleteBezero(bezero.id)">Eliminar</ion-button>
-            </ion-buttons>
-          </ion-item>
+          <ion-card>
+            <ion-item *ngFor="let bezero of bezeroakFiltered">
+              <ion-label>
+                <h2>{{ bezero.izena }} {{ bezero.abizena }}</h2>
+                <p>{{ "historial.modal.telefono" | translate }}: {{ bezero.telefonoa }}</p>
+              </ion-label>
+              <ion-buttons slot="end">
+                <ion-button color="primary" (click)="openBezero(bezero)">Editar</ion-button>
+                <ion-button color="danger" (click)="deleteBezero(bezero.id)">Eliminar</ion-button>
+              </ion-buttons>
+            </ion-item>
+          </ion-card>
         </ion-list>
       </ion-content>
     </ion-segment-content>    
