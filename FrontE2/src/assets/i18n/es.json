@@ -3,6 +3,7 @@
     "user":"Usuario",
     "password":"Contraseña",
     "boton":"Inicio Sesion",
+    "vacio":"Por favor, ingresa usuario y contraseña.",
     "messageOk":"Inicio de sesión exitoso.",
     "messageFail":"Usuario o contraseña incorrectos.",
     "messageNotOk":"Ocurrió un error inesperado. Inténtalo de nuevo."

@@ -38,7 +38,7 @@ export class LoginPage implements OnInit {
 
     // Validar si los campos están vacíos
     if (!this.username || !this.password) {
-      this.loginMessage = 'Por favor, ingresa usuario y contraseña.';
+      this.loginMessage = this.translate.instant('login.vacio');
       this.loginMessageType = 'error';
       return;
     }

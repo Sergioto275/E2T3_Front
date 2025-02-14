@@ -3,6 +3,7 @@
         "user":"Erabiltzailea",
         "password":"Pasahitza",
         "boton":"Saioa Hasi",
+        "vacio":"Mesedes, erabiltzailea eta pasahitza sartu.",
         "messageOk": "Saioa hasi da arrakastaz.",
         "messageFail": "Erabiltzailea edo pasahitza okerra.",
         "messageNotOk": "Errore ezezaguna gertatu da. Saiatu berriro."
