@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
+import { ActivatedRoute } from '@angular/router';
 
 // import { IonButton, IonContent, IonHeader, IonLabel, IonModal, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
@@ -49,6 +50,15 @@ export class ProduktuakPage implements OnInit {
   filteredAlumnos!: any[];
   selectedCategoryId!: number;
   isIkasle!:boolean;
+  private routeSubscription: any;
+
+  ngOnDestroy() {
+    // Limpiar la suscripción cuando el componente se destruya
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
+    }
+  }
+
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
@@ -373,15 +383,23 @@ export class ProduktuakPage implements OnInit {
   }
 
 
-  constructor(private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService) {
+  constructor(private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService, private route: ActivatedRoute) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
   
   ngOnInit() {
-    this.isIkasle = this.loginService.isAlumno();
-    this.produktuakLortu();
-    this.langileakLortu();
+    // Suscribirse a los cambios de ruta
+    this.routeSubscription = this.route.params.subscribe((params) => {
+      console.log('Ruta cambiada:', params); // Si necesitas los parámetros de la ruta
+
+      // Comprobar si el usuario es 'Ikasle' cada vez que se carga la página
+      this.isIkasle = this.loginService.isAlumno();
+
+      // Llamar a las funciones necesarias
+      this.produktuakLortu();
+      this.langileakLortu();
+    });
   }
 
 }

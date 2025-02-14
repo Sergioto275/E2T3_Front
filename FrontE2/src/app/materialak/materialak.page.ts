@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { HeaderComponent } from '../components/header/header.component';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
+import { ActivatedRoute } from '@angular/router';
 
 export interface Alumno {
   nombre: string;
@@ -49,6 +50,7 @@ export class MaterialakPage implements OnInit {
   selecAlumno!:number;
 
   mostrarFiltros: boolean = false;
+  private routeSubscription: any;
 
   @ViewChild('modaleditarcat', { static: true })
   modaleditarcat!: IonModal;
@@ -405,16 +407,30 @@ export class MaterialakPage implements OnInit {
     }
   }
 
-  constructor(private translate: TranslateService, private restServer:HttpClient, private alertController: AlertController, private loginService: LoginServiceService) {
+  constructor(private translate: TranslateService, private restServer:HttpClient, private alertController: AlertController, private loginService: LoginServiceService, private route: ActivatedRoute) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
   
   ngOnInit() {
-    this.isIkasle = this.loginService.isAlumno();
-    this.materialakLortu();
-    this.langileakLortu();
-    this.materialakLortuDevolver();
+    // Suscribirse a los cambios de ruta
+    this.routeSubscription = this.route.params.subscribe((params) => {
+      console.log('Ruta cambiada:', params); // Si necesitas los parámetros de la ruta
+
+      // Comprobar si el usuario es 'Ikasle' cada vez que se carga la página
+      this.isIkasle = this.loginService.isAlumno();
+
+      // Llamar a las funciones necesarias
+      this.materialakLortu();
+      this.langileakLortu();
+      this.materialakLortuDevolver();
+    });
   }
 
+  ngOnDestroy() {
+    // Limpiar la suscripción cuando el componente se destruya
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
+    }
+  }
 }

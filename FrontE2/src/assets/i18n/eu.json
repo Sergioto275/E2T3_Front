@@ -1,4 +1,12 @@
 {
+    "login":{
+        "user":"Erabiltzailea",
+        "password":"Pasahitza",
+        "boton":"Saioa Hasi",
+        "messageOk": "Saioa hasi da arrakastaz.",
+        "messageFail": "Erabiltzailea edo pasahitza okerra.",
+        "messageNotOk": "Errore ezezaguna gertatu da. Saiatu berriro."
+    },
     "menu": {
         "title":"Menua",
         "home":"Home",

@@ -28,4 +28,23 @@
   ion-content{
     --background: #E4FEFF;
   }
+
+  .language-selector {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .language-selector span {
+    cursor: pointer;
+    padding: 0 5px;
+  }
+  
+  .language-selector span.selected {
+    color: #3880ff; /* Azul o el color que desees para el idioma seleccionado */
+    font-weight: bold;
+  }
+  
   

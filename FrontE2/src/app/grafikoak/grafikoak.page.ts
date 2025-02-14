@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 declare var Chart: any; 
 
@@ -22,8 +22,16 @@ export class GrafikoakPage implements OnInit {
   isGraphOpen:boolean = false;
   selectedLanguage: string = 'es';
   isIkasle!:boolean;
+  private routeSubscription: any;
 
-  constructor(private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService, private router: Router) {
+  ngOnDestroy() {
+    // Limpiar la suscripción cuando el componente se destruya
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
+    }
+  }
+
+  constructor(private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService, private router: Router, private route: ActivatedRoute) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
@@ -48,12 +56,22 @@ export class GrafikoakPage implements OnInit {
   }
 
   ngOnInit() {
-    this.isIkasle = this.loginService.isAlumno();
-    if (this.isIkasle) {
-      this.router.navigate(['/home']);
-    }
-    this.langileakLortu();
-    this.langile_serviceLortu();
+    // Suscribirse a los cambios de ruta
+    this.routeSubscription = this.route.params.subscribe((params) => {
+      console.log('Ruta cambiada:', params); // Aquí puedes ver los cambios de parámetros
+
+      // Comprobar si el usuario es 'Ikasle' cada vez que se carga la página
+      this.isIkasle = this.loginService.isAlumno();
+      
+      // Si es Ikasle, redirigir a '/home'
+      if (this.isIkasle) {
+        this.router.navigate(['/home']);
+      }
+
+      // Llamar a las funciones necesarias
+      this.langileakLortu();
+      this.langile_serviceLortu();
+    });
   }
 
   toggleCategoria(categoria: string) {

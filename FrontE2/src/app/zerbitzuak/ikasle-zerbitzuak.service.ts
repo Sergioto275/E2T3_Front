@@ -88,7 +88,11 @@ export class IkasleZerbitzuakService {
   }
 
   getHorarios(): Observable<Horario[]> {
-    return this.http.get<Horario[]>('http://localhost:8080/api/ordutegiak');
+    return this.http.get<Horario[]>(`http://localhost:8080/api/ordutegiak`);
+  }
+
+  getHorariosFilter(fechaInicio:any, fechaFin:any): Observable<Horario[]> {
+    return this.http.get<Horario[]>(`http://localhost:8080/api/ordutegiak/${fechaInicio}/${fechaFin}`);
   }
   // Guardar un nuevo horario
   guardarHorario(nuevoHorario: Horario): Observable<Horario> {

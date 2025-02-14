@@ -160,7 +160,7 @@ export class HistorialaPage implements OnInit {
   // Función: cargarHitzordu
   cargarMovimientoProductos() {
     this.produktuMugimendu = [];
-    this.http.get(`${environment.url}produktu_mugimenduak`, {
+    this.http.get(`${environment.url}produktu_mugimenduak/${this.fechaInicioFilterProd}/${this.fechaFinFilterProd}`, {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
@@ -177,9 +177,16 @@ export class HistorialaPage implements OnInit {
     );
   }
 
+  handleRefresh(event: CustomEvent) {
+    setTimeout(() => {
+      // Any calls to load data go here
+      (event.target as HTMLIonRefresherElement).complete();
+    }, 2000);
+  }
+
   cargarMovimientoMateriales() {
     this.materialMugimendu = [];
-    this.http.get(`${environment.url}material_mailegua`, {
+    this.http.get(`${environment.url}material_mailegua/${this.fechaInicioFilterMat}/${this.fechaFinFilterMat}`, {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
@@ -198,7 +205,7 @@ export class HistorialaPage implements OnInit {
 
   cargarTickets() {
     this.tickets = [];
-    this.http.get(`${environment.url}hitzorduak/ticket`, {
+    this.http.get(`${environment.url}hitzorduak/ticket/${this.fechaInicioFilterTicket}/${this.fechaFinFilterTicket}`, {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
@@ -416,7 +423,28 @@ export class HistorialaPage implements OnInit {
     }
   }
 
+  lortuData(): string {
+    const gaur = new Date();
+    const urtea = gaur.getFullYear();
+    let hilabetea: string | number = gaur.getMonth() + 1; // Los meses comienzan en 0
+    let eguna: string | number = gaur.getDate();
+  
+    if (eguna < 10) {
+      eguna = '0' + eguna;
+    }
+    if (hilabetea < 10) {
+      hilabetea = '0' + hilabetea;
+    }
+    return `${urtea}-${hilabetea}-${eguna}`;
+  }
+
   ngOnInit() {
+    this.fechaInicioFilterMat = this.lortuData();
+    this.fechaInicioFilterProd = this.lortuData();
+    this.fechaInicioFilterTicket = this.lortuData();
+    this.fechaFinFilterMat = this.lortuData();
+    this.fechaFinFilterProd = this.lortuData();
+    this.fechaFinFilterTicket = this.lortuData();
     this.cargarMovimientoProductos();
     this.cargarMovimientoMateriales();
     this.cargarTickets();

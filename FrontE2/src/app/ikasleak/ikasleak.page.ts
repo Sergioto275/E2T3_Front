@@ -4,7 +4,7 @@ import {IkasleZerbitzuakService, Ikaslea, Taldea, Horario,} from './../zerbitzua
 import { TranslateService } from '@ngx-translate/core';
 import { HeaderComponent } from '../components/header/header.component';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-ikasleak',
@@ -43,6 +43,7 @@ export class IkasleakPage implements OnInit {
   selectedHorario: Horario = {id: 0,hasieraData: '',hasieraOrdua: '',amaieraData: '',amaieraOrdua: '',eguna: 0,taldea: { kodea: '' },};
   filteredGroups: any[] = [];
   isIkasle!:boolean;
+  private routeSubscription: any;
 
 
   constructor(
@@ -53,20 +54,54 @@ export class IkasleakPage implements OnInit {
     private toastController: ToastController,
     private router: Router,
     private loginService: LoginServiceService,
+    private route: ActivatedRoute
   ) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
 
-  ngOnInit() {
-    this.isIkasle = this.loginService.isAlumno();
-    if (this.isIkasle) {
-      this.router.navigate(['/home']);
+  lortuData(): string {
+    const gaur = new Date();
+    const urtea = gaur.getFullYear();
+    let hilabetea: string | number = gaur.getMonth() + 1; // Los meses comienzan en 0
+    let eguna: string | number = gaur.getDate();
+  
+    if (eguna < 10) {
+      eguna = '0' + eguna;
     }
-    this.getGrupos();
-    // Obtener alumnos
-    this.getAlumnos();
-    this.getHorarios();
+    if (hilabetea < 10) {
+      hilabetea = '0' + hilabetea;
+    }
+    return `${urtea}-${hilabetea}-${eguna}`;
+  }
+
+  ngOnInit() {
+    // Suscribirse a los cambios de ruta
+    this.routeSubscription = this.route.params.subscribe((params) => {
+      console.log('Ruta cambiada:', params); // Puedes ver los parámetros aquí, si es necesario.
+
+      // Comprobar si el usuario es 'Ikasle' cada vez que se carga la página
+      this.isIkasle = this.loginService.isAlumno();
+      
+      // Si es Ikasle, redirigir a '/home'
+      if (this.isIkasle) {
+        this.router.navigate(['/home']);
+      }
+
+      // Llamar a las funciones necesarias
+      this.fechaInicioFilter = this.lortuData();
+      this.fechaFinFilter = this.lortuData();
+      this.getGrupos();
+      this.getAlumnos();
+      this.getHorarios();
+    });
+  }
+
+  ngOnDestroy() {
+    // Limpiar la suscripción cuando el componente se destruya
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
+    }
   }
 
   changeLanguage() {
@@ -77,15 +112,11 @@ export class IkasleakPage implements OnInit {
   }
 
   getHorarios(): void {
-    this.ikasleService.getHorarios().subscribe(
+    this.ikasleService.getHorariosFilter(this.fechaInicioFilter, this.fechaFinFilter).subscribe(
       (horarios) => {
+        console.log(horarios)
         // Filtrar los horarios que no tienen datos en 'ezabatze_data' (null, undefined o vacío)
-        this.ordutegiArray = horarios.filter((horario) => {
-          const isDeletedTalde = this.ikasleArray.some(
-            (grupo) => grupo.kodea === horario.taldea.kodea && grupo.ezabatzeData
-          );
-          return !horario.ezabatzeData && !isDeletedTalde; // Filtra los horarios cuyo taldea no ha sido eliminado
-        })
+        this.ordutegiArray = horarios;
         this.ordutegiArrayFiltered = this.ordutegiArray;
       },
       (error) => {

@@ -1,4 +1,12 @@
 {
+  "login":{
+    "user":"Usuario",
+    "password":"Contraseña",
+    "boton":"Inicio Sesion",
+    "messageOk":"Inicio de sesión exitoso.",
+    "messageFail":"Usuario o contraseña incorrectos.",
+    "messageNotOk":"Ocurrió un error inesperado. Inténtalo de nuevo."
+  },
   "menu": {
     "title": "Menu",
     "home":"Home",

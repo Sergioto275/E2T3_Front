@@ -75,6 +75,8 @@ export class TxandakPage implements OnInit {
               ) { }
 
   ngOnInit() {
+    this.fechaInicio = this.lortuData();
+    this.fechaFin = this.lortuData();
     // Iniciar traducción al idioma por defecto
     this.translate.setDefaultLang(this.selectedLanguage);
     
@@ -159,8 +161,7 @@ export class TxandakPage implements OnInit {
   }
 
   getTxandak() {
-    const apiUrl = 'http://localhost:8080/api/txandak';
-    this.http.get<Txanda[]>(apiUrl).subscribe(
+    this.http.get<Txanda[]>(`http://localhost:8080/api/txandak/${this.fechaInicio}/${this.fechaFin}`).subscribe(
       (data) => {
   
         this.txandak = data
