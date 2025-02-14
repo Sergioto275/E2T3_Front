@@ -374,6 +374,8 @@
 
     },
     "graficos": {
-        "title": "Grafikoak"
+        "title": "Grafikoak",
+        "graf":"Zerbitzuen Grafikoa",
+        "analisis":"Zerbitzuen Analisia"
     }
 }

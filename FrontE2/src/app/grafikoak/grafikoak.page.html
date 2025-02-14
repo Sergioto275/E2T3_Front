@@ -35,7 +35,7 @@
       <ng-template>
         <ion-header>
           <ion-toolbar color="primary">
-            <ion-title>📊 Gráfico de Servicios</ion-title>
+            <ion-title>📊 {{ 'graficos.graf' | translate }}</ion-title>
             <ion-buttons slot="end">
               <ion-button (click)="closeGraphModal()">
                 <ion-icon name="close-circle-outline"></ion-icon> Cerrar
@@ -47,7 +47,7 @@
         <ion-content class="ion-padding">
           <ion-card>
             <ion-card-header>
-              <ion-card-title>📈 Análisis de Servicios</ion-card-title>
+              <ion-card-title>📈 {{ 'graficos.analisis' | translate }} </ion-card-title>
             </ion-card-header>
             <ion-card-content>
               <canvas #graph *ngIf="isGraphOpen" id="myChart"></canvas>
