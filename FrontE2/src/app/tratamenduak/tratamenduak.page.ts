@@ -98,17 +98,6 @@ export class TratamenduakPage implements OnInit {
     this.isEditingCategoria = false;
   }
 
-  actualizarProductosSeleccionados(servicio:any, kategoria_id: number) {
-    servicio.kategoria_id = kategoria_id;
-    const index = this.serviciosSeleccionados.findIndex(p => p.id === servicio.id);
-    if (servicio.selected && index === -1) {
-      this.serviciosSeleccionados.push(servicio);
-    } else if (!servicio.selected && index !== -1) {
-      this.serviciosSeleccionados.splice(index, 1);
-    }
-    console.log('Productos seleccionados:', this.serviciosSeleccionados);
-  }
-
   toggleCategoria(categoria: string) {
     this.categoriasAbiertas[categoria] = !this.categoriasAbiertas[categoria];
   }

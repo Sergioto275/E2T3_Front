@@ -17,7 +17,7 @@ import { TranslateModule } from '@ngx-translate/core';
     IonicModule,
     TxandakPageRoutingModule,
     ComponentsModule,
-    ReactiveFormsModule  ,
+    ReactiveFormsModule ,
     TranslateModule
 ],
   declarations: [TxandakPage]
