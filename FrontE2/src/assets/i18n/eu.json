@@ -302,8 +302,20 @@
         "ErrorActualizarHorario": "Errorea ordutegia eguneratzerakoan",
         "Cancelar": "Ezeztatu",
         "GuardarCambios": "Aldaketak gorde",
-        "EliminarAlumnos": "Ikaslea/k behar bezala ezabatuta"
-
+        "EliminarAlumnos": "Ikaslea/k behar bezala ezabatuta",
+        "validaciones": {
+            "kodea": "Sartu talde kode baliodun bat (gehienez 5 karaktere)",
+            "kodeaSelec": "Hautatu talde bat",
+            "abizena": "Sartu abizen baliodun bat",
+            "izena": "Sartu izen baliodun bat",
+            "dia": "Egun bat aukeratu behar duzu",
+            "FechaInicio": "Sartu hasierako data bat",
+            "FechaFin": "Sartu amaierako data bat",
+            "FechaInicioMenor": "Amaierako data ez da hasierakoa baino txikiagoa izan behar",
+            "HoraInicio": "Sartu hasierako ordu bat",
+            "HoraFin": "Sartu amaierako ordu bat",
+            "HoraInicioMenor": "Hasierako orduak ez du amaierako ordua baino txikiagoa izan behar"
+        }
     },
     "txandakPage": {
         "titulo": "Txandak",

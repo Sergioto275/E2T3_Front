@@ -48,11 +48,9 @@
           <ion-label> {{ servicio.izena }} </ion-label>
           <ion-label> {{ "servicios.modal.fuera" | translate }}: {{ servicio.kanpokoPrezioa }} </ion-label>
           <ion-label> {{ "servicios.modal.dentro" | translate }}: {{ servicio.etxekoPrezioa }} </ion-label>
-          <ion-checkbox slot="start" [(ngModel)]="servicio.selected"
-            (ionChange)="actualizarProductosSeleccionados(servicio, categoria.id)"></ion-checkbox>
-            <ion-button slot="end" (click)="openServiceModal(servicio, categoria.id)">
-              <ion-icon name="create"></ion-icon>
-            </ion-button>
+          <ion-button slot="end" (click)="openServiceModal(servicio, categoria.id)">
+            <ion-icon name="create"></ion-icon>
+          </ion-button>
           <ion-button slot="end" color="danger" (click)="eliminarServicio(servicio.id)">
             <ion-icon name="trash"></ion-icon>
           </ion-button>
