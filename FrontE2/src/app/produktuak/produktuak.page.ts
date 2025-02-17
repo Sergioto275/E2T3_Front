@@ -52,6 +52,45 @@ export class ProduktuakPage implements OnInit {
   isIkasle!:boolean;
   private routeSubscription: any;
 
+  
+  filtroCategoria: string = '';
+  filtroProducto: string = '';
+  filtroStockBajo: boolean = false;
+  filteredProduktuak: any[] = []; 
+
+  filtrarProductos() {
+    this.filteredProduktuak = this.produktuak.map(categoria => ({
+      ...categoria,
+      produktuak: categoria.produktuak.map((producto: any) => ({ ...producto }))
+    }));
+
+    if(this.filtroCategoria !== '')
+    {
+      this.filteredProduktuak = this.filteredProduktuak.filter(categoria =>
+        (this.filtroCategoria === '' || categoria.izena.toLowerCase().includes(this.filtroCategoria.toLowerCase()))
+      );
+    }
+
+    if (this.filtroProducto !== '') {
+      this.filteredProduktuak = this.filteredProduktuak.map(categoria => ({
+        ...categoria,
+        produktuak: categoria.produktuak.filter((producto: any) =>
+          producto.izena.toLowerCase().includes(this.filtroProducto.toLowerCase())
+        )
+      }));
+    }
+  
+    if (this.filtroStockBajo) {
+      this.filteredProduktuak = this.filteredProduktuak.filter(categoria => {
+        categoria.produktuak = categoria.produktuak.filter((producto: any) =>
+          producto.stock <= producto.stockAlerta
+        );
+        return categoria.produktuak.length > 0;
+      });
+    }
+  }
+
+
   ngOnDestroy() {
     // Limpiar la suscripción cuando el componente se destruya
     if (this.routeSubscription) {
@@ -315,22 +354,11 @@ export class ProduktuakPage implements OnInit {
         this.produktuak = datuak
           .filter((categoria: any) => categoria.ezabatzeData === null)
           .map((categoria: any) => ({
-            id: categoria.id,
-            izena: categoria.izena,
-            sortzeData: categoria.sortzeData,
+            ...categoria,
             produktuak: categoria.produktuak
               .filter((producto: any) => producto.ezabatzeData === null)
-              .map((producto: any) => ({
-                id: producto.id,
-                izena: producto.izena,
-                deskribapena: producto.deskribapena,
-                marka: producto.marka,
-                stock: producto.stock,
-                stockAlerta: producto.stockAlerta,
-                sortzeData: producto.sortzeData
-              }))
           }));
-
+          this.filteredProduktuak = this.produktuak;
         console.log('Produktuak kargatu:', this.produktuak);
       },
       (error) => {
