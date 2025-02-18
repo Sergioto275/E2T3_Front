@@ -575,6 +575,7 @@ eliminar_cita() {
       return;
     }
     this.citaEditar = citaSelec;
+    this.citaEditar.etxekoa = citaSelec.etxekoa == "E" ? true : false;
     this.resetSelection();
   }
 
