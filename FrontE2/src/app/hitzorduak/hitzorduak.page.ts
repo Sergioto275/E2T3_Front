@@ -283,7 +283,7 @@ export class HitzorduakPage implements OnInit {
     this.hitzorduArray = [];
     this.hitzorduak = [];
     
-    this.http.get(`${environment.url}hitzorduak`, {
+    this.http.get(`${environment.url}hitzorduak/date/${this.dataSelec}`, {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
@@ -366,9 +366,10 @@ export class HitzorduakPage implements OnInit {
     const egunaDate = new Date(eguna);
     let diaSemana = egunaDate.getDay();
     diaSemana = diaSemana === 0 ? 7 : diaSemana;
-    this.hitzorduArray = this.hitzorduak.filter((hitzordu: any) => 
-      (!hitzordu.ezabatze_data || hitzordu.ezabatze_data === "0000-00-00 00:00:00") && hitzordu.data.includes(eguna)
-    );
+    // this.hitzorduArray = this.hitzorduak.filter((hitzordu: any) => 
+    //   (!hitzordu.ezabatze_data || hitzordu.ezabatze_data === "0000-00-00 00:00:00") && hitzordu.data.includes(eguna)
+    // );
+    this.cargarHitzordu();
     const langileak = this.ordutegiak.filter((ordu: any) => {
       const hasieraDate = new Date(ordu.hasieraData);
       const amaieraDate = new Date(ordu.amaieraData);
@@ -574,6 +575,7 @@ eliminar_cita() {
       return;
     }
     this.citaEditar = citaSelec;
+    this.citaEditar.etxekoa = citaSelec.etxekoa == "E" ? true : false;
     this.resetSelection();
   }
 

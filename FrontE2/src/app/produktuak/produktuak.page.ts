@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
+import { ActivatedRoute } from '@angular/router';
 
 // import { IonButton, IonContent, IonHeader, IonLabel, IonModal, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
@@ -25,7 +26,7 @@ export class ProduktuakPage implements OnInit {
   modal!:string;
   produktuak!:any[];
 
-  productosSeleccionados:any[]=[];
+  productosSeleccionados:any[] = [];
   isEditingProduct: boolean = false;
   editingProduct:any = null;
   isEditingKategoria: boolean = false;
@@ -49,6 +50,54 @@ export class ProduktuakPage implements OnInit {
   filteredAlumnos!: any[];
   selectedCategoryId!: number;
   isIkasle!:boolean;
+  private routeSubscription: any;
+
+  
+  filtroCategoria: string = '';
+  filtroProducto: string = '';
+  filtroStockBajo: boolean = false;
+  filteredProduktuak: any[] = []; 
+
+  filtrarProductos() {
+    this.filteredProduktuak = this.produktuak.map(categoria => ({
+      ...categoria,
+      produktuak: categoria.produktuak.map((producto: any) => ({ ...producto }))
+    }));
+
+    if(this.filtroCategoria !== '')
+    {
+      this.filteredProduktuak = this.filteredProduktuak.filter(categoria =>
+        (this.filtroCategoria === '' || categoria.izena.toLowerCase().includes(this.filtroCategoria.toLowerCase()))
+      );
+    }
+
+    if (this.filtroProducto !== '') {
+      this.filteredProduktuak = this.filteredProduktuak.map(categoria => ({
+        ...categoria,
+        produktuak: categoria.produktuak.filter((producto: any) =>
+          producto.izena.toLowerCase().includes(this.filtroProducto.toLowerCase())
+        )
+      }));
+    }
+  
+    if (this.filtroStockBajo) {
+      this.filteredProduktuak = this.filteredProduktuak.filter(categoria => {
+        categoria.produktuak = categoria.produktuak.filter((producto: any) =>
+          producto.stock <= producto.stockAlerta
+        );
+        return categoria.produktuak.length > 0;
+      });
+    }
+  }
+
+
+  ngOnDestroy() {
+    // Limpiar la suscripción cuando el componente se destruya
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
+    }
+  }
+
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
@@ -305,22 +354,11 @@ export class ProduktuakPage implements OnInit {
         this.produktuak = datuak
           .filter((categoria: any) => categoria.ezabatzeData === null)
           .map((categoria: any) => ({
-            id: categoria.id,
-            izena: categoria.izena,
-            sortzeData: categoria.sortzeData,
+            ...categoria,
             produktuak: categoria.produktuak
               .filter((producto: any) => producto.ezabatzeData === null)
-              .map((producto: any) => ({
-                id: producto.id,
-                izena: producto.izena,
-                deskribapena: producto.deskribapena,
-                marka: producto.marka,
-                stock: producto.stock,
-                stockAlerta: producto.stockAlerta,
-                sortzeData: producto.sortzeData
-              }))
           }));
-
+          this.filteredProduktuak = this.produktuak;
         console.log('Produktuak kargatu:', this.produktuak);
       },
       (error) => {
@@ -373,15 +411,23 @@ export class ProduktuakPage implements OnInit {
   }
 
 
-  constructor(private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService) {
+  constructor(private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService, private route: ActivatedRoute) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
   
   ngOnInit() {
-    this.isIkasle = this.loginService.isAlumno();
-    this.produktuakLortu();
-    this.langileakLortu();
+    // Suscribirse a los cambios de ruta
+    this.routeSubscription = this.route.params.subscribe((params) => {
+      console.log('Ruta cambiada:', params); // Si necesitas los parámetros de la ruta
+
+      // Comprobar si el usuario es 'Ikasle' cada vez que se carga la página
+      this.isIkasle = this.loginService.isAlumno();
+
+      // Llamar a las funciones necesarias
+      this.produktuakLortu();
+      this.langileakLortu();
+    });
   }
 
 }

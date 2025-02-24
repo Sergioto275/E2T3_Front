@@ -10,18 +10,30 @@
       </ion-card-content>
     </ion-card>
 
+    <!-- Select de idioma estilo simple -->
+    <div class="language-selector">
+      <span (click)="selectLanguage('es')" [class.selected]="selectedLanguage === 'es'">es</span> |
+      <span (click)="selectLanguage('eu')" [class.selected]="selectedLanguage === 'eu'">eu</span>
+    </div>
+
     <ion-list>
       <ion-item [class.invalid]="submitted && !username">
-        <ion-label position="stacked">Erabiltzailea:<ion-text color="danger">*</ion-text></ion-label>
-        <ion-input type="text" placeholder="Zure erabiltzailea" [(ngModel)]="username" [class.invalid]="submitted && !username" ></ion-input>
+        <ion-label position="stacked">{{ "login.user" | translate }}:<ion-text color="danger">*</ion-text></ion-label>
+        <ion-input type="text" placeholder="{{ 'login.user' | translate }}" [(ngModel)]="username" [class.invalid]="submitted && !username" ></ion-input>
       </ion-item>
       <ion-item [class.invalid]="submitted && !password">
-        <ion-label position="stacked">Pasahitza:<ion-text color="danger">*</ion-text></ion-label>
-        <ion-input type="password" placeholder="Zure pasahitza" [(ngModel)]="password" [class.invalid]="submitted && !password"></ion-input>
+        <ion-label position="stacked">{{ "login.password" | translate }}:<ion-text color="danger">*</ion-text></ion-label>
+        <ion-input type="password" placeholder="{{ 'login.password' | translate }}" [(ngModel)]="password" [class.invalid]="submitted && !password"></ion-input>
       </ion-item>
     </ion-list>
+  
+    
+  
     <ion-button expand="block" class="login-button" (click)="onLogin()">
-      <b>Saioa Hasi</b>
+      <b>{{ 'login.boton' | translate }}</b>
     </ion-button>
   </div>
+  
+  
+  
 </ion-content>

@@ -24,8 +24,8 @@
             <table class="h-100 w-100" *ngIf="!loading">
               <thead>
                 <tr>
-                  <th>{{ "citas.horas" | translate }}</th>
-                  <th *ngFor="let i of [].constructor(asientos); let idx = index">
+                  <th style="background-color: rgba(18, 107, 196, 0.685);">{{ "citas.horas" | translate }}</th>
+                  <th *ngFor="let i of [].constructor(asientos); let idx = index" style="background-color: rgba(18, 107, 196, 0.685);">
                     {{ "citas.asientos" | translate }} {{ idx + 1 }}
                   </th>
                 </tr>
@@ -42,7 +42,7 @@
                 </ng-container>
                 <ng-container *ngIf="asientos > 0">
                   <tr *ngFor="let time of hoursArray">
-                    <td>{{ time }}</td>
+                    <td style="background-color: rgba(18, 107, 196, 0.685);">{{ time }}</td>
                     <ng-container *ngFor="let i of [].constructor(asientos); let idx = index">
                       <td id="{{ 'time-' + time + '-seat-' + (idx + 1) }}" *ngIf="citaSartuta(time, idx + 1)" 
                         [attr.rowspan]="rowspanManagement(time, idx + 1)" 

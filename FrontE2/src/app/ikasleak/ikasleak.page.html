@@ -1,6 +1,7 @@
 <meta name="mobile-web-app-capable" content="yes" />
 <app-header></app-header>
 <ion-content class="ion-page" id="main-content">
+  <ion-header>
     <ion-toolbar class="Headeraaa">
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
@@ -20,7 +21,8 @@
           <ion-label>{{ "ikaslePage.ordutegienKudeaketa" | translate }} </ion-label>
         </ion-segment-button>
       </ion-segment>
-    </ion-toolbar>    
+    </ion-toolbar>
+  </ion-header>
     <ion-segment-view>
       <ion-segment-content id="taldeKudeatu">
         <ion-toolbar>
@@ -289,14 +291,14 @@
           <ion-col size="5">
             <ion-item>
               <ion-label position="stacked">{{ 'ikaslePage.HasieraOrdua' | translate }}</ion-label>
-              <ion-input type="date" [(ngModel)]="fechaInicioFilter" (ionChange)="filterHorarios()"></ion-input>
+              <ion-input type="date" [(ngModel)]="fechaInicioFilter" (ionChange)="getHorarios()"></ion-input>
             </ion-item>
           </ion-col>
   
           <ion-col size="5">
             <ion-item>
               <ion-label position="stacked">{{ 'ikaslePage.AmaierakoOrdua' | translate }}</ion-label>
-              <ion-input type="date" [(ngModel)]="fechaFinFilter" (ionChange)="filterHorarios()"></ion-input>
+              <ion-input type="date" [(ngModel)]="fechaFinFilter" (ionChange)="getHorarios()"></ion-input>
             </ion-item>
           </ion-col>
   

@@ -6,6 +6,7 @@ import { of } from 'rxjs/internal/observable/of';
 import { catchError } from 'rxjs/operators';
 import { IkasleZerbitzuakService } from '../zerbitzuak/ikasle-zerbitzuak.service';
 import { formatDate } from '@angular/common';
+import { environment } from 'src/environments/environment';
 
 // Interfaz movida fuera de la clase
 export interface Txanda {
@@ -75,6 +76,8 @@ export class TxandakPage implements OnInit {
               ) { }
 
   ngOnInit() {
+    this.fechaInicio = this.lortuData();
+    this.fechaFin = this.lortuData();
     // Iniciar traducción al idioma por defecto
     this.translate.setDefaultLang(this.selectedLanguage);
     
@@ -159,8 +162,7 @@ export class TxandakPage implements OnInit {
   }
 
   getTxandak() {
-    const apiUrl = 'http://localhost:8080/api/txandak';
-    this.http.get<Txanda[]>(apiUrl).subscribe(
+    this.http.get<Txanda[]>(`${environment.url}txandak/${this.fechaInicio}/${this.fechaFin}`).subscribe(
       (data) => {
   
         this.txandak = data
@@ -205,7 +207,7 @@ export class TxandakPage implements OnInit {
         {
           text: 'Eliminar',
           handler: () => {
-            const apiUrl = `http://localhost:8080/api/txandak/${txandaId}`;
+            const apiUrl = `${environment.url}txandak/${txandaId}`;
             this.http.delete<Txanda>(apiUrl).subscribe(
               (response) => {
                 const index = this.txandak.findIndex(t => t.id === txandaId);
@@ -254,7 +256,7 @@ export class TxandakPage implements OnInit {
       langileak: { id: this.nuevaTxanda.alumno },
     };
 
-    const apiUrl = `http://localhost:8080/api/txandak`;
+    const apiUrl = `${environment.url}txandak`;
     console.log(JSON.stringify(txandaToSave));
 
     this.http.post(apiUrl, txandaToSave).subscribe(

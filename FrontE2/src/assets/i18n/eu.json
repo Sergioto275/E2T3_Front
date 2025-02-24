@@ -1,4 +1,13 @@
 {
+    "login":{
+        "user":"Erabiltzailea",
+        "password":"Pasahitza",
+        "boton":"Saioa Hasi",
+        "vacio":"Mesedes, erabiltzailea eta pasahitza sartu.",
+        "messageOk": "Saioa hasi da arrakastaz.",
+        "messageFail": "Erabiltzailea edo pasahitza okerra.",
+        "messageNotOk": "Errore ezezaguna gertatu da. Saiatu berriro."
+    },
     "menu": {
         "title":"Menua",
         "home":"Home",
@@ -200,6 +209,16 @@
             "reset": "Reset",
             "filtroFecha": "Data Filtratu",
             "filtroBezero": "Bilatu izena edo abizena"
+        },
+        "validaciones":{
+            "nombre":"Izena derrigorrezkoa da",
+            "apellido":"Abizena derrigorrezkoa da",
+            "telefono":"Gutxienez 9 digitu dituen telefono baliodun bat sartu",
+            "producto":"Produktua derrigorrezkoa da",
+            "fecha":"Data derrigorrezkoa da",
+            "cantidad":"Kantitatea derrigorrezkoa da",
+            "volumen":"Baliozko bolumena sartu",
+            "comentarios":"Baliozko oharra sartu"
         }
     },
     "servicios": {
@@ -211,7 +230,8 @@
             "extra": "Extra",
             "color": "Kolorea",
             "select": "Kategoria bat aukeratu",
-            "categoria": "Kategoria"
+            "categoria": "Kategoria",
+            "filtro": "Bilatu izena edo categorias"
         },
         "botones": {
             "crearServicio": "Zerbitzua gehitu",
@@ -354,6 +374,8 @@
 
     },
     "graficos": {
-        "title": "Grafikoak"
+        "title": "Grafikoak",
+        "graf":"Zerbitzuen Grafikoa",
+        "analisis":"Zerbitzuen Analisia"
     }
 }

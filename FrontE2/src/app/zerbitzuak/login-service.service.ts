@@ -41,6 +41,7 @@ export class LoginServiceService {
   }
   
   logout() {
+    console.log(localStorage.getItem('role'))
     // Eliminar los datos de login del localStorage
     localStorage.removeItem('username');
     localStorage.removeItem('role');

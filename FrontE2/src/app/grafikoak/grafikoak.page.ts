@@ -4,9 +4,12 @@ import { environment } from 'src/environments/environment';
 import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import autoTable from 'jspdf-autotable';
+import jsPDF from 'jspdf';
 
 declare var Chart: any; 
+declare var html2canvas: any; // Declaramos que `html2canvas` existe globalmente
 
 @Component({
   selector: 'app-grafikoak',
@@ -22,16 +25,67 @@ export class GrafikoakPage implements OnInit {
   isGraphOpen:boolean = false;
   selectedLanguage: string = 'es';
   isIkasle!:boolean;
+  langileSelec!:any;
+  private routeSubscription: any;
 
-  constructor(private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService, private router: Router) {
+  ngOnDestroy() {
+    // Limpiar la suscripción cuando el componente se destruya
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
+    }
+  }
+
+  constructor(private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService, private router: Router, private route: ActivatedRoute) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
 
-  openGraphModal(id: string) {
+  descargarGrafico() {
+    const canvasElement = document.getElementById('myChart') as HTMLCanvasElement;
+  
+    if (!canvasElement) {
+      console.error('No se encontró el canvas para generar la imagen');
+      return;
+    }
+  
+    // Convertir el canvas a una imagen en formato PNG
+    const imgData = canvasElement.toDataURL('image/png');
+  
+    // Crear un documento PDF con jsPDF
+    const pdf = new jsPDF();
+  
+    // Obtener el trabajador seleccionado
+    const trabajador = this.langileSelec;
+    const trabajadorNombre = trabajador ? trabajador.izena : "Desconocido";
+    const trabajadorApellido = trabajador ? trabajador.abizenak : "";
+    const grupoCodigo = trabajador ? trabajador.taldeKodea : "Sin código";
+  
+    // Añadir logo en la parte superior (ajusta la URL o base64 según tu logo)
+    const logoUrl = 'assets/IMP_Logotipoa.png'; // Ruta del logo en tu proyecto
+    pdf.addImage(logoUrl, 'PNG', 10, 5, 40, 25);
+  
+    // Agregar información del trabajador al PDF
+    pdf.setFontSize(16);
+    pdf.text(`Análisis de Servicios`, 60, 20);
+    
+    pdf.setFontSize(12);
+    pdf.text(`Nombre: ${trabajadorNombre} ${trabajadorApellido}`, 10, 40);
+    pdf.text(`Grupo: ${grupoCodigo}`, 10, 50);
+  
+    // Insertar la imagen del gráfico en el PDF
+    pdf.addImage(imgData, 'PNG', 15, 60, 180, 100);
+  
+    // Descargar el archivo con el nombre del trabajador
+    pdf.save(`grafico_${trabajadorNombre}.pdf`);
+  }
+  
+  
+
+  openGraphModal(langile: any) {
     this.isGraphOpen = true;
+    this.langileSelec = langile;
     setTimeout(() => {
-      this.mostrarDatos(id); // Esperamos un poco antes de crear el gráfico
+      this.mostrarDatos(langile.id); // Esperamos un poco antes de crear el gráfico
     }, 300); 
   }
   
@@ -48,12 +102,22 @@ export class GrafikoakPage implements OnInit {
   }
 
   ngOnInit() {
-    this.isIkasle = this.loginService.isAlumno();
-    if (this.isIkasle) {
-      this.router.navigate(['/home']);
-    }
-    this.langileakLortu();
-    this.langile_serviceLortu();
+    // Suscribirse a los cambios de ruta
+    this.routeSubscription = this.route.params.subscribe((params) => {
+      console.log('Ruta cambiada:', params); // Aquí puedes ver los cambios de parámetros
+
+      // Comprobar si el usuario es 'Ikasle' cada vez que se carga la página
+      this.isIkasle = this.loginService.isAlumno();
+      
+      // Si es Ikasle, redirigir a '/home'
+      if (this.isIkasle) {
+        this.router.navigate(['/home']);
+      }
+
+      // Llamar a las funciones necesarias
+      this.langileakLortu();
+      this.langile_serviceLortu();
+    });
   }
 
   toggleCategoria(categoria: string) {
