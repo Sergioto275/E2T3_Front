@@ -91,22 +91,8 @@ ion-select {
 }
 
 ion-select-option {
-  color: #{$color-primary}; /* Color del texto de las opciones */
-  
-  &::part(text) {
-    color: #{$color-primary};
+  color: #{$color-light-gray}; /* Color del texto de las opciones */
   }
-}
-
-/* Si lo anterior no funciona, prueba con esto */
-ion-select::part(placeholder),
-ion-select::part(text) {
-  color: #{$color-primary};
-}
-
-ion-select-option::part(text) {
-  color: #{$color-primary};
-}
 
 /* Estilos para los botones de filtro */
 ion-button[color="primary"] {
