@@ -13,21 +13,17 @@
     width: 90%;
     max-width: 400px;
     margin: 0 auto;
-    background-color: #fff;
+    background-color: #1c345c;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
   .login-button {
     margin-top: 15px;
-    --background: #88E4E8;
+    --background: #1E88E5;
     color: #000;
     border-radius: 5px;
   }
-
-  // ion-content{
-  //   --background: #E4FEFF;
-  // }
 
   .language-selector {
     display: flex;

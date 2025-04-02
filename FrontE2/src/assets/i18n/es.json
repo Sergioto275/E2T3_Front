@@ -20,7 +20,8 @@
     "zerbitzuak": "Servicios",
     "txandak":"Turnos",
     "inbentario":"Inventario",
-    "parametrizacion":"Parametrizacion"
+    "parametrizacion":"Parametrizacion",
+    "tratamenduak":"medical"
   },
   "productos": {
     "title": "Gestion de productos",

@@ -1,165 +1,224 @@
-// // Colores
-$color-light-blue: #E4FEFF;
-$color-medium-blue: #88E4E8;
-$color-dark-teal: #00C7BE;
-$color-light-teal: #63D6F5;
+$color-primary: #1c345c;         
+$color-primary-shade: #172a4b;    
+$color-primary-tint: #254273;     
+$color-secondary: #031027;       
+$color-tertiary: #41a367;       
 $color-white: #FFFFFF;
 $color-black: #000000;
-$color-light-gray: #E9E9E9;
-$color-light-blue-alt: #C4E7F1;
+$color-light-gray: #f8f8f8;
+$color-medium-gray: #E9E9E9;
+$color-dark-gray: #333333;
 
-// // Estructura general
-// ion-content {
-//   background-color: $color-white;
-//   padding: 16px;
-// }
-
-// ion-header {
-//   background-color: $color-light-teal;
-//   color: $color-white;
-//   --ion-toolbar-background: $color-light-teal;
-//   --ion-toolbar-color: $color-white;
-// }
-
-// ion-toolbar {
-//   --ion-toolbar-background: $color-light-teal;
-//   --ion-toolbar-color: $color-white;
-// }
-
-// .Headeraaa {
-//   background-color: $color-light-teal;
-//   color: white;
-//   ;
-// }
-
-// ion-segment-button {
-//   color: $color-black;
-// }
-
-// ion-segment-button[aria-selected="true"] {
-//   background-color: $color-medium-blue;
-//   color: $color-white;
-// }
-
-// ion-segment-button {
-//   font-weight: bold;
-// }
-
-ion-list {
-  margin-top: 20px;
+/* Estilos generales para la página de txandak */
+ion-content {
+  --background: #{$color-light-gray};
 }
 
+/* Estilos para los botones */
+.Botoiak {
+  --background: #{$color-primary};
+  --background-activated: #{$color-primary-shade};
+  --background-hover: #{$color-primary-tint};
+  --color: #{$color-white};
+  --border-radius: 8px;
+  margin: 16px;
+  font-weight: 500;
+}
+
+/* Estilos para las tarjetas */
+ion-card {
+  --background: #{$color-white};
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin: 16px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  }
+}
+
+ion-card-header {
+  background-color: #{$color-primary};
+  color: #{$color-white};
+  padding: 16px;
+  border-radius: 12px 12px 0 0;
+}
+
+ion-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #{$color-white};
+}
+
+ion-card-content {
+  padding: 16px;
+}
+
+/* Estilos para los inputs y selects */
 ion-item {
-  background-color: $color-white;
+  --background: #{$color-white};
+  --border-color: #{$color-medium-gray};
+  --border-radius: 8px;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 12px;
+
+  ion-label[position="stacked"] {
+    color: #{$color-primary};
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  ion-input, ion-select, ion-label {
+    --background: #{$color-light-gray};
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --border-radius: 8px;
+    --highlight-color-focused: #{$color-primary};
+    --color:#{$color-primary-shade};
+  }
+}
+
+/* Añade esto a tu archivo SCSS */
+ion-select {
+  --color: #{$color-primary}; /* Color del texto del select */
+  
+  .select-text {
+    color: #{$color-primary};
+  }
+}
+
+ion-select-option {
+  color: #{$color-primary}; /* Color del texto de las opciones */
+  
+  &::part(text) {
+    color: #{$color-primary};
+  }
+}
+
+/* Si lo anterior no funciona, prueba con esto */
+ion-select::part(placeholder),
+ion-select::part(text) {
+  color: #{$color-primary};
+}
+
+ion-select-option::part(text) {
+  color: #{$color-primary};
+}
+
+/* Estilos para los botones de filtro */
+ion-button[color="primary"] {
+  --background: #{$color-primary};
+  --background-activated: #{$color-primary-shade};
+  --background-hover: #{$color-primary-tint};
+  --color: #{$color-white};
+  margin: 4px 0;
+}
+
+ion-button[color="danger"] {
+  --background: #{$color-white};
+  --background-activated: #{$color-light-gray};
+  --color: #{$color-primary-shade};
+  --border-color: #{$color-primary-shade};
+  --border-width: 1px;
+  --border-style: solid;
+  margin: 4px 0;
+}
+
+/* Estilos para la lista de txandak */
+ion-list {
+  background: transparent;
+  padding: 0;
+
+  ion-item {
+    --background: #{$color-white};
+    border-radius: 8px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease;
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    ion-label {
+      h2 {
+        color: #{$color-primary};
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      p {
+        color: #{$color-dark-gray};
+        margin: 4px 0;
+        font-size: 0.9rem;
+
+        strong {
+          color: #{$color-secondary};
+        }
+      }
+    }
+
+    ion-button {
+      --background: #{$color-primary-shade};
+      --background-activated: #{$color-secondary};
+      --color: #{$color-white};
+    }
+  }
+}
+
+/* Estilos para el modal */
+ion-modal {
+  --background: rgba(0, 0, 0, 0.4);
+
+  ion-header {
+    ion-toolbar {
+      --background: #{$color-primary};
+      --color: #{$color-white};
+    }
+  }
+
+  ion-content {
+    --background: #{$color-white};
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+
+    ion-button[expand="full"] {
+      --background: #{$color-tertiary};
+      --background-activated: darken($color-tertiary, 10%);
+      --background-hover: lighten($color-tertiary, 5%);
+      --color: #{$color-white};
+      margin-top: 24px;
+      font-weight: 500;
+    }
+  }
+}
+
+/* Estilos específicos para los tipos de txanda */
+.txanda-garbiketa {
+  border-left: 4px solid #{$color-tertiary};
+}
+
+.txanda-mahaia {
+  border-left: 4px solid #{$color-primary-tint};
+}
+
+/* Efectos de hover y focus */
+ion-button, ion-item {
+  &:focus, &:hover {
+    outline: none;
+  }
+}
+
+
+input {
+  font-size: 1rem;
+  padding: 8px;
   border-radius: 8px;
-  margin-bottom: 8px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #{$color-medium-gray};
+  color: #{$color-dark-gray};
 }
-
-ion-label {
-  font-weight: bold;
-}
-
-// .Botoiak {
-//   --background: $color-dark-teal;
-//   --color: $color-white;
-//   &:hover {
-//     --background: $color-black;
-//   }
-// }
-
-ion-searchbar {
-  margin-bottom: 20px;
-}
-
-// ion-row {
-//   padding: 8px 0;
-// }
-
-// ion-col {
-//   font-weight: 600;
-// }
-
-// ion-modal {
-//   --background: $color-light-blue-alt;
-//   --color: $color-black;
-// }
-
-// ion-item ion-label {
-//   font-size: 0.9rem;
-//   color: $color-black;
-// }
-
-// ion-input, ion-select {
-//   --padding-start: 12px;
-// }
-
-// ion-item ion-label {
-//   font-size: 1rem;
-//   color: $color-black;
-// }
-
-// ion-select {
-//   font-weight: bold;
-// }
-
-// ion-button[expand="full"] {
-//   background-color: $color-dark-teal;
-//   color: $color-white;
-//   &:disabled {
-//     background-color: $color-light-gray;
-//   }
-// }
-
-// ion-card-content {
-//   background-color: $color-white;
-//   padding: 16px;
-// }
-
-// ion-row {
-//   padding: 8px 0;
-// }
-
-// ion-col {
-//   padding: 8px 0;
-// }
-
-// ion-item ion-label {
-//   color: $color-black;
-// }
-
-// ion-label {
-//   color: $color-black;
-// }
-
-// ion-segment-content {
-//   background-color: $color-white;
-// }
-
-// ion-button[slot="start"] {
-//   background-color: $color-dark-teal;
-//   color: $color-white;
-// }
-
-// ion-button[slot="end"] {
-//   background-color: $color-dark-teal;
-//   color: $color-white;
-// }
-
-//   ion-header {
-//     background: linear-gradient(to bottom, #1e3c72, #2a5298); /* Azul oscuro degradado */
-//     color: white;
-//     padding: 12px 0;
-//     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-//     // border-bottom: 2px solid rgba(255, 255, 255, 0.3);
-//     display: flex;
-//     align-items: center;
-//     justify-content: space-between;
-//     height: 60px;
-//   }
-  
-//   ion-header ion-toolbar {
-//     --background: transparent;
-//     --color: white;
-//   }
-  

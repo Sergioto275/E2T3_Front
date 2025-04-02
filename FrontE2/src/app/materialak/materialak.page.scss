@@ -1,46 +1,230 @@
-// Colores
-$color-light-blue: #E4FEFF;
-$color-medium-blue: #88E4E8;
-$color-dark-teal: #00C7BE;
-$color-light-teal: #63D6F5;
-$color-white: #FFFFFF;
-$color-black: #000000;
-$color-light-gray: #E9E9E9;
-$color-light-blue-alt: #C4E7F1;
+/* materiales-header.component.scss */
+.header {
+  --background: #1c345c; /* Azul oscuro principal */
+  --color: #ffffff; /* Texto blanco */
+  --border-color: transparent;
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
 
-.etiketa {
-  font-size: 12px;
-  color: #6c757d;
-  margin-top: 2px;
+  /* Menu button styling */
+  ion-menu-button {
+    --color: #ffffff;
+    --padding-start: 8px;
+    --padding-end: 8px;
+    font-size: 1.5rem;
+  }
+
+  /* Title styling */
+  ion-title {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1.2rem;
+    padding: 0 16px;
+    text-align: center;
+  }
+
+  /* Language selector styling */
+  ion-select {
+    --color: #ffffff;
+    --placeholder-color: #ffffff;
+    --icon-color: #ffffff;
+    max-width: 120px;
+    margin-right: 8px;
+    
+    /* Select options styling */
+    ion-select-option {
+      color: #1c345c; /* Texto azul oscuro */
+      background: #ffffff; /* Fondo blanco */
+    }
+  }
+
+  /* Segment control styling */
+  ion-segment {
+    --background: #172a4b; /* Azul más oscuro */
+    padding: 8px 16px;
+    margin-top: 8px;
+    
+    ion-segment-button {
+      --color: rgba(255, 255, 255, 0.7); /* Texto semi-transparente */
+      --color-checked: #ffffff; /* Texto blanco cuando seleccionado */
+      --indicator-color: #41a367; /* Indicador verde claro */
+      --background-checked: rgba(255, 255, 255, 0.1); /* Fondo cuando seleccionado */
+      --border-radius: 8px;
+      --padding-start: 12px;
+      --padding-end: 12px;
+      min-height: 40px;
+      transition: all 0.3s ease;
+      
+      ion-label {
+        font-weight: 500;
+        font-size: 0.9rem;
+        margin: 0;
+        white-space: nowrap;
+        
+        strong {
+          font-weight: 600;
+        }
+      }
+      
+      /* Active state */
+      &.segment-button-checked {
+        ion-label {
+          color: var(--color-checked);
+        }
+      }
+      
+      /* Hover effect */
+      &:hover:not(.segment-button-checked) {
+        --color: rgba(255, 255, 255, 0.9);
+      }
+    }
+  }
 }
 
-.tarjetaVerde{
-  border: 1px solid #5fb84d;
-  background-color: $color-light-blue;
-  border-radius: 10px; 
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .header {
+    ion-title {
+      font-size: 1rem;
+      padding: 0 8px;
+    }
+    
+    ion-segment {
+      padding: 6px 8px;
+      
+      ion-segment-button {
+        --padding-start: 6px;
+        --padding-end: 6px;
+        
+        ion-label {
+          font-size: 0.8rem;
+        }
+      }
+    }
+    
+    ion-select {
+      max-width: 100px;
+      font-size: 0.9rem;
+    }
+  }
 }
 
-.tarjetaRoja{
-  border: 1px solid red;
-  background-color: $color-light-blue;
-  border-radius: 10px; 
+/* Animation for segment indicator */
+@keyframes segmentIndicator {
+  from { transform: scaleX(0); opacity: 0; }
+  to { transform: scaleX(1); opacity: 1; }
 }
 
-ion-header {
-  background-color: $color-light-teal;
-  color: $color-white;
-  --ion-toolbar-background: $color-light-teal;
-  --ion-toolbar-color: $color-white;
+ion-segment-button.indicator {
+  animation: segmentIndicator 0.3s ease-out forwards;
 }
 
-ion-segment-button {
-  color: $color-black;
+ion-card {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(28, 52, 92, 0.1); /* Shadow with primary blue tint */
+  margin: 16px;
+  overflow: hidden;
+
+  /* Card Header - Blue with white text */
+  ion-card-header {
+    background: #1c345c; /* Azul oscuro principal */
+    padding: 12px 16px;
+    
+    ion-card-title {
+      color: #ffffff; /* Texto blanco */
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
+  }
 }
 
-ion-card-header{
-  background-color: $color-light-blue;
+ion-card {
+  margin: 12px 0;
+  border-left: 4px solid #254273; /* Azul claro como acento */
+  
+  /* Category Header Item */
+  ion-item {
+    --background: #f8f8f8; /* Fondo gris claro */
+    --color: #1c345c; /* Texto azul oscuro */
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --min-height: 56px;
+    border-bottom: 1px solid #e9e9e9;
+    
+    ion-label {
+      font-weight: 500;
+      
+      strong {
+        font-weight: 600;
+      }
+    }
+    
+    /* Chevron icon */
+    ion-icon {
+      color: #1c345c; /* Azul oscuro */
+    }
+    
+    /* Edit button */
+    ion-button {
+      --color: #1c345c; /* Azul oscuro */
+      --padding-start: 0;
+      --padding-end: 0;
+      margin: 0 4px;
+    }
+    
+    /* Delete button */
+    ion-button[color="danger"] {
+      --color: #e74c3c; /* Rojo para acciones peligrosas */
+    }
+  }
+}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  ion-card {
+    margin: 12px 8px;
+    
+    ion-card {
+      margin: 8px 0;
+    }
+    
+    ion-item {
+      --padding-start: 12px;
+      --padding-end: 8px;
+    }
+  }
 }
 
-ion-card-content{
-  color: #000000;
+.custom-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 8px;
+}
+
+.buttons-start, .buttons-end {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-button {
+  --padding-start: 8px;
+  --padding-end: 8px;
+}
+
+.selection-checkbox {
+  margin-right: 8px;
+}
+
+/* Para móviles puedes añadir un media query */
+@media (max-width: 768px) {
+  .custom-toolbar {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .buttons-start, .buttons-end {
+    width: 100%;
+    justify-content: space-between;
+  }
 }

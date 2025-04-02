@@ -54,40 +54,63 @@
           </div>
         </ion-card>
 
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title><b>{{ 'materiales.modal.materiales' | translate }}</b></ion-card-title>
+        
+        <!-- Materials List -->
+        <ion-card class="materials-card">
+          <ion-card-header class="materials-header">
+            <ion-card-title>
+              <ion-icon name="cube" slot="start"></ion-icon>
+              {{ 'materiales.modal.materiales' | translate }}
+            </ion-card-title>
           </ion-card-header>
-          <ng-container *ngFor="let categoria of filteredMaterialak">
-            <!-- Categoría -->
-            <ion-card>
-              <ion-item button (click)="toggleCategoria(categoria.izena)" detail="false">
-                <ion-label><strong>{{ categoria.izena }}</strong></ion-label>
-                <ion-button slot="end" (click)="abrirEditarCategoria(categoria); $event.stopPropagation()" *ngIf="!mostrarCheckbox && !isIkasle">
-                  <ion-icon name="create"></ion-icon>
-                </ion-button>
-                <ion-button slot="end" color="danger" *ngIf="!mostrarCheckbox && !isIkasle" (click)="confirmarEliminarCategoria(categoria.id, categoria.izena); $event.stopPropagation()">
-                  <ion-icon name="trash"></ion-icon>
-                </ion-button>
-                <ion-icon [name]="isCategoriaAbierta(categoria.izena) ? 'chevron-up' : 'chevron-down'" slot="end"></ion-icon>
-              </ion-item>
-
-              <!-- Lista de materiales dentro de la categoría -->
-              <ion-list *ngIf="isCategoriaAbierta(categoria.izena)">
-                <ion-item *ngFor="let material of categoria.materialak">
-                  <ion-label> {{ material.izena }}</ion-label>
-                  <ion-label class="etiketa"> {{ material.etiketa }}</ion-label>
-                  <ion-checkbox *ngIf="mostrarCheckbox" slot="start" [(ngModel)]="material.selected" (ionChange)="actualizarMaterialesSeleccionados(material)"></ion-checkbox>
-                  <ion-button slot="end" color="light" (click)="abrirEditarMaterial(material)" *ngIf="!mostrarCheckbox && !isIkasle">
-                    <ion-icon name="create"></ion-icon>
-                  </ion-button>
-                  <ion-button slot="end" color="danger" (click)="confirmarEliminarMaterial(material.id, material.izena)"*ngIf="!mostrarCheckbox && !isIkasle">
-                    <ion-icon name="trash"></ion-icon>
-                  </ion-button>
+          
+          <ion-card-content class="materials-content">
+            <ng-container *ngFor="let categoria of filteredMaterialak">
+              <!-- Category Card -->
+              <ion-card class="category-card">
+                <ion-item button (click)="toggleCategoria(categoria.izena)" detail="false" class="category-item">
+                  <ion-icon [name]="isCategoriaAbierta(categoria.izena) ? 'chevron-down' : 'chevron-forward'" slot="start"></ion-icon>
+                  
+                  <ion-label class="category-name">
+                    <strong>{{ categoria.izena }}</strong>
+                  </ion-label>
+                  
+                  <ion-buttons slot="end" *ngIf="!mostrarCheckbox && !isIkasle" class="category-actions">
+                    <ion-button class="edit-button" (click)="abrirEditarCategoria(categoria); $event.stopPropagation()">
+                      <ion-icon name="create"></ion-icon>
+                    </ion-button>
+                    <ion-button class="delete-button" color="danger" (click)="confirmarEliminarCategoria(categoria.id, categoria.izena); $event.stopPropagation()">
+                      <ion-icon name="trash"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
                 </ion-item>
-              </ion-list>
-            </ion-card>
-          </ng-container>
+
+                <!-- Materials List -->
+                <ion-list *ngIf="isCategoriaAbierta(categoria.izena)" class="materials-list">
+                  <ion-item *ngFor="let material of categoria.materialak" class="material-item">
+                    <ion-checkbox *ngIf="mostrarCheckbox" slot="start" class="material-checkbox" 
+                      [(ngModel)]="material.selected" 
+                      (ionChange)="actualizarMaterialesSeleccionados(material)">
+                    </ion-checkbox>
+                    
+                    <ion-label class="material-name">
+                      {{ material.izena }}
+                      <span class="material-label">{{ material.etiketa }}</span>
+                    </ion-label>
+                    
+                    <ion-buttons slot="end" *ngIf="!mostrarCheckbox && !isIkasle" class="material-actions">
+                      <ion-button class="edit-button" color="light" (click)="abrirEditarMaterial(material)">
+                        <ion-icon name="create"></ion-icon>
+                      </ion-button>
+                      <ion-button class="delete-button" color="danger" (click)="confirmarEliminarMaterial(material.id, material.izena)">
+                        <ion-icon name="trash"></ion-icon>
+                      </ion-button>
+                    </ion-buttons>
+                  </ion-item>
+                </ion-list>
+              </ion-card>
+            </ng-container>
+          </ion-card-content>
         </ion-card>
       </ion-segment-content>
 

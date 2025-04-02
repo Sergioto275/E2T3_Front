@@ -3,30 +3,25 @@
 <ion-content class="ion-page" id="main-content">
   <ion-header>
     <ion-toolbar>
+     <ion-header>
+    <ion-toolbar class="Headeraaa" style="--background: #1c345c; --color: white;">
       <ion-buttons slot="start">
-        <ion-menu-button></ion-menu-button>
+        <ion-menu-button style="--color: white;"></ion-menu-button>
       </ion-buttons>
-      <ion-title>{{ "historial.titulo" | translate }}</ion-title>
-      <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">
-        <ion-select-option value="es">Español</ion-select-option>
-        <ion-select-option value="eu">Euskera</ion-select-option>
+      <ion-title size="large" style="color: white;">{{ 'txandakPage.titulo' | translate }}</ion-title>
+      <ion-select
+        slot="end"
+        [(ngModel)]="selectedLanguage"
+        (ionChange)="changeLanguage()"
+        style="--color: white; --placeholder-color: white; --border-color: white;"
+      >
+        <ion-select-option value="es" style="--color: #1c345c;">Español</ion-select-option>
+        <ion-select-option value="eu" style="--color: #1c345c;">Euskera</ion-select-option>
       </ion-select>
     </ion-toolbar>
-    <ion-segment>
-      <ion-segment-button value="prod" content-id="prod">
-        <ion-label>{{ "historial.botones.productos" | translate }}</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="material" content-id="material">
-        <ion-label>{{ "historial.botones.materiales" | translate }}</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="ticket" content-id="ticket">
-        <ion-label>{{ "historial.botones.ticket" | translate }}</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="cliente" content-id="cliente">
-        <ion-label>{{ "historial.botones.cliente" | translate }}</ion-label>
-      </ion-segment-button>
-    </ion-segment>
   </ion-header>
+
+
   <ion-content [fullscreen]="true">
   <ion-segment-view>
     <ion-segment-content id="prod">

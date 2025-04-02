@@ -72,6 +72,10 @@ export class MaterialakPage implements OnInit {
   mostrarCheckbox: boolean = false;
   isIkasle!:boolean;
 
+  toggleFiltros() {
+    this.mostrarFiltros = !this.mostrarFiltros;
+  }
+
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
     if (this.headerComponent) {

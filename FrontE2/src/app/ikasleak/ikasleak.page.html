@@ -23,6 +23,7 @@
       </ion-segment>
     </ion-toolbar>
   </ion-header>
+  
     <ion-segment-view>
       <ion-segment-content id="taldeKudeatu">
         <ion-toolbar>
@@ -31,22 +32,9 @@
             <ion-button id="atera-modal" class="Botoiak" slot="end">{{ "ikaslePage.IkasleakBistaratu" | translate }}</ion-button>
         </ion-toolbar>
 
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>{{ "ikaslePage.TaldearenTaldearen" | translate }}</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-                <ion-col size="12">
-                  <ion-item>
-                    <ion-label position="stacked">
-                      {{ "ikaslePage.IzenaOKodea" | translate }}: 
-                      </ion-label>
-                    <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterGroups()" debounce="300" placeholder="{{ 'ikaslePage.IzenaOKodea' | translate }}"></ion-searchbar>
-                  </ion-item>
-                </ion-col>
-          </ion-card-content>
-        </ion-card>
-        
+
+        <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterGroups()" debounce="300" placeholder="{{ 'ikaslePage.IzenaOKodea' | translate }}"></ion-searchbar>
+                
         <ion-list>
           <ion-card *ngFor="let grupo of filteredGroups">
             <ion-card-header>

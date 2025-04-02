@@ -2,27 +2,30 @@
 
 <ion-content class="ion-page" id="main-content">
   <ion-header>
-    <ion-toolbar class="Headeraaa">
+    <ion-toolbar class="Headeraaa" style="--background: #1c345c; --color: white;">
       <ion-buttons slot="start">
-        <ion-menu-button></ion-menu-button>
+        <ion-menu-button style="--color: white;"></ion-menu-button>
       </ion-buttons>
-      <ion-title size="large">{{ 'txandakPage.titulo' | translate }}</ion-title>
+      <ion-title size="large" style="color: white;">{{ 'txandakPage.titulo' | translate }}</ion-title>
       <ion-select
         slot="end"
         [(ngModel)]="selectedLanguage"
         (ionChange)="changeLanguage()"
+        style="
+          --color: white;
+          --placeholder-color: rgba(255,255,255,0.8);
+          --border-color: rgba(255,255,255,0.5);
+          --background: transparent;
+          --padding-end: 8px;
+          --padding-start: 16px;
+        "
       >
-        <ion-select-option value="es"
-          >Español</ion-select-option
-        >
-        <ion-select-option value="eu"
-          >Euskera</ion-select-option
-        >
+        <ion-select-option value="es" style="--color: #1c345c;">Español</ion-select-option>
+        <ion-select-option value="eu" style="--color: #1c345c;">Euskera</ion-select-option>
       </ion-select>
     </ion-toolbar>
   </ion-header>
-  
-
+    
   <!-- Botón para añadir nueva txanda -->
   <ion-button id="txanda-sortu-modal" class="Botoiak">
     {{ 'txandakPage.botonAñadir' | translate }}
