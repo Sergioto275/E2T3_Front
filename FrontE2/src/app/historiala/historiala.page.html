@@ -1,14 +1,11 @@
-
 <app-header></app-header>
 <ion-content class="ion-page" id="main-content">
   <ion-header>
-    <ion-toolbar>
-     <ion-header>
     <ion-toolbar class="Headeraaa" style="--background: #1c345c; --color: white;">
       <ion-buttons slot="start">
         <ion-menu-button style="--color: white;"></ion-menu-button>
       </ion-buttons>
-      <ion-title size="large" style="color: white;">{{ 'txandakPage.titulo' | translate }}</ion-title>
+      <ion-title size="large" style="color: white;">{{ "historial.titulo" | translate }}</ion-title>
       <ion-select
         slot="end"
         [(ngModel)]="selectedLanguage"
@@ -20,7 +17,6 @@
       </ion-select>
     </ion-toolbar>
   </ion-header>
-
 
   <ion-content [fullscreen]="true">
   <ion-segment-view>

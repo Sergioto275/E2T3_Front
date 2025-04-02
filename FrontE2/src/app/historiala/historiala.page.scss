@@ -1,36 +1,257 @@
-// .custom-modal {
-//     --width: 90vw;  /* Ajusta el ancho al 90% del viewport */
-//     --height: 90vh; /* Ajusta la altura al 90% del viewport */
-//   }
+$color-primary: #1c345c;         
+$color-primary-shade: #172a4b;    
+$color-primary-tint: #254273;     
+$color-secondary: #031027;       
+$color-tertiary: #41a367;       
+$color-white: #FFFFFF;
+$color-black: #000000;
+$color-light-gray: #f8f8f8;
+$color-medium-gray: #E9E9E9;
+$color-dark-gray: #333333;
+
+/* Estilos generales */
+ion-content {
+    --background: #{$color-light-gray};
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+  }
   
-//   .custom-modal .ion-content {
-//     padding: 16px; /* Aumenta el espaciado interno */
-//   }
-
-//   // Colores
-// $color-light-blue: #E4FEFF;
-// $color-medium-blue: #88E4E8;
-// $color-dark-teal: #00C7BE;
-// $color-light-teal: #63D6F5;
-// $color-white: #FFFFFF;
-// $color-black: #000000;
-// $color-light-gray: #E9E9E9;
-// $color-light-blue-alt: #C4E7F1;
-
-// // Estructura general
-// ion-content {
-//   background-color: $color-white;
-//   padding: 16px;
-// }
-
-// ion-header {
-//   background-color: $color-light-teal;
-//   color: $color-white;
-//   --ion-toolbar-background: $color-light-teal;
-//   --ion-toolbar-color: $color-white;
-// }
-
-ion-list{
-    background-color: rgb(255,255,255,0);
-}
+  /* Toolbar y header */
+  ion-toolbar {
+    --background: #{$color-primary};
+    --color: #{$color-white};
+    
+    ion-title {
+      font-weight: 600;
+    }
+  }
+  
+  /* Segmentos */
+  ion-segment {
+    --background: #{$color-white};
+    margin-bottom: 16px;
+    
+    ion-segment-button {
+      --color: #{$color-primary};
+      --color-checked: #{$color-white};
+      --background-checked: #{$color-tertiary};
+      --indicator-color: transparent;
+      font-weight: 500;
+      border-radius: 8px;
+      margin: 0 4px;
+      
+      &:first-child {
+        margin-left: 0;
+      }
+      
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+  
+  /* Tarjetas */
+  ion-card {
+    --background: #{$color-white};
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin-bottom: 16px;
+    transition: transform 0.3s ease;
+  
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    }
+  }
+  
+  ion-card-header {
+    --background: #{$color-primary};
+    --color: #{$color-white};
+    padding: 16px;
+    border-radius: 12px 12px 0 0;
+  
+    ion-card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: white;
+    }
+  
+    ion-card-subtitle {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
+    }
+  }
+  
+  ion-card-content {
+    padding: 16px;
+  }
+  
+  /* Items y formularios */
+  ion-item {
+    --background: #{$color-white};
+    --border-color: #{$color-medium-gray};
+    --padding-start: 16px;
+    --inner-padding-end: 16px;
+    --min-height: 60px;
+    
+    ion-label[position="stacked"] {
+      color: #{$color-primary};
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    
+    ion-input, ion-select {
+      --background: #{$color-light-gray};
+      --color: #{$color-primary-shade};
+      --padding-start: 12px;
+      --padding-end: 12px;
+      --border-radius: 8px;
+      --highlight-color-focused: #{$color-tertiary};
+    }
+  }
+  
+  /* Barra de búsqueda */
+  ion-searchbar {
+    --background: #{$color-light-gray};
+    --border-radius: 8px;
+    --box-shadow: none;
+    --color: #{$color-primary};
+    --placeholder-color: #{$color-medium-gray};
+    --icon-color: #{$color-primary};
+  }
+  
+  /* Botones */
+  ion-button {
+    --border-radius: 8px;
+    font-weight: 500;
+    
+    &[color="primary"] {
+      --background: #{$color-primary};
+      --background-activated: #{$color-primary-shade};
+      --background-hover: #{$color-primary-tint};
+    }
+    
+    &[color="danger"] {
+      --background: #{$color-white};
+      --background-activated: #{$color-light-gray};
+      --color: #{$color-primary-shade};
+      --border-color: #{$color-primary-shade};
+      --border-width: 1px;
+    }
+    
+    &[color="tertiary"] {
+      --background: #{$color-tertiary};
+      --background-activated: #{darken($color-tertiary, 10%)};
+    }
+  }
+  
+  /* Listas */
+  ion-list {
+    background: transparent;
+    padding: 0;
+    
+    ion-item {
+      --border-color: #{$color-medium-gray};
+      margin-bottom: 8px;
+      border-radius: 8px;
+      
+      ion-label {
+        h2 {
+          color: #{$color-primary};
+          font-weight: 600;
+        }
+        
+        p {
+          color: #{$color-dark-gray};
+        }
+      }
+    }
+  }
+  
+  /* Grid */
+  ion-grid {
+    padding: 0;
+    
+    ion-row {
+      margin-bottom: 16px;
+    }
+    
+    ion-col {
+      padding: 8px;
+    }
+  }
+  
+  /* Modales */
+  ion-modal {
+    --background: rgba(0, 0, 0, 0.4);
+    
+    .custom-modal {
+      --border-radius: 16px;
+      --box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      
+      ion-header {
+        ion-toolbar {
+          --background: #{$color-primary};
+          --color: #{$color-white};
+        }
+      }
+      
+      ion-content {
+        --background: #{$color-white};
+      }
+    }
+  }
+  
+  /* Tablas */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    
+    th {
+      background-color: #{$color-primary};
+      color: #{$color-white};
+      padding: 12px;
+      text-align: center;
+    }
+    
+    td {
+      padding: 12px;
+      border: 1px solid #{$color-medium-gray};
+      background-color: #{$color-white};
+    }
+  }
+  
+  /* Mensajes de validación */
+  ion-text[color="danger"] {
+    color: #{$color-primary-shade} !important;
+    font-size: 0.8rem;
+    display: block;
+    margin-top: -12px;
+    margin-bottom: 12px;
+  }
+  
+  /* Efectos visuales */
+  .highlighted {
+    background-color: rgba(65, 163, 103, 0.1) !important;
+    border: 2px solid #{$color-tertiary} !important;
+  }
+  
+  /* Clases específicas para estados */
+  .bg-grey-blue-light {
+    background-color: lighten(#1c345c, 70%);
+  }
+  
+  .bg-blue-green-light {
+    background-color: lighten(#41a367, 45%);
+  }
+  
+  .bg-pink-light {
+    background-color: lighten(#ff6b6b, 30%);
+  }
+  
+  .selected {
+    border-left: 4px solid #{$color-tertiary};
+  }
   
