@@ -267,20 +267,20 @@ export class ProduktuakPage implements OnInit {
 
   // Editado Oier
 
-  // EDITANDO OIER
+  // Editado Oier
   eliminarKategoriaProducto(id: number) {
     const confirmacion = confirm('¿Estás seguro de que quieres eliminar esta categoría?');
     if (!confirmacion) {
       console.log('Operación cancelada por el usuario.');
       return;
     }
-
+  
     const json_data = {
       "id": id
     };
-
+  
     console.log(json_data);
-
+  
     this.http.delete(`${environment.url}produktu_kategoria`, {
       headers: {
         'Content-Type': 'application/json',
@@ -289,19 +289,22 @@ export class ProduktuakPage implements OnInit {
       body: JSON.stringify(json_data)
     }).subscribe(
       async (response) => {
+        this.mostrarToast('Categoría eliminada correctamente', 2000, 'success');
         await this.produktuakLortu();
       },
-      (error) => {
+      async (error) => {
         console.error("Error al eliminar la categoría del producto:", error);
+        this.mostrarToast('Error al eliminar la categoría', 2000, 'danger');
       }
     );
   }
+  
 
   editarKategoriaProducto() {
     const json_data = { izena: this.editingKategoria.izena };
-
+  
     console.log(json_data);
-
+  
     this.http.put(`${environment.url}produktu_kategoria/id/${this.editingKategoria.id}`, json_data, {
       headers: {
         'Content-Type': 'application/json',
@@ -309,23 +312,25 @@ export class ProduktuakPage implements OnInit {
       }
     }).subscribe(
       async (response) => {
-        console.log('Categoría actualizada correctamente');
+        this.mostrarToast('Categoría editada correctamente', 2000, 'success');
         await this.produktuakLortu();
         this.closeKatModal();
       },
-      (error) => {
+      async (error) => {
         console.error('Error al editar la categoría del producto:', error);
+        this.mostrarToast('Error al editar la categoría', 2000, 'danger');
       }
     );
   }
+  
 
   kategoriaSortu() {
     const json_data = {
       "izena": this.crearKatNombre
     };
-
+  
     console.log(json_data);
-
+  
     this.http.post(`${environment.url}produktu_kategoria`, json_data, {
       headers: {
         'Content-Type': 'application/json',
@@ -333,15 +338,18 @@ export class ProduktuakPage implements OnInit {
       }
     }).subscribe(
       async (response) => {
+        this.mostrarToast('Categoría creada correctamente', 2000, 'success');
         await this.produktuakLortu();
       },
-      (error) => {
+      async (error) => {
         console.error("Error al crear la categoría:", error);
+        this.mostrarToast('Error al crear la categoría', 2000, 'danger');
       }
     );
   }
   
-  // EDITANDO OIER
+  // Editado Oier
+  
   sacarProductos() {
     const movimientos = this.productosSeleccionados.map(producto => ({
       "produktu": {
