@@ -176,18 +176,6 @@ export class MaterialakPage implements OnInit {
   }
   //Editado Oier
 
-  async kategoriaSortu(){
-    let data = {
-      "izena": this.crearKatNombre,
-    } 
-    let observableRest: Observable<any> = this.restServer.post<any>(`${environment.url}material_kategoria`, data);
-    await observableRest.subscribe(datuak => {
-      console.log(datuak);
-      this.materialakLortu();
-      this.vaciarDatos();
-    });
-  }
-
 // Editado Oier.
 materialaEditatu(id: number) {
   const data = {
@@ -264,26 +252,7 @@ async presentToast(message: string, color: string) {
   }
   // Editado Oier.
 
-  kategoriaEzabatu(id:number){
-    let observableRest: Observable<any> = this.restServer.delete<any>(`${environment.url}material_kategoria/id/${id}`);
-    observableRest.subscribe(datuak => {
-      console.log(datuak);
-      this.materialakLortu();
-      this.vaciarDatos();
-    });
-  }  
 
-  kategoriaEditatu(id: number){
-    let data = {
-      "izena": this.editarKatNombre
-    }
-    let observableRest: Observable<any> = this.restServer.put<any>(`${environment.url}material_kategoria/id/${id}`, data);
-    observableRest.subscribe(datuak => {
-      console.log(datuak);
-      this.materialakLortu();
-      this.vaciarDatos();
-    });
-  }
 
   toggleMaterialakLortu(){
     this.mostrarFiltros
@@ -436,7 +405,6 @@ async presentToast(message: string, color: string) {
 
     await alert.present();
   }
-
   async confirmarEliminarCategoria(id: number, izena:string) {
     const alert = await this.alertController.create({
       header: this.translate.instant('materiales.modal.confirmacion'),
@@ -457,6 +425,66 @@ async presentToast(message: string, color: string) {
 
     await alert.present();
   }
+
+  // Editado Oier
+
+  async kategoriaSortu() {
+    let data = {
+      "izena": this.crearKatNombre,
+    } 
+  
+    let observableRest: Observable<any> = this.restServer.post<any>(`${environment.url}material_kategoria`, data);
+    await observableRest.subscribe(
+      (datuak) => {
+        console.log(datuak);
+        this.materialakLortu();
+        this.vaciarDatos();
+        this.mostrarToast('Categoría creada correctamente', 2000, 'success');
+      },
+      (error) => {
+        console.error("Error al crear la categoría de material:", error);
+        this.mostrarToast('Error al crear la categoría', 2000, 'danger');
+      }
+    );
+  }
+  
+  kategoriaEzabatu(id: number) {
+    let observableRest: Observable<any> = this.restServer.delete<any>(`${environment.url}material_kategoria/id/${id}`);
+    observableRest.subscribe(
+      (datuak) => {
+        console.log(datuak);
+        this.materialakLortu();
+        this.vaciarDatos();
+        this.mostrarToast('Categoría eliminada correctamente', 2000, 'success');
+      },
+      (error) => {
+        console.error("Error al eliminar la categoría de material:", error);
+        this.mostrarToast('Error al eliminar la categoría', 2000, 'danger');
+      }
+    );
+  }
+
+  kategoriaEditatu(id: number) {
+    let data = {
+      "izena": this.editarKatNombre
+    }
+  
+    let observableRest: Observable<any> = this.restServer.put<any>(`${environment.url}material_kategoria/id/${id}`, data);
+    observableRest.subscribe(
+      (datuak) => {
+        console.log(datuak);
+        this.materialakLortu();
+        this.vaciarDatos();
+        this.mostrarToast('Categoría editada correctamente', 2000, 'success');
+      },
+      (error) => {
+        console.error("Error al editar la categoría de material:", error);
+        this.mostrarToast('Error al editar la categoría', 2000, 'danger');
+      }
+    );
+  }
+
+  // Editado Oier
 
   filtrarMateriales() {
     this.filteredMaterialak = this.materialak.map(categoria => ({
