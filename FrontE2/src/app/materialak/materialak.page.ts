@@ -8,6 +8,12 @@ import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
+// Importaciones Oier (quitar este comentario si a futuro no da problemas).
+import { ToastController } from '@ionic/angular';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
+// Importaciones Oier (quitar este comentario si a futuro no da problemas).
+
 export interface Alumno {
   nombre: string;
   grupo: string;
@@ -160,23 +166,45 @@ export class MaterialakPage implements OnInit {
     });
   }
 
-  materialaEditatu(id:number){
-    let data = {
-      "etiketa": this.editarEtiqueta,
-      "izena": this.editarNombre,
-      "materialKategoria": {
-          "id": this.editarCategoria
-      },
+// Editado Oier.
+materialaEditatu(id: number) {
+  const data = {
+    etiketa: this.editarEtiqueta,
+    izena: this.editarNombre,
+    materialKategoria: {
+      id: this.editarCategoria
     }
+  };
 
-    let observableRest: Observable<any> = this.restServer.put<any>(`${environment.url}materialak/id/${id}`, data);
-    observableRest.subscribe(datuak => {
-      console.log(datuak);
-      this.materialakLortu();
-      this.vaciarDatos();
-	  });
-  }
+  this.restServer.put<any>(`${environment.url}materialak/id/${id}`, data)
+    .pipe(
+      catchError(err => {
+        this.presentToast('❌ Errorea materiala egueratzerakoan.', 'danger');
+        console.error(err);
+        return of(null); // Si no se devuelve null, explota.
+      })
+    )
+    .subscribe(datuak => {
+      if (datuak) {
+        console.log(datuak);
+        this.materialakLortu();
+        this.vaciarDatos();
+        this.presentToast('✅ Materiala eguneratu da.', 'success');
+        this.modalEditar.dismiss();
+      }
+    });
+}
 
+async presentToast(message: string, color: string) {
+  const toast = await this.toastController.create({
+    message,
+    duration: 2000,
+    position: 'top',
+    color
+  });
+  await toast.present();
+}
+// Editado Oier.
 
   vaciarDatos(){
     this.crearEtiqueta = null;
@@ -412,7 +440,7 @@ export class MaterialakPage implements OnInit {
     }
   }
 
-  constructor(private translate: TranslateService, private restServer:HttpClient, private alertController: AlertController, private loginService: LoginServiceService, private route: ActivatedRoute) {
+  constructor(private toastController: ToastController, private translate: TranslateService, private restServer:HttpClient, private alertController: AlertController, private loginService: LoginServiceService, private route: ActivatedRoute) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
