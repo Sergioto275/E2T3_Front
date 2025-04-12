@@ -126,7 +126,7 @@ export class ProduktuakPage implements OnInit {
     return this.categoriasAbiertas[categoria] || false;
   }
 
-  // Editando
+  // Editado
   crearProducto() {
     const json_data = {
       "izena": this.crearNombre,
@@ -160,28 +160,7 @@ export class ProduktuakPage implements OnInit {
     );
   }
   
-  // Editando
-  kategoriaSortu() {
-    const json_data = {
-      "izena": this.crearKatNombre
-    };
-
-    console.log(json_data);
-
-    this.http.post(`${environment.url}produktu_kategoria`, json_data, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    }).subscribe(
-      async (response) => {
-        await this.produktuakLortu();
-      },
-      (error) => {
-        console.error("Error al crear la categoría:", error);
-      }
-    );
-  }
+  // Editado
 
   openProdModal(product:any, idKat:number){
     this.isEditingProduct = true;
@@ -204,7 +183,7 @@ export class ProduktuakPage implements OnInit {
     this.isEditingKategoria = false;
   }
 
-  // Editado Oier.
+  // Editado Oier
   editarProducto() {
     const json_data = {
       "id": this.editingProduct.id,
@@ -286,7 +265,9 @@ export class ProduktuakPage implements OnInit {
   }
   
 
-  // Editado Oier.
+  // Editado Oier
+
+  // EDITANDO OIER
   eliminarKategoriaProducto(id: number) {
     const confirmacion = confirm('¿Estás seguro de que quieres eliminar esta categoría?');
     if (!confirmacion) {
@@ -338,6 +319,29 @@ export class ProduktuakPage implements OnInit {
     );
   }
 
+  kategoriaSortu() {
+    const json_data = {
+      "izena": this.crearKatNombre
+    };
+
+    console.log(json_data);
+
+    this.http.post(`${environment.url}produktu_kategoria`, json_data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    }).subscribe(
+      async (response) => {
+        await this.produktuakLortu();
+      },
+      (error) => {
+        console.error("Error al crear la categoría:", error);
+      }
+    );
+  }
+  
+  // EDITANDO OIER
   sacarProductos() {
     const movimientos = this.productosSeleccionados.map(producto => ({
       "produktu": {
