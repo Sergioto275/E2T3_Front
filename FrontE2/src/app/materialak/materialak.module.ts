@@ -18,7 +18,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MaterialakPageRoutingModule,
     ComponentsModule,
     TranslateModule
-],
+  ],
   declarations: [MaterialakPage]
 })
-export class MaterialakPageModule {}
+export class MaterialakPageModule { }

@@ -23,40 +23,40 @@ export class ProduktuakPage implements OnInit {
 
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   selectedLanguage: string = 'es';
-  modal!:string;
-  produktuak!:any[];
+  modal!: string;
+  produktuak!: any[];
 
-  productosSeleccionados:any[] = [];
+  productosSeleccionados: any[] = [];
   isEditingProduct: boolean = false;
-  editingProduct:any = null;
+  editingProduct: any = null;
   isEditingKategoria: boolean = false;
-  editingKategoria:any = null;
+  editingKategoria: any = null;
 
-  crearKatNombre!:String;
-  crearNombre!:String;
-  crearDescripcion!:String;
-  crearCategoria!:Number;
-  crearMarca!:String;
-  crearStock!:Number;
-  crearStockAlerta!:Number;
+  crearKatNombre!: String;
+  crearNombre!: String;
+  crearDescripcion!: String;
+  crearCategoria!: Number;
+  crearMarca!: String;
+  crearStock!: Number;
+  crearStockAlerta!: Number;
 
   alumnos!: any[];
-  selecTaldea!:number;
-  selecAlumno!:number;
+  selecTaldea!: number;
+  selecAlumno!: number;
 
   modalAtera = false;
   alumne = '';
   categoriasAbiertas: { [key: string]: boolean } = {};
   filteredAlumnos!: any[];
   selectedCategoryId!: number;
-  isIkasle!:boolean;
+  isIkasle!: boolean;
   private routeSubscription: any;
 
-  
+
   filtroCategoria: string = '';
   filtroProducto: string = '';
   filtroStockBajo: boolean = false;
-  filteredProduktuak: any[] = []; 
+  filteredProduktuak: any[] = [];
 
   filtrarProductos() {
     this.filteredProduktuak = this.produktuak.map(categoria => ({
@@ -64,8 +64,7 @@ export class ProduktuakPage implements OnInit {
       produktuak: categoria.produktuak.map((producto: any) => ({ ...producto }))
     }));
 
-    if(this.filtroCategoria !== '')
-    {
+    if (this.filtroCategoria !== '') {
       this.filteredProduktuak = this.filteredProduktuak.filter(categoria =>
         (this.filtroCategoria === '' || categoria.izena.toLowerCase().includes(this.filtroCategoria.toLowerCase()))
       );
@@ -79,7 +78,7 @@ export class ProduktuakPage implements OnInit {
         )
       }));
     }
-  
+
     if (this.filtroStockBajo) {
       this.filteredProduktuak = this.filteredProduktuak.filter(categoria => {
         categoria.produktuak = categoria.produktuak.filter((producto: any) =>
@@ -106,7 +105,7 @@ export class ProduktuakPage implements OnInit {
     }
   }
 
-  actualizarProductosSeleccionados(producto:any, kategoria_id: number) {
+  actualizarProductosSeleccionados(producto: any, kategoria_id: number) {
     producto.kategoria_id = kategoria_id;
     producto.kantitatea = 1;
     const index = this.productosSeleccionados.findIndex(p => p.id === producto.id);
@@ -138,9 +137,9 @@ export class ProduktuakPage implements OnInit {
       "stock": this.crearStock,
       "stockAlerta": this.crearStockAlerta
     };
-  
+
     console.log(json_data);
-  
+
     this.http.post(`${environment.url}produktuak`, json_data, {
       headers: {
         'Content-Type': 'application/json',
@@ -149,37 +148,37 @@ export class ProduktuakPage implements OnInit {
     }).subscribe(
       async (response) => {
         this.mostrarToast('Produktua sortu da.', 2000, 'success');
-        
+
         await this.produktuakLortu();
       },
       async (error) => {
         console.error("Error al crear el producto:", error);
-        
+
         this.mostrarToast('Errorea produktua sortzerakoan.', 2000, 'danger');
       }
     );
   }
-  
+
   // Editado
 
-  openProdModal(product:any, idKat:number){
+  openProdModal(product: any, idKat: number) {
     this.isEditingProduct = true;
     this.editingProduct = product;
     this.editingProduct.idKategoria = idKat;
     console.log(this.editingProduct);
   }
-  
-  closeProdModal(){
+
+  closeProdModal() {
     this.isEditingProduct = false;
   }
 
-  openKatModal(kategoria:any){
+  openKatModal(kategoria: any) {
     this.isEditingKategoria = true;
     this.editingKategoria = kategoria;
     console.log(this.editingKategoria);
   }
-  
-  closeKatModal(){
+
+  closeKatModal() {
     this.isEditingKategoria = false;
   }
 
@@ -196,9 +195,9 @@ export class ProduktuakPage implements OnInit {
       "stock": this.editingProduct.stock,
       "stockAlerta": this.editingProduct.stockAlerta
     };
-  
+
     console.log(json_data);
-  
+
     this.http.put(`${environment.url}produktuak`, json_data, {
       headers: {
         'Content-Type': 'application/json',
@@ -207,7 +206,7 @@ export class ProduktuakPage implements OnInit {
     }).subscribe(
       async (response) => {
         this.mostrarToast('Produktua editatuta.', 2000, 'success');
-        
+
         await this.produktuakLortu();
         this.closeProdModal();
       },
@@ -226,9 +225,9 @@ export class ProduktuakPage implements OnInit {
     });
     toast.present();
   }
-  
 
-  
+
+
 
   eliminarProducto(id: number) {
     const confirmacion = confirm('¿Estás seguro de que quieres eliminar este producto?');
@@ -236,13 +235,13 @@ export class ProduktuakPage implements OnInit {
       console.log('Operación cancelada por el usuario.');
       return;
     }
-  
+
     const json_data = {
       "id": id
     };
-  
+
     console.log(json_data);
-  
+
     this.http.delete(`${environment.url}produktuak`, {
       headers: {
         'Content-Type': 'application/json',
@@ -253,17 +252,17 @@ export class ProduktuakPage implements OnInit {
       async (response) => {
         // Mostrar toast de éxito
         this.mostrarToast('Produktua ezabatu da.', 2000, 'success');
-        
+
         await this.produktuakLortu();
       },
       async (error) => {
         console.error("Error al eliminar el producto:", error);
-        
+
         this.mostrarToast('Errorea produktua ezabatzerakoan.', 2000, 'danger');
       }
     );
   }
-  
+
 
   // Editado Oier
 
@@ -274,13 +273,13 @@ export class ProduktuakPage implements OnInit {
       console.log('Operación cancelada por el usuario.');
       return;
     }
-  
+
     const json_data = {
       "id": id
     };
-  
+
     console.log(json_data);
-  
+
     this.http.delete(`${environment.url}produktu_kategoria`, {
       headers: {
         'Content-Type': 'application/json',
@@ -298,13 +297,13 @@ export class ProduktuakPage implements OnInit {
       }
     );
   }
-  
+
 
   editarKategoriaProducto() {
     const json_data = { izena: this.editingKategoria.izena };
-  
+
     console.log(json_data);
-  
+
     this.http.put(`${environment.url}produktu_kategoria/id/${this.editingKategoria.id}`, json_data, {
       headers: {
         'Content-Type': 'application/json',
@@ -322,15 +321,15 @@ export class ProduktuakPage implements OnInit {
       }
     );
   }
-  
+
 
   kategoriaSortu() {
     const json_data = {
       "izena": this.crearKatNombre
     };
-  
+
     console.log(json_data);
-  
+
     this.http.post(`${environment.url}produktu_kategoria`, json_data, {
       headers: {
         'Content-Type': 'application/json',
@@ -347,9 +346,9 @@ export class ProduktuakPage implements OnInit {
       }
     );
   }
-  
+
   // Editado Oier
-  
+
   sacarProductos() {
     const movimientos = this.productosSeleccionados.map(producto => ({
       "produktu": {
@@ -379,7 +378,7 @@ export class ProduktuakPage implements OnInit {
       }
     );
   }
-  
+
 
   produktuakLortu() {
     this.http.get(`${environment.url}produktu_kategoria`, {
@@ -397,7 +396,7 @@ export class ProduktuakPage implements OnInit {
             produktuak: categoria.produktuak
               .filter((producto: any) => producto.ezabatzeData === null)
           }));
-          this.filteredProduktuak = this.produktuak;
+        this.filteredProduktuak = this.produktuak;
         console.log('Produktuak kargatu:', this.produktuak);
       },
       (error) => {
@@ -454,7 +453,7 @@ export class ProduktuakPage implements OnInit {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
-  
+
   ngOnInit() {
     // Suscribirse a los cambios de ruta
     this.routeSubscription = this.route.params.subscribe((params) => {

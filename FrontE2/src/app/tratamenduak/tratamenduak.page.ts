@@ -16,8 +16,8 @@ export class TratamenduakPage implements OnInit {
 
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   selectedLanguage: string = 'es';
-  zerbitzuak:any[] = [];
-  filteredZerbitzuak:any[] = [];
+  zerbitzuak: any[] = [];
+  filteredZerbitzuak: any[] = [];
   modalAtera = false;
   alumne = '';
   categoriasAbiertas: { [key: string]: boolean } = {};
@@ -25,15 +25,15 @@ export class TratamenduakPage implements OnInit {
   selectedCategoryId!: number;
   crearServicio: any = { izena: '', idKategoria: null, kanpokoPrezioa: '', etxekoPrezioa: '' };
   crearCategoria: any = { izena: '', kolorea: false, extra: false };
-  editarCategoria:any;
-  editarServicio:any;
-  serviciosSeleccionados:any[]=[];
+  editarCategoria: any;
+  editarServicio: any;
+  serviciosSeleccionados: any[] = [];
   isEditingService: boolean = false;
   isEditingCategoria: boolean = false;
-  
+
   filtroCategoria: string = '';
   filtroZerbitzua: string = '';
-  isIkasle!:boolean;
+  isIkasle!: boolean;
   private routeSubscription: any;
 
   constructor(private toastController: ToastController, private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService, private router: Router, private route: ActivatedRoute) {
@@ -79,8 +79,7 @@ export class TratamenduakPage implements OnInit {
       zerbitzuak: categoria.zerbitzuak.map((zerbitzua: any) => ({ ...zerbitzua }))
     }));
 
-    if(this.filtroCategoria !== '')
-    {
+    if (this.filtroCategoria !== '') {
       this.filteredZerbitzuak = this.filteredZerbitzuak.filter(categoria =>
         (this.filtroCategoria === '' || categoria.izena.toLowerCase().includes(this.filtroCategoria.toLowerCase()))
       );
@@ -96,24 +95,24 @@ export class TratamenduakPage implements OnInit {
     }
   }
 
-  openServiceModal(service:any, idKat:number){
+  openServiceModal(service: any, idKat: number) {
     this.isEditingService = true;
     this.editarServicio = service;
     this.editarServicio.idKategoria = idKat;
     console.log(this.editarServicio);
   }
-  
-  closeServiceModal(){
+
+  closeServiceModal() {
     this.isEditingService = false;
   }
 
-  openKatModal(kategoria:any){
+  openKatModal(kategoria: any) {
     this.isEditingCategoria = true;
     this.editarCategoria = kategoria;
     console.log(this.editarCategoria);
   }
-  
-  closeKatModal(){
+
+  closeKatModal() {
     this.isEditingCategoria = false;
   }
 
@@ -140,7 +139,7 @@ export class TratamenduakPage implements OnInit {
             zerbitzuak: categoria.zerbitzuak
               .filter((zerbitzua: any) => zerbitzua.ezabatzeData === null)
           }));
-        
+
         this.filteredZerbitzuak = this.zerbitzuak;
         console.log('zerbitzuak kargatu:', this.zerbitzuak);
       },
@@ -150,7 +149,7 @@ export class TratamenduakPage implements OnInit {
     );
   }
 
- // Editado Oier.
+  // Editado Oier.
   sortuZerbitzua() {
     const json_data = {
       "izena": this.crearServicio.izena,
@@ -160,9 +159,9 @@ export class TratamenduakPage implements OnInit {
       "etxekoPrezioa": this.crearServicio.etxekoPrezioa,
       "kanpokoPrezioa": this.crearServicio.kanpokoPrezioa
     };
-  
+
     console.log(json_data);
-  
+
     this.http.post(`${environment.url}zerbitzuak`, json_data, {
       headers: {
         'Content-Type': 'application/json',
@@ -180,7 +179,7 @@ export class TratamenduakPage implements OnInit {
       }
     );
   }
-  
+
 
   editarServicios() {
     const json_data = {
@@ -192,9 +191,9 @@ export class TratamenduakPage implements OnInit {
       "etxekoPrezioa": this.editarServicio.etxekoPrezioa,
       "kanpokoPrezioa": this.editarServicio.kanpokoPrezioa
     };
-  
+
     console.log(json_data);
-  
+
     this.http.put(`${environment.url}zerbitzuak`, json_data, {
       headers: {
         'Content-Type': 'application/json',
@@ -212,7 +211,7 @@ export class TratamenduakPage implements OnInit {
       }
     );
   }
-  
+
   async mostrarToast(mensaje: string, duracion: number = 2000, color: string = 'success') {
     const toast = await this.toastController.create({
       message: mensaje,
@@ -223,100 +222,100 @@ export class TratamenduakPage implements OnInit {
     toast.present();
   }
 
-eliminarServicio(id: number) {
-  const url = `${environment.url}zerbitzuak/${id}`;
+  eliminarServicio(id: number) {
+    const url = `${environment.url}zerbitzuak/${id}`;
 
-  this.http.delete(url, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
-    }
-  }).subscribe(
-    async (response) => {
-      console.log('Servicio eliminado correctamente');
-      this.mostrarToast('Zerbitzua ezabatu da.', 2000, 'success');
-      this.zerbiztuakLortu();
-    },
-    async (error) => {
-      console.error('Errorea zerbitzua ezabatzerakoan:', error);
-      
-      // Mostrar toast de error
-      this.mostrarToast('Errorea zerbitzua ezabatzerakoan.', 2000, 'danger');
-    }
-  );
-}
+    this.http.delete(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    }).subscribe(
+      async (response) => {
+        console.log('Servicio eliminado correctamente');
+        this.mostrarToast('Zerbitzua ezabatu da.', 2000, 'success');
+        this.zerbiztuakLortu();
+      },
+      async (error) => {
+        console.error('Errorea zerbitzua ezabatzerakoan:', error);
+
+        // Mostrar toast de error
+        this.mostrarToast('Errorea zerbitzua ezabatzerakoan.', 2000, 'danger');
+      }
+    );
+  }
 
 
-// Editado Oier
-crearKategoria() {
-  const json_data = {
-    "izena": this.crearCategoria.izena,
-    "kolorea": this.crearCategoria.kolorea,
-    "extra": this.crearCategoria.extra
-  };
-  console.log(json_data);
+  // Editado Oier
+  crearKategoria() {
+    const json_data = {
+      "izena": this.crearCategoria.izena,
+      "kolorea": this.crearCategoria.kolorea,
+      "extra": this.crearCategoria.extra
+    };
+    console.log(json_data);
 
-  this.http.post(`${environment.url}zerbitzu_kategoria`, json_data, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
-    }
-  }).subscribe(
-    async (response) => {
-      this.mostrarToast('Categoría creada correctamente', 2000, 'success');
-      this.zerbiztuakLortu();
-      this.closeKatModal();
-    },
-    async (error) => {
-      console.error('Error al crear la categoría de servicio:', error);
-      this.mostrarToast('Error al crear la categoría', 2000, 'danger');
-    }
-  );
-}
+    this.http.post(`${environment.url}zerbitzu_kategoria`, json_data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    }).subscribe(
+      async (response) => {
+        this.mostrarToast('Categoría creada correctamente', 2000, 'success');
+        this.zerbiztuakLortu();
+        this.closeKatModal();
+      },
+      async (error) => {
+        console.error('Error al crear la categoría de servicio:', error);
+        this.mostrarToast('Error al crear la categoría', 2000, 'danger');
+      }
+    );
+  }
 
-editarKategoria() {
-  const json_data = {
-    "id": this.editarCategoria.id,
-    "izena": this.editarCategoria.izena,
-    "kolorea": this.editarCategoria.kolorea,
-    "extra": this.editarCategoria.extra
-  };
-  console.log(json_data);
+  editarKategoria() {
+    const json_data = {
+      "id": this.editarCategoria.id,
+      "izena": this.editarCategoria.izena,
+      "kolorea": this.editarCategoria.kolorea,
+      "extra": this.editarCategoria.extra
+    };
+    console.log(json_data);
 
-  this.http.put(`${environment.url}zerbitzu_kategoria`, json_data, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
-    }
-  }).subscribe(
-    async (response) => {
-      this.mostrarToast('Categoría editada correctamente', 2000, 'success');
-      this.zerbiztuakLortu();
-      this.closeKatModal();
-    },
-    async (error) => {
-      console.error('Error al editar la categoría de servicio:', error);
-      this.mostrarToast('Error al editar la categoría', 2000, 'danger');
-    }
-  );
-}
+    this.http.put(`${environment.url}zerbitzu_kategoria`, json_data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    }).subscribe(
+      async (response) => {
+        this.mostrarToast('Categoría editada correctamente', 2000, 'success');
+        this.zerbiztuakLortu();
+        this.closeKatModal();
+      },
+      async (error) => {
+        console.error('Error al editar la categoría de servicio:', error);
+        this.mostrarToast('Error al editar la categoría', 2000, 'danger');
+      }
+    );
+  }
 
-eliminarKategoria(id: number) {
-  this.http.delete(`${environment.url}zerbitzu_kategoria/${id}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
-    }
-  }).subscribe(
-    async (response) => {
-      this.mostrarToast('Categoría eliminada correctamente', 2000, 'success');
-      this.zerbiztuakLortu();
-    },
-    async (error) => {
-      console.error('Error al eliminar la categoría de servicio:', error);
-      this.mostrarToast('Error al eliminar la categoría', 2000, 'danger');
-    }
-  );
-}
+  eliminarKategoria(id: number) {
+    this.http.delete(`${environment.url}zerbitzu_kategoria/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    }).subscribe(
+      async (response) => {
+        this.mostrarToast('Categoría eliminada correctamente', 2000, 'success');
+        this.zerbiztuakLortu();
+      },
+      async (error) => {
+        console.error('Error al eliminar la categoría de servicio:', error);
+        this.mostrarToast('Error al eliminar la categoría', 2000, 'danger');
+      }
+    );
+  }
   // Editado Oier
 }

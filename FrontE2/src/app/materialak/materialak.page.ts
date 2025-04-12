@@ -28,33 +28,33 @@ export class MaterialakPage implements OnInit {
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
 
   selectedLanguage: string = 'es';
-  modal!:string;
+  modal!: string;
 
-  materialesSeleccionados:any[]=[];
-  materialesSeleccionadosDevolver:any[]=[];
-  filteredMaterialak: any[] = []; 
+  materialesSeleccionados: any[] = [];
+  materialesSeleccionadosDevolver: any[] = [];
+  filteredMaterialak: any[] = [];
 
-  materialak!:any[];
-  materialaDevolver!:any;
+  materialak!: any[];
+  materialaDevolver!: any;
 
-  crearKatNombre:String| null = null;
-  crearNombre:String| null = null;
-  crearEtiqueta:String| null = null;
-  crearCategoria:Number| null = null;
+  crearKatNombre: String | null = null;
+  crearNombre: String | null = null;
+  crearEtiqueta: String | null = null;
+  crearCategoria: Number | null = null;
 
-  editarKatNombre!:String;
-  editarNombre!:String;
-  editarEtiqueta!:String;
-  editarCategoria!:Number;
-  matDevolverId!:Number;
+  editarKatNombre!: String;
+  editarNombre!: String;
+  editarEtiqueta!: String;
+  editarCategoria!: Number;
+  matDevolverId!: Number;
 
-  seleccionarId!:Number;
+  seleccionarId!: Number;
 
-  selectedCategoryId!:number;
+  selectedCategoryId!: number;
 
   alumnos!: any[];
-  selecTaldea!:number;
-  selecAlumno!:number;
+  selecTaldea!: number;
+  selecAlumno!: number;
 
   mostrarFiltros: boolean = false;
   private routeSubscription: any;
@@ -76,7 +76,7 @@ export class MaterialakPage implements OnInit {
 
   checkboxHabilitado = false;
   mostrarCheckbox: boolean = false;
-  isIkasle!:boolean;
+  isIkasle!: boolean;
 
   toggleFiltros() {
     this.mostrarFiltros = !this.mostrarFiltros;
@@ -89,7 +89,7 @@ export class MaterialakPage implements OnInit {
     }
   }
 
-  actualizarMaterialesSeleccionados(material:any) {
+  actualizarMaterialesSeleccionados(material: any) {
     const index = this.materialesSeleccionados.findIndex(p => p.id === material.id);
     if (material.selected && index === -1) {
       this.materialesSeleccionados.push(material);
@@ -101,7 +101,7 @@ export class MaterialakPage implements OnInit {
 
   actualizarMaterialesSeleccionadosDevolver(material: any, isChecked: boolean) {
     const index = this.materialesSeleccionadosDevolver.findIndex(p => p.id === material.id);
-  
+
     if (isChecked && index === -1) {
       this.materialesSeleccionadosDevolver.push(material);
     } else if (!isChecked && index !== -1) {
@@ -110,20 +110,20 @@ export class MaterialakPage implements OnInit {
     material.selected = isChecked;
     console.log('Materiales seleccionados:', this.materialesSeleccionadosDevolver);
   }
-  
+
   toggleMostrarCheckbox() {
     this.mostrarCheckbox = !this.mostrarCheckbox;
-    if(this.mostrarCheckbox){
+    if (this.mostrarCheckbox) {
       this.filteredMaterialak = this.filteredMaterialak.map(material => {
         return {
-            ...material,
-            materialak: material.materialak.filter((m:any) => 
-                !this.materialaDevolver.some((devolver:any) => devolver.materiala.etiketa === m.etiketa)
-            )
+          ...material,
+          materialak: material.materialak.filter((m: any) =>
+            !this.materialaDevolver.some((devolver: any) => devolver.materiala.etiketa === m.etiketa)
+          )
         };
-    }).filter(material => material.materialak.length > 0);
-    
-    }else{
+      }).filter(material => material.materialak.length > 0);
+
+    } else {
       this.filteredMaterialak = this.materialak;
     }
     console.log(this.filteredMaterialak)
@@ -147,15 +147,15 @@ export class MaterialakPage implements OnInit {
         "id": this.crearCategoria
       }
     };
-  
+
     let observableRest: Observable<any> = this.restServer.post<any>(`${environment.url}materialak`, data);
-    
+
     observableRest.subscribe(
       async (datuak) => {
         console.log(datuak);
 
         this.mostrarToastS('Materiala dortu da', 2000, 'success');
-        
+
         this.materialakLortu();
         this.vaciarDatos();
       },
@@ -164,7 +164,7 @@ export class MaterialakPage implements OnInit {
       }
     );
   }
-  
+
   async mostrarToastS(mensaje: string, duracion: number = 2000, color: string = 'success') {
     const toast = await this.toastController.create({
       message: mensaje,
@@ -176,47 +176,47 @@ export class MaterialakPage implements OnInit {
   }
   //Editado Oier
 
-// Editado Oier.
-materialaEditatu(id: number) {
-  const data = {
-    etiketa: this.editarEtiqueta,
-    izena: this.editarNombre,
-    materialKategoria: {
-      id: this.editarCategoria
-    }
-  };
-
-  this.restServer.put<any>(`${environment.url}materialak/id/${id}`, data)
-    .pipe(
-      catchError(err => {
-        this.presentToast('Errorea materiala egueratzerakoan.', 'danger');
-        console.error(err);
-        return of(null); // Si no se devuelve null, explota.
-      })
-    )
-    .subscribe(datuak => {
-      if (datuak) {
-        console.log(datuak);
-        this.materialakLortu();
-        this.vaciarDatos();
-        this.presentToast('Materiala eguneratu da.', 'success');
-        this.modalEditar.dismiss();
+  // Editado Oier.
+  materialaEditatu(id: number) {
+    const data = {
+      etiketa: this.editarEtiqueta,
+      izena: this.editarNombre,
+      materialKategoria: {
+        id: this.editarCategoria
       }
+    };
+
+    this.restServer.put<any>(`${environment.url}materialak/id/${id}`, data)
+      .pipe(
+        catchError(err => {
+          this.presentToast('Errorea materiala egueratzerakoan.', 'danger');
+          console.error(err);
+          return of(null); // Si no se devuelve null, explota.
+        })
+      )
+      .subscribe(datuak => {
+        if (datuak) {
+          console.log(datuak);
+          this.materialakLortu();
+          this.vaciarDatos();
+          this.presentToast('Materiala eguneratu da.', 'success');
+          this.modalEditar.dismiss();
+        }
+      });
+  }
+
+  async presentToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,
+      position: 'top',
+      color
     });
-}
+    await toast.present();
+  }
+  // Editado Oier.
 
-async presentToast(message: string, color: string) {
-  const toast = await this.toastController.create({
-    message,
-    duration: 2000,
-    position: 'top',
-    color
-  });
-  await toast.present();
-}
-// Editado Oier.
-
-  vaciarDatos(){
+  vaciarDatos() {
     this.crearEtiqueta = null;
     this.crearNombre = null;
     this.crearCategoria = null;
@@ -227,7 +227,7 @@ async presentToast(message: string, color: string) {
   // Editado Oier.
   async materialaEzabatu(id: number) {
     let observableRest: Observable<any> = this.restServer.delete<any>(`${environment.url}materialak/id/${id}`);
-    
+
     observableRest.subscribe(
       async (datuak) => {
         console.log(datuak);
@@ -240,7 +240,7 @@ async presentToast(message: string, color: string) {
       }
     );
   }
-  
+
   async mostrarToast(mensaje: string, duracion: number = 2000, color: string = 'success') {
     const toast = await this.toastController.create({
       message: mensaje,
@@ -254,23 +254,23 @@ async presentToast(message: string, color: string) {
 
 
 
-  toggleMaterialakLortu(){
+  toggleMaterialakLortu() {
     this.mostrarFiltros
   }
 
-  materialakLortu(){
+  materialakLortu() {
     let observableRest: Observable<any> = this.restServer.get<any>(`${environment.url}material_kategoria`);
     observableRest.subscribe(datuak => {
       console.log(datuak);
 
-    this.materialak = datuak
-    .filter((categoria:any) => categoria.ezabatzeData === null)
-    .map((categoria:any) => ({
-      ...categoria,
-      materialak: categoria.materialak
-        .filter((material:any) => material.ezabatzeData === null)
-    }));
-    this.filteredMaterialak = this.materialak;
+      this.materialak = datuak
+        .filter((categoria: any) => categoria.ezabatzeData === null)
+        .map((categoria: any) => ({
+          ...categoria,
+          materialak: categoria.materialak
+            .filter((material: any) => material.ezabatzeData === null)
+        }));
+      this.filteredMaterialak = this.materialak;
     });
   }
 
@@ -285,7 +285,7 @@ async presentToast(message: string, color: string) {
         .map((categoria: any) => ({
           ...categoria,
           materialak: categoria.materialak
-            .filter((material: any) => 
+            .filter((material: any) =>
               material.ezabatzeData === null &&
               !materialaDevolverIds.includes(material.id)
             )
@@ -299,24 +299,24 @@ async presentToast(message: string, color: string) {
     let observableRest: Observable<any> = this.restServer.get<any>(`${environment.url}material_mailegua`);
 
     observableRest.subscribe(datuak => {
-        this.materialaDevolver = datuak.filter((mailegu:any) => 
-            mailegu.hasieraData && !mailegu.amaieraData
-        );
-        console.log(this.materialaDevolver);
+      this.materialaDevolver = datuak.filter((mailegu: any) =>
+        mailegu.hasieraData && !mailegu.amaieraData
+      );
+      console.log(this.materialaDevolver);
     });
   }
 
-  materialakAtera(){
+  materialakAtera() {
     let data = this.materialesSeleccionados.map(materiala => ({
       "materiala": {
         "id": materiala.id
-    },
+      },
       "langilea": {
         "id": this.selecAlumno
-    }
-  }));
+      }
+    }));
 
-    let observableRest: Observable<any> = this.restServer.post<any>(`${environment.url}material_mailegua`,data);
+    let observableRest: Observable<any> = this.restServer.post<any>(`${environment.url}material_mailegua`, data);
     observableRest.subscribe(datuak => {
       console.log(datuak);
       this.vaciarDatos();
@@ -325,10 +325,10 @@ async presentToast(message: string, color: string) {
     });
   }
 
-  materialakBueltatu(){
+  materialakBueltatu() {
     let data = this.materialesSeleccionadosDevolver.map(mailegu => ({
       "id": mailegu.id
-  }));
+    }));
 
     let observableRest: Observable<any> = this.restServer.put<any>(`${environment.url}material_mailegua`, data);
     observableRest.subscribe(datuak => {
@@ -341,35 +341,35 @@ async presentToast(message: string, color: string) {
     });
   }
 
-  materialakAteraKargatu(){
-    
+  materialakAteraKargatu() {
+
   }
 
-  langileakLortu(){
+  langileakLortu() {
     let observableRest: Observable<any> = this.restServer.get<any>(`${environment.url}taldeak`);
     observableRest.subscribe(datuak => {
       console.log(datuak);
-      
-      this.alumnos = datuak
-      .filter((kategoria: any) => kategoria.ezabatzeData === null)
-      .map((kategoria: any) => ({
-        ...kategoria,
-        langileak: kategoria.langileak
-          .filter((langilea: any) => langilea.ezabatzeData === null)
-      }));
-    });
-  }  
 
-  abrirEditarCategoria(categoria:any) {
+      this.alumnos = datuak
+        .filter((kategoria: any) => kategoria.ezabatzeData === null)
+        .map((kategoria: any) => ({
+          ...kategoria,
+          langileak: kategoria.langileak
+            .filter((langilea: any) => langilea.ezabatzeData === null)
+        }));
+    });
+  }
+
+  abrirEditarCategoria(categoria: any) {
     this.modaleditarcat.present();
-    this.selectedCategory = {...categoria};
+    this.selectedCategory = { ...categoria };
     this.editarKatNombre = this.selectedCategory.izena;
   }
 
-  abrirEditarMaterial(material:any) {
+  abrirEditarMaterial(material: any) {
     console.log(material);
     this.modalEditar.present();
-    this.selectedMateriala = {...material};
+    this.selectedMateriala = { ...material };
     this.editarNombre = material.izena;
     this.editarEtiqueta = material.etiketa;
     this.editarCategoria = material.kategoriaId;
@@ -385,7 +385,7 @@ async presentToast(message: string, color: string) {
     this.filteredAlumnos = grupoSeleccionado ? grupoSeleccionado.langileak : [];
   }
 
-  async confirmarEliminarMaterial(id: number, izena:string) {
+  async confirmarEliminarMaterial(id: number, izena: string) {
     const alert = await this.alertController.create({
       header: this.translate.instant('materiales.modal.confirmacion'),
       message: this.translate.instant('materiales.modal.mensajeAlertaBorrarMats') + " '" + izena + "'?",
@@ -405,7 +405,7 @@ async presentToast(message: string, color: string) {
 
     await alert.present();
   }
-  async confirmarEliminarCategoria(id: number, izena:string) {
+  async confirmarEliminarCategoria(id: number, izena: string) {
     const alert = await this.alertController.create({
       header: this.translate.instant('materiales.modal.confirmacion'),
       message: this.translate.instant('materiales.modal.mensajeAlertaBorrarCats') + " '" + izena + "'?",
@@ -431,8 +431,8 @@ async presentToast(message: string, color: string) {
   async kategoriaSortu() {
     let data = {
       "izena": this.crearKatNombre,
-    } 
-  
+    }
+
     let observableRest: Observable<any> = this.restServer.post<any>(`${environment.url}material_kategoria`, data);
     await observableRest.subscribe(
       (datuak) => {
@@ -447,7 +447,7 @@ async presentToast(message: string, color: string) {
       }
     );
   }
-  
+
   kategoriaEzabatu(id: number) {
     let observableRest: Observable<any> = this.restServer.delete<any>(`${environment.url}material_kategoria/id/${id}`);
     observableRest.subscribe(
@@ -468,7 +468,7 @@ async presentToast(message: string, color: string) {
     let data = {
       "izena": this.editarKatNombre
     }
-  
+
     let observableRest: Observable<any> = this.restServer.put<any>(`${environment.url}material_kategoria/id/${id}`, data);
     observableRest.subscribe(
       (datuak) => {
@@ -492,8 +492,7 @@ async presentToast(message: string, color: string) {
       materialak: categoria.materialak.map((material: any) => ({ ...material }))
     }));
 
-    if(this.filtroCategoria !== '')
-    {
+    if (this.filtroCategoria !== '') {
       this.filteredMaterialak = this.filteredMaterialak.filter(categoria =>
         (this.filtroCategoria === '' || categoria.izena.toLowerCase().includes(this.filtroCategoria.toLowerCase()))
       );
@@ -509,11 +508,11 @@ async presentToast(message: string, color: string) {
     }
   }
 
-  constructor(private toastController: ToastController, private translate: TranslateService, private restServer:HttpClient, private alertController: AlertController, private loginService: LoginServiceService, private route: ActivatedRoute) {
+  constructor(private toastController: ToastController, private translate: TranslateService, private restServer: HttpClient, private alertController: AlertController, private loginService: LoginServiceService, private route: ActivatedRoute) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
-  
+
   ngOnInit() {
     // Suscribirse a los cambios de ruta
     this.routeSubscription = this.route.params.subscribe((params) => {
