@@ -246,74 +246,77 @@ eliminarServicio(id: number) {
   );
 }
 
-// Editando Oier.
 
-  crearKategoria() {
-    const json_data = {
-      "izena": this.crearCategoria.izena,
-      "kolorea": this.crearCategoria.kolorea,
-      "extra": this.crearCategoria.extra
-    };
-    console.log(json_data);
+// Editado Oier
+crearKategoria() {
+  const json_data = {
+    "izena": this.crearCategoria.izena,
+    "kolorea": this.crearCategoria.kolorea,
+    "extra": this.crearCategoria.extra
+  };
+  console.log(json_data);
 
-    this.http.post(`${environment.url}zerbitzu_kategoria`, json_data, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    }).subscribe(
-      (response) => {
-        console.log('Categoría creada correctamente');
-        this.zerbiztuakLortu(); // Actualizar la lista de servicios
-        this.closeKatModal();   // Cerrar el modal
-      },
-      (error) => {
-        console.error('Errorea zerbitzuak kargatzerakoan:', error);
-      }
-    );
-  }
+  this.http.post(`${environment.url}zerbitzu_kategoria`, json_data, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    }
+  }).subscribe(
+    async (response) => {
+      this.mostrarToast('Categoría creada correctamente', 2000, 'success');
+      this.zerbiztuakLortu();
+      this.closeKatModal();
+    },
+    async (error) => {
+      console.error('Error al crear la categoría de servicio:', error);
+      this.mostrarToast('Error al crear la categoría', 2000, 'danger');
+    }
+  );
+}
 
-  editarKategoria() {
-    const json_data = {
-      "id": this.editarCategoria.id,
-      "izena": this.editarCategoria.izena,
-      "kolorea": this.editarCategoria.kolorea,
-      "extra": this.editarCategoria.extra
-    };
-    console.log(json_data);
+editarKategoria() {
+  const json_data = {
+    "id": this.editarCategoria.id,
+    "izena": this.editarCategoria.izena,
+    "kolorea": this.editarCategoria.kolorea,
+    "extra": this.editarCategoria.extra
+  };
+  console.log(json_data);
 
-    this.http.put(`${environment.url}zerbitzu_kategoria`, json_data, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    }).subscribe(
-      (response) => {
-        console.log('Categoría editada correctamente');
-        this.zerbiztuakLortu(); // Actualizar la lista de servicios
-        this.closeKatModal();   // Cerrar el modal
-      },
-      (error) => {
-        console.error('Errorea zerbitzuak kargatzerakoan:', error);
-      }
-    );
-  }
+  this.http.put(`${environment.url}zerbitzu_kategoria`, json_data, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    }
+  }).subscribe(
+    async (response) => {
+      this.mostrarToast('Categoría editada correctamente', 2000, 'success');
+      this.zerbiztuakLortu();
+      this.closeKatModal();
+    },
+    async (error) => {
+      console.error('Error al editar la categoría de servicio:', error);
+      this.mostrarToast('Error al editar la categoría', 2000, 'danger');
+    }
+  );
+}
 
-  eliminarKategoria(id: number) {
-    this.http.delete(`${environment.url}zerbitzu_kategoria/${id}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    }).subscribe(
-      (response) => {
-        console.log('Categoría eliminada correctamente');
-        this.zerbiztuakLortu(); // Actualizar la lista de servicios
-      },
-      (error) => {
-        console.error('Errorea zerbitzuak kargatzerakoan:', error);
-      }
-    );
-  }
-
+eliminarKategoria(id: number) {
+  this.http.delete(`${environment.url}zerbitzu_kategoria/${id}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    }
+  }).subscribe(
+    async (response) => {
+      this.mostrarToast('Categoría eliminada correctamente', 2000, 'success');
+      this.zerbiztuakLortu();
+    },
+    async (error) => {
+      console.error('Error al eliminar la categoría de servicio:', error);
+      this.mostrarToast('Error al eliminar la categoría', 2000, 'danger');
+    }
+  );
+}
+  // Editado Oier
 }
