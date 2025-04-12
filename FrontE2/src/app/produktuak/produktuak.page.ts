@@ -5,7 +5,7 @@ import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute } from '@angular/router';
-
+import { ToastController } from '@ionic/angular';
 // import { IonButton, IonContent, IonHeader, IonLabel, IonModal, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
 
@@ -126,6 +126,7 @@ export class ProduktuakPage implements OnInit {
     return this.categoriasAbiertas[categoria] || false;
   }
 
+  // Editando
   crearProducto() {
     const json_data = {
       "izena": this.crearNombre,
@@ -137,9 +138,9 @@ export class ProduktuakPage implements OnInit {
       "stock": this.crearStock,
       "stockAlerta": this.crearStockAlerta
     };
-
+  
     console.log(json_data);
-
+  
     this.http.post(`${environment.url}produktuak`, json_data, {
       headers: {
         'Content-Type': 'application/json',
@@ -147,14 +148,19 @@ export class ProduktuakPage implements OnInit {
       }
     }).subscribe(
       async (response) => {
+        this.mostrarToast('Produktua sortu da.', 2000, 'success');
+        
         await this.produktuakLortu();
       },
-      (error) => {
+      async (error) => {
         console.error("Error al crear el producto:", error);
+        
+        this.mostrarToast('Errorea produktua sortzerakoan.', 2000, 'danger');
       }
     );
   }
-
+  
+  // Editando
   kategoriaSortu() {
     const json_data = {
       "izena": this.crearKatNombre
@@ -198,6 +204,7 @@ export class ProduktuakPage implements OnInit {
     this.isEditingKategoria = false;
   }
 
+  // Editado Oier.
   editarProducto() {
     const json_data = {
       "id": this.editingProduct.id,
@@ -210,9 +217,9 @@ export class ProduktuakPage implements OnInit {
       "stock": this.editingProduct.stock,
       "stockAlerta": this.editingProduct.stockAlerta
     };
-
+  
     console.log(json_data);
-
+  
     this.http.put(`${environment.url}produktuak`, json_data, {
       headers: {
         'Content-Type': 'application/json',
@@ -220,14 +227,27 @@ export class ProduktuakPage implements OnInit {
       }
     }).subscribe(
       async (response) => {
+        this.mostrarToast('Produktua editatuta.', 2000, 'success');
+        
         await this.produktuakLortu();
         this.closeProdModal();
       },
-      (error) => {
+      async (error) => {
         console.error("Error al editar el producto:", error);
+        this.mostrarToast('Errorea produktua editatzerakoan.', 2000, 'danger');
       }
     );
   }
+  async mostrarToast(mensaje: string, duracion: number = 2000, color: string = 'success') {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: duracion,
+      color: color,
+      position: 'top',
+    });
+    toast.present();
+  }
+  
 
   
 
@@ -237,13 +257,13 @@ export class ProduktuakPage implements OnInit {
       console.log('Operación cancelada por el usuario.');
       return;
     }
-
+  
     const json_data = {
       "id": id
     };
-
+  
     console.log(json_data);
-
+  
     this.http.delete(`${environment.url}produktuak`, {
       headers: {
         'Content-Type': 'application/json',
@@ -252,14 +272,21 @@ export class ProduktuakPage implements OnInit {
       body: JSON.stringify(json_data)
     }).subscribe(
       async (response) => {
+        // Mostrar toast de éxito
+        this.mostrarToast('Produktua ezabatu da.', 2000, 'success');
+        
         await this.produktuakLortu();
       },
-      (error) => {
+      async (error) => {
         console.error("Error al eliminar el producto:", error);
+        
+        this.mostrarToast('Errorea produktua ezabatzerakoan.', 2000, 'danger');
       }
     );
   }
+  
 
+  // Editado Oier.
   eliminarKategoriaProducto(id: number) {
     const confirmacion = confirm('¿Estás seguro de que quieres eliminar esta categoría?');
     if (!confirmacion) {
@@ -411,7 +438,7 @@ export class ProduktuakPage implements OnInit {
   }
 
 
-  constructor(private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService, private route: ActivatedRoute) {
+  constructor(private toastController: ToastController, private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService, private route: ActivatedRoute) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
