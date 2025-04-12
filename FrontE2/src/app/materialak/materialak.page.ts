@@ -179,7 +179,7 @@ materialaEditatu(id: number) {
   this.restServer.put<any>(`${environment.url}materialak/id/${id}`, data)
     .pipe(
       catchError(err => {
-        this.presentToast('❌ Errorea materiala egueratzerakoan.', 'danger');
+        this.presentToast('Errorea materiala egueratzerakoan.', 'danger');
         console.error(err);
         return of(null); // Si no se devuelve null, explota.
       })
@@ -189,7 +189,7 @@ materialaEditatu(id: number) {
         console.log(datuak);
         this.materialakLortu();
         this.vaciarDatos();
-        this.presentToast('✅ Materiala eguneratu da.', 'success');
+        this.presentToast('Materiala eguneratu da.', 'success');
         this.modalEditar.dismiss();
       }
     });
@@ -214,14 +214,33 @@ async presentToast(message: string, color: string) {
     this.materialesSeleccionados = [];
   }
 
-  materialaEzabatu(id:number){
+  // Editado Oier.
+  async materialaEzabatu(id: number) {
     let observableRest: Observable<any> = this.restServer.delete<any>(`${environment.url}materialak/id/${id}`);
-    observableRest.subscribe(datuak => {
-      console.log(datuak);
-      this.materialakLortu();
-      this.vaciarDatos();
+    
+    observableRest.subscribe(
+      async (datuak) => {
+        console.log(datuak);
+        this.mostrarToast('Materiala ezabatuta', 2000, 'success');
+        this.materialakLortu();
+        this.vaciarDatos();
+      },
+      async (error) => {
+        this.mostrarToast('Errorea materiala ezabatzerakoan', 2000, 'danger');
+      }
+    );
+  }
+  
+  async mostrarToast(mensaje: string, duracion: number = 2000, color: string = 'success') {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: duracion,
+      color: color,
+      position: 'top',
     });
-  }  
+    toast.present();
+  }
+  // Editado Oier.
 
   kategoriaEzabatu(id:number){
     let observableRest: Observable<any> = this.restServer.delete<any>(`${environment.url}material_kategoria/id/${id}`);
