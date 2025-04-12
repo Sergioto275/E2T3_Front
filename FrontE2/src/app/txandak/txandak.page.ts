@@ -29,7 +29,7 @@ export interface Ikaslea {
 }
 
 export interface Horario {
-  id?:number;
+  id?: number;
   taldea: {
     kodea: string;
     langileak?: Ikaslea[];
@@ -53,7 +53,7 @@ export interface Horario {
 export class TxandakPage implements OnInit {
   selectedLanguage: string = 'es';
   txandak: Txanda[] = [];  // Lista de txandas
-  filteredTxandak: Txanda[]=[];  // Lista filtrada de txandas
+  filteredTxandak: Txanda[] = [];  // Lista filtrada de txandas
   ordutegiArray: Horario[] = [];
   ordutegiArrayFiltered: Horario[] = [];
   ikasleak: Ikaslea[] = [];
@@ -68,19 +68,19 @@ export class TxandakPage implements OnInit {
   fechaInicio: string = '';
   fechaFin: string = '';
 
-  constructor(private translate: TranslateService, 
-              private http: HttpClient,
-              private toastController: ToastController,              
-              private alertCtrl: AlertController,
-              private ikasleService: IkasleZerbitzuakService
-              ) { }
+  constructor(private translate: TranslateService,
+    private http: HttpClient,
+    private toastController: ToastController,
+    private alertCtrl: AlertController,
+    private ikasleService: IkasleZerbitzuakService
+  ) { }
 
   ngOnInit() {
     this.fechaInicio = this.lortuData();
     this.fechaFin = this.lortuData();
     // Iniciar traducción al idioma por defecto
     this.translate.setDefaultLang(this.selectedLanguage);
-    
+
     // Llamar al método para obtener los txandas
     this.getTxandak();
     this.getHorarios();
@@ -96,14 +96,14 @@ export class TxandakPage implements OnInit {
     return this.filteredAlumnos.find(ikaslea => ikaslea.id === id);
   }
 
-  array: any[]= [];
+  array: any[] = [];
 
   lortuData(): string {
     const gaur = new Date();
     const urtea = gaur.getFullYear();
     let hilabetea: string | number = gaur.getMonth() + 1; // Los meses comienzan en 0
     let eguna: string | number = gaur.getDate();
-  
+
     if (eguna < 10) {
       eguna = '0' + eguna;
     }
@@ -126,12 +126,12 @@ export class TxandakPage implements OnInit {
         this.ordutegiArrayFiltered = this.ordutegiArray;
         console.log(this.ordutegiArray)
         this.filteredAlumnos = this.ordutegiArray
-        .map((horario: Horario) => horario.taldea.langileak || []) // Extrae langileak
-        .reduce((acc: Ikaslea[], curr: Ikaslea[]) => acc.concat(curr), []) // Aplana el array
-        .filter((ikaslea: Ikaslea, index: number, self: Ikaslea[]) => 
-          self.findIndex((i) => i.id === ikaslea.id) === index && // Elimina duplicados
-          !ikaslea.ezabatzeData // Filtra los alumnos que tengan ezabatzeData
-        );
+          .map((horario: Horario) => horario.taldea.langileak || []) // Extrae langileak
+          .reduce((acc: Ikaslea[], curr: Ikaslea[]) => acc.concat(curr), []) // Aplana el array
+          .filter((ikaslea: Ikaslea, index: number, self: Ikaslea[]) =>
+            self.findIndex((i) => i.id === ikaslea.id) === index && // Elimina duplicados
+            !ikaslea.ezabatzeData // Filtra los alumnos que tengan ezabatzeData
+          );
         const today = this.lortuData();
         const eguna = formatDate(today, 'yyyy-MM-dd', 'en-US');
         const egunaDate = new Date(eguna);
@@ -151,7 +151,7 @@ export class TxandakPage implements OnInit {
       }
     );
   }
-  
+
   // Función para filtrar txandas por tipo
   filterTxandas() {
     if (this.selectedType === 'all') {
@@ -164,19 +164,19 @@ export class TxandakPage implements OnInit {
   getTxandak() {
     this.http.get<Txanda[]>(`${environment.url}txandak/${this.fechaInicio}/${this.fechaFin}`).subscribe(
       (data) => {
-  
+
         this.txandak = data
           .filter(txanda => !txanda.ezabatzeData) // Filtramos las txandas eliminadas
-          .map(txanda => {  
+          .map(txanda => {
             const alumno = txanda.langileak;  // Ahora accedemos a langileak, que contiene al alumno completo
             console.log("Alumno encontrado:", alumno);
-  
+
             if (alumno) {
               txanda.alumno = alumno;  // Asignamos el alumno a txanda
             } else {
               console.log(`Alumno no encontrado para el id: ${txanda.langileak?.id}`);
             }
-  
+
             return {
               mota: txanda.mota,
               data: txanda.data,
@@ -184,7 +184,7 @@ export class TxandakPage implements OnInit {
               id: txanda.id,  // Aseguramos que el id se conserve
             };
           });
-  
+
         this.filterTxandas();  // Llamar a filterTxandas para filtrar y mostrar las txandas
 
       },
@@ -194,40 +194,7 @@ export class TxandakPage implements OnInit {
     );
   }
 
-  
-  async deleteTxanda(txandaId: number) {
-    const alert = await this.alertCtrl.create({
-      header: this.translate.instant('txandakPage.MessageEliminar'),
-      message: this.translate.instant('txandakPage.MessageSeguroEliminar'),
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-        },
-        {
-          text: 'Eliminar',
-          handler: () => {
-            const apiUrl = `${environment.url}txandak/${txandaId}`;
-            this.http.delete<Txanda>(apiUrl).subscribe(
-              (response) => {
-                const index = this.txandak.findIndex(t => t.id === txandaId);
-                if (index !== -1) {
-                  this.txandak.splice(index, 1);
-                  this.mostrarToast(this.translate.instant('txandakPage.TxandaEzabatuta'), 'success');
-                }
-              },
-              (error) => {
-                this.mostrarToast(this.translate.instant('txandakPage.TxandaEzabatutaArazoa'), 'danger');
-              }
-            );
-          },
-        },
-      ],
-    });
-    await alert.present();
-  }
-  
-  
+
   openModal() {
     this.nuevaTxanda = { mota: '', data: '', alumno: null }; // Resetear el formulario
   }
@@ -237,42 +204,93 @@ export class TxandakPage implements OnInit {
     this.nuevaTxanda = { mota: '', data: '', alumno: null }; // Resetear datos
     // Aquí cerramos el modal manualmente si no se usa 'trigger'
     // this.modalController.dismiss();
-  }  
+  }
 
   // Función para guardar la nueva txanda
   // Función para guardar la nueva txanda
+
+  // EDITANDO OIER
   guardarTxanda() {
     if (!this.nuevaTxanda.mota || !this.nuevaTxanda.alumno) {
       return;
     }
-
+  
     if (!this.nuevaTxanda.data) {
       this.nuevaTxanda.data = new Date().toISOString().split('T')[0];
     }
-
+  
     const txandaToSave = {
       mota: this.nuevaTxanda.mota,
       data: this.nuevaTxanda.data,
       langileak: { id: this.nuevaTxanda.alumno },
     };
-
+  
     const apiUrl = `${environment.url}txandak`;
     console.log(JSON.stringify(txandaToSave));
-
+  
     this.http.post(apiUrl, txandaToSave).subscribe(
       (response) => {
         if (response) {
           this.getTxandak();
           this.closeModal();
-          this.mostrarToast(this.translate.instant('txandakPage.TxandaGuardada'), 'success');
-        } 
+          this.mostrarToast(
+            this.translate.instant('txandakPage.TxandaGuardada'),
+            'success'
+          );
+        }
       },
       (error) => {
-        this.mostrarToast(this.translate.instant('txandakPage.TxandaEzGuardada'), 'danger');
+        console.error(error);
+        this.mostrarToast(
+          this.translate.instant('txandakPage.TxandaEzGuardada'),
+          'danger'
+        );
       }
     );
   }
+  
 
+  async deleteTxanda(txandaId: number) {
+    const alert = await this.alertCtrl.create({
+      header: this.translate.instant('txandakPage.MessageEliminar'),
+      message: this.translate.instant('txandakPage.MessageSeguroEliminar'),
+      buttons: [
+        {
+          text: this.translate.instant('materiales.botones.cancelar'),
+          role: 'cancel',
+        },
+        {
+          text: this.translate.instant('materiales.botones.borrar'),
+          handler: () => {
+            const apiUrl = `${environment.url}txandak/${txandaId}`;
+            this.http.delete<Txanda>(apiUrl).subscribe(
+              (response) => {
+                const index = this.txandak.findIndex(t => t.id === txandaId);
+                if (index !== -1) {
+                  this.txandak.splice(index, 1);
+                  this.mostrarToast(
+                    this.translate.instant('txandakPage.TxandaEzabatuta'),
+                    'success'
+                  );
+                }
+              },
+              (error) => {
+                console.error(error);
+                this.mostrarToast(
+                  this.translate.instant('txandakPage.TxandaEzabatutaArazoa'),
+                  'danger'
+                );
+              }
+            );
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+
+  // EDITANDO OIER
   async mostrarToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,
