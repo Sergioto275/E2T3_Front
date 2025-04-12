@@ -508,5 +508,3 @@ async presentToast(message: string, color: string) {
     }
   }
 }
-
-// ✅

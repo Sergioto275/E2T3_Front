@@ -5,6 +5,7 @@ import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tratamenduak',
@@ -35,7 +36,7 @@ export class TratamenduakPage implements OnInit {
   isIkasle!:boolean;
   private routeSubscription: any;
 
-  constructor(private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService, private router: Router, private route: ActivatedRoute) {
+  constructor(private toastController: ToastController, private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService, private router: Router, private route: ActivatedRoute) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
@@ -149,6 +150,7 @@ export class TratamenduakPage implements OnInit {
     );
   }
 
+ // Editado Oier.
   sortuZerbitzua() {
     const json_data = {
       "izena": this.crearServicio.izena,
@@ -158,24 +160,27 @@ export class TratamenduakPage implements OnInit {
       "etxekoPrezioa": this.crearServicio.etxekoPrezioa,
       "kanpokoPrezioa": this.crearServicio.kanpokoPrezioa
     };
-
+  
     console.log(json_data);
-
+  
     this.http.post(`${environment.url}zerbitzuak`, json_data, {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       }
     }).subscribe(
-      (response) => {
+      async (response) => {
         console.log('Servicio creado correctamente');
-        this.zerbiztuakLortu();  // Actualizar la lista de servicios
+        this.mostrarToast('Zerbitzua sortu da.', 2000, 'success');
+        this.zerbiztuakLortu();
       },
-      (error) => {
-        console.error('Errorea zerbitzua sortzerakoan:', error);
+      async (error) => {
+        console.error('Error al crear el servicio:', error);
+        this.mostrarToast('Errorea zerbitzua sortzerakoan.', 2000, 'danger');
       }
     );
   }
+  
 
   editarServicios() {
     const json_data = {
@@ -187,43 +192,61 @@ export class TratamenduakPage implements OnInit {
       "etxekoPrezioa": this.editarServicio.etxekoPrezioa,
       "kanpokoPrezioa": this.editarServicio.kanpokoPrezioa
     };
-
+  
     console.log(json_data);
-
+  
     this.http.put(`${environment.url}zerbitzuak`, json_data, {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       }
     }).subscribe(
-      (response) => {
+      async (response) => {
         console.log('Servicio actualizado correctamente');
-        this.zerbiztuakLortu();  // Actualizar la lista de servicios
+        this.mostrarToast('Zerbitzua eguneratu da.', 2000, 'success');
+        this.zerbiztuakLortu();
       },
-      (error) => {
+      async (error) => {
         console.error('Errorea zerbitzua eguneratzerakoan:', error);
+        this.mostrarToast('Errorea zerbitzua eguneratzerakoan.', 2000, 'danger');
       }
     );
   }
-
-  eliminarServicio(id: number) {
-    const url = `${environment.url}zerbitzuak/${id}`;
-
-    this.http.delete(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    }).subscribe(
-      (response) => {
-        console.log('Servicio eliminado correctamente');
-        this.zerbiztuakLortu();  // Actualizar la lista de servicios
-      },
-      (error) => {
-        console.error('Errorea zerbitzua ezabatzerakoan:', error);
-      }
-    );
+  
+  async mostrarToast(mensaje: string, duracion: number = 2000, color: string = 'success') {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: duracion,
+      color: color,
+      position: 'top',
+    });
+    toast.present();
   }
+
+eliminarServicio(id: number) {
+  const url = `${environment.url}zerbitzuak/${id}`;
+
+  this.http.delete(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    }
+  }).subscribe(
+    async (response) => {
+      console.log('Servicio eliminado correctamente');
+      this.mostrarToast('Zerbitzua ezabatu da.', 2000, 'success');
+      this.zerbiztuakLortu();
+    },
+    async (error) => {
+      console.error('Errorea zerbitzua ezabatzerakoan:', error);
+      
+      // Mostrar toast de error
+      this.mostrarToast('Errorea zerbitzua ezabatzerakoan.', 2000, 'danger');
+    }
+  );
+}
+
+// Editando Oier.
 
   crearKategoria() {
     const json_data = {
@@ -294,3 +317,4 @@ export class TratamenduakPage implements OnInit {
   }
 
 }
+// ✅
