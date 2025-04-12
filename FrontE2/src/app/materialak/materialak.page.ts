@@ -138,21 +138,43 @@ export class MaterialakPage implements OnInit {
     return this.categoriasAbiertas[categoria] || false;
   }
 
-  async materialaSortu(){
+  // Editado Oier
+  async materialaSortu() {
     let data = {
       "etiketa": this.crearEtiqueta,
       "izena": this.crearNombre,
       "materialKategoria": {
-          "id": this.crearCategoria
+        "id": this.crearCategoria
       }
-  }
+    };
+  
     let observableRest: Observable<any> = this.restServer.post<any>(`${environment.url}materialak`, data);
-    await observableRest.subscribe(datuak => {
-      console.log(datuak);
-      this.materialakLortu();
-      this.vaciarDatos();
-    });
+    
+    observableRest.subscribe(
+      async (datuak) => {
+        console.log(datuak);
+
+        this.mostrarToastS('Materiala dortu da', 2000, 'success');
+        
+        this.materialakLortu();
+        this.vaciarDatos();
+      },
+      async (error) => {
+        this.mostrarToastS('Errorea materiala sortzerakoan', 2000, 'danger');
+      }
+    );
   }
+  
+  async mostrarToastS(mensaje: string, duracion: number = 2000, color: string = 'success') {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: duracion,
+      color: color,
+      position: 'top',
+    });
+    toast.present();
+  }
+  //Editado Oier
 
   async kategoriaSortu(){
     let data = {
@@ -486,3 +508,5 @@ async presentToast(message: string, color: string) {
     }
   }
 }
+
+// ✅
