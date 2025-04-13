@@ -500,7 +500,7 @@ export class MaterialakPage implements OnInit {
     }
   }
 
-  // EDITANDO OIER
+  // Editado Oier
   materialakAtera() {
     const data = this.materialesSeleccionados.map(materiala => ({
       materiala: { id: materiala.id },
@@ -546,6 +546,6 @@ export class MaterialakPage implements OnInit {
     );
   }
   
-  // EDITANDO OIER
+  // Editado Oier
 
 }
