@@ -9,6 +9,8 @@ import { HeaderComponent } from '../components/header/header.component';
 import { AlertController, NavController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 
+import { ToastController } from '@ionic/angular';
+
 @Component({
   selector: 'app-hitzorduak',
   templateUrl: './hitzorduak.page.html',
@@ -247,7 +249,7 @@ export class HitzorduakPage implements OnInit {
     return solapamiento;
   }
 
-  constructor(private translate: TranslateService, private alertCtrl: AlertController, private navCtrl: NavController, private http: HttpClient) {
+  constructor(private toastController: ToastController, private translate: TranslateService, private alertCtrl: AlertController, private navCtrl: NavController, private http: HttpClient) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
@@ -450,6 +452,8 @@ export class HitzorduakPage implements OnInit {
   // -------------------------------------------------------------------- CREAR DATOS -------------------------------------------------------------------------
 
   // Función: createCita
+
+  // Editado Oier
   createCita() {
     const data = this.citaCrear.data;
     const hasOrdua = this.citaCrear.hasieraOrdua;
@@ -459,7 +463,7 @@ export class HitzorduakPage implements OnInit {
     const telefonoa = this.citaCrear.telefonoa;
     const deskribapena = this.citaCrear.deskribapena;
     const etxeko = this.citaCrear.etxekoa ? "E" : "K";
-
+  
     const json_data = {
       "data": data,
       "hasieraOrdua": hasOrdua,
@@ -470,7 +474,7 @@ export class HitzorduakPage implements OnInit {
       "deskribapena": deskribapena,
       "etxekoa": etxeko
     };
-
+  
     this.http.post(`${environment.url}hitzorduak`, json_data, {
       headers: {
         'Content-Type': 'application/json',
@@ -478,71 +482,81 @@ export class HitzorduakPage implements OnInit {
       }
     }).subscribe(
       async () => {
-        await this.cargarHitzordu(); // Asegúrate de que esta función sea adecuada para manejar la carga de citas
-        this.limpiar_campos(); // Asegúrate de que esta función esté definida correctamente
+        this.mostrarToast('Cita creada correctamente', 2000, 'success');
+        await this.cargarHitzordu();
+        this.limpiar_campos();
       },
       (error) => {
         console.error("Error al crear la cita:", error);
-        throw new Error("No se ha creado la cita.");
+        this.mostrarToast('Error al crear la cita', 2000, 'danger');
       }
     );
   }
-
-  // ------------------------------------------------------------------ EDITAR DATOS ---------------------------------------------------------------
-
-  editar_cita() {
-    const etxeko = this.citaEditar.etxekoa ? "E" : "K";
-    const json_data = {
-      "id": this.citaEditar.id,
-      "data": this.citaEditar.data,
-      "hasieraOrdua": this.citaEditar.hasieraOrdua,
-      "amaieraOrdua": this.citaEditar.amaieraOrdua,
-      "eserlekua": this.citaEditar.eserlekua,
-      "izena": this.citaEditar.izena,
-      "telefonoa": this.citaEditar.telefonoa,
-      "deskribapena": this.citaEditar.deskribapena,
-      "etxekoa": etxeko
-    };
-
-    this.http.put(`${environment.url}hitzorduak`, json_data, {
+    // ------------------------------------------------------------------ EDITAR DATOS ---------------------------------------------------------------
+    editar_cita() {
+      const etxeko = this.citaEditar.etxekoa ? "E" : "K";
+      const json_data = {
+        "id": this.citaEditar.id,
+        "data": this.citaEditar.data,
+        "hasieraOrdua": this.citaEditar.hasieraOrdua,
+        "amaieraOrdua": this.citaEditar.amaieraOrdua,
+        "eserlekua": this.citaEditar.eserlekua,
+        "izena": this.citaEditar.izena,
+        "telefonoa": this.citaEditar.telefonoa,
+        "deskribapena": this.citaEditar.deskribapena,
+        "etxekoa": etxeko
+      };
+    
+      this.http.put(`${environment.url}hitzorduak`, json_data, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+      }).subscribe(
+        async () => {
+          this.mostrarToast('Cita actualizada correctamente', 2000, 'success');
+          await this.cargarHitzordu();
+          this.limpiar_campos();
+        },
+        (error) => {
+          console.error("Error al editar la cita:", error);
+          this.mostrarToast('Error al editar la cita', 2000, 'danger');
+        }
+      );
+    }
+  // ----------------------------------------------------------------- ELIMINAR DATOS -----------------------------------------------------------------
+  eliminar_cita() {
+    const json_data = { "id": this.citaEditar.id };
+  
+    this.http.delete(`${environment.url}hitzorduak`, {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
-      }
+      },
+      body: JSON.stringify(json_data)
     }).subscribe(
       async () => {
-        await this.cargarHitzordu(); // Asegúrate de que esta función sea adecuada para manejar la carga de citas
-        this.limpiar_campos(); // Asegúrate de que esta función esté definida correctamente
+        this.mostrarToast('Cita eliminada correctamente', 2000, 'success');
+        await this.cargarHitzordu();
+        this.limpiar_campos();
       },
       (error) => {
-        console.error("Error al editar la cita:", error);
-        throw new Error("No se ha editado la cita.");
+        console.error("Error al eliminar la cita:", error);
+        this.mostrarToast('Error al eliminar la cita', 2000, 'danger');
       }
     );
   }
-
-// ----------------------------------------------------------------- ELIMINAR DATOS -----------------------------------------------------------------
-
-eliminar_cita() {
-  const json_data = { "id": this.citaEditar.id };
-
-  this.http.delete(`${environment.url}hitzorduak`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
-    },
-    body: JSON.stringify(json_data)
-  }).subscribe(
-    async () => {
-      await this.cargarHitzordu(); // Asegúrate de que esta función sea adecuada para manejar la carga de citas
-      this.limpiar_campos(); // Asegúrate de que esta función esté definida correctamente
-    },
-    (error) => {
-      console.error("Error al eliminar la cita:", error);
-      throw new Error("No se ha eliminado la cita.");
-    }
-  );
-}
+  
+  async mostrarToast(mensaje: string, duracion: number = 2000, color: string = 'success') {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: duracion,
+      color: color,
+      position: 'top'
+    });
+    await toast.present();
+  }
+  // Editado Oier
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------
 
