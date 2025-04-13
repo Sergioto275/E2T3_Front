@@ -306,41 +306,6 @@ export class MaterialakPage implements OnInit {
     });
   }
 
-  materialakAtera() {
-    let data = this.materialesSeleccionados.map(materiala => ({
-      "materiala": {
-        "id": materiala.id
-      },
-      "langilea": {
-        "id": this.selecAlumno
-      }
-    }));
-
-    let observableRest: Observable<any> = this.restServer.post<any>(`${environment.url}material_mailegua`, data);
-    observableRest.subscribe(datuak => {
-      console.log(datuak);
-      this.vaciarDatos();
-      this.materialakLortu();
-      this.materialakLortuDevolver();
-    });
-  }
-
-  materialakBueltatu() {
-    let data = this.materialesSeleccionadosDevolver.map(mailegu => ({
-      "id": mailegu.id
-    }));
-
-    let observableRest: Observable<any> = this.restServer.put<any>(`${environment.url}material_mailegua`, data);
-    observableRest.subscribe(datuak => {
-      console.log(datuak);
-
-      this.materialaDevolver = datuak
-      this.materialakLortu();
-      this.materialakLortuDevolver();
-      this.vaciarDatos();
-    });
-  }
-
   materialakAteraKargatu() {
 
   }
@@ -534,4 +499,53 @@ export class MaterialakPage implements OnInit {
       this.routeSubscription.unsubscribe();
     }
   }
+
+  // EDITANDO OIER
+  materialakAtera() {
+    const data = this.materialesSeleccionados.map(materiala => ({
+      materiala: { id: materiala.id },
+      langilea: { id: this.selecAlumno }
+    }));
+  
+    const observableRest: Observable<any> = this.restServer.post<any>(`${environment.url}material_mailegua`, data);
+  
+    observableRest.subscribe(
+      () => {
+        this.vaciarDatos();
+        this.materialakLortu();
+        this.materialakLortuDevolver();
+        this.mostrarToast(this.translate.instant('materialPage.MaterialPrestado'), 2000, 'success');
+      },
+      (error) => {
+        console.error('Errorea materialak ateratzerakoan:', error);
+        this.mostrarToast(this.translate.instant('materialPage.ErrorPrestarMaterial'), 2000, 'danger');
+      }
+    );
+  }
+  
+
+  materialakBueltatu() {
+    const data = this.materialesSeleccionadosDevolver.map(mailegu => ({
+      id: mailegu.id
+    }));
+  
+    const observableRest: Observable<any> = this.restServer.put<any>(`${environment.url}material_mailegua`, data);
+  
+    observableRest.subscribe(
+      (datuak) => {
+        this.materialaDevolver = datuak;
+        this.materialakLortu();
+        this.materialakLortuDevolver();
+        this.vaciarDatos();
+        this.mostrarToast(this.translate.instant('materialPage.ErrorDevolverMaterial'), 2000, 'danger');
+      },
+      (error) => {
+        console.error('Errorea materialak bueltatzerakoan:', error);
+        this.mostrarToast(this.translate.instant('materialPage.MaterialDevuelto'), 2000, 'success');
+      }
+    );
+  }
+  
+  // EDITANDO OIER
+
 }
