@@ -223,6 +223,8 @@
             "fecha": "Data",
             "volumen": "Bolumena",
             "comentarios": "Oharrak",
+            "img": "Irudiak",
+            "ver_fotos":"Irudiak Ikusi",
             "reset": "Reset",
             "filtroFecha": "Dataren arabera iragazi",
             "filtroBezero": "Izen-abizenaren arabera bilatu"

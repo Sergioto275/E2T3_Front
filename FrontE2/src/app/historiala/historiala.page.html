@@ -10,12 +10,26 @@
         slot="end"
         [(ngModel)]="selectedLanguage"
         (ionChange)="changeLanguage()"
-        style="--color: white; --placeholder-color: white; --border-color: white;"
-      >
+        style="--color: white; --placeholder-color: white; --border-color: white;">
         <ion-select-option value="es" style="--color: #1c345c;">Español</ion-select-option>
         <ion-select-option value="eu" style="--color: #1c345c;">Euskera</ion-select-option>
       </ion-select>
     </ion-toolbar>
+    <ion-segment>
+      <ion-segment-button value="prod" content-id="prod">
+        <ion-label>{{ "historial.botones.productos" | translate }}</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="material" content-id="material">
+        <ion-label>{{ "historial.botones.materiales" | translate }}</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="ticket" content-id="ticket">
+        <ion-label>{{ "historial.botones.ticket" | translate }}</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="cliente" content-id="cliente">
+        <ion-label>{{ "historial.botones.cliente" | translate }}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
   </ion-header>
 
   <ion-content [fullscreen]="true">
@@ -384,32 +398,45 @@
       </ion-header>
       <ion-content>
         <form #formCliente="ngForm" (ngSubmit)="guardarBezero()" novalidate>
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>{{ editingBezero.izena }} {{ editingBezero.abizena }}</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <ion-item>
-                <ion-label position="stacked">{{ 'historial.modal.nombre' | translate }}</ion-label>
-                <ion-input [(ngModel)]="editingBezero.izena" name="nombre" placeholder="Izena" required #nombre="ngModel"></ion-input>
-              </ion-item>
-              <ion-text color="danger" *ngIf="nombre.invalid && nombre.touched">{{ 'historial.validaciones.nombre' | translate }}</ion-text>  
-              <ion-item>
-                <ion-label position="stacked">{{ 'historial.modal.apellido' | translate }}</ion-label>
-                <ion-input [(ngModel)]="editingBezero.abizena" name="apellido" placeholder="Apellido" required #apellido="ngModel"></ion-input>
-              </ion-item>
-              <ion-text color="danger" *ngIf="apellido.invalid && apellido.touched">{{ 'historial.validaciones.apellido' | translate }}</ion-text>  
-              <ion-item>
-                <ion-label position="stacked">{{ 'historial.modal.telefono' | translate }}</ion-label>
-                <ion-input [(ngModel)]="editingBezero.telefonoa" name="telefono" placeholder="123456789" pattern="^[0-9]{9,}$" #telefono="ngModel"></ion-input>
-              </ion-item>
-              <ion-text color="danger" *ngIf="telefono.invalid && telefono.touched">{{ 'historial.validaciones.telefono' | translate }}</ion-text>  
-              <ion-item>
-                <ion-label position="stacked">{{ 'historial.modal.piel' | translate }}</ion-label>
-                <ion-checkbox [(ngModel)]="editingBezero.azalSentikorra" name="piel" #piel="ngModel"></ion-checkbox>
-              </ion-item>
-            </ion-card-content>
-          </ion-card>  
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-card>
+                  <ion-card-header>
+                    <ion-card-title>{{ editingBezero.izena }} {{ editingBezero.abizena }}</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                    <ion-item>
+                      <ion-label position="stacked">{{ 'historial.modal.nombre' | translate }}</ion-label>
+                      <ion-input [(ngModel)]="editingBezero.izena" name="nombre" placeholder="Izena" required #nombre="ngModel"></ion-input>
+                    </ion-item>
+                    <ion-text color="danger" *ngIf="nombre.invalid && nombre.touched">{{ 'historial.validaciones.nombre' | translate }}</ion-text>  
+                    <ion-item>
+                      <ion-label position="stacked">{{ 'historial.modal.apellido' | translate }}</ion-label>
+                      <ion-input [(ngModel)]="editingBezero.abizena" name="apellido" placeholder="Apellido" required #apellido="ngModel"></ion-input>
+                    </ion-item>
+                    <ion-text color="danger" *ngIf="apellido.invalid && apellido.touched">{{ 'historial.validaciones.apellido' | translate }}</ion-text>  
+                    <ion-item>
+                      <ion-label position="stacked">{{ 'historial.modal.telefono' | translate }}</ion-label>
+                      <ion-input [(ngModel)]="editingBezero.telefonoa" name="telefono" placeholder="123456789" pattern="^[0-9]{9,}$" #telefono="ngModel"></ion-input>
+                    </ion-item>
+                    <ion-text color="danger" *ngIf="telefono.invalid && telefono.touched">{{ 'historial.validaciones.telefono' | translate }}</ion-text>  
+                    <ion-item>
+                      <ion-label position="stacked">{{ 'historial.modal.piel' | translate }}</ion-label>
+                      <ion-checkbox [(ngModel)]="editingBezero.azalSentikorra" name="piel" #piel="ngModel"></ion-checkbox>
+                    </ion-item>
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+              <ion-col size="12" size-md="4" class="ion-text-center">
+                <ion-button (click)="abrirGaleria()" fill="clear">
+                  <ion-icon name="images" slot="icon-only" size="large"></ion-icon>
+                </ion-button>
+                <div>{{ 'historial.modal.ver_fotos' | translate }}</div>
+              </ion-col>
+            </ion-row>
+              
+          </ion-grid>
           <ion-card>
             <ion-card-header>
               <ion-card-title>{{ 'historial.botones.cliente' | translate }}</ion-card-title>
@@ -445,6 +472,10 @@
                     <ion-item>
                       <ion-label position="stacked">{{ 'historial.modal.comentarios' | translate }}</ion-label>
                       <ion-input [(ngModel)]="hist.oharrak" name="comentarios{{i}}" type="text" #comentarios="ngModel"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                      <ion-label position="stacked">{{ 'historial.modal.img' | translate }}</ion-label>
+                      <ion-input [(ngModel)]="hist.img_url" name="img{{i}}" type="text" #img="ngModel"></ion-input>
                     </ion-item>
                     <ion-text color="danger" *ngIf="comentarios.invalid && comentarios.touched">{{ 'historial.validaciones.comentarios' | translate }}</ion-text>
                     <ion-button color="danger" (click)="remove_historial(i)">

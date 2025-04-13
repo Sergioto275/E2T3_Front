@@ -223,6 +223,8 @@
       "fecha": "Fecha",
       "volumen": "volumen",
       "comentarios": "Comentarios",
+      "img": "Imagenes",
+      "ver_fotos":"Ver Fotos",
       "reset": "Reset",
       "filtroFecha": "Filtrar por Fecha",
       "filtroBezero": "Busca nombre o apellido"
