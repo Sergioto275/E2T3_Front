@@ -307,32 +307,7 @@ export class IkasleakPage implements OnInit {
     // Aquí puedes agregar lógica adicional si es necesario
   }
 
-  deleteHorario(horario: any): void {
-    // Crear la alerta de confirmación
-    this.alertController
-      .create({
-        header: this.translate.instant('ikaslePage.ConfirmarEliminacion'),
-        message: this.translate.instant('ikaslePage.MensajeEliminarHorario') + horario.taldea.kodea + "?",
-        buttons: [
-          {
-            text: this.translate.instant('ikaslePage.Cancelar'),
-            role: 'cancel',
-          },
-          {
-            text: this.translate.instant('ikaslePage.Aceptar'),
-            handler: () => {
-              this.ikasleService
-                .eliminarHorario(horario.id)
-                .subscribe((response) => {
-                  this.getHorarios();
-                  this.mostrarToast(this.translate.instant('ikaslePage.HorarioEliminado'), 2000, 'danger');
-                });
-            },
-          },
-        ],
-      })
-      .then((alert) => alert.present());
-  }
+
 
 
 
@@ -539,6 +514,8 @@ export class IkasleakPage implements OnInit {
   }
   // Editado Oier
 
+
+  // Editado Oier
   guardarHorario() {
     const formattedFechaInicio = this.formatDate(this.fechaInicio);
     const formattedFechaFin = this.formatDate(this.fechaFin);
@@ -589,6 +566,7 @@ export class IkasleakPage implements OnInit {
     this.closeModal();
   }
 
+
   actualizarHorario() {
     if (this.selectedHorario) {
       const horarioActualizado = {
@@ -603,25 +581,62 @@ export class IkasleakPage implements OnInit {
       };
 
       if (horarioActualizado.id) {
-        this.ikasleService.actualizarHorario(horarioActualizado).subscribe(() => {
-          this.getHorarios();
-          this.selectedHorario = {
-            id: 0,
-            hasieraData: '',
-            hasieraOrdua: '',
-            amaieraData: '',
-            amaieraOrdua: '',
-            eguna: 0,
-            taldea: { kodea: '' },
-          };
-          this.closeModal();
-          this.mostrarToast(this.translate.instant('ikaslePage.HorarioGuardado'), 2000, 'success');
-        });
+        this.ikasleService.actualizarHorario(horarioActualizado).subscribe(
+          () => {
+            this.getHorarios();
+            this.selectedHorario = {
+              id: 0,
+              hasieraData: '',
+              hasieraOrdua: '',
+              amaieraData: '',
+              amaieraOrdua: '',
+              eguna: 0,
+              taldea: { kodea: '' },
+            };
+            this.closeModal();
+            this.mostrarToast(this.translate.instant('ikaslePage.HorarioGuardado'), 2000, 'success');
+          },
+          (error) => {
+            console.error('Error al actualizar horario:', error);
+            this.mostrarToast(this.translate.instant('ikaslePage.ErrorActualizarHorario'), 2000, 'danger');
+          }
+        );
       } else {
         this.mostrarToast(this.translate.instant('ikaslePage.ErrorActualizarHorario'), 2000, 'danger');
       }
     }
   }
+
+
+  deleteHorario(horario: any): void {
+    this.alertController.create({
+      header: this.translate.instant('ikaslePage.ConfirmarEliminacion'),
+      message: this.translate.instant('ikaslePage.MensajeEliminarHorario') + horario.taldea.kodea + "?",
+      buttons: [
+        {
+          text: this.translate.instant('ikaslePage.Cancelar'),
+          role: 'cancel',
+        },
+        {
+          text: this.translate.instant('ikaslePage.Aceptar'),
+          handler: () => {
+            this.ikasleService.eliminarHorario(horario.id).subscribe(
+              () => {
+                this.getHorarios();
+                this.mostrarToast(this.translate.instant('ikaslePage.HorarioEliminado'), 2000, 'success');
+              },
+              (error) => {
+                console.error('Error al eliminar horario:', error);
+                this.mostrarToast(this.translate.instant('ikaslePage.ErrorEliminarHorario'), 2000, 'danger');
+              }
+            );
+          },
+        },
+      ],
+    }).then(alert => alert.present());
+  }
+
+  // Editado Oier
 
 
 }
