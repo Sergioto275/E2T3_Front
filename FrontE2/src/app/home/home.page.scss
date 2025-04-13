@@ -1,14 +1,68 @@
+/* Animaciones al hacer hover */
+app-home-botoiak-konponentea {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    filter: brightness(1.1); /* Ligero aumento de brillo */
+    
+    ion-icon {
+      animation: pulse 1s infinite;
+      color: #ffffff; /* Cambia el color del icono al hacer hover */
+    }
+  }
+}
+
+ion-card {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2) !important;
+    transform: translateY(-5px);
+    background-color: #223a66 !important; /* Cambio sutil de color */
+  }
+}
+
+/* Animación de pulso para iconos */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Efecto hover para el botón de logout */
+.logout:hover ion-icon {
+  animation: shake 0.5s ease;
+  color: #ff6b6b !important; /* Color rojizo al hacer hover */
+}
+
+@keyframes shake {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(10deg); }
+  75% { transform: rotate(-10deg); }
+}
+
+/* Hover para el selector de idioma */
+ion-select:hover {
+  --color: #a8c4ff !important;
+  --border-color: #a8c4ff !important;
+}
+/* Mantén tus estilos existentes */
 .logo {
   width: 350px;
   height: auto;
   padding: 50px;
   margin-top: 10px;
   margin-bottom: 10px;
+  animation: fadeIn 0.8s ease-out;
 }
 
 ion-icon{
   color: #616161;
   margin-top: 10px;
+  transition: all 0.3s ease;
 }
 
 b{
