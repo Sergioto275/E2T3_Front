@@ -234,8 +234,6 @@ export class ProduktuakPage implements OnInit {
   }
 
 
-
-
   eliminarProducto(id: number) {
     const confirmacion = confirm('¿Estás seguro de que quieres eliminar este producto?');
     if (!confirmacion) {
@@ -274,7 +272,6 @@ export class ProduktuakPage implements OnInit {
     );
   }
 
-  // AAA
   eliminarKategoriaProducto(id: number) {
     const confirmacion = confirm('¿Estás seguro de que quieres eliminar esta categoría?');
     if (!confirmacion) {
@@ -296,14 +293,14 @@ export class ProduktuakPage implements OnInit {
       body: JSON.stringify(json_data)
     }).subscribe(
       async (response) => {
-        this.translate.get('productos.toastCategoría.Insert_OK').subscribe((texto) => {
+        this.translate.get('productos.toastCategoría.Delete_OK').subscribe((texto) => {
           this.mostrarToast(texto, 2000, 'success');
         });
         await this.produktuakLortu();
       },
       async (error) => {
         console.error("Error al eliminar la categoría del producto:", error);
-        this.translate.get('productos.toastCategoría.Insert_E').subscribe((texto) => {
+        this.translate.get('productos.toastCategoría.Delete_E').subscribe((texto) => {
           this.mostrarToast(texto, 2000, 'danger');
         });
       }
@@ -364,7 +361,6 @@ export class ProduktuakPage implements OnInit {
       }
     );
   }
-  // AAA
 
   sacarProductos() {
     const movimientos = this.productosSeleccionados.map(producto => ({
