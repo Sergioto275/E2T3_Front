@@ -147,14 +147,18 @@ export class ProduktuakPage implements OnInit {
       }
     }).subscribe(
       async (response) => {
-        this.mostrarToast('Produktua sortu da.', 2000, 'success');
+        this.translate.get('productos.toast.Insert_OK').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
 
         await this.produktuakLortu();
       },
       async (error) => {
         console.error("Error al crear el producto:", error);
 
-        this.mostrarToast('Errorea produktua sortzerakoan.', 2000, 'danger');
+        this.translate.get('productos.toast.Insert_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
@@ -204,14 +208,18 @@ export class ProduktuakPage implements OnInit {
       }
     }).subscribe(
       async (response) => {
-        this.mostrarToast('Produktua editatuta.', 2000, 'success');
+        this.translate.get('productos.toast.Update_OK').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
 
         await this.produktuakLortu();
         this.closeProdModal();
       },
       async (error) => {
         console.error("Error al editar el producto:", error);
-        this.mostrarToast('Errorea produktua editatzerakoan.', 2000, 'danger');
+        this.translate.get('productos.toast.Update_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
@@ -249,16 +257,19 @@ export class ProduktuakPage implements OnInit {
       body: JSON.stringify(json_data)
     }).subscribe(
       async (response) => {
-        // Mostrar toast de éxito
-        this.mostrarToast('Produktua ezabatu da.', 2000, 'success');
+        this.translate.get('productos.toast.Delete_OK').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
+        
 
         await this.produktuakLortu();
       },
       async (error) => {
         console.error("Error al eliminar el producto:", error);
 
-        this.mostrarToast('Errorea produktua ezabatzerakoan.', 2000, 'danger');
-      }
+        this.translate.get('productos.toast.Delete_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });      }
     );
   }
 

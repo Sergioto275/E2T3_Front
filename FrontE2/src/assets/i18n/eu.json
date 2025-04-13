@@ -1,16 +1,16 @@
 {
-    "login":{
-        "user":"Erabiltzailea",
-        "password":"Pasahitza",
-        "boton":"Saioa hasi",
-        "vacio":"Mesedes, erabiltzailea eta pasahitza sartu.",
+    "login": {
+        "user": "Erabiltzailea",
+        "password": "Pasahitza",
+        "boton": "Saioa hasi",
+        "vacio": "Mesedes, erabiltzailea eta pasahitza sartu.",
         "messageOk": "Saioa arrakastaz hasi da.",
         "messageFail": "Erabiltzaile edo pasahitz okerrak.",
         "messageNotOk": "Errore ezezagun bat gertatu da. Berriz saiatu."
     },
     "menu": {
-        "title":"Menua",
-        "home":"Home",
+        "title": "Menua",
+        "home": "Home",
         "hitzorduak": "Hitzorduak",
         "grafikoak": "Grafikoak",
         "materialak": "Materialak",
@@ -18,10 +18,10 @@
         "historiala": "Historiala",
         "ikasleak": "Ikasleak",
         "zerbitzuak": "Zerbitzuak",
-        "txandak":"Txandak",
-        "inbentario":"Inbentarioa",
-        "parametrizacion":"Parametrizazioa",
-        "tratamenduak":"medical (esto faltaba, a ver cómo se ve)"
+        "txandak": "Txandak",
+        "inbentario": "Inbentarioa",
+        "parametrizacion": "Parametrizazioa",
+        "tratamenduak": "medical (esto faltaba, a ver cómo se ve)"
     },
     "productos": {
         "title": "Produktuen kudeaketa",
@@ -35,6 +35,14 @@
             "confirmar": "Baieztatu",
             "crear": "Sortu",
             "editar": "Editatu"
+        },
+        "toast": {
+            "Insert_OK": "Produktua sortu da.",
+            "Insert_E": "Errorea produktua sortzerakoan.",
+            "Update_OK": "Produktua eguneratu da.",
+            "Update_E": "Errorea produktua eguneratzerakoan.",
+            "Delete_OK": "Produktua ezabatu da.",
+            "Delete_E": "Errorea produktua ezabatzerakoan."
         },
         "modal": {
             "sacarProductos": "Produktuak atera",
@@ -55,16 +63,16 @@
         "categorias": {
             "electronica": "Elektronika"
         },
-        "validaciones":{
-            "seleccionaGrupo":"Talde bat aukeratu behar da",
-            "seleccionaAlumno":"Langile bat aukeratu behar da",
-            "cantidad":"Baliozko kantitatea sartu behar da",
-            "nombre":"Baliozko izen bat sartu behar da",
-            "marca":"Baliozko marka sartu behar da",
-            "descripcion":"Deskribapena derrigorrezkoa da",
-            "stockRequerido":"Baliozko stock-a sartu behar da",
-            "stockAlertaRequerido":"Baliozko stock alerta sartu behar da",
-            "categoria":"Kategoria bat aukeratu behar da"            
+        "validaciones": {
+            "seleccionaGrupo": "Talde bat aukeratu behar da",
+            "seleccionaAlumno": "Langile bat aukeratu behar da",
+            "cantidad": "Baliozko kantitatea sartu behar da",
+            "nombre": "Baliozko izen bat sartu behar da",
+            "marca": "Baliozko marka sartu behar da",
+            "descripcion": "Deskribapena derrigorrezkoa da",
+            "stockRequerido": "Baliozko stock-a sartu behar da",
+            "stockAlertaRequerido": "Baliozko stock alerta sartu behar da",
+            "categoria": "Kategoria bat aukeratu behar da"
         }
     },
     "materiales": {
@@ -103,12 +111,12 @@
             "materiales": "Materialak",
             "filtros": "Iragazkiak"
         },
-        "validaciones":{
-            "seleccionaGrupoError":"Talde bat aukeratu behar duzu",
-            "seleccionaAlumnoError":"Langile bat aukeratu behar duzu",
-            "nombre":"Baliozko izen bat sartu behar da",
-            "etiqueta":"Baliozko etika bat sartu (10 char max)",
-            "categoria":"Kategoria bat aukeratu"            
+        "validaciones": {
+            "seleccionaGrupoError": "Talde bat aukeratu behar duzu",
+            "seleccionaAlumnoError": "Langile bat aukeratu behar duzu",
+            "nombre": "Baliozko izen bat sartu behar da",
+            "etiqueta": "Baliozko etika bat sartu (10 char max)",
+            "categoria": "Kategoria bat aukeratu"
         },
         "toasts": {
             "mensajeSacarMats": "Materialak ondo atera dira",
@@ -211,15 +219,15 @@
             "filtroFecha": "Dataren arabera iragazi",
             "filtroBezero": "Izen-abizenaren arabera bilatu"
         },
-        "validaciones":{
-            "nombre":"Izena derrigorrezkoa da",
-            "apellido":"Abizena derrigorrezkoa da",
-            "telefono":"Gutxienez 9 digitu dituen telefono baliodun bat sartu",
-            "producto":"Produktua derrigorrezkoa da",
-            "fecha":"Data derrigorrezkoa da",
-            "cantidad":"Kantitatea derrigorrezkoa da",
-            "volumen":"Baliozko bolumena sartu",
-            "comentarios":"Baliozko oharra sartu"
+        "validaciones": {
+            "nombre": "Izena derrigorrezkoa da",
+            "apellido": "Abizena derrigorrezkoa da",
+            "telefono": "Gutxienez 9 digitu dituen telefono baliodun bat sartu",
+            "producto": "Produktua derrigorrezkoa da",
+            "fecha": "Data derrigorrezkoa da",
+            "cantidad": "Kantitatea derrigorrezkoa da",
+            "volumen": "Baliozko bolumena sartu",
+            "comentarios": "Baliozko oharra sartu"
         }
     },
     "servicios": {
@@ -243,11 +251,11 @@
             "crear": "Sortu",
             "editar": "Editatu"
         },
-        "validaciones":{
-            "nombre":"Baliozko izen bat sartu behar da",
-            "precioFuera":"Kanpoko prezioa sartu behar da",
-            "precioDentro":"Etxeko prezioa sartu behar da",
-            "categoria":"Kategoria bat aukeratu behar da"            
+        "validaciones": {
+            "nombre": "Baliozko izen bat sartu behar da",
+            "precioFuera": "Kanpoko prezioa sartu behar da",
+            "precioDentro": "Etxeko prezioa sartu behar da",
+            "categoria": "Kategoria bat aukeratu behar da"
         }
     },
     "ikaslePage": {
@@ -372,11 +380,10 @@
         "TxandaEzGuardada": "Txanda ez da gorde",
         "TxandaEzabatuta": "Txanda ezabatu da",
         "TxandaEzabatutaArazoa": "Txanda ezabatzerakoan errore bat gertatu da"
-
     },
     "graficos": {
         "title": "Grafikoak",
-        "graf":"Zerbitzuen grafikoa",
-        "analisis":"Zerbitzuen analisia"
+        "graf": "Zerbitzuen grafikoa",
+        "analisis": "Zerbitzuen analisia"
     }
 }
