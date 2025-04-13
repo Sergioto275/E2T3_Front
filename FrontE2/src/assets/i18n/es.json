@@ -44,6 +44,14 @@
       "Delete_OK": "El produkto se ha eliminado.",
       "Delete_E": "Ha habido un error al eliminar le producto."
     },
+    "toastCategoría": {
+      "Insert_OK": "La categoría de producto se ha creado.",
+      "Insert_E": "Ha habido un error al crear la categoría de producto.",
+      "Update_OK": "La categoría de producto se ha actualizado.",
+      "Update_E": "Ha habido un error al actualizar la categoría de producto.",
+      "Delete_OK": "La categoría de producto se ha eliminado",
+      "Delete_E": "Ha habido un error al eliminar la categoría de producto."
+  },
     "modal": {
       "sacarProductos": "Sacar Productos",
       "alumno": "Alumno",

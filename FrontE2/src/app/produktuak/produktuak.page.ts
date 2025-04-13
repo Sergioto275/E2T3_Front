@@ -260,7 +260,7 @@ export class ProduktuakPage implements OnInit {
         this.translate.get('productos.toast.Delete_OK').subscribe((texto) => {
           this.mostrarToast(texto, 2000, 'success');
         });
-        
+
 
         await this.produktuakLortu();
       },
@@ -269,10 +269,12 @@ export class ProduktuakPage implements OnInit {
 
         this.translate.get('productos.toast.Delete_E').subscribe((texto) => {
           this.mostrarToast(texto, 2000, 'danger');
-        });      }
+        });
+      }
     );
   }
 
+  // AAA
   eliminarKategoriaProducto(id: number) {
     const confirmacion = confirm('¿Estás seguro de que quieres eliminar esta categoría?');
     if (!confirmacion) {
@@ -294,16 +296,19 @@ export class ProduktuakPage implements OnInit {
       body: JSON.stringify(json_data)
     }).subscribe(
       async (response) => {
-        this.mostrarToast('Categoría eliminada correctamente', 2000, 'success');
+        this.translate.get('productos.toastCategoría.Insert_OK').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
         await this.produktuakLortu();
       },
       async (error) => {
         console.error("Error al eliminar la categoría del producto:", error);
-        this.mostrarToast('Error al eliminar la categoría', 2000, 'danger');
+        this.translate.get('productos.toastCategoría.Insert_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
-
 
   editarKategoriaProducto() {
     const json_data = { izena: this.editingKategoria.izena };
@@ -317,17 +322,20 @@ export class ProduktuakPage implements OnInit {
       }
     }).subscribe(
       async (response) => {
-        this.mostrarToast('Categoría editada correctamente', 2000, 'success');
+        this.translate.get('productos.toastCategoría.Update_OK').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
         await this.produktuakLortu();
         this.closeKatModal();
       },
       async (error) => {
         console.error('Error al editar la categoría del producto:', error);
-        this.mostrarToast('Error al editar la categoría', 2000, 'danger');
+        this.translate.get('productos.toastCategoría.Update_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
-
 
   kategoriaSortu() {
     const json_data = {
@@ -343,15 +351,20 @@ export class ProduktuakPage implements OnInit {
       }
     }).subscribe(
       async (response) => {
-        this.mostrarToast('Categoría creada correctamente', 2000, 'success');
+        this.translate.get('productos.toastCategoría.Insert_OK').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
         await this.produktuakLortu();
       },
       async (error) => {
         console.error("Error al crear la categoría:", error);
-        this.mostrarToast('Error al crear la categoría', 2000, 'danger');
+        this.translate.get('productos.toastCategoría.Insert_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
+  // AAA
 
   sacarProductos() {
     const movimientos = this.productosSeleccionados.map(producto => ({

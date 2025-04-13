@@ -44,6 +44,14 @@
             "Delete_OK": "Produktua ezabatu da.",
             "Delete_E": "Errorea produktua ezabatzerakoan."
         },
+        "toastCategoría": {
+            "Insert_OK": "Produktu kategoria sortu da.",
+            "Insert_E": "Errorea produktu kategoria sortzerakoan.",
+            "Update_OK": "Produktu kategoria eguneratu da.",
+            "Update_E": "Errorea produktu kategoria eguneratzerakoan.",
+            "Delete_OK": "Produktu kategoria ezabatu da.",
+            "Delete_E": "Errorea produktu kategoria ezabatzerakoan."
+        },
         "modal": {
             "sacarProductos": "Produktuak atera",
             "alumno": "Ikaslea",
