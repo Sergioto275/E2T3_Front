@@ -300,19 +300,12 @@ export class IkasleakPage implements OnInit {
     modal.present();
   }
 
-  horarioSeleccionado: any; // Asegúrate de tener un horario seleccionado
-  // Otras propiedades del componente
+  horarioSeleccionado: any;
   seleccionarHorario(horario: any) {
     this.horarioSeleccionado = horario;
-    // Aquí puedes agregar lógica adicional si es necesario
   }
 
 
-
-
-
-
-  // Editado Oier
   async agregarGrupo() {
     const data = {
       kodea: this.nuevoGrupo.kodea,
@@ -402,11 +395,6 @@ export class IkasleakPage implements OnInit {
     toast.present();
   }
 
-  // Editado Oier
-
-
-
-  // Editado Oier
   updateAlumno() {
     const updatedAlumno = {
       id: this.selectedAlumno.id,
@@ -510,12 +498,8 @@ export class IkasleakPage implements OnInit {
       );
     });
 
-    this.selectedIkasleak.clear(); // Limpiar selección
+    this.selectedIkasleak.clear();
   }
-  // Editado Oier
-
-
-  // Editado Oier
   guardarHorario() {
     const formattedFechaInicio = this.formatDate(this.fechaInicio);
     const formattedFechaFin = this.formatDate(this.fechaFin);
@@ -635,8 +619,6 @@ export class IkasleakPage implements OnInit {
       ],
     }).then(alert => alert.present());
   }
-
-  // Editado Oier
 
 
 }

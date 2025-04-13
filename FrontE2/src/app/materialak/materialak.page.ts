@@ -8,11 +8,9 @@ import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
-// Importaciones Oier (quitar este comentario si a futuro no da problemas).
 import { ToastController } from '@ionic/angular';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
-// Importaciones Oier (quitar este comentario si a futuro no da problemas).
 
 export interface Alumno {
   nombre: string;
@@ -138,7 +136,6 @@ export class MaterialakPage implements OnInit {
     return this.categoriasAbiertas[categoria] || false;
   }
 
-  // Editado Oier
   async materialaSortu() {
     let data = {
       "etiketa": this.crearEtiqueta,
@@ -174,9 +171,7 @@ export class MaterialakPage implements OnInit {
     });
     toast.present();
   }
-  //Editado Oier
 
-  // Editado Oier.
   materialaEditatu(id: number) {
     const data = {
       etiketa: this.editarEtiqueta,
@@ -214,7 +209,6 @@ export class MaterialakPage implements OnInit {
     });
     await toast.present();
   }
-  // Editado Oier.
 
   vaciarDatos() {
     this.crearEtiqueta = null;
@@ -224,7 +218,6 @@ export class MaterialakPage implements OnInit {
     this.materialesSeleccionados = [];
   }
 
-  // Editado Oier.
   async materialaEzabatu(id: number) {
     let observableRest: Observable<any> = this.restServer.delete<any>(`${environment.url}materialak/id/${id}`);
 
@@ -250,9 +243,6 @@ export class MaterialakPage implements OnInit {
     });
     toast.present();
   }
-  // Editado Oier.
-
-
 
   toggleMaterialakLortu() {
     this.mostrarFiltros
@@ -391,8 +381,6 @@ export class MaterialakPage implements OnInit {
     await alert.present();
   }
 
-  // Editado Oier
-
   async kategoriaSortu() {
     let data = {
       "izena": this.crearKatNombre,
@@ -449,8 +437,6 @@ export class MaterialakPage implements OnInit {
     );
   }
 
-  // Editado Oier
-
   filtrarMateriales() {
     this.filteredMaterialak = this.materialak.map(categoria => ({
       ...categoria,
@@ -499,16 +485,14 @@ export class MaterialakPage implements OnInit {
       this.routeSubscription.unsubscribe();
     }
   }
-
-  // Editado Oier
   materialakAtera() {
     const data = this.materialesSeleccionados.map(materiala => ({
       materiala: { id: materiala.id },
       langilea: { id: this.selecAlumno }
     }));
-  
+
     const observableRest: Observable<any> = this.restServer.post<any>(`${environment.url}material_mailegua`, data);
-  
+
     observableRest.subscribe(
       () => {
         this.vaciarDatos();
@@ -522,15 +506,15 @@ export class MaterialakPage implements OnInit {
       }
     );
   }
-  
+
 
   materialakBueltatu() {
     const data = this.materialesSeleccionadosDevolver.map(mailegu => ({
       id: mailegu.id
     }));
-  
+
     const observableRest: Observable<any> = this.restServer.put<any>(`${environment.url}material_mailegua`, data);
-  
+
     observableRest.subscribe(
       (datuak) => {
         this.materialaDevolver = datuak;
@@ -545,7 +529,6 @@ export class MaterialakPage implements OnInit {
       }
     );
   }
-  
-  // Editado Oier
+
 
 }

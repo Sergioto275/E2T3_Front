@@ -182,7 +182,6 @@ export class ProduktuakPage implements OnInit {
     this.isEditingKategoria = false;
   }
 
-  // Editado Oier
   editarProducto() {
     const json_data = {
       "id": this.editingProduct.id,
@@ -263,10 +262,6 @@ export class ProduktuakPage implements OnInit {
     );
   }
 
-
-  // Editado Oier
-
-  // Editado Oier
   eliminarKategoriaProducto(id: number) {
     const confirmacion = confirm('¿Estás seguro de que quieres eliminar esta categoría?');
     if (!confirmacion) {
@@ -346,8 +341,6 @@ export class ProduktuakPage implements OnInit {
       }
     );
   }
-
-  // Editado Oier
 
   sacarProductos() {
     const movimientos = this.productosSeleccionados.map(producto => ({

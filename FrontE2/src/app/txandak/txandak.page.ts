@@ -209,25 +209,24 @@ export class TxandakPage implements OnInit {
   // Función para guardar la nueva txanda
   // Función para guardar la nueva txanda
 
-  // EDITANDO OIER
   guardarTxanda() {
     if (!this.nuevaTxanda.mota || !this.nuevaTxanda.alumno) {
       return;
     }
-  
+
     if (!this.nuevaTxanda.data) {
       this.nuevaTxanda.data = new Date().toISOString().split('T')[0];
     }
-  
+
     const txandaToSave = {
       mota: this.nuevaTxanda.mota,
       data: this.nuevaTxanda.data,
       langileak: { id: this.nuevaTxanda.alumno },
     };
-  
+
     const apiUrl = `${environment.url}txandak`;
     console.log(JSON.stringify(txandaToSave));
-  
+
     this.http.post(apiUrl, txandaToSave).subscribe(
       (response) => {
         if (response) {
@@ -248,7 +247,7 @@ export class TxandakPage implements OnInit {
       }
     );
   }
-  
+
 
   async deleteTxanda(txandaId: number) {
     const alert = await this.alertCtrl.create({
@@ -288,9 +287,6 @@ export class TxandakPage implements OnInit {
     });
     await alert.present();
   }
-
-
-  // EDITANDO OIER
   async mostrarToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,

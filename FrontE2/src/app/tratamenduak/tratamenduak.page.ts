@@ -149,7 +149,6 @@ export class TratamenduakPage implements OnInit {
     );
   }
 
-  // Editado Oier.
   sortuZerbitzua() {
     const json_data = {
       "izena": this.crearServicio.izena,
@@ -245,8 +244,6 @@ export class TratamenduakPage implements OnInit {
     );
   }
 
-
-  // Editado Oier
   crearKategoria() {
     const json_data = {
       "izena": this.crearCategoria.izena,
@@ -317,5 +314,4 @@ export class TratamenduakPage implements OnInit {
       }
     );
   }
-  // Editado Oier
 }
