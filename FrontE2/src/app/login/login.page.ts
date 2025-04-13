@@ -13,25 +13,36 @@ export class LoginPage implements OnInit {
   username: string = '';
   password: string = '';
   submitted: boolean = false;
-  loginMessage: string = ''; // Para mostrar el mensaje de validación
-  loginMessageType: 'success' | 'error' = 'error'; // Para controlar el tipo de mensaje (exito o error)
+  loginMessage: string = '';
+  loginMessageType: 'success' | 'error' = 'error';
   selectedLanguage: string = 'es';
 
-  constructor(private router: Router, private loginService: LoginServiceService, private translate: TranslateService) {}
+  constructor(
+    private router: Router, 
+    private loginService: LoginServiceService, 
+    private translate: TranslateService
+  ) {}
 
   ngOnInit() {
     this.translate.setDefaultLang(this.selectedLanguage);
+  }
+
+  selectLanguage(language: string) {
+    this.selectedLanguage = language;
+    this.changeLanguage();
+    this.clearMessage(); // Limpia el mensaje al cambiar idioma
   }
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
   }
 
-  selectLanguage(language: string) {
-    this.selectedLanguage = language;
-    this.changeLanguage();
+  // Nuevo método para limpiar mensajes
+  clearMessage() {
+    this.loginMessage = '';
+    this.loginMessageType = 'error';
+    this.submitted = false;
   }
-  
 
   async onLogin() {
     this.submitted = true;
