@@ -18,7 +18,7 @@ import { ComponentsModule } from "../components/components.module";
     TranslateModule,
     TratamenduakPageRoutingModule,
     ComponentsModule
-],
+  ],
   declarations: [TratamenduakPage]
 })
-export class TratamenduakPageModule {}
+export class TratamenduakPageModule { }

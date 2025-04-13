@@ -5,6 +5,7 @@ import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tratamenduak',
@@ -15,8 +16,8 @@ export class TratamenduakPage implements OnInit {
 
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   selectedLanguage: string = 'es';
-  zerbitzuak:any[] = [];
-  filteredZerbitzuak:any[] = [];
+  zerbitzuak: any[] = [];
+  filteredZerbitzuak: any[] = [];
   modalAtera = false;
   alumne = '';
   categoriasAbiertas: { [key: string]: boolean } = {};
@@ -24,18 +25,18 @@ export class TratamenduakPage implements OnInit {
   selectedCategoryId!: number;
   crearServicio: any = { izena: '', idKategoria: null, kanpokoPrezioa: '', etxekoPrezioa: '' };
   crearCategoria: any = { izena: '', kolorea: false, extra: false };
-  editarCategoria:any;
-  editarServicio:any;
-  serviciosSeleccionados:any[]=[];
+  editarCategoria: any;
+  editarServicio: any;
+  serviciosSeleccionados: any[] = [];
   isEditingService: boolean = false;
   isEditingCategoria: boolean = false;
-  
+
   filtroCategoria: string = '';
   filtroZerbitzua: string = '';
-  isIkasle!:boolean;
+  isIkasle!: boolean;
   private routeSubscription: any;
 
-  constructor(private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService, private router: Router, private route: ActivatedRoute) {
+  constructor(private toastController: ToastController, private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService, private router: Router, private route: ActivatedRoute) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
@@ -78,8 +79,7 @@ export class TratamenduakPage implements OnInit {
       zerbitzuak: categoria.zerbitzuak.map((zerbitzua: any) => ({ ...zerbitzua }))
     }));
 
-    if(this.filtroCategoria !== '')
-    {
+    if (this.filtroCategoria !== '') {
       this.filteredZerbitzuak = this.filteredZerbitzuak.filter(categoria =>
         (this.filtroCategoria === '' || categoria.izena.toLowerCase().includes(this.filtroCategoria.toLowerCase()))
       );
@@ -95,24 +95,24 @@ export class TratamenduakPage implements OnInit {
     }
   }
 
-  openServiceModal(service:any, idKat:number){
+  openServiceModal(service: any, idKat: number) {
     this.isEditingService = true;
     this.editarServicio = service;
     this.editarServicio.idKategoria = idKat;
     console.log(this.editarServicio);
   }
-  
-  closeServiceModal(){
+
+  closeServiceModal() {
     this.isEditingService = false;
   }
 
-  openKatModal(kategoria:any){
+  openKatModal(kategoria: any) {
     this.isEditingCategoria = true;
     this.editarCategoria = kategoria;
     console.log(this.editarCategoria);
   }
-  
-  closeKatModal(){
+
+  closeKatModal() {
     this.isEditingCategoria = false;
   }
 
@@ -139,7 +139,7 @@ export class TratamenduakPage implements OnInit {
             zerbitzuak: categoria.zerbitzuak
               .filter((zerbitzua: any) => zerbitzua.ezabatzeData === null)
           }));
-        
+
         this.filteredZerbitzuak = this.zerbitzuak;
         console.log('zerbitzuak kargatu:', this.zerbitzuak);
       },
@@ -167,15 +167,18 @@ export class TratamenduakPage implements OnInit {
         'Access-Control-Allow-Origin': '*'
       }
     }).subscribe(
-      (response) => {
+      async (response) => {
         console.log('Servicio creado correctamente');
-        this.zerbiztuakLortu();  // Actualizar la lista de servicios
+        this.mostrarToast('Zerbitzua sortu da.', 2000, 'success');
+        this.zerbiztuakLortu();
       },
-      (error) => {
-        console.error('Errorea zerbitzua sortzerakoan:', error);
+      async (error) => {
+        console.error('Error al crear el servicio:', error);
+        this.mostrarToast('Errorea zerbitzua sortzerakoan.', 2000, 'danger');
       }
     );
   }
+
 
   editarServicios() {
     const json_data = {
@@ -196,14 +199,26 @@ export class TratamenduakPage implements OnInit {
         'Access-Control-Allow-Origin': '*'
       }
     }).subscribe(
-      (response) => {
+      async (response) => {
         console.log('Servicio actualizado correctamente');
-        this.zerbiztuakLortu();  // Actualizar la lista de servicios
+        this.mostrarToast('Zerbitzua eguneratu da.', 2000, 'success');
+        this.zerbiztuakLortu();
       },
-      (error) => {
+      async (error) => {
         console.error('Errorea zerbitzua eguneratzerakoan:', error);
+        this.mostrarToast('Errorea zerbitzua eguneratzerakoan.', 2000, 'danger');
       }
     );
+  }
+
+  async mostrarToast(mensaje: string, duracion: number = 2000, color: string = 'success') {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: duracion,
+      color: color,
+      position: 'top',
+    });
+    toast.present();
   }
 
   eliminarServicio(id: number) {
@@ -215,12 +230,16 @@ export class TratamenduakPage implements OnInit {
         'Access-Control-Allow-Origin': '*'
       }
     }).subscribe(
-      (response) => {
+      async (response) => {
         console.log('Servicio eliminado correctamente');
-        this.zerbiztuakLortu();  // Actualizar la lista de servicios
+        this.mostrarToast('Zerbitzua ezabatu da.', 2000, 'success');
+        this.zerbiztuakLortu();
       },
-      (error) => {
+      async (error) => {
         console.error('Errorea zerbitzua ezabatzerakoan:', error);
+
+        // Mostrar toast de error
+        this.mostrarToast('Errorea zerbitzua ezabatzerakoan.', 2000, 'danger');
       }
     );
   }
@@ -239,13 +258,14 @@ export class TratamenduakPage implements OnInit {
         'Access-Control-Allow-Origin': '*'
       }
     }).subscribe(
-      (response) => {
-        console.log('Categoría creada correctamente');
-        this.zerbiztuakLortu(); // Actualizar la lista de servicios
-        this.closeKatModal();   // Cerrar el modal
+      async (response) => {
+        this.mostrarToast('Categoría creada correctamente', 2000, 'success');
+        this.zerbiztuakLortu();
+        this.closeKatModal();
       },
-      (error) => {
-        console.error('Errorea zerbitzuak kargatzerakoan:', error);
+      async (error) => {
+        console.error('Error al crear la categoría de servicio:', error);
+        this.mostrarToast('Error al crear la categoría', 2000, 'danger');
       }
     );
   }
@@ -265,13 +285,14 @@ export class TratamenduakPage implements OnInit {
         'Access-Control-Allow-Origin': '*'
       }
     }).subscribe(
-      (response) => {
-        console.log('Categoría editada correctamente');
-        this.zerbiztuakLortu(); // Actualizar la lista de servicios
-        this.closeKatModal();   // Cerrar el modal
+      async (response) => {
+        this.mostrarToast('Categoría editada correctamente', 2000, 'success');
+        this.zerbiztuakLortu();
+        this.closeKatModal();
       },
-      (error) => {
-        console.error('Errorea zerbitzuak kargatzerakoan:', error);
+      async (error) => {
+        console.error('Error al editar la categoría de servicio:', error);
+        this.mostrarToast('Error al editar la categoría', 2000, 'danger');
       }
     );
   }
@@ -283,14 +304,14 @@ export class TratamenduakPage implements OnInit {
         'Access-Control-Allow-Origin': '*'
       }
     }).subscribe(
-      (response) => {
-        console.log('Categoría eliminada correctamente');
-        this.zerbiztuakLortu(); // Actualizar la lista de servicios
+      async (response) => {
+        this.mostrarToast('Categoría eliminada correctamente', 2000, 'success');
+        this.zerbiztuakLortu();
       },
-      (error) => {
-        console.error('Errorea zerbitzuak kargatzerakoan:', error);
+      async (error) => {
+        console.error('Error al eliminar la categoría de servicio:', error);
+        this.mostrarToast('Error al eliminar la categoría', 2000, 'danger');
       }
     );
   }
-
 }

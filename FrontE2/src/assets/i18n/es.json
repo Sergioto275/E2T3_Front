@@ -1,16 +1,16 @@
 {
-  "login":{
-    "user":"Usuario",
-    "password":"Contraseña",
-    "boton":"Inicio Sesion",
-    "vacio":"Por favor, ingresa usuario y contraseña.",
-    "messageOk":"Inicio de sesión exitoso.",
-    "messageFail":"Usuario o contraseña incorrectos.",
-    "messageNotOk":"Ocurrió un error inesperado. Inténtalo de nuevo."
+  "login": {
+    "user": "Usuario",
+    "password": "Contraseña",
+    "boton": "Inicio Sesion",
+    "vacio": "Por favor, ingresa usuario y contraseña.",
+    "messageOk": "Inicio de sesión exitoso.",
+    "messageFail": "Usuario o contraseña incorrectos.",
+    "messageNotOk": "Ocurrió un error inesperado. Inténtalo de nuevo."
   },
   "menu": {
     "title": "Menu",
-    "home":"Home",
+    "home": "Home",
     "hitzorduak": "Citas",
     "grafikoak": "Graficos",
     "materialak": "Materiales",
@@ -18,10 +18,10 @@
     "historiala": "Historial",
     "ikasleak": "Estudiantes",
     "zerbitzuak": "Servicios",
-    "txandak":"Turnos",
-    "inbentario":"Inventario",
-    "parametrizacion":"Parametrizacion",
-    "tratamenduak":"medical"
+    "txandak": "Turnos",
+    "inbentario": "Inventario",
+    "parametrizacion": "Parametrizacion",
+    "tratamenduak": "medical"
   },
   "productos": {
     "title": "Gestion de productos",
@@ -36,6 +36,22 @@
       "crear": "Crear",
       "editar": "Editar"
     },
+    "toast": {
+      "Insert_OK": "El producto se ha creado.",
+      "Insert_E": "Ha habido un error al crear el producto.",
+      "Update_OK": "El producto se ha actualizado.",
+      "Update_E": "Ha habido un error al actualizar el producto.",
+      "Delete_OK": "El produkto se ha eliminado.",
+      "Delete_E": "Ha habido un error al eliminar le producto."
+    },
+    "toastCategoría": {
+      "Insert_OK": "La categoría de producto se ha creado.",
+      "Insert_E": "Ha habido un error al crear la categoría de producto.",
+      "Update_OK": "La categoría de producto se ha actualizado.",
+      "Update_E": "Ha habido un error al actualizar la categoría de producto.",
+      "Delete_OK": "La categoría de producto se ha eliminado",
+      "Delete_E": "Ha habido un error al eliminar la categoría de producto."
+  },
     "modal": {
       "sacarProductos": "Sacar Productos",
       "alumno": "Alumno",
@@ -55,16 +71,16 @@
     "categorias": {
       "electronica": "Electrónica"
     },
-    "validaciones":{
-        "seleccionaGrupo":"Debe seleccionar un grupo",
-        "seleccionaAlumno":"Debe seleccionar un grupo",
-        "cantidad":"Inserta una cantidad valida",
-        "nombre":"Debe insertar un nombre valido",
-        "marca":"Debe insertar una marca valida",
-        "descripcion":"La descripcion es obligatoria",
-        "stockRequerido":"Debe insertar un stock valido",
-        "stockAlertaRequerido":"Debe insertar un stock de lerta valido",
-        "categoria":"Seleccione una categoria"            
+    "validaciones": {
+      "seleccionaGrupo": "Debe seleccionar un grupo",
+      "seleccionaAlumno": "Debe seleccionar un grupo",
+      "cantidad": "Inserta una cantidad valida",
+      "nombre": "Debe insertar un nombre valido",
+      "marca": "Debe insertar una marca valida",
+      "descripcion": "La descripcion es obligatoria",
+      "stockRequerido": "Debe insertar un stock valido",
+      "stockAlertaRequerido": "Debe insertar un stock de lerta valido",
+      "categoria": "Seleccione una categoria"
     }
   },
   "materiales": {
@@ -103,12 +119,12 @@
       "materiales": "Materiales",
       "filtros": "Filtros"
     },
-    "validaciones":{
-      "seleccionaGrupoError":"Debe seleccionar un grupo",
-      "seleccionaAlumnoError":"Debe seleccionar un grupo",
-      "nombre":"Debe insertar un nombre valido",
-      "etiqueta":"Debe insertar una etiqueta valida(10 char max)",
-      "categoria":"Seleccione una categoria"            
+    "validaciones": {
+      "seleccionaGrupoError": "Debe seleccionar un grupo",
+      "seleccionaAlumnoError": "Debe seleccionar un grupo",
+      "nombre": "Debe insertar un nombre valido",
+      "etiqueta": "Debe insertar una etiqueta valida(10 char max)",
+      "categoria": "Seleccione una categoria"
     },
     "toasts": {
       "mensajeSacarMats": "Los materiales se han sacado correctamente",
@@ -212,14 +228,14 @@
       "filtroBezero": "Busca nombre o apellido"
     },
     "validaciones": {
-        "nombre": "El nombre es obligatorio",
-        "apellido": "El apellido es obligatorio",
-        "telefono": "Introduce un teléfono válido con al menos 9 dígitos",
-        "producto": "El producto es obligatorio",
-        "fecha": "La fecha es obligatoria",
-        "cantidad": "La cantidad es obligatoria",
-        "volumen": "Introduce un volumen válido",
-        "comentarios": "Introduce un comentario válido"
+      "nombre": "El nombre es obligatorio",
+      "apellido": "El apellido es obligatorio",
+      "telefono": "Introduce un teléfono válido con al menos 9 dígitos",
+      "producto": "El producto es obligatorio",
+      "fecha": "La fecha es obligatoria",
+      "cantidad": "La cantidad es obligatoria",
+      "volumen": "Introduce un volumen válido",
+      "comentarios": "Introduce un comentario válido"
     }
   },
   "informes": {
@@ -263,7 +279,7 @@
       "nombre": "Introduce un nombre valido",
       "precioFuera": "Introduce el precio de fuera",
       "precioDentro": "Introduce el precio de dentro",
-      "categoria":"Seleccione una categoria"            
+      "categoria": "Seleccione una categoria"
     }
   },
   "ikaslePage": {
@@ -342,18 +358,18 @@
     "Cancelar": "Cancelar",
     "GuardarCambios": "Guardar Cambios",
     "EliminarAlumnos": "Alumno/s eliminados correctamente",
-    "validaciones":{
-      "kodea":"Inserta un codigo de grupo valido (5 char max)",
-      "kodeaSelec":"Selecciona un grupo",
-      "abizena":"Inserta un apellido valido",
-      "izena":"Inserta un nombre valido",
-      "dia":"Debe escoger un dia",
-      "FechaInicio":"Debe insertar una fecha de inicio",
-      "FechaFin":"Debe insertar una fecha fin",
-      "FechaInicioMenor":"La fecha final no puede ser menor que la de inicio",
-      "HoraInicio":"Debe insertar una hora de inicio",
-      "HoraFin":"Debe insertar una hora fin",
-      "HoraInicioMenor":"La hora inicio no puede ser menor que la hora fin"
+    "validaciones": {
+      "kodea": "Inserta un codigo de grupo valido (5 char max)",
+      "kodeaSelec": "Selecciona un grupo",
+      "abizena": "Inserta un apellido valido",
+      "izena": "Inserta un nombre valido",
+      "dia": "Debe escoger un dia",
+      "FechaInicio": "Debe insertar una fecha de inicio",
+      "FechaFin": "Debe insertar una fecha fin",
+      "FechaInicioMenor": "La fecha final no puede ser menor que la de inicio",
+      "HoraInicio": "Debe insertar una hora de inicio",
+      "HoraFin": "Debe insertar una hora fin",
+      "HoraInicioMenor": "La hora inicio no puede ser menor que la hora fin"
     }
   },
   "txandakPage": {
@@ -385,7 +401,6 @@
     "alumnoPlaceholderModal": "Selecciona un alumno",
     "MessageEliminar": "Eliminar Turno",
     "MessageSeguroEliminar": "¿Estás seguro de que deseas eliminar este Turno?",
-    
     "TxandaGuardada": "Turno guardado correctamente",
     "TxandaEzGuardada": "No se ha guardado el Turno, intentalo de nuevo o contacta con un desarrollador",
     "TxandaEzabatuta": "Turno eliminado correctamente",
@@ -393,7 +408,7 @@
   },
   "graficos": {
     "title": "Graficos",
-    "graf":"Gráfico de Servicios",
-    "analisis":"Análisis de Servicios"
+    "graf": "Gráfico de Servicios",
+    "analisis": "Análisis de Servicios"
   }
 }

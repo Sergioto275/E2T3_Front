@@ -1,8 +1,8 @@
-$color-primary: #1c345c;         
-$color-primary-shade: #172a4b;    
-$color-primary-tint: #254273;     
-$color-secondary: #031027;       
-$color-tertiary: #41a367;       
+$color-primary: #1c345c;
+$color-primary-shade: #172a4b;
+$color-primary-tint: #254273;
+$color-secondary: #031027;
+$color-tertiary: #41a367;
 $color-white: #FFFFFF;
 $color-black: #000000;
 $color-light-gray: #f8f8f8;
@@ -11,269 +11,278 @@ $color-dark-gray: #333333;
 
 /* Estilos generales */
 ion-content {
-    --background: #{$color-light-gray};
+  --background: #{$color-light-gray};
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+}
+
+/* Toolbar superior */
+ion-toolbar {
+  --background: #{$color-primary};
+  --color: #{$color-white};
+  padding: 8px 16px;
+
+  ion-button {
+    --background: #{$color-primary-tint};
+    --background-activated: #{$color-primary-shade};
+    --background-hover: #{lighten($color-primary-tint, 5%)};
+    --color: #{$color-white};
+    --border-radius: 8px;
+    margin: 0 8px;
+    font-weight: 500;
+  }
+}
+
+/* Tarjetas principales */
+ion-card {
+  --background: #{$color-white};
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+  }
+}
+
+/* Encabezados de tarjeta */
+ion-card-header {
+  --background: #{$color-primary};
+  --color: #{$color-white};
+  padding: 16px;
+
+  ion-card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #{$color-white};
+  }
+}
+
+/* Contenido de tarjetas */
+ion-card-content {
+  padding: 16px;
+
+  ion-grid {
+    padding: 0;
+  }
+}
+
+/* Barra de búsqueda */
+ion-searchbar {
+  --background: #{$color-light-gray};
+  --border-radius: 8px;
+  --box-shadow: none;
+  --color: #{$color-primary-shade}; // Color del texto ingresado
+  --placeholder-color: #{$color-primary-tint}; // Color del placeholder (azul más claro)
+  --icon-color: #{$color-primary}; // Color del icono de búsqueda
+
+  /* Opcional: si quieres un azul aún más claro */
+  &.custom-placeholder {
+    --placeholder-color: #{lighten($color-primary-tint, 20%)}; // Azul más claro
+    --placeholder-opacity: 1; // Asegura que se vea bien el color
+  }
+}
+
+/* Items de categoría */
+ion-item {
+  --background: #{$color-white};
+  --border-color: #{$color-medium-gray};
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  --min-height: 60px;
+
+  ion-label {
+    color: #{$color-primary};
+    font-weight: 500;
+
+    p {
+      color: #{$color-dark-gray};
+      font-size: 0.9rem;
+    }
+  }
+
+  ion-button {
+    --padding-start: 8px;
+    --padding-end: 8px;
+    margin: 0 4px;
+  }
+}
+
+/* Botones de acción */
+ion-button {
+  &[color="danger"] {
+    --background: #{$color-white};
+    --background-activated: #{$color-light-gray};
+    --color: #{$color-primary-shade};
+    --border-color: #{$color-primary-shade};
+    --border-width: 1px;
+  }
+
+  &[color="primary"] {
+    --background: #{$color-tertiary};
+    --background-activated: #{darken($color-tertiary, 10%)};
+  }
+}
+
+/* Lista de servicios */
+ion-list {
+  background: transparent;
+  padding: 0;
+
+  ion-item {
+    --border-color: #{$color-medium-gray};
+    --padding-start: 24px;
+
+    ion-label {
+      color: #{$color-secondary};
+    }
+  }
+}
+
+/* Modales */
+ion-modal {
+  --background: rgba(0, 0, 0, 0.4);
+
+  ion-header {
+    ion-toolbar {
+      --background: #{$color-primary};
+      --color: #{$color-white};
+    }
+  }
+
+  ion-content {
+    --background: #{$color-white};
     --padding-start: 16px;
     --padding-end: 16px;
     --padding-top: 16px;
     --padding-bottom: 16px;
   }
-  
-  /* Toolbar superior */
-  ion-toolbar {
-    --background: #{$color-primary};
-    --color: #{$color-white};
-    padding: 8px 16px;
-  
-    ion-button {
-      --background: #{$color-primary-tint};
-      --background-activated: #{$color-primary-shade};
-      --background-hover: #{lighten($color-primary-tint, 5%)};
-      --color: #{$color-white};
-      --border-radius: 8px;
-      margin: 0 8px;
+}
+
+/* Formularios */
+form {
+  ion-item {
+    --background: #{$color-light-gray};
+    --border-radius: 8px;
+    margin-bottom: 16px;
+
+    ion-label[position="stacked"] {
+      color: #{$color-primary};
       font-weight: 500;
     }
-  }
-  
-  /* Tarjetas principales */
-  ion-card {
-    --background: #{$color-white};
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    margin-bottom: 20px;
-    overflow: hidden;
-    transition: transform 0.3s ease;
-  
-    &:hover {
-      transform: translateY(-3px);
+
+    ion-input,
+    ion-select {
+      --background: #{$color-white};
+      --color: #{$color-primary};
+      --padding-start: 12px;
+      --highlight-color-focused: #{$color-tertiary};
     }
   }
-  
-  /* Encabezados de tarjeta */
-  ion-card-header {
-    --background: #{$color-primary};
+
+  ion-button[type="submit"] {
+    --background: #{$color-tertiary};
+    --background-activated: #{darken($color-tertiary, 10%)};
+    --background-hover: #{lighten($color-tertiary, 5%)};
     --color: #{$color-white};
-    padding: 16px;
-  
-    ion-card-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #{$color-white};
+    margin-top: 24px;
+    height: 50px;
+    font-weight: 600;
+  }
+}
+
+/* Iconos */
+ion-icon {
+  &[name="create"] {
+    color: #{$color-light-gray};
+  }
+
+  &[name="trash"] {
+    color: #{$color-primary-shade};
+  }
+
+  &[name="chevron-up"],
+  &[name="chevron-down"] {
+    color: #{$color-primary};
+  }
+}
+
+/* Mensajes de validación */
+ion-text[color="danger"] {
+  color: #{$color-primary-shade} !important;
+  font-size: 0.8rem;
+  display: block;
+  margin-top: -12px;
+  margin-bottom: 12px;
+}
+
+/* Efectos visuales */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+ion-item {
+  animation: fadeIn 0.3s ease-out;
+}
+
+ion-toolbar:not(.Headeraaa) {
+  --background: #{$color-primary}; // Usa tu color primario
+  --color: #{$color-white}; // Texto blanco
+  --border-radius: 20px 20px 20px 20px; // Esquinas redondeadas solo abajo
+  border-radius: var(--border-radius); // Aplica el redondeo
+  overflow: hidden; // Importante para que el contenido respete el redondeo
+  margin-bottom: 16px; // Espacio después del toolbar
+
+  /* Efecto de sombra opcional */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  /* Transición suave para hover/click */
+  transition: all 0.3s ease;
+
+  /* Estilo cuando está en la parte inferior */
+  &:last-child {
+    --border-radius: 20px 20px 20px 20px;
+  }
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  ion-toolbar {
+    ion-buttons {
+      flex-direction: column;
+      align-items: flex-start;
+
+      ion-button {
+        margin: 4px 0;
+        width: 100%;
+      }
     }
   }
-  
-  /* Contenido de tarjetas */
-  ion-card-content {
-    padding: 16px;
-  
-    ion-grid {
+
+  ion-row {
+    flex-direction: column;
+
+    ion-col {
+      width: 100%;
       padding: 0;
     }
   }
-  
-  /* Barra de búsqueda */
-  ion-searchbar {
-    --background: #{$color-light-gray};
-    --border-radius: 8px;
-    --box-shadow: none;
-    --color: #{$color-primary-shade}; // Color del texto ingresado
-    --placeholder-color: #{$color-primary-tint}; // Color del placeholder (azul más claro)
-    --icon-color: #{$color-primary}; // Color del icono de búsqueda
-    
-    /* Opcional: si quieres un azul aún más claro */
-    &.custom-placeholder {
-      --placeholder-color: #{lighten($color-primary-tint, 20%)}; // Azul más claro
-      --placeholder-opacity: 1; // Asegura que se vea bien el color
-    }
-  }
-  
-  /* Items de categoría */
-  ion-item {
-    --background: #{$color-white};
-    --border-color: #{$color-medium-gray};
-    --padding-start: 16px;
-    --inner-padding-end: 16px;
-    --min-height: 60px;
-  
-    ion-label {
-      color: #{$color-primary};
-      font-weight: 500;
-  
-      p {
-        color: #{$color-dark-gray};
-        font-size: 0.9rem;
-      }
-    }
-  
-    ion-button {
-      --padding-start: 8px;
-      --padding-end: 8px;
-      margin: 0 4px;
-    }
-  }
-  
-  /* Botones de acción */
-  ion-button {
-    &[color="danger"] {
-      --background: #{$color-white};
-      --background-activated: #{$color-light-gray};
-      --color: #{$color-primary-shade};
-      --border-color: #{$color-primary-shade};
-      --border-width: 1px;
-    }
-  
-    &[color="primary"] {
-      --background: #{$color-tertiary};
-      --background-activated: #{darken($color-tertiary, 10%)};
-    }
-  }
-  
-  /* Lista de servicios */
-  ion-list {
-    background: transparent;
-    padding: 0;
-  
-    ion-item {
-      --border-color: #{$color-medium-gray};
-      --padding-start: 24px;
-  
-      ion-label {
-        color: #{$color-secondary};
-      }
-    }
-  }
-  
-  /* Modales */
-  ion-modal {
-    --background: rgba(0, 0, 0, 0.4);
-  
-    ion-header {
-      ion-toolbar {
-        --background: #{$color-primary};
-        --color: #{$color-white};
-      }
-    }
-  
-    ion-content {
-      --background: #{$color-white};
-      --padding-start: 16px;
-      --padding-end: 16px;
-      --padding-top: 16px;
-      --padding-bottom: 16px;
-    }
-  }
-  
-  /* Formularios */
-  form {
-    ion-item {
-      --background: #{$color-light-gray};
-      --border-radius: 8px;
-      margin-bottom: 16px;
-  
-      ion-label[position="stacked"] {
-        color: #{$color-primary};
-        font-weight: 500;
-      }
-  
-      ion-input, ion-select {
-        --background: #{$color-white};
-        --color: #{$color-primary};
-        --padding-start: 12px;
-        --highlight-color-focused: #{$color-tertiary};
-      }
-    }
-  
-    ion-button[type="submit"] {
-      --background: #{$color-tertiary};
-      --background-activated: #{darken($color-tertiary, 10%)};
-      --background-hover: #{lighten($color-tertiary, 5%)};
-      --color: #{$color-white};
-      margin-top: 24px;
-      height: 50px;
-      font-weight: 600;
-    }
-  }
-  
-  /* Iconos */
-  ion-icon {
-    &[name="create"] {
-      color: #{$color-light-gray};
-    }
-  
-    &[name="trash"] {
-      color: #{$color-primary-shade};
-    }
-  
-    &[name="chevron-up"], &[name="chevron-down"] {
-      color: #{$color-primary};
-    }
-  }
-  
-  /* Mensajes de validación */
-  ion-text[color="danger"] {
-    color: #{$color-primary-shade} !important;
-    font-size: 0.8rem;
-    display: block;
-    margin-top: -12px;
-    margin-bottom: 12px;
-  }
-  
-  /* Efectos visuales */
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  ion-item {
-    animation: fadeIn 0.3s ease-out;
-  }
+}
 
-  ion-toolbar:not(.Headeraaa) {
-    --background: #{$color-primary}; // Usa tu color primario
-    --color: #{$color-white}; // Texto blanco
-    --border-radius: 20px 20px 20px 20px; // Esquinas redondeadas solo abajo
-    border-radius: var(--border-radius); // Aplica el redondeo
-    overflow: hidden; // Importante para que el contenido respete el redondeo
-    margin-bottom: 16px; // Espacio después del toolbar
-  
-    /* Efecto de sombra opcional */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    
-    /* Transición suave para hover/click */
-    transition: all 0.3s ease;
-  
-    /* Estilo cuando está en la parte inferior */
-    &:last-child {
-      --border-radius: 20px 20px 20px 20px;
-    }
+@media (max-width: 768px) {
+  ion-toolbar {
+    --border-radius: 12px 12px 12px 12px; // Redondeo más pequeño en móviles
   }
-  
-  /* Responsive */
-  @media (max-width: 576px) {
-    ion-toolbar {
-      ion-buttons {
-        flex-direction: column;
-        align-items: flex-start;
-  
-        ion-button {
-          margin: 4px 0;
-          width: 100%;
-        }
-      }
-    }
-  
-    ion-row {
-      flex-direction: column;
-  
-      ion-col {
-        width: 100%;
-        padding: 0;
-      }
-    }
-  }
-
-  @media (max-width: 768px) {
-    ion-toolbar {
-      --border-radius: 12px 12px 12px 12px; // Redondeo más pequeño en móviles
-    }
-  }
+}
