@@ -240,22 +240,6 @@ export class IkasleakPage implements OnInit {
     }
 
   }
-
-
-
-  eliminarAlumnos() {
-    this.selectedIkasleak.forEach((id) => {
-      this.ikasleService.eliminarAlumno(id).subscribe(() => {
-        // Eliminar el alumno de la lista
-        this.getAlumnos();
-        this.getGrupos();
-        this.closeModal();
-        this.mostrarToast(this.translate.instant('ikaslePage.EliminarAlumnos'), 2000, 'danger');
-      });
-    });
-    this.selectedIkasleak.clear(); // Limpiar la selección después de eliminar
-  }
-
   // Abre el modal para editar un talde
   openEditTaldeModal(talde: any) {
     this.selectedTalde = talde; // Clonar el objeto seleccionado
@@ -350,52 +334,8 @@ export class IkasleakPage implements OnInit {
       .then((alert) => alert.present());
   }
 
-  async confirmarEliminacionAlumno(alumnoId: number) {
-    const alert = await this.alertController.create({
-      header: this.translate.instant('ikaslePage.ConfirmarEliminacion'),
-      message: this.translate.instant('ikaslePage.MensajeEliminarAlumno'),
-      buttons: [
-        {
-          text: this.translate.instant('ikaslePage.Cancelar'),
-          role: 'cancel',
-          cssClass: 'secondary',
-        },
-        {
-          text: this.translate.instant('ikaslePage.Aceptar'),
-          handler: async () => {
-            this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 2000, 'danger');
-            await this.ikasleService.eliminarAlumno(alumnoId);
-          },
-        },
-      ],
-    });
-
-    await alert.present();
-  }
 
 
-  async agregarAlumno() {
-    let data = {
-      izena: this.nuevoAlumno.izena,
-      abizenak: this.nuevoAlumno.abizenak,
-      taldea: {
-        kodea: this.nuevoAlumno.taldea.kodea,
-      },
-    };
-
-    this.ikasleService.agregarAlumno(data).subscribe(() => {
-      this.getAlumnos();
-      this.getGrupos();
-      this.modalController.dismiss();
-      this.mostrarToast(this.translate.instant('ikaslePage.AlumnoAgregado'), 2000, 'success');
-    });
-
-    this.nuevoAlumno = {
-      izena: '',
-      abizenak: '',
-      taldea: { kodea: '', izena: '' },
-    };
-  }
 
   // Editado Oier
   async agregarGrupo() {
@@ -438,8 +378,6 @@ export class IkasleakPage implements OnInit {
       }
     );
   }
-
-
 
   async confirmarEliminacionGrupo(grupoKodea: string) {
     const alert = await this.alertController.create({
@@ -490,6 +428,10 @@ export class IkasleakPage implements OnInit {
   }
 
   // Editado Oier
+
+
+
+  // Editado Oier
   updateAlumno() {
     const updatedAlumno = {
       id: this.selectedAlumno.id,
@@ -500,14 +442,102 @@ export class IkasleakPage implements OnInit {
       },
     };
 
-    this.ikasleService.updateAlumno(updatedAlumno).subscribe(() => {
-      this.getGrupos();
-      this.getAlumnos();
-      this.closeEditModal();
-      this.mostrarToast(this.translate.instant('ikaslePage.AlumnoActualizado'), 2000, 'success');
-    });
+    this.ikasleService.updateAlumno(updatedAlumno).subscribe(
+      async () => {
+        await this.getGrupos();
+        await this.getAlumnos();
+        this.closeEditModal();
+        this.mostrarToast(this.translate.instant('ikaslePage.AlumnoActualizado'), 2000, 'success');
+      },
+      (error) => {
+        console.error('Error al actualizar alumno:', error);
+        this.mostrarToast(this.translate.instant('ikaslePage.ErrorActualizarAlumno'), 2000, 'danger');
+      }
+    );
   }
 
+  async agregarAlumno() {
+    const data = {
+      izena: this.nuevoAlumno.izena,
+      abizenak: this.nuevoAlumno.abizenak,
+      taldea: {
+        kodea: this.nuevoAlumno.taldea.kodea,
+      },
+    };
+
+    this.ikasleService.agregarAlumno(data).subscribe(
+      async () => {
+        await this.getAlumnos();
+        await this.getGrupos();
+        this.modalController.dismiss();
+        this.mostrarToast(this.translate.instant('ikaslePage.AlumnoAgregado'), 2000, 'success');
+        this.nuevoAlumno = {
+          izena: '',
+          abizenak: '',
+          taldea: { kodea: '', izena: '' },
+        };
+      },
+      (error) => {
+        console.error('Error al agregar alumno:', error);
+        this.mostrarToast(this.translate.instant('ikaslePage.ErrorAgregarAlumno'), 2000, 'danger');
+      }
+    );
+  }
+
+  async confirmarEliminacionAlumno(alumnoId: number) {
+    const alert = await this.alertController.create({
+      header: this.translate.instant('ikaslePage.ConfirmarEliminacion'),
+      message: this.translate.instant('ikaslePage.MensajeEliminarAlumno'),
+      buttons: [
+        {
+          text: this.translate.instant('ikaslePage.Cancelar'),
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: this.translate.instant('ikaslePage.Aceptar'),
+          handler: () => this.eliminarAlumno(alumnoId),
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  eliminarAlumno(alumnoId: number) {
+    this.ikasleService.eliminarAlumno(alumnoId).subscribe(
+      async () => {
+        await this.getAlumnos();
+        await this.getGrupos();
+        this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 2000, 'success');
+      },
+      (error) => {
+        console.error('Error al eliminar alumno:', error);
+        this.mostrarToast(this.translate.instant('ikaslePage.ErrorEliminarAlumno'), 2000, 'danger');
+      }
+    );
+  }
+
+
+  eliminarAlumnos() {
+    this.selectedIkasleak.forEach((id) => {
+      this.ikasleService.eliminarAlumno(id).subscribe(
+        async () => {
+          await this.getAlumnos();
+          await this.getGrupos();
+          this.closeModal();
+          this.mostrarToast(this.translate.instant('ikaslePage.EliminarAlumnos'), 2000, 'success');
+        },
+        (error) => {
+          console.error(`Error al eliminar alumno con ID ${id}:`, error);
+          this.mostrarToast(this.translate.instant('ikaslePage.ErrorEliminarAlumno'), 2000, 'danger');
+        }
+      );
+    });
+
+    this.selectedIkasleak.clear(); // Limpiar selección
+  }
+  // Editado Oier
 
   guardarHorario() {
     const formattedFechaInicio = this.formatDate(this.fechaInicio);
