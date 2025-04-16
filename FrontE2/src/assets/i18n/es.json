@@ -42,7 +42,8 @@
       "Update_OK": "El producto se ha actualizado.",
       "Update_E": "Ha habido un error al actualizar el producto.",
       "Delete_OK": "El produkto se ha eliminado.",
-      "Delete_E": "Ha habido un error al eliminar le producto."
+      "Delete_E": "Ha habido un error al eliminar le producto.",
+      "img":"No hay imagenes disponibles"
     },
     "toastCategoría": {
       "Insert_OK": "La categoría de producto se ha creado.",

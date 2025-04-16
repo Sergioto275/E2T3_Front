@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import jsPDF from 'jspdf';
@@ -46,6 +46,7 @@ export class HistorialaPage implements OnInit {
   filtroIzena!:string;
 
   constructor(
+    private toastController: ToastController,
     private translate: TranslateService,
     private fb: FormBuilder,
     private http: HttpClient,
@@ -371,21 +372,19 @@ export class HistorialaPage implements OnInit {
     );
   }
 
-  abrirGaleria() {
+  async abrirGaleria() {
     const imagenes = this.editingBezero.historiala
       .filter((h:any) => h.img_url && h.img_url.trim() !== '')
       .map((h:any) => h.img_url);
       console.log(imagenes)
   
-    // if (imagenes.length === 0) {
-    //   // Puedes mostrar un toast si no hay imágenes
-    //   this.toastController.create({
-    //     message: 'No hay imágenes disponibles.',
-    //     duration: 2000,
-    //     color: 'warning'
-    //   }).then(toast => toast.present());
-    //   return;
-    // }
+    if (imagenes.length === 0) {
+      // Puedes mostrar un toast si no hay imágenes
+      this.translate.get('productos.toast.img').subscribe((texto) => {
+        this.mostrarToast(texto, 2000, 'warning');
+      });
+      return;
+    }
   
     // Abre el modal o una galería externa, por ejemplo:
     this.modalController.create({
@@ -393,6 +392,14 @@ export class HistorialaPage implements OnInit {
       componentProps: { imagenes },
       cssClass: 'galeria-modal'
     }).then((modal:any) => modal.present());
+  }
+
+  async mostrarToast(mensaje: string, duracion: number = 2000, color: string = 'success') {
+    this.toastController.create({
+      message: mensaje,
+      duration: duracion,
+      color: color
+    }).then(toast => toast.present());
   }
   
 

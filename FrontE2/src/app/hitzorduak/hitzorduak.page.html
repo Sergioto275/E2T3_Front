@@ -24,14 +24,14 @@
         <div>
           <ion-item>
             <ion-label position="stacked">{{ "citas.modal.fecha" | translate }}</ion-label>
-            <ion-input [(ngModel)]="dataSelec" type="date" placeholder="Fecha" (ngModelChange)="cargar_dia_seleccionado()"></ion-input>
+            <ion-input class="date-selector" [(ngModel)]="dataSelec" type="date" placeholder="Fecha" (ngModelChange)="cargar_dia_seleccionado()"></ion-input>
           </ion-item>
           <div class="table-container">
             <table class="h-100 w-100" *ngIf="!loading">
               <thead>
                 <tr>
-                  <th style="background-color: rgba(18, 107, 196, 0.685);">{{ "citas.horas" | translate }}</th>
-                  <th *ngFor="let i of [].constructor(asientos); let idx = index" style="background-color: rgba(18, 107, 196, 0.685);">
+                  <th class="seat-header">{{ "citas.horas" | translate }}</th>
+                  <th class="seat-header"  *ngFor="let i of [].constructor(asientos); let idx = index">
                     {{ "citas.asientos" | translate }} {{ idx + 1 }}
                   </th>
                 </tr>
@@ -39,7 +39,7 @@
               <tbody>
                 <ng-container *ngIf="asientos === 0">
                   <tr>
-                    <td colspan="100%" class="text-center">
+                    <td colspan="100%" class="text-center empty-message">
                       <ion-text color="danger">
                         <p>{{ "citas.modal.vacio" | translate }}</p>
                       </ion-text>
@@ -48,27 +48,27 @@
                 </ng-container>
                 <ng-container *ngIf="asientos > 0">
                   <tr *ngFor="let time of hoursArray">
-                    <td style="background-color: rgba(18, 107, 196, 0.685);">{{ time }}</td>
+                    <td class="time-header">{{ time }}</td>
                     <ng-container *ngFor="let i of [].constructor(asientos); let idx = index">
                       <td id="{{ 'time-' + time + '-seat-' + (idx + 1) }}" *ngIf="citaSartuta(time, idx + 1)" 
                         [attr.rowspan]="rowspanManagement(time, idx + 1)" 
                         [ngClass]="{ 'highlighted': isCellHighlighted(time, idx + 1) }">
                         <ng-container *ngIf="getCitasAtTimeAndSeat(time, idx + 1).length > 0; else emptySeat">
-                          <ion-card *ngFor="let cita of getCitasAtTimeAndSeat(time, idx + 1)" (click)="cargar_cita_selec(cita)" 
+                          <ion-card class="appointment-card" *ngFor="let cita of getCitasAtTimeAndSeat(time, idx + 1)" (click)="cargar_cita_selec(cita)" 
                                     [ngClass]="{
-                                      'bg-grey-blue-light': cita.prezioTotala,
-                                      'bg-blue-green-light': cita.langilea && !cita.prezioTotala,
-                                      'bg-pink-light': !cita.langilea && !cita.prezioTotala,
+                                      'paid': cita.prezioTotala,
+                                      'in-progress': cita.langilea && !cita.prezioTotala,
+                                      'pending': !cita.langilea && !cita.prezioTotala,
                                       'selected': cita.id === citaEditar.id
                                     }">
-                            <ion-card-header>
+                            <ion-card-header class="appointment-header">
                               <ion-card-title>{{ cita.izena }}</ion-card-title>
                             </ion-card-header>
                             <ion-card-content>{{ cita.deskribapena }}</ion-card-content>
                           </ion-card>
                         </ng-container>
                         <ng-template #emptySeat>
-                          <ion-button (click)="reserbar_cita(idx + 1, time)">
+                          <ion-button class="add-button" (click)="reserbar_cita(idx + 1, time)">
                             <ion-icon name="add-circle-outline"></ion-icon>
                           </ion-button>
                         </ng-template>
@@ -227,7 +227,7 @@
                       (ionChange)="actualizarServiciosSeleccionados(trat, katTrat.extra, katTrat.kolorea)">
                     </ion-checkbox>
                     <ion-label>{{ trat.izena }}
-                      <ng-container *ngIf="!katTrat.extra">
+                      <ng-container class="service-price" *ngIf="!katTrat.extra">
                         <ng-container *ngIf="citaEditar.etxekoa; else kanpokoa">
                           {{ trat.etxekoPrezioa }}
                         </ng-container>
@@ -237,7 +237,7 @@
                       </ng-container>
                       <ng-container *ngIf="katTrat.extra">
                         <ion-item *ngIf="trat.selected">
-                          <ion-input [(ngModel)]="trat.precio" name="precio_{{trat.id}}" placeholder="€€€" required #precio="ngModel"></ion-input>
+                          <ion-input class="extra-price-input" [(ngModel)]="trat.precio" name="precio_{{trat.id}}" placeholder="€€€" type="number" required #precio="ngModel"></ion-input>
                         </ion-item>
                       </ng-container>
                     </ion-label>

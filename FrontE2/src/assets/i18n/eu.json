@@ -42,7 +42,8 @@
             "Update_OK": "Produktua eguneratu da.",
             "Update_E": "Errorea produktua eguneratzerakoan.",
             "Delete_OK": "Produktua ezabatu da.",
-            "Delete_E": "Errorea produktua ezabatzerakoan."
+            "Delete_E": "Errorea produktua ezabatzerakoan.",
+            "img":"Ez dago irudirik eskuragarri"
         },
         "toastCategoría": {
             "Insert_OK": "Produktu kategoria sortu da.",

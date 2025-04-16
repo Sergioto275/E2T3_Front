@@ -428,14 +428,15 @@
                   </ion-card-content>
                 </ion-card>
               </ion-col>
-              <ion-col size="12" size-md="4" class="ion-text-center">
-                <ion-button (click)="abrirGaleria()" fill="clear">
-                  <ion-icon name="images" slot="icon-only" size="large"></ion-icon>
-                </ion-button>
-                <div>{{ 'historial.modal.ver_fotos' | translate }}</div>
-              </ion-col>
+              <ion-col size="12" size-md="4" class="galeria-col">
+                <div class="galeria-boton-wrapper">
+                  <ion-button (click)="abrirGaleria()" fill="clear" class="galeria-boton">
+                    <ion-icon name="images" slot="icon-only" size="large"></ion-icon>
+                  </ion-button>
+                  <div class="galeria-texto">{{ 'historial.modal.ver_fotos' | translate }}</div>
+                </div>
+              </ion-col>              
             </ion-row>
-              
           </ion-grid>
           <ion-card>
             <ion-card-header>
