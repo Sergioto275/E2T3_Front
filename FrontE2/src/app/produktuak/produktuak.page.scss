@@ -1,35 +1,81 @@
-// .deskribapena {
-//     font-size: 12px;
-//     color: #6c757d;
-//     margin-top: 2px;
-//   }
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  .responsive-buttons {
+    display: flex;
+    flex-wrap: nowrap;
 
-//   // Colores
-// $color-light-blue: #E4FEFF;
-// $color-medium-blue: #88E4E8;
-// $color-dark-teal: #00C7BE;
-// $color-light-teal: #63D6F5;
-// $color-white: #FFFFFF;
-// $color-black: #000000;
-// $color-light-gray: #E9E9E9;
-// $color-light-blue-alt: #C4E7F1;
+    .button-text {
+      display: none;
+    }
 
-// // Estructura general
-// ion-content {
-//   background-color: $color-white;
-//   padding: 16px;
-// }
+    ion-button {
+      --padding-start: 6px;
+      --padding-end: 6px;
+      min-width: auto;
+    }
+  }
 
-// ion-header {
-//   background-color: $color-light-teal;
-//   color: $color-white;
-//   --ion-toolbar-background: $color-light-teal;
-//   --ion-toolbar-color: $color-white;
-// }
-ion-list{
-    background-color: rgb(255,255,255,0);
+  .product-item {
+    flex-wrap: wrap;
+
+    .product-name {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+
+    .product-stock {
+      flex: 0 0 30%;
+      max-width: 30%;
+      text-align: right;
+    }
+
+    .product-actions {
+      flex: 0 0 20%;
+      max-width: 20%;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    ion-checkbox {
+      margin-right: 4px;
+    }
+  }
 }
 
-ion-item{
-    --background:transparent;
+/* Desktop styles */
+@media (min-width: 769px) {
+  .responsive-buttons {
+    .button-text {
+      display: inline;
+    }
+
+    ion-icon[slot="icon-only"] {
+      display: none;
+    }
+  }
+
+  .product-item {
+    display: flex;
+    align-items: center;
+
+    .product-name {
+      flex: 1;
+    }
+
+    .product-stock {
+      flex: 0 0 100px;
+      text-align: center;
+    }
+
+    .product-desc {
+      flex: 2;
+      padding: 0 16px;
+    }
+
+    .product-actions {
+      flex: 0 0 150px;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
 }

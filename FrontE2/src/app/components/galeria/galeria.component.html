@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Galería</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <swiper-container (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true">
+    <ng-container *ngFor="let img of imagenes">
+      <swiper-Slide>
+          <img [src]="transformarURL(img)" />
+      </swiper-Slide>
+    </ng-container>
+  </swiper-container>
+</ion-content>

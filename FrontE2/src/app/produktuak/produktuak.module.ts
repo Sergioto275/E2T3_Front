@@ -18,7 +18,7 @@ import { TranslateModule } from '@ngx-translate/core';
     ProduktuakPageRoutingModule,
     ComponentsModule,
     TranslateModule
-],
+  ],
   declarations: [ProduktuakPage]
 })
-export class ProduktuakPageModule {}
+export class ProduktuakPageModule { }

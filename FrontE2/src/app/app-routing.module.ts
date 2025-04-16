@@ -36,10 +36,6 @@ const routes: Routes = [
     loadChildren: () => import('./materialak/materialak.module').then( m => m.MaterialakPageModule)
   },
   {
-    path: 'grafikoak',
-    loadChildren: () => import('./grafikoak/grafikoak.module').then( m => m.GrafikoakPageModule)
-  },
-  {
     path: 'txandak',
     loadChildren: () => import('./txandak/txandak.module').then( m => m.TxandakPageModule)
   },

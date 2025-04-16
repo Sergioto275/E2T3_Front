@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import jsPDF from 'jspdf';
@@ -6,6 +7,7 @@ import autoTable from 'jspdf-autotable';
 import { environment } from 'src/environments/environment';
 import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
+import { GaleriaComponent } from '../components/galeria/galeria.component';
 
 @Component({
   selector: 'app-historiala',
@@ -46,7 +48,8 @@ export class HistorialaPage implements OnInit {
   constructor(
     private translate: TranslateService,
     private fb: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private modalController: ModalController
   ) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
@@ -367,6 +370,31 @@ export class HistorialaPage implements OnInit {
       }
     );
   }
+
+  abrirGaleria() {
+    const imagenes = this.editingBezero.historiala
+      .filter((h:any) => h.img_url && h.img_url.trim() !== '')
+      .map((h:any) => h.img_url);
+      console.log(imagenes)
+  
+    // if (imagenes.length === 0) {
+    //   // Puedes mostrar un toast si no hay imágenes
+    //   this.toastController.create({
+    //     message: 'No hay imágenes disponibles.',
+    //     duration: 2000,
+    //     color: 'warning'
+    //   }).then(toast => toast.present());
+    //   return;
+    // }
+  
+    // Abre el modal o una galería externa, por ejemplo:
+    this.modalController.create({
+      component: GaleriaComponent,
+      componentProps: { imagenes },
+      cssClass: 'galeria-modal'
+    }).then((modal:any) => modal.present());
+  }
+  
 
   crearBezero() {
     const json_data = {

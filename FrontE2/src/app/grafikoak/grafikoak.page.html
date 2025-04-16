@@ -1,17 +1,23 @@
 <app-header></app-header>
 <ion-content class="ion-page" id="main-content">
   <ion-header>
-    <ion-toolbar>
+    <ion-toolbar class="Headeraaa" style="--background: #1c345c; --color: white;">
       <ion-buttons slot="start">
-        <ion-menu-button></ion-menu-button>
+        <ion-menu-button style="--color: white;"></ion-menu-button>
       </ion-buttons>
-      <ion-title>{{ 'graficos.title' | translate }}</ion-title>
-      <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">
-        <ion-select-option value="es">Español</ion-select-option>
-        <ion-select-option value="eu">Euskera</ion-select-option>
+      <ion-title size="large" style="color: white;">{{ 'graficos.title' | translate }}</ion-title>
+      <ion-select
+        slot="end"
+        [(ngModel)]="selectedLanguage"
+        (ionChange)="changeLanguage()"
+        style="--color: white; --placeholder-color: white; --border-color: white;"
+      >
+        <ion-select-option value="es" style="--color: #1c345c;">Español</ion-select-option>
+        <ion-select-option value="eu" style="--color: #1c345c;">Euskera</ion-select-option>
       </ion-select>
     </ion-toolbar>
   </ion-header>
+  
   <ion-content [fullscreen]="true">
     <ng-container *ngFor="let taldea of langileak">
       <!-- Categoría -->

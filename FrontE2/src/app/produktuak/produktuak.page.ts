@@ -5,7 +5,7 @@ import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute } from '@angular/router';
-
+import { ToastController } from '@ionic/angular';
 // import { IonButton, IonContent, IonHeader, IonLabel, IonModal, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
 
@@ -23,40 +23,40 @@ export class ProduktuakPage implements OnInit {
 
   @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
   selectedLanguage: string = 'es';
-  modal!:string;
-  produktuak!:any[];
+  modal!: string;
+  produktuak!: any[];
 
-  productosSeleccionados:any[] = [];
+  productosSeleccionados: any[] = [];
   isEditingProduct: boolean = false;
-  editingProduct:any = null;
+  editingProduct: any = null;
   isEditingKategoria: boolean = false;
-  editingKategoria:any = null;
+  editingKategoria: any = null;
 
-  crearKatNombre!:String;
-  crearNombre!:String;
-  crearDescripcion!:String;
-  crearCategoria!:Number;
-  crearMarca!:String;
-  crearStock!:Number;
-  crearStockAlerta!:Number;
+  crearKatNombre!: String;
+  crearNombre!: String;
+  crearDescripcion!: String;
+  crearCategoria!: Number;
+  crearMarca!: String;
+  crearStock!: Number;
+  crearStockAlerta!: Number;
 
   alumnos!: any[];
-  selecTaldea!:number;
-  selecAlumno!:number;
+  selecTaldea!: number;
+  selecAlumno!: number;
 
   modalAtera = false;
   alumne = '';
   categoriasAbiertas: { [key: string]: boolean } = {};
   filteredAlumnos!: any[];
   selectedCategoryId!: number;
-  isIkasle!:boolean;
+  isIkasle!: boolean;
   private routeSubscription: any;
 
-  
+
   filtroCategoria: string = '';
   filtroProducto: string = '';
   filtroStockBajo: boolean = false;
-  filteredProduktuak: any[] = []; 
+  filteredProduktuak: any[] = [];
 
   filtrarProductos() {
     this.filteredProduktuak = this.produktuak.map(categoria => ({
@@ -64,8 +64,7 @@ export class ProduktuakPage implements OnInit {
       produktuak: categoria.produktuak.map((producto: any) => ({ ...producto }))
     }));
 
-    if(this.filtroCategoria !== '')
-    {
+    if (this.filtroCategoria !== '') {
       this.filteredProduktuak = this.filteredProduktuak.filter(categoria =>
         (this.filtroCategoria === '' || categoria.izena.toLowerCase().includes(this.filtroCategoria.toLowerCase()))
       );
@@ -79,7 +78,7 @@ export class ProduktuakPage implements OnInit {
         )
       }));
     }
-  
+
     if (this.filtroStockBajo) {
       this.filteredProduktuak = this.filteredProduktuak.filter(categoria => {
         categoria.produktuak = categoria.produktuak.filter((producto: any) =>
@@ -106,7 +105,7 @@ export class ProduktuakPage implements OnInit {
     }
   }
 
-  actualizarProductosSeleccionados(producto:any, kategoria_id: number) {
+  actualizarProductosSeleccionados(producto: any, kategoria_id: number) {
     producto.kategoria_id = kategoria_id;
     producto.kantitatea = 1;
     const index = this.productosSeleccionados.findIndex(p => p.id === producto.id);
@@ -126,6 +125,7 @@ export class ProduktuakPage implements OnInit {
     return this.categoriasAbiertas[categoria] || false;
   }
 
+  // Editado
   crearProducto() {
     const json_data = {
       "izena": this.crearNombre,
@@ -147,54 +147,42 @@ export class ProduktuakPage implements OnInit {
       }
     }).subscribe(
       async (response) => {
+        this.translate.get('productos.toast.Insert_OK').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
+
         await this.produktuakLortu();
       },
-      (error) => {
+      async (error) => {
         console.error("Error al crear el producto:", error);
+
+        this.translate.get('productos.toast.Insert_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
 
-  kategoriaSortu() {
-    const json_data = {
-      "izena": this.crearKatNombre
-    };
+  // Editado
 
-    console.log(json_data);
-
-    this.http.post(`${environment.url}produktu_kategoria`, json_data, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    }).subscribe(
-      async (response) => {
-        await this.produktuakLortu();
-      },
-      (error) => {
-        console.error("Error al crear la categoría:", error);
-      }
-    );
-  }
-
-  openProdModal(product:any, idKat:number){
+  openProdModal(product: any, idKat: number) {
     this.isEditingProduct = true;
     this.editingProduct = product;
     this.editingProduct.idKategoria = idKat;
     console.log(this.editingProduct);
   }
-  
-  closeProdModal(){
+
+  closeProdModal() {
     this.isEditingProduct = false;
   }
 
-  openKatModal(kategoria:any){
+  openKatModal(kategoria: any) {
     this.isEditingKategoria = true;
     this.editingKategoria = kategoria;
     console.log(this.editingKategoria);
   }
-  
-  closeKatModal(){
+
+  closeKatModal() {
     this.isEditingKategoria = false;
   }
 
@@ -220,16 +208,31 @@ export class ProduktuakPage implements OnInit {
       }
     }).subscribe(
       async (response) => {
+        this.translate.get('productos.toast.Update_OK').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
+
         await this.produktuakLortu();
         this.closeProdModal();
       },
-      (error) => {
+      async (error) => {
         console.error("Error al editar el producto:", error);
+        this.translate.get('productos.toast.Update_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
+  async mostrarToast(mensaje: string, duracion: number = 2000, color: string = 'success') {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: duracion,
+      color: color,
+      position: 'top',
+    });
+    toast.present();
+  }
 
-  
 
   eliminarProducto(id: number) {
     const confirmacion = confirm('¿Estás seguro de que quieres eliminar este producto?');
@@ -252,10 +255,19 @@ export class ProduktuakPage implements OnInit {
       body: JSON.stringify(json_data)
     }).subscribe(
       async (response) => {
+        this.translate.get('productos.toast.Delete_OK').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
+
+
         await this.produktuakLortu();
       },
-      (error) => {
+      async (error) => {
         console.error("Error al eliminar el producto:", error);
+
+        this.translate.get('productos.toast.Delete_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
@@ -281,10 +293,16 @@ export class ProduktuakPage implements OnInit {
       body: JSON.stringify(json_data)
     }).subscribe(
       async (response) => {
+        this.translate.get('productos.toastCategoría.Delete_OK').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
         await this.produktuakLortu();
       },
-      (error) => {
+      async (error) => {
         console.error("Error al eliminar la categoría del producto:", error);
+        this.translate.get('productos.toastCategoría.Delete_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
@@ -301,12 +319,45 @@ export class ProduktuakPage implements OnInit {
       }
     }).subscribe(
       async (response) => {
-        console.log('Categoría actualizada correctamente');
+        this.translate.get('productos.toastCategoría.Update_OK').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
         await this.produktuakLortu();
         this.closeKatModal();
       },
-      (error) => {
+      async (error) => {
         console.error('Error al editar la categoría del producto:', error);
+        this.translate.get('productos.toastCategoría.Update_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
+      }
+    );
+  }
+
+  kategoriaSortu() {
+    const json_data = {
+      "izena": this.crearKatNombre
+    };
+
+    console.log(json_data);
+
+    this.http.post(`${environment.url}produktu_kategoria`, json_data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    }).subscribe(
+      async (response) => {
+        this.translate.get('productos.toastCategoría.Insert_OK').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
+        await this.produktuakLortu();
+      },
+      async (error) => {
+        console.error("Error al crear la categoría:", error);
+        this.translate.get('productos.toastCategoría.Insert_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
@@ -340,7 +391,7 @@ export class ProduktuakPage implements OnInit {
       }
     );
   }
-  
+
 
   produktuakLortu() {
     this.http.get(`${environment.url}produktu_kategoria`, {
@@ -358,7 +409,7 @@ export class ProduktuakPage implements OnInit {
             produktuak: categoria.produktuak
               .filter((producto: any) => producto.ezabatzeData === null)
           }));
-          this.filteredProduktuak = this.produktuak;
+        this.filteredProduktuak = this.produktuak;
         console.log('Produktuak kargatu:', this.produktuak);
       },
       (error) => {
@@ -411,11 +462,11 @@ export class ProduktuakPage implements OnInit {
   }
 
 
-  constructor(private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService, private route: ActivatedRoute) {
+  constructor(private toastController: ToastController, private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService, private route: ActivatedRoute) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
-  
+
   ngOnInit() {
     // Suscribirse a los cambios de ruta
     this.routeSubscription = this.route.params.subscribe((params) => {
