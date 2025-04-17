@@ -382,6 +382,8 @@ export class MaterialakPage implements OnInit {
     await alert.present();
   }
 
+
+  // OIER
   async kategoriaSortu() {
     let data = {
       "izena": this.crearKatNombre,
@@ -393,11 +395,15 @@ export class MaterialakPage implements OnInit {
         console.log(datuak);
         this.materialakLortu();
         this.vaciarDatos();
-        this.mostrarToast('Categoría creada correctamente', 2000, 'success');
+        this.translate.get('materiales.toast.Kategoria_Insert').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
       },
       (error) => {
         console.error("Error al crear la categoría de material:", error);
-        this.mostrarToast('Error al crear la categoría', 2000, 'danger');
+        this.translate.get('materiales.toast.Kategoria_Insert_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
@@ -409,11 +415,15 @@ export class MaterialakPage implements OnInit {
         console.log(datuak);
         this.materialakLortu();
         this.vaciarDatos();
-        this.mostrarToast('Categoría eliminada correctamente', 2000, 'success');
+        this.translate.get('materiales.toast.Kategoria_Delete').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
       },
       (error) => {
         console.error("Error al eliminar la categoría de material:", error);
-        this.mostrarToast('Error al eliminar la categoría', 2000, 'danger');
+        this.translate.get('materiales.toast.Kategoria_Delete_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
@@ -429,15 +439,19 @@ export class MaterialakPage implements OnInit {
         console.log(datuak);
         this.materialakLortu();
         this.vaciarDatos();
-        this.mostrarToast('Categoría editada correctamente', 2000, 'success');
+        this.translate.get('materiales.toast.Kategoria_Update').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
       },
       (error) => {
         console.error("Error al editar la categoría de material:", error);
-        this.mostrarToast('Error al editar la categoría', 2000, 'danger');
+        this.translate.get('materiales.toast.Kategoria_Update_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
-
+  // OIER
   filtrarMateriales() {
     this.filteredMaterialak = this.materialak.map(categoria => ({
       ...categoria,
