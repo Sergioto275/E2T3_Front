@@ -127,13 +127,23 @@
             "etiqueta": "Baliozko etika bat sartu (10 char max)",
             "categoria": "Kategoria bat aukeratu"
         },
-        "toasts": {
-            "mensajeSacarMats": "Materialak ondo atera dira",
-            "mensajeMatsCrear": "Materiala ondo sortu da",
-            "mensajeEditarMats": "Materiala ondo editatu da",
-            "mensajeCrearCat": "Kategoria ondo sortu da",
-            "mensajeEditarCat": "Kategoria ondo editatu da",
-            "mensajeDevolverMat": "Materiala ondo bueltatu da"
+        "toast": {
+            "mensajeSacarMats": "Materialak ondo atera dira.",
+            "Insert": "Materiala sortu da.",
+            "Insert_E": "Errorea materiala sortzerakoan.",
+            "Update": "Materiala eguneratu da.",
+            "Update_E": "Errorea materiala eguneratzerakoan.",
+            "Delete": "Materiala ezabatu da.",
+            "Delete_E": "Errorea materiala ezabatzerakoan.",
+
+            "Kategoria_Insert": "Kategoria sortu da.",
+            "Kategoria_Insert_E": "Errorea kategoria sortzerakoan.",
+            "Kategoria_Update": "Kategoria eguneratu da.",
+            "Kategoria_Update_E": "Errorea kategoria eguneratzerakoan.",
+            "Kategoria_Delete": "Kategoria ezabatu da.",
+            "Kategoria_Delete_E": "Errorea kategoria ezabatzerakoan.",
+
+            "mensajeDevolverMat": "Materiala ondo bueltatu da."
         }
     },
     "citas": {

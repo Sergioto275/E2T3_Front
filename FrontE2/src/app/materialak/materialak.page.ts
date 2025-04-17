@@ -150,9 +150,7 @@ export class MaterialakPage implements OnInit {
     observableRest.subscribe(
       async (datuak) => {
         console.log(datuak);
-
-        // EDITANDO OIER
-        this.translate.get('productos.toastCategoría.Insert_OK').subscribe((texto) => { // Materiala Insert
+        this.translate.get('materiales.toast.Insert').subscribe((texto) => {
           this.mostrarToast(texto, 2000, 'success');
         });
 
@@ -160,11 +158,9 @@ export class MaterialakPage implements OnInit {
         this.vaciarDatos();
       },
       async (error) => {
-        this.translate.get('productos.toastCategoría.Insert_OK').subscribe((texto) => { // Materiala Insert E
-          this.mostrarToast(texto, 2000, 'success');
+        this.translate.get('materiales.toast.Insert_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
         });
-
-        // EDITANDO OIER
       }
     );
   }
@@ -181,7 +177,9 @@ export class MaterialakPage implements OnInit {
     this.restServer.put<any>(`${environment.url}materialak/id/${id}`, data)
       .pipe(
         catchError(err => {
-          this.presentToast('Errorea materiala egueratzerakoan.', 'danger');
+          this.translate.get('materiales.toast.Update_E').subscribe((texto) => {
+            this.mostrarToast(texto, 2000, 'danger');
+          });
           console.error(err);
           return of(null); // Si no se devuelve null, explota.
         })
@@ -191,7 +189,9 @@ export class MaterialakPage implements OnInit {
           console.log(datuak);
           this.materialakLortu();
           this.vaciarDatos();
-          this.presentToast('Materiala eguneratu da.', 'success');
+          this.translate.get('materiales.toast.Update').subscribe((texto) => {
+            this.mostrarToast(texto, 2000, 'success');
+          });
           this.modalEditar.dismiss();
         }
       });
@@ -221,12 +221,16 @@ export class MaterialakPage implements OnInit {
     observableRest.subscribe(
       async (datuak) => {
         console.log(datuak);
-        this.mostrarToast('Materiala ezabatuta', 2000, 'success');
+        this.translate.get('materiales.toast.Delete').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
         this.materialakLortu();
         this.vaciarDatos();
       },
       async (error) => {
-        this.mostrarToast('Errorea materiala ezabatzerakoan', 2000, 'danger');
+        this.translate.get('materiales.toast.Delete_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }

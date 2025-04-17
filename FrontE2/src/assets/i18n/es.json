@@ -127,14 +127,24 @@
       "etiqueta": "Debe insertar una etiqueta valida(10 char max)",
       "categoria": "Seleccione una categoria"
     },
-    "toasts": {
-      "mensajeSacarMats": "Los materiales se han sacado correctamente",
-      "mensajeMatsCrear": "El material se ha creado correctamente",
-      "mensajeEditarMats": "El material ha sido actualizado correctamente",
-      "mensajeCrearCat": "La categoría ha sido creada correctamente",
-      "mensajeEditarCat": "La categoría se ha editado correctamente",
-      "mensajeDevolverMat": "El material se ha devuelto correctamente"
-    }
+    "toast": {
+      "mensajeSacarMats": "Los materiales han salido bien.",
+      "Insert": "El mateial se ha creado.",
+      "Insert_E": "Error al crear el material.",
+      "Update": "El mateial se ha actualizado.",
+      "Update_E": "Error al actualizar el material.",
+      "Delete": "El mateial se ha eliminado.",
+      "Delete_E": "Error al eliminar el material.",
+
+      "Kategoria_Insert": "La categoría se ha .",
+      "Kategoria_Insert_E": "Error al crear la categoría.",
+      "Kategoria_Update": "La categoría se ha actualizado.",
+      "Kategoria_Update_E": "Error al actualizar la categoría.",
+      "Kategoria_Delete": "La categoría se ha eliminado.",
+      "Kategoria_Delete_E": "Error al eliminar la categoría.",
+      
+      "mensajeDevolverMat": "Materiala ondo bueltatu da."
+  }
   },
   "citas": {
     "titulo": "Citas",
