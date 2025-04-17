@@ -414,7 +414,7 @@ export class IkasleakPage implements OnInit {
       },
       (error) => {
         console.error('Error al actualizar alumno:', error);
-        this.mostrarToast(this.translate.instant('ikaslePage.ErrorActualizarAlumno'), 2000, 'danger');
+        this.mostrarToast(this.translate.instant('ikaslePage.toast.Alumno_Update_E'), 2000, 'danger');
       }
     );
   }
@@ -442,7 +442,7 @@ export class IkasleakPage implements OnInit {
       },
       (error) => {
         console.error('Error al agregar alumno:', error);
-        this.mostrarToast(this.translate.instant('ikaslePage.ErrorAgregarAlumno'), 2000, 'danger');
+        this.mostrarToast(this.translate.instant('ikaslePage.toast.Alumno_Insert_E'), 2000, 'danger');
       }
     );
   }
@@ -476,7 +476,7 @@ export class IkasleakPage implements OnInit {
       },
       (error) => {
         console.error('Error al eliminar alumno:', error);
-        this.mostrarToast(this.translate.instant('ikaslePage.ErrorEliminarAlumno'), 2000, 'danger');
+        this.mostrarToast(this.translate.instant('ikaslePage.Ikasle_Delete_E'), 2000, 'danger');
       }
     );
   }
@@ -493,7 +493,7 @@ export class IkasleakPage implements OnInit {
         },
         (error) => {
           console.error(`Error al eliminar alumno con ID ${id}:`, error);
-          this.mostrarToast(this.translate.instant('ikaslePage.ErrorEliminarAlumno'), 2000, 'danger');
+          this.mostrarToast(this.translate.instant('ikaslePage.Ikasle_Delete_E'), 2000, 'danger');
         }
       );
     });
@@ -611,7 +611,7 @@ export class IkasleakPage implements OnInit {
               },
               (error) => {
                 console.error('Error al eliminar horario:', error);
-                this.mostrarToast(this.translate.instant('ikaslePage.ErrorEliminarHorario'), 2000, 'danger');
+                this.mostrarToast(this.translate.instant('ikaslePage.Ordutegi_Delete_E'), 2000, 'danger');
               }
             );
           },

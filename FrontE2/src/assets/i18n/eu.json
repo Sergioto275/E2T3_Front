@@ -355,6 +355,12 @@
             "HoraInicio": "Sartu hasierako ordu bat",
             "HoraFin": "Sartu amaierako ordu bat",
             "HoraInicioMenor": "Hasierako orduak ez du amaierako ordua baino txikiagoa izan behar"
+        },
+        "toast": {
+            "Alumno_Insert_E": "Errorea ikaslea sortzerakoan.",
+            "Alumno_Update_E": "Errorea ikasleak eguneratzerakoan.",
+            "Ordutegi_Delete_E": "Errorea ordutegia ezabatzerakoan.",
+            "Ikasle_Delete_E": "Errorea ikaslea ezabatzerakoan."
         }
     },
     "txandakPage": {

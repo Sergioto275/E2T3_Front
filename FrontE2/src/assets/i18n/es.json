@@ -373,6 +373,12 @@
       "HoraInicio": "Debe insertar una hora de inicio",
       "HoraFin": "Debe insertar una hora fin",
       "HoraInicioMenor": "La hora inicio no puede ser menor que la hora fin"
+    },
+    "toast": {
+      "Alumno_Insert_E": "Errorea ikaslea sortzerakoan.",
+      "Alumno_Update_E": "Error al actualizar el alumno.",
+      "Ordutegi_Delete_E": "Error al actualizar el horario.",
+      "Ikasle_Delete_E": "Error al eliminar el alumno."
     }
   },
   "txandakPage": {
