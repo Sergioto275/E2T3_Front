@@ -151,25 +151,22 @@ export class MaterialakPage implements OnInit {
       async (datuak) => {
         console.log(datuak);
 
-        this.mostrarToastS('Materiala dortu da', 2000, 'success');
+        // EDITANDO OIER
+        this.translate.get('productos.toastCategoría.Insert_OK').subscribe((texto) => { // Materiala Insert
+          this.mostrarToast(texto, 2000, 'success');
+        });
 
         this.materialakLortu();
         this.vaciarDatos();
       },
       async (error) => {
-        this.mostrarToastS('Errorea materiala sortzerakoan', 2000, 'danger');
+        this.translate.get('productos.toastCategoría.Insert_OK').subscribe((texto) => { // Materiala Insert E
+          this.mostrarToast(texto, 2000, 'success');
+        });
+
+        // EDITANDO OIER
       }
     );
-  }
-
-  async mostrarToastS(mensaje: string, duracion: number = 2000, color: string = 'success') {
-    const toast = await this.toastController.create({
-      message: mensaje,
-      duration: duracion,
-      color: color,
-      position: 'top',
-    });
-    toast.present();
   }
 
   materialaEditatu(id: number) {
