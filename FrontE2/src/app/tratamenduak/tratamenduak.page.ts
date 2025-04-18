@@ -169,12 +169,16 @@ export class TratamenduakPage implements OnInit {
     }).subscribe(
       async (response) => {
         console.log('Servicio creado correctamente');
-        this.mostrarToast('Zerbitzua sortu da.', 2000, 'success');
+        this.translate.get('servicios.toast.Insert').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
         this.zerbiztuakLortu();
       },
       async (error) => {
         console.error('Error al crear el servicio:', error);
-        this.mostrarToast('Errorea zerbitzua sortzerakoan.', 2000, 'danger');
+        this.translate.get('servicios.toast.Insert_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
@@ -201,12 +205,16 @@ export class TratamenduakPage implements OnInit {
     }).subscribe(
       async (response) => {
         console.log('Servicio actualizado correctamente');
-        this.mostrarToast('Zerbitzua eguneratu da.', 2000, 'success');
+        this.translate.get('servicios.toast.Update').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
         this.zerbiztuakLortu();
       },
       async (error) => {
         console.error('Errorea zerbitzua eguneratzerakoan:', error);
-        this.mostrarToast('Errorea zerbitzua eguneratzerakoan.', 2000, 'danger');
+        this.translate.get('servicios.toast.Update_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
@@ -232,14 +240,18 @@ export class TratamenduakPage implements OnInit {
     }).subscribe(
       async (response) => {
         console.log('Servicio eliminado correctamente');
-        this.mostrarToast('Zerbitzua ezabatu da.', 2000, 'success');
+        this.translate.get('servicios.toast.Delete').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
         this.zerbiztuakLortu();
       },
       async (error) => {
         console.error('Errorea zerbitzua ezabatzerakoan:', error);
 
         // Mostrar toast de error
-        this.mostrarToast('Errorea zerbitzua ezabatzerakoan.', 2000, 'danger');
+        this.translate.get('servicios.toast.Delete_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }

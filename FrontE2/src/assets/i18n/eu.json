@@ -277,6 +277,14 @@
             "precioFuera": "Kanpoko prezioa sartu behar da",
             "precioDentro": "Etxeko prezioa sartu behar da",
             "categoria": "Kategoria bat aukeratu behar da"
+        },
+        "toast": {
+            "Insert": "Zerbitzua sortu da.",
+            "Insert_E": "Errorea zerbitzua sortzerakoan.",
+            "Update": "Zerbitzua eguneratu da.",
+            "Update_E": "Errorea zerbitzua eguneratzerakoan.",
+            "Delete": "Zerbitzua ezabatu da.",
+            "Delete_E": "Errorea zerbitzua ezabatzerakoan."
         }
     },
     "ikaslePage": {

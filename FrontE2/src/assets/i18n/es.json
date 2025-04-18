@@ -293,6 +293,14 @@
       "precioFuera": "Introduce el precio de fuera",
       "precioDentro": "Introduce el precio de dentro",
       "categoria": "Seleccione una categoria"
+    },
+    "toast": {
+        "Insert": "El servicio se ha creado.",
+        "Insert_E": "Error al crear el servicio.",
+        "Update": "El servicio se ha actualizado.",
+        "Update_E": "Error al actualizar el servicio.",
+        "Delete": "El servicio se ha eliminado.",
+        "Delete_E": "Error al eliminar el servicio."
     }
   },
   "ikaslePage": {

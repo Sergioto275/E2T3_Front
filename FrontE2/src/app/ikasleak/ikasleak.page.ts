@@ -317,14 +317,14 @@ export class IkasleakPage implements OnInit {
         await this.getGrupos();
         await this.getAlumnos();
         this.modalController.dismiss();
-        this.translate.get('ikaslePage.toast.Talde_Insert').subscribe((texto) => { // Talde Insert
+        this.translate.get('ikaslePage.toast.Talde_Insert').subscribe((texto) => {
           this.mostrarToast(texto, 2000, 'success');
         });
         this.nuevoGrupo = { kodea: '', izena: '' };
       },
       (error) => {
         console.error('Error al agregar grupo:', error);
-        this.translate.get('ikaslePage.toast.Talde_Insert_E').subscribe((texto) => { // Talde Insert E
+        this.translate.get('ikaslePage.toast.Talde_Insert_E').subscribe((texto) => {
           this.mostrarToast(texto, 2000, 'danger');
         });
       }
@@ -342,13 +342,13 @@ export class IkasleakPage implements OnInit {
         await this.getAlumnos();
         await this.getGrupos();
         this.closeEditTaldeModal();
-        this.translate.get('ikaslePage.toast.Talde_Update').subscribe((texto) => { // Talde Update
+        this.translate.get('ikaslePage.toast.Talde_Update').subscribe((texto) => {
           this.mostrarToast(texto, 2000, 'success');
         });
       },
       (error) => {
         console.error('Error al actualizar grupo:', error);
-        this.translate.get('ikaslePage.toast.Talde_Update_E').subscribe((texto) => { // Talde Update E
+        this.translate.get('ikaslePage.toast.Talde_Update_E').subscribe((texto) => {
           this.mostrarToast(texto, 2000, 'danger');
         });
       }
@@ -383,13 +383,13 @@ export class IkasleakPage implements OnInit {
         await this.getGrupos();
         await this.getAlumnos();
         await this.getHorarios();
-        this.translate.get('ikaslePage.toast.Talde_Delete').subscribe((texto) => { // Talde Delete
+        this.translate.get('ikaslePage.toast.Talde_Delete').subscribe((texto) => {
           this.mostrarToast(texto, 2000, 'success');
         });
       },
       (error) => {
         console.error('Error al eliminar grupo:', error);
-        this.translate.get('ikaslePage.toast.Talde_Delete_E').subscribe((texto) => { // Talde Delete E
+        this.translate.get('ikaslePage.toast.Talde_Delete_E').subscribe((texto) => {
           this.mostrarToast(texto, 2000, 'danger');
         });
       }
