@@ -271,13 +271,17 @@ export class TratamenduakPage implements OnInit {
       }
     }).subscribe(
       async (response) => {
-        this.mostrarToast('Categoría creada correctamente', 2000, 'success');
+        this.translate.get('servicios.toast.Kategoria_Insert').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
         this.zerbiztuakLortu();
         this.closeKatModal();
       },
       async (error) => {
         console.error('Error al crear la categoría de servicio:', error);
-        this.mostrarToast('Error al crear la categoría', 2000, 'danger');
+        this.translate.get('servicios.toast.Kategoria_Insert_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
@@ -298,13 +302,17 @@ export class TratamenduakPage implements OnInit {
       }
     }).subscribe(
       async (response) => {
-        this.mostrarToast('Categoría editada correctamente', 2000, 'success');
+        this.translate.get('servicios.toast.Kategoria_Update').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
         this.zerbiztuakLortu();
         this.closeKatModal();
       },
       async (error) => {
         console.error('Error al editar la categoría de servicio:', error);
-        this.mostrarToast('Error al editar la categoría', 2000, 'danger');
+        this.translate.get('servicios.toast.Kategoria_Update_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
@@ -317,12 +325,16 @@ export class TratamenduakPage implements OnInit {
       }
     }).subscribe(
       async (response) => {
-        this.mostrarToast('Categoría eliminada correctamente', 2000, 'success');
+        this.translate.get('servicios.toast.Kategoria_Delete').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
         this.zerbiztuakLortu();
       },
       async (error) => {
         console.error('Error al eliminar la categoría de servicio:', error);
-        this.mostrarToast('Error al eliminar la categoría', 2000, 'danger');
+        this.translate.get('servicios.toast.Kategoria_Delete_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }

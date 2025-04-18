@@ -284,7 +284,14 @@
             "Update": "Zerbitzua eguneratu da.",
             "Update_E": "Errorea zerbitzua eguneratzerakoan.",
             "Delete": "Zerbitzua ezabatu da.",
-            "Delete_E": "Errorea zerbitzua ezabatzerakoan."
+            "Delete_E": "Errorea zerbitzua ezabatzerakoan.",
+
+            "Kategoria_Insert": "Kategoria sortu da.",
+            "Kategoria_Insert_E": "Errorea kategoria sortzerakoan.",
+            "Kategoria_Update": "Kategoria eguneratu da.",
+            "Kategoria_Update_E": "Errorea kategoria eguneratzerakoan.",
+            "Kategoria_Delete": "Kategoria ezabatu da.",
+            "Kategoria_Delete_E": "Errorea kategoria ezabatzerakoan."
         }
     },
     "ikaslePage": {

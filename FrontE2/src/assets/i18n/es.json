@@ -300,7 +300,14 @@
         "Update": "El servicio se ha actualizado.",
         "Update_E": "Error al actualizar el servicio.",
         "Delete": "El servicio se ha eliminado.",
-        "Delete_E": "Error al eliminar el servicio."
+        "Delete_E": "Error al eliminar el servicio.",
+
+        "Kategoria_Insert": "La categoría se ha creado.",
+        "Kategoria_Insert_E": "Error al crear la categoría.",
+        "Kategoria_Update": "La categoría se ha actualizado.",
+        "Kategoria_Update_E": "Error al actualizar la categoría.",
+        "Kategoria_Delete": "La categoría se ha eliminado.",
+        "Kategoria_Delete_E": "Error al eliminar la categoría."
     }
   },
   "ikaslePage": {
