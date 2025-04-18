@@ -385,10 +385,17 @@
       "HoraInicioMenor": "La hora inicio no puede ser menor que la hora fin"
     },
     "toast": {
-      "Alumno_Insert_E": "Errorea ikaslea sortzerakoan.",
+      "Alumno_Insert_E": "Error al crear el alumno.",
       "Alumno_Update_E": "Error al actualizar el alumno.",
       "Ordutegi_Delete_E": "Error al actualizar el horario.",
-      "Ikasle_Delete_E": "Error al eliminar el alumno."
+      "Ikasle_Delete_E": "Error al eliminar el alumno.",
+
+      "Talde_Insert": "El grupo se ha creado.",
+      "Talde_Insert_E": "Error al crear el grupo.",
+      "Talde_Update": "El grupo se ha actualizado.",
+      "Talde_Update_E": "Error al actualizar el grupo.",
+      "Talde_Delete": "El grupo se ha eliminado.",
+      "Talde_Delete_E": "Error al eliminar el grupo."
     }
   },
   "txandakPage": {

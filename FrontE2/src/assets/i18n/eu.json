@@ -370,7 +370,14 @@
             "Alumno_Insert_E": "Errorea ikaslea sortzerakoan.",
             "Alumno_Update_E": "Errorea ikasleak eguneratzerakoan.",
             "Ordutegi_Delete_E": "Errorea ordutegia ezabatzerakoan.",
-            "Ikasle_Delete_E": "Errorea ikaslea ezabatzerakoan."
+            "Ikasle_Delete_E": "Errorea ikaslea ezabatzerakoan.",
+
+            "Talde_Insert": "Taldea sortu da.",
+            "Talde_Insert_E": "Errorea taldea sortzerakoan.",
+            "Talde_Update": "Taldea eguneratu da.",
+            "Talde_Update_E": "Errorea taldea eguneratzerakoan.",
+            "Talde_Delete": "Taldea ezabatu da.",
+            "Talde_Delete_E": "Errorea taldea ezabatzerakoan."
         }
     },
     "txandakPage": {
