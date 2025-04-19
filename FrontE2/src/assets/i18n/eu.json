@@ -357,12 +357,9 @@
         "MensajeEliminarAlumno": "Ikasle hau ezabatu nahi duzulaz ziur zaude?",
         "MensajeEliminarGrupo": "Taldea ezabatu nahi duzulaz ziur zaude?",
         "MensajeEliminarHorario": "Taldearen ordutegia ezabatu nahi duzulaz ziur zaude? ",
-        "AlumnoEliminado": "Ikaslea ezabatu da",
         "GrupoEliminado": "Taldea ezabatu da",
         "HorarioEliminado": "Ordutegia ezabatu da",
-        "AlumnoAgregado": "Ikaslea gehitu da",
         "GrupoAgregado": "Taldea gehitu da",
-        "AlumnoActualizado": "Ikaslea eguneratu da",
         "GrupoActualizado": "Taldea eguneratu da",
         "HorarioGuardado": "Ordutegia gorde da",
         "ErrorGuardarHorario": "Errore bat gertatu da ordutegia gordetzean",
@@ -370,7 +367,6 @@
         "ErrorActualizarHorario": "Errore bat gertatu da egutegia eguneratzerakoan",
         "Cancelar": "Utzi",
         "GuardarCambios": "Aldaketak gorde",
-        "EliminarAlumnos": "Ikaslea/k ezabatu dira",
         "validaciones": {
             "kodea": "Sartu talde kode baliodun bat (gehienez 5 karaktere)",
             "kodeaSelec": "Hautatu talde bat",
@@ -385,8 +381,13 @@
             "HoraInicioMenor": "Hasierako orduak ez du amaierako ordua baino txikiagoa izan behar"
         },
         "toast": {
+            "Alumno_Insert": "Ikaslea sortu da.",
             "Alumno_Insert_E": "Errorea ikaslea sortzerakoan.",
-            "Alumno_Update_E": "Errorea ikasleak eguneratzerakoan.",
+            "Alumno_Update": "Ikaslea eguneratu da.",
+            "Alumno_Update_E": "Errorea ikaslea eguneratzerakoan.",
+            "Alumno_Delete": "Ikaslea(k) ezabatu d(ir)a.",
+            "Alumno_Delete_E": "Errorea ikaslea(k) ezabatzerakoan.",
+
             "Ordutegi_Delete_E": "Errorea ordutegia ezabatzerakoan.",
             "Ikasle_Delete_E": "Errorea ikaslea ezabatzerakoan.",
 

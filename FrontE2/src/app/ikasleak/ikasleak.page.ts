@@ -407,6 +407,7 @@ export class IkasleakPage implements OnInit {
     toast.present();
   }
 
+  // OIER
   updateAlumno() {
     const updatedAlumno = {
       id: this.selectedAlumno.id,
@@ -422,11 +423,15 @@ export class IkasleakPage implements OnInit {
         await this.getGrupos();
         await this.getAlumnos();
         this.closeEditModal();
-        this.mostrarToast(this.translate.instant('ikaslePage.AlumnoActualizado'), 2000, 'success');
+        this.translate.get('ikaslePage.toast.Alumno_Update').subscribe((texto) => { //
+          this.mostrarToast(texto, 2000, 'success');
+        });
       },
       (error) => {
         console.error('Error al actualizar alumno:', error);
-        this.mostrarToast(this.translate.instant('ikaslePage.toast.Alumno_Update_E'), 2000, 'danger');
+        this.translate.get('ikaslePage.toast.Alumno_Update_E').subscribe((texto) => { //
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
@@ -445,7 +450,9 @@ export class IkasleakPage implements OnInit {
         await this.getAlumnos();
         await this.getGrupos();
         this.modalController.dismiss();
-        this.mostrarToast(this.translate.instant('ikaslePage.AlumnoAgregado'), 2000, 'success');
+        this.translate.get('ikaslePage.toast.Alumno_Insert').subscribe((texto) => { //
+          this.mostrarToast(texto, 2000, 'success');
+        });
         this.nuevoAlumno = {
           izena: '',
           abizenak: '',
@@ -454,10 +461,53 @@ export class IkasleakPage implements OnInit {
       },
       (error) => {
         console.error('Error al agregar alumno:', error);
-        this.mostrarToast(this.translate.instant('ikaslePage.toast.Alumno_Insert_E'), 2000, 'danger');
+        this.translate.get('ikaslePage.toast.Alumno_Insert_E').subscribe((texto) => { //
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
+
+  eliminarAlumno(alumnoId: number) {
+    this.ikasleService.eliminarAlumno(alumnoId).subscribe(
+      async () => {
+        await this.getAlumnos();
+        await this.getGrupos();
+        this.translate.get('ikaslePage.toast.Alumno_Delete').subscribe((texto) => { //
+          this.mostrarToast(texto, 2000, 'success');
+        });
+      },
+      (error) => {
+        console.error('Error al eliminar alumno:', error);
+        this.translate.get('ikaslePage.toast.Alumno_Delete_E').subscribe((texto) => { //
+          this.mostrarToast(texto, 2000, 'danger');
+        });
+      }
+    );
+  }
+
+  eliminarAlumnos() {
+    this.selectedIkasleak.forEach((id) => {
+      this.ikasleService.eliminarAlumno(id).subscribe(
+        async () => {
+          await this.getAlumnos();
+          await this.getGrupos();
+          this.closeModal();
+          this.mostrarToast(this.translate.instant('ikaslePage.toast.Alumno_Delete'), 2000, 'success');
+        },
+        (error) => {
+          console.error(`Error al eliminar alumno con ID ${id}:`, error);
+          this.mostrarToast(this.translate.instant('ikaslePage.toast.Alumno_Delete_E'), 2000, 'danger');
+        }
+      );
+    });
+
+    this.selectedIkasleak.clear();
+  }
+
+  /**
+   */
+  // OIER
 
   async confirmarEliminacionAlumno(alumnoId: number) {
     const alert = await this.alertController.create({
@@ -479,39 +529,6 @@ export class IkasleakPage implements OnInit {
     await alert.present();
   }
 
-  eliminarAlumno(alumnoId: number) {
-    this.ikasleService.eliminarAlumno(alumnoId).subscribe(
-      async () => {
-        await this.getAlumnos();
-        await this.getGrupos();
-        this.mostrarToast(this.translate.instant('ikaslePage.AlumnoEliminado'), 2000, 'success');
-      },
-      (error) => {
-        console.error('Error al eliminar alumno:', error);
-        this.mostrarToast(this.translate.instant('ikaslePage.Ikasle_Delete_E'), 2000, 'danger');
-      }
-    );
-  }
-
-
-  eliminarAlumnos() {
-    this.selectedIkasleak.forEach((id) => {
-      this.ikasleService.eliminarAlumno(id).subscribe(
-        async () => {
-          await this.getAlumnos();
-          await this.getGrupos();
-          this.closeModal();
-          this.mostrarToast(this.translate.instant('ikaslePage.EliminarAlumnos'), 2000, 'success');
-        },
-        (error) => {
-          console.error(`Error al eliminar alumno con ID ${id}:`, error);
-          this.mostrarToast(this.translate.instant('ikaslePage.Ikasle_Delete_E'), 2000, 'danger');
-        }
-      );
-    });
-
-    this.selectedIkasleak.clear();
-  }
   guardarHorario() {
     const formattedFechaInicio = this.formatDate(this.fechaInicio);
     const formattedFechaFin = this.formatDate(this.fechaFin);
