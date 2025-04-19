@@ -481,13 +481,17 @@ export class HitzorduakPage implements OnInit {
       }
     }).subscribe(
       async () => {
-        this.mostrarToast('Cita creada correctamente', 2000, 'success');
+        this.translate.get('citas.toast.Insert').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
         await this.cargarHitzordu();
         this.limpiar_campos();
       },
       (error) => {
         console.error("Error al crear la cita:", error);
-        this.mostrarToast('Error al crear la cita', 2000, 'danger');
+        this.translate.get('citas.toast.Insert_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
@@ -513,13 +517,17 @@ export class HitzorduakPage implements OnInit {
       }
     }).subscribe(
       async () => {
-        this.mostrarToast('Cita actualizada correctamente', 2000, 'success');
+        this.translate.get('citas.toast.Update').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
         await this.cargarHitzordu();
         this.limpiar_campos();
       },
       (error) => {
         console.error("Error al editar la cita:", error);
-        this.mostrarToast('Error al editar la cita', 2000, 'danger');
+        this.translate.get('citas.toast.Update_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
@@ -535,13 +543,17 @@ export class HitzorduakPage implements OnInit {
       body: JSON.stringify(json_data)
     }).subscribe(
       async () => {
-        this.mostrarToast('Cita eliminada correctamente', 2000, 'success');
+        this.translate.get('citas.toast.Delete').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
         await this.cargarHitzordu();
         this.limpiar_campos();
       },
       (error) => {
         console.error("Error al eliminar la cita:", error);
-        this.mostrarToast('Error al eliminar la cita', 2000, 'danger');
+        this.translate.get('citas.toast.Delete_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }

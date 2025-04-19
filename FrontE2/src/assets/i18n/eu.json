@@ -203,6 +203,14 @@
             "generado": "Hitzordu honek dagoeneko ticketa sortuta du",
             "noAsignada": "Ezin duzu esleituta ez dagoen hitzordu bati tiketa sortu.",
             "selectService": "Tiketa sortzeko gutxienez zerbitzu bat hautatu behar duzu."
+        },
+        "toast": {
+          "Insert": "Hitzordua sortu da.",
+          "Insert_E": "Errorea hitzordua sortzerakoan.",
+          "Update": "Hitzordua eguneratu da.",
+          "Update_E": "Errorea hitzordua eguneratzerakoan.",
+          "Delete": "Hitzordua ezabatu da.",
+          "Delete_E": "Errorea hitzordua ezabatzerakoan."
         }
     },
     "historial": {

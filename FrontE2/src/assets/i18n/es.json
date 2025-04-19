@@ -43,7 +43,7 @@
       "Update_E": "Ha habido un error al actualizar el producto.",
       "Delete_OK": "El produkto se ha eliminado.",
       "Delete_E": "Ha habido un error al eliminar le producto.",
-      "img":"No hay imagenes disponibles"
+      "img": "No hay imagenes disponibles"
     },
     "toastCategoría": {
       "Insert_OK": "La categoría de producto se ha creado.",
@@ -52,7 +52,7 @@
       "Update_E": "Ha habido un error al actualizar la categoría de producto.",
       "Delete_OK": "La categoría de producto se ha eliminado",
       "Delete_E": "Ha habido un error al eliminar la categoría de producto."
-  },
+    },
     "modal": {
       "sacarProductos": "Sacar Productos",
       "alumno": "Alumno",
@@ -135,19 +135,17 @@
       "Update_E": "Error al actualizar el material.",
       "Delete": "El mateial se ha eliminado.",
       "Delete_E": "Error al eliminar el material.",
-
       "Kategoria_Insert": "La categoría se ha creado.",
       "Kategoria_Insert_E": "Error al crear la categoría.",
       "Kategoria_Update": "La categoría se ha actualizado.",
       "Kategoria_Update_E": "Error al actualizar la categoría.",
       "Kategoria_Delete": "La categoría se ha eliminado.",
       "Kategoria_Delete_E": "Error al eliminar la categoría.",
-      
       "sacar_Material": "El material se ha sacado.",
       "sacar_Material_E": "Error al sacar el material.",
       "devolver_Material": "El material se ha devuelto.",
       "devolver_Material_E": "Error al devolver el material."
-  }
+    }
   },
   "citas": {
     "titulo": "Citas",
@@ -203,6 +201,14 @@
       "generado": "Esta cita ya tiene el ticket generado.",
       "noAsignada": "No puede generar un ticket de una cita no asignada.",
       "selectService": "Debe seleccionar al menos un servicio para generar el ticket."
+    },
+    "toast": {
+      "Insert": "La cita se ha creado.",
+      "Insert_E": "Error al crear la cita.",
+      "Update": "La cita se ha actualizado.",
+      "Update_E": "Error al actualizar la cita.",
+      "Delete": "La cita se ha eliminado.",
+      "Delete_E": "Error al eliminar la cita."
     }
   },
   "historial": {
@@ -238,7 +244,7 @@
       "volumen": "volumen",
       "comentarios": "Comentarios",
       "img": "Imagenes",
-      "ver_fotos":"Ver Fotos",
+      "ver_fotos": "Ver Fotos",
       "reset": "Reset",
       "filtroFecha": "Filtrar por Fecha",
       "filtroBezero": "Busca nombre o apellido"
@@ -298,19 +304,18 @@
       "categoria": "Seleccione una categoria"
     },
     "toast": {
-        "Insert": "El servicio se ha creado.",
-        "Insert_E": "Error al crear el servicio.",
-        "Update": "El servicio se ha actualizado.",
-        "Update_E": "Error al actualizar el servicio.",
-        "Delete": "El servicio se ha eliminado.",
-        "Delete_E": "Error al eliminar el servicio.",
-
-        "Kategoria_Insert": "La categoría se ha creado.",
-        "Kategoria_Insert_E": "Error al crear la categoría.",
-        "Kategoria_Update": "La categoría se ha actualizado.",
-        "Kategoria_Update_E": "Error al actualizar la categoría.",
-        "Kategoria_Delete": "La categoría se ha eliminado.",
-        "Kategoria_Delete_E": "Error al eliminar la categoría."
+      "Insert": "El servicio se ha creado.",
+      "Insert_E": "Error al crear el servicio.",
+      "Update": "El servicio se ha actualizado.",
+      "Update_E": "Error al actualizar el servicio.",
+      "Delete": "El servicio se ha eliminado.",
+      "Delete_E": "Error al eliminar el servicio.",
+      "Kategoria_Insert": "La categoría se ha creado.",
+      "Kategoria_Insert_E": "Error al crear la categoría.",
+      "Kategoria_Update": "La categoría se ha actualizado.",
+      "Kategoria_Update_E": "Error al actualizar la categoría.",
+      "Kategoria_Delete": "La categoría se ha eliminado.",
+      "Kategoria_Delete_E": "Error al eliminar la categoría."
     }
   },
   "ikaslePage": {
@@ -405,10 +410,8 @@
       "Alumno_Update_E": "Error al actualizar el alumno.",
       "Alumno_Delete": "El / Los alumno(s) se ha(n) eliminado.",
       "Alumno_Delete_E": "Error al eliminar el / los alumno(s).",
-
       "Ordutegi_Delete_E": "Error al actualizar el horario.",
       "Ikasle_Delete_E": "Error al eliminar el alumno.",
-
       "Talde_Insert": "El grupo se ha creado.",
       "Talde_Insert_E": "Error al crear el grupo.",
       "Talde_Update": "El grupo se ha actualizado.",
