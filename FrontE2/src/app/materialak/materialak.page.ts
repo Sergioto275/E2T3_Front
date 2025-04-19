@@ -382,8 +382,6 @@ export class MaterialakPage implements OnInit {
     await alert.present();
   }
 
-
-  // OIER
   async kategoriaSortu() {
     let data = {
       "izena": this.crearKatNombre,
@@ -451,7 +449,7 @@ export class MaterialakPage implements OnInit {
       }
     );
   }
-  // OIER
+
   filtrarMateriales() {
     this.filteredMaterialak = this.materialak.map(categoria => ({
       ...categoria,
@@ -513,11 +511,15 @@ export class MaterialakPage implements OnInit {
         this.vaciarDatos();
         this.materialakLortu();
         this.materialakLortuDevolver();
-        this.mostrarToast(this.translate.instant('materialPage.MaterialPrestado'), 2000, 'success');
+        this.translate.get('materiales.toast.sacar_Material').subscribe((texto) => { // Material Prestado
+          this.mostrarToast(texto, 2000, 'success');
+        });
       },
       (error) => {
         console.error('Errorea materialak ateratzerakoan:', error);
-        this.mostrarToast(this.translate.instant('materialPage.ErrorPrestarMaterial'), 2000, 'danger');
+        this.translate.get('materiales.toast.sacar_Material_E').subscribe((texto) => { // Material Prestado E
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
@@ -536,11 +538,15 @@ export class MaterialakPage implements OnInit {
         this.materialakLortu();
         this.materialakLortuDevolver();
         this.vaciarDatos();
-        this.mostrarToast(this.translate.instant('materialPage.ErrorDevolverMaterial'), 2000, 'danger');
+        this.translate.get('materiales.toast.devolver_Material').subscribe((texto) => { // Material Devuelto
+          this.mostrarToast(texto, 2000, 'success');
+        });
       },
       (error) => {
         console.error('Errorea materialak bueltatzerakoan:', error);
-        this.mostrarToast(this.translate.instant('materialPage.MaterialDevuelto'), 2000, 'success');
+        this.translate.get('materiales.toast.devolver_Material_E').subscribe((texto) => { // Material Devuelto E
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }

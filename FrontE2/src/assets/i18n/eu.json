@@ -142,8 +142,11 @@
             "Kategoria_Update_E": "Errorea kategoria eguneratzerakoan.",
             "Kategoria_Delete": "Kategoria ezabatu da.",
             "Kategoria_Delete_E": "Errorea kategoria ezabatzerakoan.",
-
-            "mensajeDevolverMat": "Materiala ondo bueltatu da."
+      
+            "sacar_Material": "Materiala atera da.",
+            "sacar_Material_E": "Errorea materiala ateratzerakoan.",
+            "devolver_Material": "Materiala bueltatu da.",
+            "devolver_Material_E": "Errorea materiala bueltatzerakoan."
         }
     },
     "citas": {

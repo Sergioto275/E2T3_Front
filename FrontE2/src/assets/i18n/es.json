@@ -143,7 +143,10 @@
       "Kategoria_Delete": "La categoría se ha eliminado.",
       "Kategoria_Delete_E": "Error al eliminar la categoría.",
       
-      "mensajeDevolverMat": "Materiala ondo bueltatu da."
+      "sacar_Material": "El material se ha sacado.",
+      "sacar_Material_E": "Error al sacar el material.",
+      "devolver_Material": "El material se ha devuelto.",
+      "devolver_Material_E": "Error al devolver el material."
   }
   },
   "citas": {
