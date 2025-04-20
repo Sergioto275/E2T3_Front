@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  url: 'http://localhost:8080/api/',
-  entorno: 'desarrollo',
+  url: 'https://localhost:8443/api/',  
+  entorno: 'FPSanturtzi',
 };
 
 /*
