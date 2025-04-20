@@ -5,18 +5,16 @@ import { Injectable } from '@angular/core';
 })
 export class ModoOscuroService {
 
-  private readonly storageKey = 'modoOscuro';  // Clave para guardar en localStorage
+  private readonly storageKey = 'modoOscuro'; 
 
   constructor() {}
 
-  // Método para obtener el estado del modo oscuro desde localStorage
   getModoOscuro(): Boolean {
     const modoOscuro = localStorage.getItem(this.storageKey);
-    return modoOscuro === 'true';  // Devuelve 'true' si el valor en localStorage es 'true'
+    return modoOscuro === 'true';  
   }
 
-  // Método para guardar el estado del modo oscuro en localStorage
   setModoOscuro(modoOscuro: Boolean): void {
-    localStorage.setItem(this.storageKey, String(modoOscuro));  // Guarda el valor como string
+    localStorage.setItem(this.storageKey, String(modoOscuro)); 
   }
 }

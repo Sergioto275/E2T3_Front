@@ -313,8 +313,16 @@ ion-menu::part(container) {
   }
 
   ion-content {
-    --background: #121212;
+    --background: var(--ion-background-color) !important;
+    background: var(--ion-background-color) !important;
+    color: var(--ion-text-color);
+    
+    /* Estilos específicos para el contenido */
+    .content {
+      background-color: var(--ion-item-background);
+    }
   }
+
 
   ion-header {
     --background: var(--ion-color-primary);
@@ -342,14 +350,6 @@ ion-menu::part(container) {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     border-left: 4px solid var(--ion-color-tertiary);
     
-    ion-card-header {
-      --background: #{darken($color-tertiary, 30%)};
-      --color: #{$color-white};
-      
-      ion-card-title {
-        color: var(--ion-color-primary);
-      }
-    }
   }
 
   ion-button {
@@ -372,9 +372,6 @@ ion-menu::part(container) {
       }
     }
 
-    ion-content {
-      --background: linear-gradient(135deg, #1e1e1e 0%, #{$color-secondary} 100%);
-    }
 
     ion-list {
       ion-item {
@@ -411,4 +408,5 @@ ion-menu::part(container) {
   ion-header, ion-card {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   }
+
 }
