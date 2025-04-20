@@ -11,6 +11,13 @@
         <ion-select-option value="es" style="--color: #1c345c;">Español</ion-select-option>
         <ion-select-option value="eu" style="--color: #1c345c;">Euskera</ion-select-option>
       </ion-select>
+            <!-- Icono dinámico modo oscuro/claro -->
+            <ion-buttons slot="primary">
+              <ion-button fill="clear" (click)="ponerModoOscuro()" class="theme-toggle">
+                <ion-icon *ngIf="modoOscuro" name="moon-outline"></ion-icon>
+                <ion-icon *ngIf="!modoOscuro" name="sunny-outline"></ion-icon>
+              </ion-button>
+            </ion-buttons>      
     </ion-toolbar>
   </ion-header>
 

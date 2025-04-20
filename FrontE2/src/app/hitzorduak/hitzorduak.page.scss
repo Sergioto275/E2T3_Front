@@ -159,76 +159,6 @@ th, td {
   color: var(--accent-color);
 }
 
-// /* Panel de acciones */
-// .actions-panel {
-//   background: white;
-//   border-radius: var(--border-radius);
-//   box-shadow: var(--box-shadow);
-//   overflow: hidden;
-// }
-
-// .action-tabs {
-//   --background: #f8f9fa;
-//   --border-radius: var(--border-radius);
-//   padding: 8px;
-// }
-
-// .action-tabs ion-segment-button {
-//   --color: var(--text-color);
-//   --color-checked: var(--primary-color);
-//   --indicator-color: var(--primary-color);
-//   --border-radius: 6px;
-//   min-height: 40px;
-// }
-
-// .tab-content {
-//   padding: 16px;
-// }
-
-// /* Formularios */
-// ion-list {
-//   background: transparent;
-// }
-
-// ion-item {
-//   --border-color: #e0e0e0;
-//   --padding-start: 0;
-//   --inner-padding-end: 0;
-//   --background: transparent;
-// }
-
-// ion-input, ion-textarea, ion-select {
-//   --background: #{var(--primary-color)};
-//   --padding-start: 12px;
-//   --padding-end: 12px;
-//   --border-radius: 6px;
-//   margin-top: 8px;
-// }
-
-// ion-label[position="stacked"] {
-//   font-weight: 500;
-//   color: var(--text-color);
-// }
-
-// /* Categorías de servicios */
-// .service-category {
-//   margin-bottom: 16px;
-// }
-
-// .service-item {
-//   --padding-start: 0;
-//   --inner-padding-end: 0;
-// }
-
-// .service-label {
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-// }
-
-// .service-name {
-//   font-size: 0.9rem;
-// }
 
 .service-price {
   font-size: 0.9rem;
@@ -243,29 +173,6 @@ th, td {
   text-align: right;
 }
 
-// /* Botones */
-// .submit-button {
-//   --background: var(--primary-color);
-//   --background-activated: var(--secondary-color);
-//   --border-radius: var(--border-radius);
-//   margin-top: 16px;
-//   height: 48px;
-//   font-weight: 500;
-// }
-
-// .delete-button {
-//   --border-radius: var(--border-radius);
-//   margin-top: 8px;
-//   height: 48px;
-//   font-weight: 500;
-// }
-
-// .action-buttons {
-//   display: flex;
-//   flex-direction: column;
-//   gap: 8px;
-//   color: var(--primary-color);
-// }
 
 /* Selector de fecha */
 .date-selector {
@@ -308,4 +215,36 @@ ion-text[color="danger"] {
   font-size: 0.8rem;
   margin-top: 4px;
   display: block;
+}
+
+.theme-toggle {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  
+  ion-icon {
+    color: white;
+    font-size: 24px;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: rotate(15deg) scale(1.1);
+      color: #a8c4ff;
+    }
+  }
+}
+
+/* Asegura contraste en ambos modos */
+.dark .theme-toggle ion-icon {
+  color: var(--ion-color-light);
+}
+
+/* Animación al cambiar */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.theme-toggle:active ion-icon {
+  animation: pulse 0.3s ease;
 }

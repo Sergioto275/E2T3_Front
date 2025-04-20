@@ -256,3 +256,34 @@ ion-card {
     justify-content: space-between;
   }
 }
+.theme-toggle {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  
+  ion-icon {
+    color: white;
+    font-size: 24px;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: rotate(15deg) scale(1.1);
+      color: #a8c4ff;
+    }
+  }
+}
+
+/* Asegura contraste en ambos modos */
+.dark .theme-toggle ion-icon {
+  color: var(--ion-color-light);
+}
+
+/* Animación al cambiar */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.theme-toggle:active ion-icon {
+  animation: pulse 0.3s ease;
+}

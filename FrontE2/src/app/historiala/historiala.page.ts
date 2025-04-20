@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
 import { GaleriaComponent } from '../components/galeria/galeria.component';
+import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 
 @Component({
   selector: 'app-historiala',
@@ -44,13 +45,15 @@ export class HistorialaPage implements OnInit {
   fechaInicioFilterTicket: any = null;
   fechaFinFilterTicket: any = null;
   filtroIzena!:string;
+  modoOscuro: Boolean = false;
 
   constructor(
     private toastController: ToastController,
     private translate: TranslateService,
     private fb: FormBuilder,
     private http: HttpClient,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private modoOscuroService: ModoOscuroService,
   ) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
@@ -485,6 +488,39 @@ export class HistorialaPage implements OnInit {
     this.cargarTickets();
     this.cargarClientes();
     this.cargarProductos();
+  }
+
+  cargarModoPreferido() {
+    this.modoOscuro = this.modoOscuroService.getModoOscuro();
+    if (this.modoOscuro) {
+      this.activarModoOscuro();
+    }
+  }
+
+  activarModoOscuro() {
+    document.body.classList.add('dark');
+    const ionContent = document.querySelector('ion-content');
+    if (ionContent) {
+      ionContent.classList.add('dark'); 
+    }
+  }
+
+  desactivarModoOscuro() {
+    document.body.classList.remove('dark');
+    const ionContent = document.querySelector('ion-content');
+    if (ionContent) {
+      ionContent.classList.remove('dark'); 
+    }
+  }
+
+  ponerModoOscuro() {
+    this.modoOscuro = !this.modoOscuro;
+    if (this.modoOscuro) {
+      this.activarModoOscuro();
+    } else {
+      this.desactivarModoOscuro();
+    }
+    this.modoOscuroService.setModoOscuro(this.modoOscuro);
   }
 
 }

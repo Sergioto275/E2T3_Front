@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { HeaderComponent } from '../components/header/header.component';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 
 @Component({
   selector: 'app-ikasleak',
@@ -44,7 +45,7 @@ export class IkasleakPage implements OnInit {
   filteredGroups: any[] = [];
   isIkasle!: boolean;
   private routeSubscription: any;
-
+  modoOscuro: Boolean = false;
 
   constructor(
     private translate: TranslateService,
@@ -54,7 +55,8 @@ export class IkasleakPage implements OnInit {
     private toastController: ToastController,
     private router: Router,
     private loginService: LoginServiceService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modoOscuroService: ModoOscuroService
   ) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
@@ -649,5 +651,36 @@ export class IkasleakPage implements OnInit {
     }).then(alert => alert.present());
   }
 
+  cargarModoPreferido() {
+    this.modoOscuro = this.modoOscuroService.getModoOscuro();
+    if (this.modoOscuro) {
+      this.activarModoOscuro();
+    }
+  }
 
+  activarModoOscuro() {
+    document.body.classList.add('dark');
+    const ionContent = document.querySelector('ion-content');
+    if (ionContent) {
+      ionContent.classList.add('dark'); 
+    }
+  }
+
+  desactivarModoOscuro() {
+    document.body.classList.remove('dark');
+    const ionContent = document.querySelector('ion-content');
+    if (ionContent) {
+      ionContent.classList.remove('dark'); 
+    }
+  }
+
+  ponerModoOscuro() {
+    this.modoOscuro = !this.modoOscuro;
+    if (this.modoOscuro) {
+      this.activarModoOscuro();
+    } else {
+      this.desactivarModoOscuro();
+    }
+    this.modoOscuroService.setModoOscuro(this.modoOscuro);
+  }
 }

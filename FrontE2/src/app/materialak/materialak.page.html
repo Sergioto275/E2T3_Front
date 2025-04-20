@@ -10,6 +10,14 @@
         <ion-select-option value="es">Español</ion-select-option>
         <ion-select-option value="eu">Euskera</ion-select-option>
       </ion-select>
+            <!-- Icono dinámico modo oscuro/claro -->
+            <ion-buttons slot="primary">
+              <ion-button fill="clear" (click)="ponerModoOscuro()" class="theme-toggle">
+                <ion-icon *ngIf="modoOscuro" name="moon-outline"></ion-icon>
+                <ion-icon *ngIf="!modoOscuro" name="sunny-outline"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+            
     </ion-toolbar>
     <ion-segment>
       <ion-segment-button value="kudeatu" content-id="kudeatu">

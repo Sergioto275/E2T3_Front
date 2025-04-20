@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 import { ToastController } from '@ionic/angular';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 
 export interface Alumno {
   nombre: string;
@@ -75,6 +76,7 @@ export class MaterialakPage implements OnInit {
   checkboxHabilitado = false;
   mostrarCheckbox: boolean = false;
   isIkasle!: boolean;
+  modoOscuro: Boolean = false;
 
   toggleFiltros() {
     this.mostrarFiltros = !this.mostrarFiltros;
@@ -472,9 +474,18 @@ export class MaterialakPage implements OnInit {
     }
   }
 
-  constructor(private toastController: ToastController, private translate: TranslateService, private restServer: HttpClient, private alertController: AlertController, private loginService: LoginServiceService, private route: ActivatedRoute) {
+  constructor(private toastController: ToastController, 
+    private translate: TranslateService,
+     private restServer: HttpClient, 
+     private alertController: AlertController,
+      private loginService: LoginServiceService,
+       private route: ActivatedRoute,
+       private modoOscuroService: ModoOscuroService
+      ) 
+  {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
+
   }
 
   ngOnInit() {
@@ -550,6 +561,36 @@ export class MaterialakPage implements OnInit {
       }
     );
   }
+  cargarModoPreferido() {
+    this.modoOscuro = this.modoOscuroService.getModoOscuro();
+    if (this.modoOscuro) {
+      this.activarModoOscuro();
+    }
+  }
 
+  activarModoOscuro() {
+    document.body.classList.add('dark');
+    const ionContent = document.querySelector('ion-content');
+    if (ionContent) {
+      ionContent.classList.add('dark'); 
+    }
+  }
 
+  desactivarModoOscuro() {
+    document.body.classList.remove('dark');
+    const ionContent = document.querySelector('ion-content');
+    if (ionContent) {
+      ionContent.classList.remove('dark'); 
+    }
+  }
+
+  ponerModoOscuro() {
+    this.modoOscuro = !this.modoOscuro;
+    if (this.modoOscuro) {
+      this.activarModoOscuro();
+    } else {
+      this.desactivarModoOscuro();
+    }
+    this.modoOscuroService.setModoOscuro(this.modoOscuro);
+  }
 }

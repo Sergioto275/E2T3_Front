@@ -22,15 +22,12 @@ export class HomePage implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Cada vez que se navegue a esta página, este código se ejecutará
-    console.log('Página Home cargada');
     this.ikasle = this.loginService.isAlumno();
     this.translate.setDefaultLang(this.selectedLanguage);
 
     // Escucha los cambios en la ruta
     this.route.params.subscribe(params => {
-      // Puedes realizar una acción aquí cada vez que se cambie la ruta
-      console.log('Ruta cambiada:', params);
+
       this.ikasle = this.loginService.isAlumno();
     });
     this.cargarModoPreferido();
@@ -43,7 +40,7 @@ export class HomePage implements OnInit {
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
   }
-  // Cargar el modo preferido desde el servicio
+
   cargarModoPreferido() {
     this.modoOscuro = this.modoOscuroService.getModoOscuro();
     if (this.modoOscuro) {
@@ -51,25 +48,22 @@ export class HomePage implements OnInit {
     }
   }
 
-  // Activar el modo oscuro en el body y el ion-content
   activarModoOscuro() {
     document.body.classList.add('dark');
     const ionContent = document.querySelector('ion-content');
     if (ionContent) {
-      ionContent.classList.add('dark'); // Aplicar el estilo oscuro en el ion-content
+      ionContent.classList.add('dark'); 
     }
   }
 
-  // Desactivar el modo oscuro en el body y el ion-content
   desactivarModoOscuro() {
     document.body.classList.remove('dark');
     const ionContent = document.querySelector('ion-content');
     if (ionContent) {
-      ionContent.classList.remove('dark'); // Eliminar el estilo oscuro en el ion-content
+      ionContent.classList.remove('dark'); 
     }
   }
 
-  // Cambiar el modo oscuro
   ponerModoOscuro() {
     this.modoOscuro = !this.modoOscuro;
     if (this.modoOscuro) {
@@ -77,6 +71,6 @@ export class HomePage implements OnInit {
     } else {
       this.desactivarModoOscuro();
     }
-    this.modoOscuroService.setModoOscuro(this.modoOscuro);  // Guarda el estado en localStorage
+    this.modoOscuroService.setModoOscuro(this.modoOscuro);
   }
 }
