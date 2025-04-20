@@ -6,7 +6,12 @@ import { Router, Routes } from '@angular/router';
   templateUrl: 'app.component.html',
 })
 export class AppComponent implements OnInit {
-  public appPages: Array<{ title: string; url: string; icon: string }> = [];
+  public appPages: Array<{ 
+    title: string; 
+    url: string; 
+    icon: string;
+    translationKey: string; // Nueva propiedad para las claves de traducción
+  }> = [];
 
   constructor(private router: Router) {}
 
@@ -25,11 +30,13 @@ export class AppComponent implements OnInit {
       title: this.getTitleFromPath(route.path || ''),
       url: `/${route.path}`,
       icon: this.getIconFromPath(route.path || ''),
+      translationKey: `menu.${route.path}` // Clave de traducción basada en la ruta
     }));
   }
 
   private getTitleFromPath(path: string): string {
     const titles: Record<string, string> = {
+      // Puedes mantener esto como respaldo
     };
     return titles[path] || path.charAt(0).toUpperCase() + path.slice(1);
   }
@@ -50,6 +57,6 @@ export class AppComponent implements OnInit {
       "parametrizacion":"settings",
       "tratamenduak":"checkmark",
     };
-    return icons[path] || 'help'; // Ícono por defecto
+    return icons[path] || 'help';
   }
 }
