@@ -56,9 +56,11 @@
 .language-selector {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-bottom: 20px;
   font-size: 16px;
-  
+  gap: 10px;
+
   span {
     cursor: pointer;
     padding: 0 12px;
@@ -91,6 +93,21 @@
   .separator {
     color: rgba(255, 255, 255, 0.3);
     cursor: default;
+  }
+
+  .dark-mode-toggle {
+    --background: rgba(255, 255, 255, 0.1);
+    --background-checked: rgba(77, 171, 247, 0.3);
+    --handle-background: var(--ion-color-primary);
+    --handle-background-checked: var(--ion-color-primary);
+    padding-left: 10px;
+    height: 24px;
+    width: 50px;
+
+    ion-icon {
+      font-size: 18px;
+      margin-right: 5px;
+    }
   }
 }
 
@@ -267,5 +284,61 @@ ion-content {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+.language-selector {
+  display: flex;
+  justify-content: center;
+  align-items: center; // Añade esto para centrar verticalmente
+  margin-bottom: 20px;
+  font-size: 16px;
+  position: relative; // Para posicionar el icono
+  
+  span {
+    cursor: pointer;
+    padding: 0 12px;
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
+    position: relative;
+    
+    &:hover {
+      color: #ffffff;
+    }
+    
+    &.selected {
+      color: #4dabf7;
+      font-weight: 500;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 2px;
+        background: #4dabf7;
+        border-radius: 2px;
+      }
+    }
+  }
+  
+  .separator {
+    color: rgba(255, 255, 255, 0.3);
+    cursor: default;
+  }
+
+  .moon-icon {
+    margin-left: 15px;
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      color: #ffffff;
+      transform: scale(1.1);
+    }
   }
 }

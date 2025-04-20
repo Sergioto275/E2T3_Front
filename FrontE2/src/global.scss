@@ -272,3 +272,143 @@ ion-menu::part(container) {
   box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
   border-right: 1px solid #{$color-primary-tint};
 }
+
+//modo iluna
+.dark {
+  /* Colores principales ajustados para modo oscuro */
+  --ion-color-primary: #{$color-primary-tint}; // Más claro para mejor contraste
+  --ion-color-primary-rgb: 37, 66, 115;
+  --ion-color-primary-contrast: #{$color-white};
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #2a4a7a;
+  --ion-color-primary-tint: #3b5a8a;
+  --ion-color-secondary: #{lighten($color-secondary, 10%)};
+  --ion-color-tertiary: #{lighten($color-tertiary, 5%)};
+
+  /* Variables de modo oscuro */
+  --ion-background-color: #121212;
+  --ion-text-color: #{$color-white};
+  --ion-toolbar-background: #1e1e1e;
+  --ion-toolbar-color: #{$color-white};
+  --ion-item-background: #1e1e1e;
+  --ion-card-background: #1e1e1e;
+  --ion-menu-background: #1e1e1e;
+  --ion-menu-color: #{$color-white};
+  --ion-datetime-background: #1e1e1e;
+  --ion-border-color: rgba(255, 255, 255, 0.12);
+
+  /* Estilos generales en modo oscuro */
+  #container {
+    strong {
+      color: var(--ion-color-primary);
+    }
+    
+    p {
+      color: #{mix($color-white, $color-black, 80%)};
+    }
+    
+    a {
+      color: var(--ion-color-tertiary);
+    }
+  }
+
+  ion-content {
+    --background: #121212;
+  }
+
+  ion-header {
+    --background: var(--ion-color-primary);
+    --color: #{$color-white};
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    
+    ion-toolbar {
+      --background: transparent;
+      --color: #{$color-white};
+    }
+  }
+
+  ion-segment {
+    --background: #{rgba($color-primary-tint, 0.2)};
+    
+    ion-segment-button {
+      --color: #{lighten($color-primary-tint, 20%)};
+      --color-checked: #{$color-white};
+      --background-checked: var(--ion-color-primary);
+    }
+  }
+
+  ion-card {
+    --background: #1e1e1e;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    border-left: 4px solid var(--ion-color-tertiary);
+    
+    ion-card-header {
+      --background: #{darken($color-tertiary, 30%)};
+      --color: #{$color-white};
+      
+      ion-card-title {
+        color: var(--ion-color-primary);
+      }
+    }
+  }
+
+  ion-button {
+    --background: var(--ion-color-primary);
+    --background-activated: var(--ion-color-primary-shade);
+    --background-hover: var(--ion-color-primary-tint);
+    --color: #{$color-white};
+  }
+
+  /* Menu en modo oscuro */
+  ion-menu {
+    --ion-background-color: #1e1e1e;
+    --ion-text-color: #{$color-white};
+
+    ion-header {
+      ion-toolbar {
+        --background: #{$color-secondary};
+        --color: #{$color-white};
+        border-bottom: 2px solid #{$color-tertiary};
+      }
+    }
+
+    ion-content {
+      --background: linear-gradient(135deg, #1e1e1e 0%, #{$color-secondary} 100%);
+    }
+
+    ion-list {
+      ion-item {
+        --color: #{$color-white};
+        --detail-icon-color: #{$color-tertiary};
+
+        ion-icon {
+          color: #{$color-tertiary};
+        }
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.05) !important;
+        }
+
+        &.selected {
+          --background: rgba(65, 163, 103, 0.2);
+          --color: #{$color-white};
+          
+          ion-icon {
+            color: #{$color-white};
+          }
+        }
+      }
+    }
+  }
+
+  /* Ajustes adicionales para modo oscuro */
+  .selected {
+    --background: rgba(var(--ion-color-primary-rgb), 0.2);
+    --color: var(--ion-color-primary);
+  }
+
+  /* Efectos de sombra más sutiles en modo oscuro */
+  ion-header, ion-card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+}

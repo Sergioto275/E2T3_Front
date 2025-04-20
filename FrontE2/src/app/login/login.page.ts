@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { firstValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 
 @Component({
   selector: 'app-login',
@@ -16,15 +17,18 @@ export class LoginPage implements OnInit {
   loginMessage: string = '';
   loginMessageType: 'success' | 'error' = 'error';
   selectedLanguage: string = 'es';
+  modoOscuro: Boolean = false;
 
   constructor(
     private router: Router, 
     private loginService: LoginServiceService, 
-    private translate: TranslateService
+    private translate: TranslateService,
+    private modoOscuroService: ModoOscuroService 
   ) {}
 
   ngOnInit() {
     this.translate.setDefaultLang(this.selectedLanguage);
+    this.cargarModoPreferido();
   }
 
   selectLanguage(language: string) {
@@ -71,4 +75,41 @@ export class LoginPage implements OnInit {
       this.loginMessageType = 'error';
     }
   }
+
+    // Cargar el modo preferido desde el servicio
+    cargarModoPreferido() {
+      this.modoOscuro = this.modoOscuroService.getModoOscuro();
+      if (this.modoOscuro) {
+        this.activarModoOscuro();
+      }
+    }
+  
+    // Activar el modo oscuro en el body y el ion-content
+    activarModoOscuro() {
+      document.body.classList.add('dark');
+      const ionContent = document.querySelector('ion-content');
+      if (ionContent) {
+        ionContent.classList.add('dark'); // Aplicar el estilo oscuro en el ion-content
+      }
+    }
+  
+    // Desactivar el modo oscuro en el body y el ion-content
+    desactivarModoOscuro() {
+      document.body.classList.remove('dark');
+      const ionContent = document.querySelector('ion-content');
+      if (ionContent) {
+        ionContent.classList.remove('dark'); // Eliminar el estilo oscuro en el ion-content
+      }
+    }
+  
+    // Cambiar el modo oscuro
+    ponerModoOscuro() {
+      this.modoOscuro = !this.modoOscuro;
+      if (this.modoOscuro) {
+        this.activarModoOscuro();
+      } else {
+        this.desactivarModoOscuro();
+      }
+      this.modoOscuroService.setModoOscuro(this.modoOscuro);  // Guarda el estado en localStorage
+    }
 }
