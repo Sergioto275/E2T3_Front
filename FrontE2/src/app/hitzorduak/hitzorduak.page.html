@@ -56,7 +56,7 @@
                   </tr>
                 </ng-container>
                 <ng-container *ngIf="asientos > 0">
-                  <tr *ngFor="let time of hoursArray">
+                  <tr *ngFor="let time of hoursArray.slice(0, hoursArray.length - 1)">
                     <td class="time-header">{{ time }}</td>
                     <ng-container *ngFor="let i of [].constructor(asientos); let idx = index">
                       <td id="{{ 'time-' + time + '-seat-' + (idx + 1) }}" *ngIf="citaSartuta(time, idx + 1)" 

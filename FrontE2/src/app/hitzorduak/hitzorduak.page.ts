@@ -403,7 +403,7 @@ export class HitzorduakPage implements OnInit {
   // Función: getHoursInRange
   getHoursInRange(): void {
     const startTime = new Date('2022-01-01T09:00:00');
-    const endTime = new Date('2022-01-01T14:30:00');
+    const endTime = new Date('2022-01-01T15:00:00');
     this.hoursArray = [];
     while (startTime <= endTime) {
       const formattedHour = startTime.toLocaleTimeString([], {
