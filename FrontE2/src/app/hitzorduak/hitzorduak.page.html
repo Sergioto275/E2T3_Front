@@ -16,6 +16,15 @@
           <ion-select-option value="es" style="--color: #1c345c;">Español</ion-select-option>
           <ion-select-option value="eu" style="--color: #1c345c;">Euskera</ion-select-option>
         </ion-select>
+          
+      <!-- Icono dinámico modo oscuro/claro -->
+      <ion-buttons slot="primary">
+        <ion-button fill="clear" (click)="ponerModoOscuro()" class="theme-toggle">
+          <ion-icon *ngIf="modoOscuro" name="moon-outline"></ion-icon>
+          <ion-icon *ngIf="!modoOscuro" name="sunny-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      
       </ion-toolbar>
     </ion-header>
     
@@ -47,7 +56,7 @@
                   </tr>
                 </ng-container>
                 <ng-container *ngIf="asientos > 0">
-                  <tr *ngFor="let time of hoursArray">
+                  <tr *ngFor="let time of hoursArray.slice(0, hoursArray.length - 1)">
                     <td class="time-header">{{ time }}</td>
                     <ng-container *ngFor="let i of [].constructor(asientos); let idx = index">
                       <td id="{{ 'time-' + time + '-seat-' + (idx + 1) }}" *ngIf="citaSartuta(time, idx + 1)" 

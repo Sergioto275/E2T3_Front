@@ -7,6 +7,7 @@ import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import autoTable from 'jspdf-autotable';
 import jsPDF from 'jspdf';
+import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 
 declare var Chart: any; 
 declare var html2canvas: any; // Declaramos que `html2canvas` existe globalmente
@@ -27,6 +28,7 @@ export class GrafikoakPage implements OnInit {
   isIkasle!:boolean;
   langileSelec!:any;
   private routeSubscription: any;
+  modoOscuro: Boolean = false;
 
   ngOnDestroy() {
     // Limpiar la suscripción cuando el componente se destruya
@@ -35,7 +37,13 @@ export class GrafikoakPage implements OnInit {
     }
   }
 
-  constructor(private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService, private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private translate: TranslateService, 
+    private http: HttpClient, private loginService: LoginServiceService, 
+    private router: Router, 
+    private route: ActivatedRoute,
+    private modoOscuroService: ModoOscuroService
+  ) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
@@ -220,6 +228,39 @@ export class GrafikoakPage implements OnInit {
         console.error("Errorea langileak kargatzerakoan:", error);
       }
     );
+  }
+
+  cargarModoPreferido() {
+    this.modoOscuro = this.modoOscuroService.getModoOscuro();
+    if (this.modoOscuro) {
+      this.activarModoOscuro();
+    }
+  }
+
+  activarModoOscuro() {
+    document.body.classList.add('dark');
+    const ionContent = document.querySelector('ion-content');
+    if (ionContent) {
+      ionContent.classList.add('dark'); 
+    }
+  }
+
+  desactivarModoOscuro() {
+    document.body.classList.remove('dark');
+    const ionContent = document.querySelector('ion-content');
+    if (ionContent) {
+      ionContent.classList.remove('dark'); 
+    }
+  }
+
+  ponerModoOscuro() {
+    this.modoOscuro = !this.modoOscuro;
+    if (this.modoOscuro) {
+      this.activarModoOscuro();
+    } else {
+      this.desactivarModoOscuro();
+    }
+    this.modoOscuroService.setModoOscuro(this.modoOscuro);
   }
 }
 

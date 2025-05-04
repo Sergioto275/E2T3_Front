@@ -1,4 +1,6 @@
 export const environment = {
-  production: true,
-  url: 'http://localhost:8080/api/'
+  production: false,
+  url: 'https://localhost:8443/api/',   // Cuando se tenga el dominio y certificado real
+  entorno: 'Produccion',
+  // entorno: 'FPSanturtzi', // Para pruebas en local
 };

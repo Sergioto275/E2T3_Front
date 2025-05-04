@@ -10,6 +10,7 @@ import { AlertController, NavController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 
 import { ToastController } from '@ionic/angular';
+import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 
 @Component({
   selector: 'app-hitzorduak',
@@ -35,6 +36,7 @@ export class HitzorduakPage implements OnInit {
   dataSelec!: any;
   todayDate!: any;
   selectedLanguage: string = 'es';
+  modoOscuro: Boolean = false;
 
   firstCell: { time: string, seat: number } | null = null;
   secondCell: { time: string, seat: number } | null = null;
@@ -249,10 +251,19 @@ export class HitzorduakPage implements OnInit {
     return solapamiento;
   }
 
-  constructor(private toastController: ToastController, private translate: TranslateService, private alertCtrl: AlertController, private navCtrl: NavController, private http: HttpClient) {
+  constructor(
+    private toastController: ToastController, 
+    private translate: TranslateService, 
+    private alertCtrl: AlertController, 
+    private navCtrl: NavController, 
+    private http: HttpClient,
+    private modoOscuroService: ModoOscuroService
+  ) 
+    
+    {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
-  }
+    }
 
   ngOnInit() {
     this.dataSelec = this.lortuData();
@@ -392,7 +403,7 @@ export class HitzorduakPage implements OnInit {
   // Función: getHoursInRange
   getHoursInRange(): void {
     const startTime = new Date('2022-01-01T09:00:00');
-    const endTime = new Date('2022-01-01T14:30:00');
+    const endTime = new Date('2022-01-01T15:00:00');
     this.hoursArray = [];
     while (startTime <= endTime) {
       const formattedHour = startTime.toLocaleTimeString([], {
@@ -745,6 +756,38 @@ export class HitzorduakPage implements OnInit {
       posicionY
     );
     pdf.save(`ticket_${datuak.id}.pdf`);
+  }
+  cargarModoPreferido() {
+    this.modoOscuro = this.modoOscuroService.getModoOscuro();
+    if (this.modoOscuro) {
+      this.activarModoOscuro();
+    }
+  }
+
+  activarModoOscuro() {
+    document.body.classList.add('dark');
+    const ionContent = document.querySelector('ion-content');
+    if (ionContent) {
+      ionContent.classList.add('dark'); 
+    }
+  }
+
+  desactivarModoOscuro() {
+    document.body.classList.remove('dark');
+    const ionContent = document.querySelector('ion-content');
+    if (ionContent) {
+      ionContent.classList.remove('dark'); 
+    }
+  }
+
+  ponerModoOscuro() {
+    this.modoOscuro = !this.modoOscuro;
+    if (this.modoOscuro) {
+      this.activarModoOscuro();
+    } else {
+      this.desactivarModoOscuro();
+    }
+    this.modoOscuroService.setModoOscuro(this.modoOscuro);
   }
 
 }

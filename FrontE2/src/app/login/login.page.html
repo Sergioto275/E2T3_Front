@@ -10,6 +10,8 @@
         <span (click)="selectLanguage('es')" [class.selected]="selectedLanguage === 'es'">ES</span>
         <span class="separator">|</span>
         <span (click)="selectLanguage('eu')" [class.selected]="selectedLanguage === 'eu'">EU</span>
+        <ion-icon *ngIf="modoOscuro" name="moon-outline" class="moon-icon" (click)="ponerModoOscuro()"></ion-icon>
+        <ion-icon *ngIf="!modoOscuro"  name="sunny-outline" class="moon-icon" (click)="ponerModoOscuro()"></ion-icon>
       </div>
 
       <!-- Message Card -->

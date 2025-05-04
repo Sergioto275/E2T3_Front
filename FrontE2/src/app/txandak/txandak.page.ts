@@ -7,6 +7,7 @@ import { catchError } from 'rxjs/operators';
 import { IkasleZerbitzuakService } from '../zerbitzuak/ikasle-zerbitzuak.service';
 import { formatDate } from '@angular/common';
 import { environment } from 'src/environments/environment';
+import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 
 // Interfaz movida fuera de la clase
 export interface Txanda {
@@ -67,12 +68,14 @@ export class TxandakPage implements OnInit {
   selectedType = 'all';  // Tipo de txanda seleccionado
   fechaInicio: string = '';
   fechaFin: string = '';
+  modoOscuro: Boolean = false;
 
   constructor(private translate: TranslateService,
     private http: HttpClient,
     private toastController: ToastController,
     private alertCtrl: AlertController,
-    private ikasleService: IkasleZerbitzuakService
+    private ikasleService: IkasleZerbitzuakService,
+    private modoOscuroService: ModoOscuroService,
   ) { }
 
   ngOnInit() {
@@ -324,5 +327,37 @@ export class TxandakPage implements OnInit {
     this.filteredTxandak = this.txandak.filter(txanda => {
       return txanda.data === today; // Filtrar las txandas que tengan la fecha igual a la de hoy
     });
+  }
+  cargarModoPreferido() {
+    this.modoOscuro = this.modoOscuroService.getModoOscuro();
+    if (this.modoOscuro) {
+      this.activarModoOscuro();
+    }
+  }
+
+  activarModoOscuro() {
+    document.body.classList.add('dark');
+    const ionContent = document.querySelector('ion-content');
+    if (ionContent) {
+      ionContent.classList.add('dark'); 
+    }
+  }
+
+  desactivarModoOscuro() {
+    document.body.classList.remove('dark');
+    const ionContent = document.querySelector('ion-content');
+    if (ionContent) {
+      ionContent.classList.remove('dark'); 
+    }
+  }
+
+  ponerModoOscuro() {
+    this.modoOscuro = !this.modoOscuro;
+    if (this.modoOscuro) {
+      this.activarModoOscuro();
+    } else {
+      this.desactivarModoOscuro();
+    }
+    this.modoOscuroService.setModoOscuro(this.modoOscuro);
   }
 }

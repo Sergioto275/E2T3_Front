@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 // import { IonButton, IonContent, IonHeader, IonLabel, IonModal, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
 
@@ -51,6 +52,7 @@ export class ProduktuakPage implements OnInit {
   selectedCategoryId!: number;
   isIkasle!: boolean;
   private routeSubscription: any;
+  modoOscuro: Boolean = false;
 
 
   filtroCategoria: string = '';
@@ -97,7 +99,6 @@ export class ProduktuakPage implements OnInit {
     }
   }
 
-
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
     if (this.headerComponent) {
@@ -114,7 +115,6 @@ export class ProduktuakPage implements OnInit {
     } else if (!producto.selected && index !== -1) {
       this.productosSeleccionados.splice(index, 1);
     }
-    console.log('Productos seleccionados:', this.productosSeleccionados);
   }
 
   toggleCategoria(categoria: string) {
@@ -137,8 +137,6 @@ export class ProduktuakPage implements OnInit {
       "stock": this.crearStock,
       "stockAlerta": this.crearStockAlerta
     };
-
-    console.log(json_data);
 
     this.http.post(`${environment.url}produktuak`, json_data, {
       headers: {
@@ -462,7 +460,15 @@ export class ProduktuakPage implements OnInit {
   }
 
 
-  constructor(private toastController: ToastController, private translate: TranslateService, private http: HttpClient, private loginService: LoginServiceService, private route: ActivatedRoute) {
+  constructor(private toastController: ToastController, 
+    private translate: TranslateService, 
+    private http: HttpClient, 
+    private loginService: LoginServiceService, 
+    private route: ActivatedRoute,
+    private modoOscuroService: ModoOscuroService
+  ) 
+    
+    {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
   }
@@ -481,4 +487,36 @@ export class ProduktuakPage implements OnInit {
     });
   }
 
+  cargarModoPreferido() {
+    this.modoOscuro = this.modoOscuroService.getModoOscuro();
+    if (this.modoOscuro) {
+      this.activarModoOscuro();
+    }
+  }
+
+  activarModoOscuro() {
+    document.body.classList.add('dark');
+    const ionContent = document.querySelector('ion-content');
+    if (ionContent) {
+      ionContent.classList.add('dark'); 
+    }
+  }
+
+  desactivarModoOscuro() {
+    document.body.classList.remove('dark');
+    const ionContent = document.querySelector('ion-content');
+    if (ionContent) {
+      ionContent.classList.remove('dark'); 
+    }
+  }
+
+  ponerModoOscuro() {
+    this.modoOscuro = !this.modoOscuro;
+    if (this.modoOscuro) {
+      this.activarModoOscuro();
+    } else {
+      this.desactivarModoOscuro();
+    }
+    this.modoOscuroService.setModoOscuro(this.modoOscuro);
+  }
 }
