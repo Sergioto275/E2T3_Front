@@ -362,6 +362,9 @@ export class HistorialaPage implements OnInit {
       () => {
         this.cargarClientes();
         this.cerrarModal();
+        this.translate.get('citas.toast.Insert_E').subscribe((texto) => { // OIER
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       },
       (error) => {
         console.error("Error al asignar la cita:", error);
