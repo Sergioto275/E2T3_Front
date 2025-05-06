@@ -141,27 +141,21 @@ export class HistorialaPage implements OnInit {
   }
   
   resetProduktos() {
-    this.fechaInicioFilterProd = null;
-    this.fechaFinFilterProd = null;
-    this.produktuMugimenduFiltered = this.produktuMugimendu.map(prod => ({
-      ...prod,
-    }));  
+    this.fechaInicioFilterProd = this.lortuData();
+    this.fechaFinFilterProd = this.lortuData();
+    this.cargarMovimientoProductos();  
   }
 
   resetMateriales() {
-    this.fechaInicioFilterMat = null;
-    this.fechaFinFilterMat = null;
-    this.materialMugimenduFiltered = this.materialMugimendu.map(mat => ({
-      ...mat,
-    }));  
+    this.fechaInicioFilterMat = this.lortuData();
+    this.fechaFinFilterMat = this.lortuData();
+    this.cargarMovimientoMateriales();
   }
 
   resetTickets() {
-    this.fechaInicioFilterTicket = null;
-    this.fechaFinFilterTicket = null;
-    this.ticketsFiltered = this.tickets.map(ticket => ({
-      ...ticket,
-    }));  
+    this.fechaInicioFilterTicket = this.lortuData();
+    this.fechaFinFilterTicket = this.lortuData();
+    this.cargarTickets();
   }
 
   // Función: cargarHitzordu
@@ -378,7 +372,10 @@ export class HistorialaPage implements OnInit {
   async abrirGaleria() {
     const imagenes = this.editingBezero.historiala
       .filter((h:any) => h.img_url && h.img_url.trim() !== '')
-      .map((h:any) => h.img_url);
+      .map((h: any) => ({
+        url: h.img_url,
+        data: h.data
+      }));
       console.log(imagenes)
   
     if (imagenes.length === 0) {

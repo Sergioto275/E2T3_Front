@@ -165,6 +165,8 @@ export class TxandakPage implements OnInit {
   }
 
   getTxandak() {
+    this.txandak = [];
+    this.filteredTxandak = [];
     this.http.get<Txanda[]>(`${environment.url}txandak/${this.fechaInicio}/${this.fechaFin}`).subscribe(
       (data) => {
 
@@ -189,7 +191,7 @@ export class TxandakPage implements OnInit {
           });
 
         this.filterTxandas();  // Llamar a filterTxandas para filtrar y mostrar las txandas
-
+        console.log("a")
       },
       (error) => {
         console.error('Error al cargar las txandas', error);
@@ -210,8 +212,6 @@ export class TxandakPage implements OnInit {
   }
 
   // Función para guardar la nueva txanda
-  // Función para guardar la nueva txanda
-
   guardarTxanda() {
     if (!this.nuevaTxanda.mota || !this.nuevaTxanda.alumno) {
       return;
@@ -299,35 +299,12 @@ export class TxandakPage implements OnInit {
     toast.present();
   }
 
-  // Método para filtrar las txandas por fecha
-  filterByDate() {
-    // Filtrar txandas por el rango de fechas si ambos están presentes
-    if (this.fechaInicio && this.fechaFin) {
-      this.filteredTxandak = this.txandak.filter(txanda => {
-        return (
-          new Date(txanda.data) >= new Date(this.fechaInicio) &&
-          new Date(txanda.data) <= new Date(this.fechaFin)
-        );
-      });
-    } else {
-      // Si no hay fechas seleccionadas, mostrar todas las txandas
-      this.filteredTxandak = [...this.txandak];
-    }
-  }
-
   resetFilters() {
-    this.fechaInicio = '';
-    this.fechaFin = '';
-    this.filteredTxandak = [...this.txandak];
+    this.fechaInicio = this.lortuData();
+    this.fechaFin = this.lortuData();
+    this.getTxandak();
   }
 
-  filterToday() {
-    const today = new Date().toISOString().split('T')[0]; // Obtener la fecha de hoy en formato 'YYYY-MM-DD'
-
-    this.filteredTxandak = this.txandak.filter(txanda => {
-      return txanda.data === today; // Filtrar las txandas que tengan la fecha igual a la de hoy
-    });
-  }
   cargarModoPreferido() {
     this.modoOscuro = this.modoOscuroService.getModoOscuro();
     if (this.modoOscuro) {

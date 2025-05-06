@@ -21,7 +21,8 @@
     "txandak": "Turnos",
     "inbentario": "Inventario",
     "parametrizacion": "Parametrizacion",
-    "tratamenduak": "tratamientos"
+    "tratamenduak": "Tratamientos",
+    "login":"Login"
   },
   "productos": {
     "title": "Gestion de productos",

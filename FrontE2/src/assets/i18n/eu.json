@@ -21,7 +21,8 @@
         "txandak": "Txandak",
         "inbentario": "Inbentarioa",
         "parametrizacion": "Parametrizazioa",
-        "tratamenduak": "tratamenduak"
+        "tratamenduak": "Tratamenduak",
+        "login":"Login"
     },
     "productos": {
         "title": "Produktuen kudeaketa",

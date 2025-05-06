@@ -8,7 +8,7 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <ion-list>
+      <ion-list class="ion-list-menu">
         @for (p of appPages; track p) {
           <ion-item [routerLink]="p.url" routerLinkActive="selected">
             <ion-icon [name]="p.icon" slot="start"></ion-icon>

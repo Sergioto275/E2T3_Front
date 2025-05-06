@@ -10,11 +10,14 @@
 </ion-header>
 
 <ion-content fullscreen>
-  <swiper-container (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true">
-    <ng-container *ngFor="let img of imagenes">
-      <swiper-Slide>
-          <img [src]="transformarURL(img)" />
-      </swiper-Slide>
-    </ng-container>
+  <swiper-container #swiper (afterinit)="swiperReady()" (slidechange)="swiperSlideChanged($event)" [pagination]="true" [zoom]="true">
+    <!-- <ng-container > -->
+      <swiper-slide *ngFor="let img of imagenes">
+        <div class="swiper-zoom-container" style="display: flex; flex-direction: column; align-items: center;">
+          <img [src]="transformarURL(img.url)" style="max-width: 100%; max-height: 70vh;" />
+          <p *ngIf="img.data">{{ img.data }}</p>
+        </div>
+      </swiper-slide>
+    <!-- </ng-container> -->
   </swiper-container>
 </ion-content>

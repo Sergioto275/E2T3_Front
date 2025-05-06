@@ -1,4 +1,17 @@
 /* Estilos generales */
+.table-container {
+  background-color: transparent;
+  overflow:scroll;
+  height:500px;
+}
+
+td:first-child,
+th:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2; 
+}
+
 :host {
   --primary-color: #1c345c;
   --secondary-color: #2c3e50;
@@ -60,6 +73,11 @@ th, td {
   padding: 12px;
   text-align: center;
   border: 1px solid #e0e0e0;
+}
+
+td:not(:first-child),
+th:not(:first-child) {
+  min-width: 150px;
 }
 
 .time-header {
@@ -141,6 +159,14 @@ th, td {
   background-color: #d4edda;
   border-left: 4px solid var(--success-color);
 }
+
+// ion-card{
+//   width: auto;
+//   height: auto;
+//   // max-width: 90%;
+//   // max-height: 90%;
+//   height: 100%;
+// }
 
 .selected {
   border: 2px solid --accent-color; /* Borde de color rosa */
