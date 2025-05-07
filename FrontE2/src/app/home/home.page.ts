@@ -22,16 +22,22 @@ export class HomePage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.ikasle = this.loginService.isAlumno();
+    this.actualizarEstadoAlumno();  // Llama a este método al inicializar
     this.translate.setDefaultLang(this.selectedLanguage);
-
-    // Escucha los cambios en la ruta
-    this.route.params.subscribe(params => {
-
-      this.ikasle = this.loginService.isAlumno();
+  
+    // Escucha los cambios en la ruta y actualiza el estado
+    this.route.params.subscribe(() => {
+      this.actualizarEstadoAlumno();
     });
     this.cargarModoPreferido();
   }
+  
+  actualizarEstadoAlumno() {
+    // Actualizar el valor de ikasle al valor almacenado en localStorage
+    this.ikasle = this.loginService.isAlumno();
+    console.log('Rol ikasle', this.ikasle);
+  }
+  
 
   logout() {
     this.loginService.logout();
