@@ -53,5 +53,4 @@ export class LoginServiceService {
     console.log('Role from localStorage:', role); // Debug adicional
     return role?.toLowerCase() === 'ik'; // Asegúrate de manejar mayúsculas/minúsculas
   }
-  
 }
