@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, map, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -8,13 +8,10 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class LoginServiceService {
+  user: any = null;
+  userChanged: EventEmitter<string | null> = new EventEmitter(); 
 
-  user:any = null;
-
-  constructor(private router: Router, private http: HttpClient) {
-  }
-
-  init() {}
+  constructor(private router: Router, private http: HttpClient) {}
 
   login(username: string, password: string): Observable<boolean> {
     const json_data = { "username": username, "pasahitza": password };
@@ -25,10 +22,9 @@ export class LoginServiceService {
       map(response => {
         if (response && response.status === true) {
           this.user = response;
-          
           localStorage.setItem('username', response.username);
           localStorage.setItem('role', response.rola);
-          
+          this.userChanged.emit(response.rola);
           return true;
         }
         return false;
@@ -41,16 +37,19 @@ export class LoginServiceService {
   }
   
   logout() {
-    console.log(localStorage.getItem('role'))
-    // Eliminar los datos de login del localStorage
+    this.user = null;
     localStorage.removeItem('username');
     localStorage.removeItem('role');
-    this.router.navigate(['/login']); // Redirigir al login
+    this.userChanged.emit(null); 
+    this.router.navigate(['/login']);
   }
   
+  getCurrentRole(): string | null {
+    return localStorage.getItem('role');
+  }
+
   isAlumno(): boolean {
     const role = localStorage.getItem('role');
-    console.log('Role from localStorage:', role); // Debug adicional
-    return role?.toLowerCase() === 'ik'; // Asegúrate de manejar mayúsculas/minúsculas
+    return role?.toLowerCase() === 'ik'; 
   }
 }
