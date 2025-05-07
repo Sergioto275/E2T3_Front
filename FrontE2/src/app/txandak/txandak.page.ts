@@ -87,8 +87,8 @@ export class TxandakPage implements OnInit {
     // Llamar al método para obtener los txandas
     this.getTxandak();
     this.getHorarios();
-    this.filterTxandas();  // Llamada inicial al filtro para mostrar todas las txandas
-
+    this.filterTxandas();  
+    this.cargarModoPreferido();  
   }
 
   changeLanguage() {
