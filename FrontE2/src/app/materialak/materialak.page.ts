@@ -530,6 +530,7 @@ export class MaterialakPage implements OnInit {
       this.materialakLortu();
       this.langileakLortu();
       this.materialakLortuDevolver();
+      this.cargarModoPreferido();
     });
   }
 

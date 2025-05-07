@@ -272,6 +272,7 @@ export class HitzorduakPage implements OnInit {
     this.getHoursInRange();
     this.cargar_alumnos();
     this.cargarTratamenduak();
+    this.cargarModoPreferido();
   }
 
   // Función: lortuData

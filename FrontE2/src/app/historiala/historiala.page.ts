@@ -33,10 +33,10 @@ export class HistorialaPage implements OnInit {
   crearPiel!:boolean;
   historialaVisible:any[] = [];
 
-  isEditingBezero: boolean = false; // Controla si se muestra el modal de edición
-  editingBezero: any = null;        // Objeto del cliente que se está editando
-  viewingBezero: any = null;        // Cliente cuyos detalles se están viendo
-  isViewingHistorial: boolean = false; // Controla si se muestra el historial
+  isEditingBezero: boolean = false; 
+  editingBezero: any = null;    
+  viewingBezero: any = null;       
+  isViewingHistorial: boolean = false; 
   bezeroForm: FormGroup;
   fechaInicioFilterProd: any = null;
   fechaFinFilterProd: any = null;
@@ -69,7 +69,6 @@ export class HistorialaPage implements OnInit {
   filterProduktos() {
     this.produktuMugimenduFiltered = this.produktuMugimendu.map(prod => ({
       ...prod,
-      // cualquier otra transformación que necesites
     }));
   
     this.produktuMugimenduFiltered = this.produktuMugimenduFiltered.filter(prod => {
@@ -485,6 +484,7 @@ export class HistorialaPage implements OnInit {
     this.cargarTickets();
     this.cargarClientes();
     this.cargarProductos();
+    this.cargarModoPreferido();
   }
 
   cargarModoPreferido() {

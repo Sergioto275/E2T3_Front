@@ -60,7 +60,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
         
         if (currentRole?.toLowerCase() === 'ik') {
-          return !['historiala', 'ikasleak', 'grafikoak'].includes(pageName);
+          return !['ikasleak', 'grafikoak','tratamenduak'].includes(pageName);
         }
         
         return true;

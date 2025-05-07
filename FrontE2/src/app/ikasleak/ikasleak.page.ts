@@ -78,19 +78,16 @@ export class IkasleakPage implements OnInit {
   }
 
   ngOnInit() {
-    // Suscribirse a los cambios de ruta
+    this.cargarModoPreferido();
     this.routeSubscription = this.route.params.subscribe((params) => {
-      console.log('Ruta cambiada:', params); // Puedes ver los parámetros aquí, si es necesario.
-
-      // Comprobar si el usuario es 'Ikasle' cada vez que se carga la página
+      console.log('Ruta cambiada:', params); 
       this.isIkasle = this.loginService.isAlumno();
 
-      // Si es Ikasle, redirigir a '/home'
       if (this.isIkasle) {
         this.router.navigate(['/home']);
       }
 
-      // Llamar a las funciones necesarias
+    
       this.fechaInicioFilter = this.lortuData();
       this.fechaFinFilter = this.lortuData();
       this.getGrupos();

@@ -67,6 +67,7 @@ export class TratamenduakPage implements OnInit {
       // Llamar a las funciones necesarias
       this.zerbiztuakLortu();
     });
+    this.cargarModoPreferido();
   }
 
   ngOnDestroy() {

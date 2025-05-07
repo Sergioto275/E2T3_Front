@@ -504,6 +504,7 @@ export class ProduktuakPage implements OnInit {
   }
 
   ngOnInit() {
+    this.cargarModoPreferido();
     // Suscribirse a los cambios de ruta
     this.routeSubscription = this.route.params.subscribe((params) => {
       console.log('Ruta cambiada:', params); // Si necesitas los parámetros de la ruta
@@ -515,6 +516,7 @@ export class ProduktuakPage implements OnInit {
       this.produktuakLortu();
       this.langileakLortu();
     });
+    
   }
 
   cargarModoPreferido() {
