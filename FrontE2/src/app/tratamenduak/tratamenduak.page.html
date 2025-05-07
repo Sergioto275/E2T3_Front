@@ -68,20 +68,49 @@
           </ion-button>
           <ion-icon [name]="isCategoriaAbierta(categoria.izena) ? 'chevron-up' : 'chevron-down'" slot="end"></ion-icon>
         </ion-item>
+        <!-- Services List -->
+        <ion-grid *ngIf="isCategoriaAbierta(categoria.izena)">
+          <ion-row>
+            <ion-col size="4" sizeMd="3" sizeLg="2" *ngFor="let servicio of categoria.zerbitzuak">
+              <ion-card class="service-card">
+                
+                <!-- Imagen del servicio -->
+                <ion-card-header>
+                  <img [src]="transformarURL(servicio.img_url)" 
+                      (error)="onImageError($event)" 
+                      class="service-image" />
+                </ion-card-header>
+            
+                <!-- Información del servicio -->
+                <ion-card-content>
+                  <div class="service-info">
+                    <h2 class="service-name">{{ servicio.izena }}</h2>
+                    <p class="service-price">
+                      {{ "servicios.modal.fuera" | translate }}: {{ servicio.kanpokoPrezioa }}
+                    </p>
+                    <p class="service-price">
+                      {{ "servicios.modal.dentro" | translate }}: {{ servicio.etxekoPrezioa }}
+                    </p>
+                  </div>
 
-        <ion-list *ngIf="isCategoriaAbierta(categoria.izena)">
-          <ion-item *ngFor="let servicio of categoria.zerbitzuak">
-            <ion-label> {{ servicio.izena }} </ion-label>
-            <ion-label> {{ "servicios.modal.fuera" | translate }}: {{ servicio.kanpokoPrezioa }} </ion-label>
-            <ion-label> {{ "servicios.modal.dentro" | translate }}: {{ servicio.etxekoPrezioa }} </ion-label>
-            <ion-button slot="end" (click)="openServiceModal(servicio, categoria.id)">
-              <ion-icon name="create"></ion-icon>
-            </ion-button>
-            <ion-button slot="end" color="danger" (click)="eliminarServicio(servicio.id)">
-              <ion-icon name="trash"></ion-icon>
-            </ion-button>
-          </ion-item>
-        </ion-list>
+                  <!-- Botones de acción -->
+                  <ion-item lines="none">
+                    <ion-buttons slot="end">
+                      <ion-button class="edit-button" (click)="openServiceModal(servicio, categoria.id)">
+                        <ion-icon name="create"></ion-icon>
+                      </ion-button>
+                      <ion-button class="delete-button" color="danger"
+                        (click)="eliminarServicio(servicio.id)">
+                        <ion-icon name="trash"></ion-icon>
+                      </ion-button>
+                    </ion-buttons>
+                  </ion-item>
+                </ion-card-content>
+
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </ion-card>
     </ng-container>
   </ion-content>
@@ -133,7 +162,10 @@
           <ion-text color="danger" *ngIf="precioDentro.invalid && precioDentro.touched">
             {{ 'servicios.validaciones.precioDentro' | translate }}
           </ion-text>
-
+          <ion-item>
+            <ion-label position="stacked">{{ 'servicios.modal.img' | translate }}</ion-label>
+            <ion-input [(ngModel)]="crearServicio.img_url" name="img" #img="ngModel" placeholder="{{ 'servicios.modal.img' | translate }}"></ion-input>
+          </ion-item>
           <ion-button type="submit" expand="full" [disabled]="crearServicioForm.invalid">
             {{ 'servicios.botones.crear' | translate }}
           </ion-button>
@@ -199,6 +231,11 @@
           <ion-text color="danger" *ngIf="precioFuera.invalid && precioFuera.touched">
             {{ 'servicios.validaciones.precioDentro' | translate }}
           </ion-text>
+
+          <ion-item>
+            <ion-label position="stacked">{{ 'servicios.modal.img' | translate }}</ion-label>
+            <ion-input [(ngModel)]="editarServicio.img_url" name="img" placeholder="{{ 'servicios.modal.img' | translate }}" #img="ngModel"></ion-input>
+          </ion-item>
 
           <!-- Botón de editar -->
           <ion-button expand="full" type="submit" [disabled]="editarServicioForm.invalid">

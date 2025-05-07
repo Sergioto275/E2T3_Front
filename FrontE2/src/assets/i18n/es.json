@@ -68,7 +68,8 @@
       "vacio": "No hay productos seleccionados",
       "filtroCat": "Filtrar por Nombre de Categoria",
       "filtroProd": "Filtrar por Nombre de Producto",
-      "stockBajo": "Productos Bajo Stock"
+      "stockBajo": "Productos Bajo Stock",
+      "img": "URL de la Imagen"
     },
     "categorias": {
       "electronica": "Electrónica"
@@ -119,7 +120,8 @@
       "mensajeAlertaBorrarMats": "¿Estás seguro de querer eliminar el material",
       "mensajeAlertaBorrarCats": "¿Estás seguro de querer eliminar la categoría",
       "materiales": "Materiales",
-      "filtros": "Filtros"
+      "filtros": "Filtros",
+      "img":"URL de la Imagen"
     },
     "validaciones": {
       "seleccionaGrupoError": "Debe seleccionar un grupo",
@@ -259,6 +261,14 @@
       "cantidad": "La cantidad es obligatoria",
       "volumen": "Introduce un volumen válido",
       "comentarios": "Introduce un comentario válido"
+    },
+    "toast": {
+      "Insert": "El cliente se ha creado.",
+      "Insert_E": "Error al crear el cliente.",
+      "Update": "El cliente se ha actualizado.",
+      "Update_E": "Error al actualizar el cliente.",
+      "Delete": "El cliente se ha eliminado.",
+      "Delete_E": "Error al eliminar el cliente."
     }
   },
   "informes": {
@@ -280,6 +290,7 @@
   "servicios": {
     "title": "Servicios",
     "modal": {
+      "img": "URL de la Imagen",
       "dentro": "Precio interno",
       "fuera": "Precio externo",
       "nombre": "Nombre",

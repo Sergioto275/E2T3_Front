@@ -83,6 +83,29 @@ export class TratamenduakPage implements OnInit {
     }
   }
 
+  transformarURL(url: any): string {
+    if (url == null) {
+      return 'assets/image-default.avif';
+    }
+    // Verificamos si el enlace es de Google Drive
+    if (url.includes("drive.google.com")) {
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      return match ? `https://drive.google.com/thumbnail?id=${match[1]}` : url;
+    }
+  
+    // Si es un enlace de imagen válido (JPG, PNG, GIF, WEBP), lo dejamos igual
+    if (url.match(/(jpeg|jpg|gif|png|webp)$/i)) {
+      return url;
+    }
+  
+    // Si no es ni Google Drive ni una imagen directa, devolvemos un placeholder:
+    return 'assets/image-default.avif';
+  }
+
+  onImageError(event: any) {
+    event.target.src = 'assets/image-default.avif';
+  }
+
   filtrarZerbitzuak() {
     this.filteredZerbitzuak = this.zerbitzuak.map(categoria => ({
       ...categoria,
@@ -166,7 +189,8 @@ export class TratamenduakPage implements OnInit {
         "id": this.crearServicio.idKategoria
       },
       "etxekoPrezioa": this.crearServicio.etxekoPrezioa,
-      "kanpokoPrezioa": this.crearServicio.kanpokoPrezioa
+      "kanpokoPrezioa": this.crearServicio.kanpokoPrezioa,
+      "img_url": this.crearServicio.img_url
     };
 
     console.log(json_data);
@@ -202,7 +226,8 @@ export class TratamenduakPage implements OnInit {
         "id": this.editarServicio.idKategoria
       },
       "etxekoPrezioa": this.editarServicio.etxekoPrezioa,
-      "kanpokoPrezioa": this.editarServicio.kanpokoPrezioa
+      "kanpokoPrezioa": this.editarServicio.kanpokoPrezioa,
+      "img_url": this.editarServicio.img_url
     };
 
     console.log(json_data);
