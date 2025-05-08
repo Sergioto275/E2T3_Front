@@ -56,37 +56,71 @@ export class GrafikoakPage implements OnInit {
       return;
     }
   
-    // Convertir el canvas a una imagen en formato PNG
+    // 🔍 Convertir el canvas a una imagen en formato PNG
     const imgData = canvasElement.toDataURL('image/png');
   
-    // Crear un documento PDF con jsPDF
+    // 🔍 Crear un documento PDF con jsPDF
     const pdf = new jsPDF();
+    const margenIzquierdo = 10;
+    let posicionY = 20;
   
-    // Obtener el trabajador seleccionado
-    const trabajador = this.langileSelec;
-    const trabajadorNombre = trabajador ? trabajador.izena : "Desconocido";
-    const trabajadorApellido = trabajador ? trabajador.abizenak : "";
-    const grupoCodigo = trabajador ? trabajador.taldeKodea : "Sin código";
+    // 🔍 Cargar las imágenes de los logos
+    const logoPeluqueria = new Image();
+    logoPeluqueria.src = 'assets/IMP_Logotipoa.png'; // Ruta local del logo (Asegúrate de tenerlo en assets)
+    const logoSanturtzi = new Image();
+    logoSanturtzi.src = 'assets/images-removebg-preview.png'; // Ruta local del logo (Asegúrate de tenerlo en assets)
   
-    // Añadir logo en la parte superior (ajusta la URL o base64 según tu logo)
-    const logoUrl = 'assets/IMP_Logotipoa.png'; // Ruta del logo en tu proyecto
-    pdf.addImage(logoUrl, 'PNG', 10, 5, 40, 25);
+    // 🔍 Dibujar los logos cuando se cargan
+    logoPeluqueria.onload = () => {
+      pdf.addImage(logoPeluqueria, 'PNG', 10, 10, 40, 30); // Aumenté la anchura a 50 y mantuve la altura en 30
+      logoSanturtzi.onload = () => {
+        pdf.addImage(logoSanturtzi, 'PNG', 170, 10, 25, 25);
   
-    // Agregar información del trabajador al PDF
-    pdf.setFontSize(16);
-    pdf.text(`Análisis de Servicios`, 60, 20);
-    
-    pdf.setFontSize(12);
-    pdf.text(`Nombre: ${trabajadorNombre} ${trabajadorApellido}`, 10, 40);
-    pdf.text(`Grupo: ${grupoCodigo}`, 10, 50);
+        // 🔹 Título del análisis
+        pdf.setFontSize(18);
+        pdf.setFont("helvetica", "bold");
+        pdf.text("Análisis de Servicios", 75, 35);
   
-    // Insertar la imagen del gráfico en el PDF
-    pdf.addImage(imgData, 'PNG', 15, 60, 180, 100);
+        // 🔹 Línea divisoria
+        pdf.setDrawColor(0, 102, 204);
+        pdf.setLineWidth(0.5);
+        pdf.line(10, 50, 200, 50);
   
-    // Descargar el archivo con el nombre del trabajador
-    pdf.save(`grafico_${trabajadorNombre}.pdf`);
+        // 🔹 Información del trabajador
+        posicionY = 60;
+        const trabajador = this.langileSelec;
+        const trabajadorNombre = trabajador ? trabajador.izena : "Desconocido";
+        const trabajadorApellido = trabajador ? trabajador.abizenak : "";
+        const grupoCodigo = trabajador ? trabajador.taldeKodea : "Sin código";
+  
+        pdf.setFontSize(12);
+        pdf.setFont("helvetica", "normal");
+        pdf.text(`Nombre: ${trabajadorNombre} ${trabajadorApellido}`, margenIzquierdo, posicionY);
+        posicionY += 7;
+        pdf.text(`Grupo: ${grupoCodigo}`, margenIzquierdo, posicionY);
+  
+        // 🔹 Línea divisoria
+        posicionY += 10;
+        pdf.setDrawColor(0, 102, 204);
+        pdf.line(10, posicionY, 200, posicionY);
+        posicionY += 5;
+  
+        // 🔹 Imagen del gráfico
+        pdf.addImage(imgData, 'PNG', 15, posicionY, 180, 100);
+  
+        // 🔹 Pie de página (opcional, puedes eliminarlo si no te interesa)
+        posicionY = 200;
+        pdf.setFontSize(10);
+        pdf.setFont("helvetica", "italic");
+        pdf.setTextColor(100);
+        pdf.text("LHFP Santurtzi - Departamento de Peluquería", margenIzquierdo, posicionY + 10);
+        pdf.text("Teléfono: 94 493 12 34 - Email: info@lhfpsanturtzi.eus", margenIzquierdo, posicionY + 15);
+  
+        // 🔹 Descargar el PDF
+        pdf.save(`grafico_${trabajadorNombre}.pdf`);
+      };
+    };
   }
-  
   
 
   openGraphModal(langile: any) {

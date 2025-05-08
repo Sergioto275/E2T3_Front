@@ -44,8 +44,7 @@ export class TratamenduakPage implements OnInit {
     private loginService: LoginServiceService, 
     private router: Router, 
     private route: ActivatedRoute,
-    private modoOscuroService: ModoOscuroService
-  ) 
+    private modoOscuroService: ModoOscuroService) 
   {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);

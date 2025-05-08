@@ -1,3 +1,4 @@
+import { ComunService } from './../zerbitzuak/comun.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -54,6 +55,7 @@ export class HistorialaPage implements OnInit {
     private http: HttpClient,
     private modalController: ModalController,
     private modoOscuroService: ModoOscuroService,
+    private comonService: ComunService
   ) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
@@ -230,7 +232,7 @@ export class HistorialaPage implements OnInit {
       }
     }).subscribe(
       (datuak: any) => {
-        this.descargar_ticket(datuak);
+        this.comonService.descargar_ticket(datuak);
       },
       (error) => {
         console.error("Error al cargar cita:", error);
@@ -238,49 +240,49 @@ export class HistorialaPage implements OnInit {
     );
   }
 
-  descargar_ticket(datuak: any) {
-    const pdf = new jsPDF();
-    const margenIzquierdo = 10;
-    let posicionY = 20;
-    pdf.setFontSize(18);
-    pdf.setFont("helvetica", "bold");
-    pdf.text("Ticket de Cita", margenIzquierdo, posicionY);
-    posicionY += 10;
-    pdf.setFontSize(12);
-    pdf.setFont("helvetica", "normal");
-    pdf.text(`Data: ${datuak.data}`, margenIzquierdo, posicionY);
-    posicionY += 7;
-    pdf.text(`Hasiera Ordua: ${datuak.hasieraOrduaErreala}`, margenIzquierdo, posicionY);
-    posicionY += 7;
-    pdf.text(`Amaiera Ordua: ${datuak.amaieraOrduaErreala}`, margenIzquierdo, posicionY);
-    posicionY += 7;
-    pdf.text(`Langilea: ${datuak.langilea?.izena}`, margenIzquierdo, posicionY);
-    posicionY += 10;
-    const head = [
-      ['Zerbitzua', 'Prezioa (€)']
-    ];
-    const body = datuak.lerroak.map((lerro: any) => [
-      lerro.zerbitzuak.izena,
-      lerro.prezioa.toFixed(2)
-    ]);
-    autoTable(pdf, {
-      startY: posicionY,
-      margin: { left: margenIzquierdo, right: margenIzquierdo },
-      head: head,
-      body: body,
-      theme: 'grid',
-      styles: { fontSize: 10, halign: 'center' },
-      headStyles: { fillColor: [0, 102, 204], textColor: [255, 255, 255] }
-    });
-    posicionY = (pdf as any).lastAutoTable.finalY + 10;
-    pdf.setFont("helvetica", "bold");
-    pdf.text(
-      `PREZIO TOTALA: ${datuak.prezioTotala.toFixed(2)} €`,
-      margenIzquierdo,
-      posicionY
-    );
-    pdf.save(`ticket_${datuak.id}.pdf`);
-  }
+  // descargar_ticket(datuak: any) {
+  //   const pdf = new jsPDF();
+  //   const margenIzquierdo = 10;
+  //   let posicionY = 20;
+  //   pdf.setFontSize(18);
+  //   pdf.setFont("helvetica", "bold");
+  //   pdf.text("Ticket de Cita", margenIzquierdo, posicionY);
+  //   posicionY += 10;
+  //   pdf.setFontSize(12);
+  //   pdf.setFont("helvetica", "normal");
+  //   pdf.text(`Data: ${datuak.data}`, margenIzquierdo, posicionY);
+  //   posicionY += 7;
+  //   pdf.text(`Hasiera Ordua: ${datuak.hasieraOrduaErreala}`, margenIzquierdo, posicionY);
+  //   posicionY += 7;
+  //   pdf.text(`Amaiera Ordua: ${datuak.amaieraOrduaErreala}`, margenIzquierdo, posicionY);
+  //   posicionY += 7;
+  //   pdf.text(`Langilea: ${datuak.langilea?.izena}`, margenIzquierdo, posicionY);
+  //   posicionY += 10;
+  //   const head = [
+  //     ['Zerbitzua', 'Prezioa (€)']
+  //   ];
+  //   const body = datuak.lerroak.map((lerro: any) => [
+  //     lerro.zerbitzuak.izena,
+  //     lerro.prezioa.toFixed(2)
+  //   ]);
+  //   autoTable(pdf, {
+  //     startY: posicionY,
+  //     margin: { left: margenIzquierdo, right: margenIzquierdo },
+  //     head: head,
+  //     body: body,
+  //     theme: 'grid',
+  //     styles: { fontSize: 10, halign: 'center' },
+  //     headStyles: { fillColor: [0, 102, 204], textColor: [255, 255, 255] }
+  //   });
+  //   posicionY = (pdf as any).lastAutoTable.finalY + 10;
+  //   pdf.setFont("helvetica", "bold");
+  //   pdf.text(
+  //     `PREZIO TOTALA: ${datuak.prezioTotala.toFixed(2)} €`,
+  //     margenIzquierdo,
+  //     posicionY
+  //   );
+  //   pdf.save(`ticket_${datuak.id}.pdf`);
+  // }
 
   cargarClientes() {
     this.bezeroak = [];
