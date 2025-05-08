@@ -41,10 +41,7 @@
         <ion-button id="atera-modal" class="Botoiak" slot="end">{{ "ikaslePage.IkasleakBistaratu" | translate
           }}</ion-button>
       </ion-toolbar>
-
-
-      <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterGroups()" debounce="300"
-        placeholder="{{ 'ikaslePage.IzenaOKodea' | translate }}"></ion-searchbar>
+      <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterGroups()" debounce="300" placeholder="{{ 'ikaslePage.IzenaOKodea' | translate }}"></ion-searchbar>
 
       <ion-list>
         <ion-card *ngFor="let grupo of filteredGroups">
@@ -256,7 +253,6 @@
 
 
       <!-- Modal para ver Taldeak e Ikasleak -->
-
       <ion-modal [isOpen]="isEditTaldeModalOpen" (ionModalDidDismiss)="closeEditTaldeModal()">
         <ng-template>
           <ion-header>
@@ -285,8 +281,6 @@
           </ion-content>
         </ng-template>
       </ion-modal>
-
-
     </ion-segment-content>
     <ion-segment-content id="taldeOrdutegi">
       <ion-toolbar>

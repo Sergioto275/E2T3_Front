@@ -183,7 +183,7 @@ export class GrafikoakPage implements OnInit {
       }
   
       const trabajador = this.langileService.find(t => t.id == trabajadorId);
-      let servicios = { corte: 0, tinte: 0 };
+      let servicios = {};
       let trabajadorNombre = trabajador ? trabajador.nombre : "Desconocido";
   
       if (trabajador) {
