@@ -138,12 +138,14 @@
       "Update_E": "Error al actualizar el material.",
       "Delete": "El mateial se ha eliminado.",
       "Delete_E": "Error al eliminar el material.",
+
       "Kategoria_Insert": "La categoría se ha creado.",
       "Kategoria_Insert_E": "Error al crear la categoría.",
       "Kategoria_Update": "La categoría se ha actualizado.",
       "Kategoria_Update_E": "Error al actualizar la categoría.",
       "Kategoria_Delete": "La categoría se ha eliminado.",
       "Kategoria_Delete_E": "Error al eliminar la categoría.",
+
       "sacar_Material": "El material se ha sacado.",
       "sacar_Material_E": "Error al sacar el material.",
       "devolver_Material": "El material se ha devuelto.",
@@ -322,6 +324,7 @@
       "Update_E": "Error al actualizar el servicio.",
       "Delete": "El servicio se ha eliminado.",
       "Delete_E": "Error al eliminar el servicio.",
+
       "Kategoria_Insert": "La categoría se ha creado.",
       "Kategoria_Insert_E": "Error al crear la categoría.",
       "Kategoria_Update": "La categoría se ha actualizado.",
@@ -422,8 +425,10 @@
       "Alumno_Update_E": "Error al actualizar el alumno.",
       "Alumno_Delete": "El / Los alumno(s) se ha(n) eliminado.",
       "Alumno_Delete_E": "Error al eliminar el / los alumno(s).",
+
       "Ordutegi_Delete_E": "Error al actualizar el horario.",
       "Ikasle_Delete_E": "Error al eliminar el alumno.",
+
       "Talde_Insert": "El grupo se ha creado.",
       "Talde_Insert_E": "Error al crear el grupo.",
       "Talde_Update": "El grupo se ha actualizado.",
@@ -461,6 +466,7 @@
     "alumnoPlaceholderModal": "Selecciona un alumno",
     "MessageEliminar": "Eliminar Turno",
     "MessageSeguroEliminar": "¿Estás seguro de que deseas eliminar este Turno?",
+    "MessageEliminado": "El grupo se ha eliminado.",
     "TxandaGuardada": "Turno guardado correctamente",
     "TxandaEzGuardada": "No se ha guardado el Turno, intentalo de nuevo o contacta con un desarrollador",
     "TxandaEzabatuta": "Turno eliminado correctamente",

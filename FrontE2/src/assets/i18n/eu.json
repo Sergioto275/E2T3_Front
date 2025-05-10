@@ -273,6 +273,22 @@
           "Delete_E": "Errorea bezeroa ezabatzerakoan."
         }
     },
+      "informes": {
+    "title": "Informeak",
+    "cliente": "Bezeroak",
+    "botones": {
+      "datos": "Datuak bistaratu",
+      "cerrar": "Itxi"
+    },
+    "modal": {
+      "idCliente": "Bezeroaren ID-a",
+      "nombre": "Izena",
+      "apellido": "Abizenak",
+      "telefono": "Telefonoa",
+      "tinte": "Tindagaia",
+      "pSensible": "Ile sentikorra"
+    }
+  },
     "servicios": {
         "title": "Zerbitzuak",
         "modal": {
@@ -321,6 +337,7 @@
         "ikasleak": "Ikasleak",
         "taldeenKudeaketa": "Taldeen kudeaketa",
         "ordutegienKudeaketa": "Ordutegien kudeaketa",
+        "SartuIzenaEdoKodea": "Sartu taldearen izena edo kodea",
         "SortuTaldea": "Taldea sortu",
         "SortuIkaslea": "Ikaslea sortu",
         "IkasleakBistaratu": "Ikasleak bistaratu",
@@ -330,8 +347,10 @@
         "TaldeIzena": "Taldearen izena",
         "Kodea": "Kodea",
         "GordeAldaketak": "Aldaketak gorde",
+        "SartuIzenBerria": "Sartu izen berria",
         "EditIkaslea": "Ikaslea editatu",
         "Izena": "Izena",
+        "Fecha": "Data",
         "Abizena": "Abizena",
         "Ezabatu": "Ezabatu",
         "SartuIzenaBerria": "Ikaslearen izena sartu",
@@ -362,9 +381,8 @@
         "Ostirala": "Ostirala",
         "Ordutegiak": "Ordutegiak",
         "Astekoa": "Asteko eguna",
-        "SartuIzenBerria": "Sartu izen berria",
-        "SartuIzenaEdoKodea": "Sartu taldearen izena edo kodea",
-        "Fecha": "Data",
+        "Egutegia": "Egutegia",
+        "Itxi": "Itxi",
         "Segurtasuna": "Segurtasuna",
         "Message1": "Talde hau ezabatu nahi duzulaz ziur zaude?",
         "Message2": "Ezabaketa berretsi",
