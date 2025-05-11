@@ -174,7 +174,7 @@ ion-segment {
 ion-card {
   --background: #{$color-white};
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border-left: 4px solid var(--ion-color-tertiary);
+  // border-left: 4px solid var(--ion-color-tertiary);
   
   ion-card-header {
     --background: #{lighten($color-tertiary, 45%)};
@@ -334,6 +334,28 @@ ion-menu::part(container) {
   --ion-color-secondary: #{lighten($color-secondary, 10%)};
   --ion-color-tertiary: #{lighten($color-tertiary, 5%)};
 
+  /* Variables de modo oscuro */
+  --ion-background-color: #121212;
+  --ion-text-color: #{$color-white};
+  --ion-toolbar-background: #1e1e1e;
+  --ion-toolbar-color: #{$color-white};
+  --ion-item-background: #1e1e1e;
+  --ion-card-background: #1e1e1e;
+  --ion-menu-background: #1e1e1e;
+  --ion-menu-color: #{$color-white};
+  --ion-datetime-background: #1e1e1e;
+  --ion-border-color: rgba(255, 255, 255, 0.12);
+  
+  ion-select{
+      color: white;
+  }
+  
+  .select-interface-option {
+    .sc-ion-alert-md{
+      color: white;
+    }
+  }
+
   /* Estilos generales en modo oscuro */
   #container {
     strong {
@@ -384,7 +406,7 @@ ion-menu::part(container) {
   ion-card {
     --background: #1e1e1e;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    border-left: 4px solid var(--ion-color-tertiary);
+    // border-left: 4px solid var(--ion-color-tertiary);
     
   }
 

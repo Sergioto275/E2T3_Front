@@ -40,6 +40,7 @@ export class ProduktuakPage implements OnInit {
   crearMarca!: String;
   crearStock!: Number;
   crearStockAlerta!: Number;
+  crearImg!: String;
 
   alumnos!: any[];
   selecTaldea!: number;
@@ -135,9 +136,10 @@ export class ProduktuakPage implements OnInit {
       "deskribapena": this.crearDescripcion,
       "marka": this.crearMarca,
       "stock": this.crearStock,
-      "stockAlerta": this.crearStockAlerta
+      "stockAlerta": this.crearStockAlerta,
+      "img_url": this.crearImg
     };
-
+    console.log(JSON.stringify(json_data))
     this.http.post(`${environment.url}produktuak`, json_data, {
       headers: {
         'Content-Type': 'application/json',
@@ -194,7 +196,8 @@ export class ProduktuakPage implements OnInit {
       "deskribapena": this.editingProduct.deskribapena,
       "marka": this.editingProduct.marka,
       "stock": this.editingProduct.stock,
-      "stockAlerta": this.editingProduct.stockAlerta
+      "stockAlerta": this.editingProduct.stockAlerta,
+      "img_url": this.editingProduct.img_url
     };
 
     console.log(json_data);
@@ -231,6 +234,33 @@ export class ProduktuakPage implements OnInit {
     toast.present();
   }
 
+  transformarURL(url: any): string {
+    if (url == null) {
+      return 'assets/image-default.avif';
+    }
+    // Verificamos si el enlace es de Google Drive
+    if (url.includes("drive.google.com")) {
+      console.log("b")
+
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      return match ? `https://drive.google.com/thumbnail?id=${match[1]}` : url;
+    }
+  
+    // Si es un enlace de imagen válido (JPG, PNG, GIF, WEBP), lo dejamos igual
+    if (url.match(/(jpeg|jpg|gif|png|webp)$/i)) {
+      console.log("c")
+      return url;
+    }
+    console.log("e")
+
+    // Si no es ni Google Drive ni una imagen directa, devolvemos un placeholder:
+    return 'assets/image-default.avif';
+  }
+
+  onImageError(event: any) {
+    console.log("d")
+    event.target.src = 'assets/image-default.avif';
+  }
 
   eliminarProducto(id: number) {
     const confirmacion = confirm('¿Estás seguro de que quieres eliminar este producto?');

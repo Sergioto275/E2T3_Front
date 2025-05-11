@@ -11,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { ToastController } from '@ionic/angular';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
+import { ComunService } from '../zerbitzuak/comun.service';
 
 @Component({
   selector: 'app-hitzorduak',
@@ -257,7 +258,8 @@ export class HitzorduakPage implements OnInit {
     private alertCtrl: AlertController, 
     private navCtrl: NavController, 
     private http: HttpClient,
-    private modoOscuroService: ModoOscuroService
+    private modoOscuroService: ModoOscuroService,
+    private comonService: ComunService
   ) 
     
     {
@@ -682,7 +684,7 @@ export class HitzorduakPage implements OnInit {
             {
               text: this.translate.instant('citas.botones.descargar'),
               handler: () => {
-                this.descargar_ticket(datuak);
+                this.comonService.descargar_ticket(datuak);
               }
             }
           ]
@@ -715,49 +717,50 @@ export class HitzorduakPage implements OnInit {
     );
   }
 
-  descargar_ticket(datuak: any) {
-    const pdf = new jsPDF();
-    const margenIzquierdo = 10;
-    let posicionY = 20;
-    pdf.setFontSize(18);
-    pdf.setFont("helvetica", "bold");
-    pdf.text("Ticket de Cita", margenIzquierdo, posicionY);
-    posicionY += 10;
-    pdf.setFontSize(12);
-    pdf.setFont("helvetica", "normal");
-    pdf.text(`Data: ${datuak.data}`, margenIzquierdo, posicionY);
-    posicionY += 7;
-    pdf.text(`Hasiera Ordua: ${datuak.hasieraOrduaErreala}`, margenIzquierdo, posicionY);
-    posicionY += 7;
-    pdf.text(`Amaiera Ordua: ${datuak.amaieraOrduaErreala}`, margenIzquierdo, posicionY);
-    posicionY += 7;
-    pdf.text(`Langilea: ${datuak.langilea?.izena}`, margenIzquierdo, posicionY);
-    posicionY += 10;
-    const head = [
-      ['Zerbitzua', 'Prezioa (€)']
-    ];
-    const body = datuak.lerroak.map((lerro: any) => [
-      lerro.zerbitzuak.izena,
-      lerro.prezioa.toFixed(2)
-    ]);
-    autoTable(pdf, {
-      startY: posicionY,
-      margin: { left: margenIzquierdo, right: margenIzquierdo },
-      head: head,
-      body: body,
-      theme: 'grid',
-      styles: { fontSize: 10, halign: 'center' },
-      headStyles: { fillColor: [0, 102, 204], textColor: [255, 255, 255] }
-    });
-    posicionY = (pdf as any).lastAutoTable.finalY + 10;
-    pdf.setFont("helvetica", "bold");
-    pdf.text(
-      `PREZIO TOTALA: ${datuak.prezioTotala.toFixed(2)} €`,
-      margenIzquierdo,
-      posicionY
-    );
-    pdf.save(`ticket_${datuak.id}.pdf`);
-  }
+  // descargar_ticket(datuak: any) {
+  //   const pdf = new jsPDF();
+  //   const margenIzquierdo = 10;
+  //   let posicionY = 20;
+  //   pdf.setFontSize(18);
+  //   pdf.setFont("helvetica", "bold");
+  //   pdf.text("Ticket de Cita", margenIzquierdo, posicionY);
+  //   posicionY += 10;
+  //   pdf.setFontSize(12);
+  //   pdf.setFont("helvetica", "normal");
+  //   pdf.text(`Data: ${datuak.data}`, margenIzquierdo, posicionY);
+  //   posicionY += 7;
+  //   pdf.text(`Hasiera Ordua: ${datuak.hasieraOrduaErreala}`, margenIzquierdo, posicionY);
+  //   posicionY += 7;
+  //   pdf.text(`Amaiera Ordua: ${datuak.amaieraOrduaErreala}`, margenIzquierdo, posicionY);
+  //   posicionY += 7;
+  //   pdf.text(`Langilea: ${datuak.langilea?.izena}`, margenIzquierdo, posicionY);
+  //   posicionY += 10;
+  //   const head = [
+  //     ['Zerbitzua', 'Prezioa (€)']
+  //   ];
+  //   const body = datuak.lerroak.map((lerro: any) => [
+  //     lerro.zerbitzuak.izena,
+  //     lerro.prezioa.toFixed(2)
+  //   ]);
+  //   autoTable(pdf, {
+  //     startY: posicionY,
+  //     margin: { left: margenIzquierdo, right: margenIzquierdo },
+  //     head: head,
+  //     body: body,
+  //     theme: 'grid',
+  //     styles: { fontSize: 10, halign: 'center' },
+  //     headStyles: { fillColor: [0, 102, 204], textColor: [255, 255, 255] }
+  //   });
+  //   posicionY = (pdf as any).lastAutoTable.finalY + 10;
+  //   pdf.setFont("helvetica", "bold");
+  //   pdf.text(
+  //     `PREZIO TOTALA: ${datuak.prezioTotala.toFixed(2)} €`,
+  //     margenIzquierdo,
+  //     posicionY
+  //   );
+  //   pdf.save(`ticket_${datuak.id}.pdf`);
+  // }
+
   cargarModoPreferido() {
     this.modoOscuro = this.modoOscuroService.getModoOscuro();
     if (this.modoOscuro) {

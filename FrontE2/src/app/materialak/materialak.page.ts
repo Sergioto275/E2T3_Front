@@ -39,11 +39,13 @@ export class MaterialakPage implements OnInit {
   crearKatNombre: String | null = null;
   crearNombre: String | null = null;
   crearEtiqueta: String | null = null;
+  crearImg: String | null = null;
   crearCategoria: Number | null = null;
 
   editarKatNombre!: String;
   editarNombre!: String;
   editarEtiqueta!: String;
+  editarImg!: String;
   editarCategoria!: Number;
   matDevolverId!: Number;
 
@@ -88,6 +90,30 @@ export class MaterialakPage implements OnInit {
       this.headerComponent.loadTranslations();
     }
   }
+
+  transformarURL(url: any): string {
+    if (url == null) {
+      return 'assets/image-default.avif';
+    }
+    // Verificamos si el enlace es de Google Drive
+    if (url.includes("drive.google.com")) {
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      return match ? `https://drive.google.com/thumbnail?id=${match[1]}` : url;
+    }
+  
+    // Si es un enlace de imagen válido (JPG, PNG, GIF, WEBP), lo dejamos igual
+    if (url.match(/(jpeg|jpg|gif|png|webp)$/i)) {
+      return url;
+    }
+  
+    // Si no es ni Google Drive ni una imagen directa, devolvemos un placeholder:
+    return 'assets/image-default.avif';
+  }
+
+  onImageError(event: any) {
+    event.target.src = 'assets/image-default.avif';
+  }
+  
 
   actualizarMaterialesSeleccionados(material: any) {
     const index = this.materialesSeleccionados.findIndex(p => p.id === material.id);
@@ -142,6 +168,7 @@ export class MaterialakPage implements OnInit {
     let data = {
       "etiketa": this.crearEtiqueta,
       "izena": this.crearNombre,
+      "img_url": this.crearImg,
       "materialKategoria": {
         "id": this.crearCategoria
       }
@@ -170,6 +197,7 @@ export class MaterialakPage implements OnInit {
   materialaEditatu(id: number) {
     const data = {
       etiketa: this.editarEtiqueta,
+      img_url: this.editarImg,
       izena: this.editarNombre,
       materialKategoria: {
         id: this.editarCategoria
@@ -211,6 +239,7 @@ export class MaterialakPage implements OnInit {
 
   vaciarDatos() {
     this.crearEtiqueta = null;
+    this.crearImg = null;
     this.crearNombre = null;
     this.crearCategoria = null;
     this.crearKatNombre = null;
@@ -330,6 +359,7 @@ export class MaterialakPage implements OnInit {
     this.selectedMateriala = { ...material };
     this.editarNombre = material.izena;
     this.editarEtiqueta = material.etiketa;
+    this.editarImg = material.img_url;
     this.editarCategoria = material.kategoriaId;
   }
 

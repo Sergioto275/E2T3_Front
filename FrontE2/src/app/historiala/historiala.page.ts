@@ -1,3 +1,4 @@
+import { ComunService } from './../zerbitzuak/comun.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -54,6 +55,7 @@ export class HistorialaPage implements OnInit {
     private http: HttpClient,
     private modalController: ModalController,
     private modoOscuroService: ModoOscuroService,
+    private comonService: ComunService
   ) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
@@ -230,7 +232,7 @@ export class HistorialaPage implements OnInit {
       }
     }).subscribe(
       (datuak: any) => {
-        this.descargar_ticket(datuak);
+        this.comonService.descargar_ticket(datuak);
       },
       (error) => {
         console.error("Error al cargar cita:", error);
@@ -238,49 +240,49 @@ export class HistorialaPage implements OnInit {
     );
   }
 
-  descargar_ticket(datuak: any) {
-    const pdf = new jsPDF();
-    const margenIzquierdo = 10;
-    let posicionY = 20;
-    pdf.setFontSize(18);
-    pdf.setFont("helvetica", "bold");
-    pdf.text("Ticket de Cita", margenIzquierdo, posicionY);
-    posicionY += 10;
-    pdf.setFontSize(12);
-    pdf.setFont("helvetica", "normal");
-    pdf.text(`Data: ${datuak.data}`, margenIzquierdo, posicionY);
-    posicionY += 7;
-    pdf.text(`Hasiera Ordua: ${datuak.hasieraOrduaErreala}`, margenIzquierdo, posicionY);
-    posicionY += 7;
-    pdf.text(`Amaiera Ordua: ${datuak.amaieraOrduaErreala}`, margenIzquierdo, posicionY);
-    posicionY += 7;
-    pdf.text(`Langilea: ${datuak.langilea?.izena}`, margenIzquierdo, posicionY);
-    posicionY += 10;
-    const head = [
-      ['Zerbitzua', 'Prezioa (€)']
-    ];
-    const body = datuak.lerroak.map((lerro: any) => [
-      lerro.zerbitzuak.izena,
-      lerro.prezioa.toFixed(2)
-    ]);
-    autoTable(pdf, {
-      startY: posicionY,
-      margin: { left: margenIzquierdo, right: margenIzquierdo },
-      head: head,
-      body: body,
-      theme: 'grid',
-      styles: { fontSize: 10, halign: 'center' },
-      headStyles: { fillColor: [0, 102, 204], textColor: [255, 255, 255] }
-    });
-    posicionY = (pdf as any).lastAutoTable.finalY + 10;
-    pdf.setFont("helvetica", "bold");
-    pdf.text(
-      `PREZIO TOTALA: ${datuak.prezioTotala.toFixed(2)} €`,
-      margenIzquierdo,
-      posicionY
-    );
-    pdf.save(`ticket_${datuak.id}.pdf`);
-  }
+  // descargar_ticket(datuak: any) {
+  //   const pdf = new jsPDF();
+  //   const margenIzquierdo = 10;
+  //   let posicionY = 20;
+  //   pdf.setFontSize(18);
+  //   pdf.setFont("helvetica", "bold");
+  //   pdf.text("Ticket de Cita", margenIzquierdo, posicionY);
+  //   posicionY += 10;
+  //   pdf.setFontSize(12);
+  //   pdf.setFont("helvetica", "normal");
+  //   pdf.text(`Data: ${datuak.data}`, margenIzquierdo, posicionY);
+  //   posicionY += 7;
+  //   pdf.text(`Hasiera Ordua: ${datuak.hasieraOrduaErreala}`, margenIzquierdo, posicionY);
+  //   posicionY += 7;
+  //   pdf.text(`Amaiera Ordua: ${datuak.amaieraOrduaErreala}`, margenIzquierdo, posicionY);
+  //   posicionY += 7;
+  //   pdf.text(`Langilea: ${datuak.langilea?.izena}`, margenIzquierdo, posicionY);
+  //   posicionY += 10;
+  //   const head = [
+  //     ['Zerbitzua', 'Prezioa (€)']
+  //   ];
+  //   const body = datuak.lerroak.map((lerro: any) => [
+  //     lerro.zerbitzuak.izena,
+  //     lerro.prezioa.toFixed(2)
+  //   ]);
+  //   autoTable(pdf, {
+  //     startY: posicionY,
+  //     margin: { left: margenIzquierdo, right: margenIzquierdo },
+  //     head: head,
+  //     body: body,
+  //     theme: 'grid',
+  //     styles: { fontSize: 10, halign: 'center' },
+  //     headStyles: { fillColor: [0, 102, 204], textColor: [255, 255, 255] }
+  //   });
+  //   posicionY = (pdf as any).lastAutoTable.finalY + 10;
+  //   pdf.setFont("helvetica", "bold");
+  //   pdf.text(
+  //     `PREZIO TOTALA: ${datuak.prezioTotala.toFixed(2)} €`,
+  //     margenIzquierdo,
+  //     posicionY
+  //   );
+  //   pdf.save(`ticket_${datuak.id}.pdf`);
+  // }
 
   cargarClientes() {
     this.bezeroak = [];
@@ -322,7 +324,6 @@ export class HistorialaPage implements OnInit {
   openBezero(bezero: any) {
     this.isEditingBezero = true;
     this.editingBezero = bezero;
-    console.log(this.editingBezero)
   }
 
   cerrarModal() {
@@ -338,7 +339,6 @@ export class HistorialaPage implements OnInit {
       produktuIzena:""
     }
     this.editingBezero.historiala.push(hist);
-    console.log(this.editingBezero)
   }
 
   remove_historial(index: number) {
@@ -351,7 +351,6 @@ export class HistorialaPage implements OnInit {
   }
   
   guardarBezero() {
-    console.log(JSON.stringify(this.editingBezero));
     this.http.put(`${environment.url}bezero_fitxak`, this.editingBezero, {
       headers: {
         'Content-Type': 'application/json',
@@ -361,12 +360,15 @@ export class HistorialaPage implements OnInit {
       () => {
         this.cargarClientes();
         this.cerrarModal();
-        this.translate.get('citas.toast.Insert_E').subscribe((texto) => { // OIER
-          this.mostrarToast(texto, 2000, 'danger');
+        this.translate.get('historial.toast.Update').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
         });
       },
       (error) => {
         console.error("Error al asignar la cita:", error);
+        this.translate.get('historial.toast.Update_E').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'danger');
+        });
       }
     );
   }
@@ -378,7 +380,6 @@ export class HistorialaPage implements OnInit {
         url: h.img_url,
         data: h.data
       }));
-      console.log(imagenes)
   
     if (imagenes.length === 0) {
       // Puedes mostrar un toast si no hay imágenes
@@ -412,7 +413,6 @@ export class HistorialaPage implements OnInit {
       "telefonoa": this.crearTelefono,
       "azalSentikorra": this.crearPiel ? "B" : "E",
     };
-    console.log(JSON.stringify(json_data));
 
     this.http.post(`${environment.url}bezero_fitxak`, json_data, {
       headers: {
@@ -435,7 +435,6 @@ export class HistorialaPage implements OnInit {
     const json_data = {
       "id": id
     };
-    console.log(JSON.stringify(json_data));
 
     this.http.delete(`${environment.url}bezero_fitxak`, {
       headers: {

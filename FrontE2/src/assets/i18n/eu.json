@@ -68,7 +68,8 @@
             "vacio": "Ez daude produktuak aukeratuta",
             "filtroCat": "Kategoriaren izenaz iragazi",
             "filtroProd": "Produktuaren izenaz iragazi",
-            "stockBajo": "Stock gutxiko produktuak"
+            "stockBajo": "Stock gutxiko produktuak",
+            "img": "Irudiaren URL"
         },
         "categorias": {
             "electronica": "Elektronika"
@@ -119,7 +120,8 @@
             "mensajeAlertaBorrarMats": "Ziur zaude material hau ezabatu nahi duzula:",
             "mensajeAlertaBorrarCats": "Ziur zaude kategoria hau ezabatu nahi duzula:",
             "materiales": "Materialak",
-            "filtros": "Iragazkiak"
+            "filtros": "Iragazkiak",
+            "img":"Irudiaren URL"
         },
         "validaciones": {
             "seleccionaGrupoError": "Talde bat aukeratu behar duzu",
@@ -261,11 +263,36 @@
             "cantidad": "Kantitatea derrigorrezkoa da",
             "volumen": "Baliozko bolumena sartu",
             "comentarios": "Baliozko oharra sartu"
+        },
+        "toast": {
+          "Insert": "Bezeroa sortu da.",
+          "Insert_E": "Errorea bezeroa sortzerakoan.",
+          "Update": "Bezeroa eguneratu da.",
+          "Update_E": "Errorea bezeroa eguneratzerakoan.",
+          "Delete": "Bezeroa ezabatu da.",
+          "Delete_E": "Errorea bezeroa ezabatzerakoan."
         }
     },
+      "informes": {
+    "title": "Informeak",
+    "cliente": "Bezeroak",
+    "botones": {
+      "datos": "Datuak bistaratu",
+      "cerrar": "Itxi"
+    },
+    "modal": {
+      "idCliente": "Bezeroaren ID-a",
+      "nombre": "Izena",
+      "apellido": "Abizenak",
+      "telefono": "Telefonoa",
+      "tinte": "Tindagaia",
+      "pSensible": "Ile sentikorra"
+    }
+  },
     "servicios": {
         "title": "Zerbitzuak",
         "modal": {
+            "img": "Irudiaren URL",
             "dentro": "Etxeko prezioa",
             "fuera": "Kanpoko prezioa",
             "nombre": "Izena",
@@ -310,6 +337,7 @@
         "ikasleak": "Ikasleak",
         "taldeenKudeaketa": "Taldeen kudeaketa",
         "ordutegienKudeaketa": "Ordutegien kudeaketa",
+        "SartuIzenaEdoKodea": "Sartu taldearen izena edo kodea",
         "SortuTaldea": "Taldea sortu",
         "SortuIkaslea": "Ikaslea sortu",
         "IkasleakBistaratu": "Ikasleak bistaratu",
@@ -319,8 +347,10 @@
         "TaldeIzena": "Taldearen izena",
         "Kodea": "Kodea",
         "GordeAldaketak": "Aldaketak gorde",
+        "SartuIzenBerria": "Sartu izen berria",
         "EditIkaslea": "Ikaslea editatu",
         "Izena": "Izena",
+        "Fecha": "Data",
         "Abizena": "Abizena",
         "Ezabatu": "Ezabatu",
         "SartuIzenaBerria": "Ikaslearen izena sartu",
@@ -351,9 +381,8 @@
         "Ostirala": "Ostirala",
         "Ordutegiak": "Ordutegiak",
         "Astekoa": "Asteko eguna",
-        "SartuIzenBerria": "Sartu izen berria",
-        "SartuIzenaEdoKodea": "Sartu taldearen izena edo kodea",
-        "Fecha": "Data",
+        "Egutegia": "Egutegia",
+        "Itxi": "Itxi",
         "Segurtasuna": "Segurtasuna",
         "Message1": "Talde hau ezabatu nahi duzulaz ziur zaude?",
         "Message2": "Ezabaketa berretsi",

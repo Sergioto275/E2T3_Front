@@ -1,5 +1,5 @@
 <app-header></app-header>
-<ion-content class="ion-page" id="main-content">
+<!-- <ion-content class="ion-page" id="main-content"> -->
   <ion-header>
     <ion-toolbar class="Headeraaa" style="--background: #1c345c; --color: white;">
       <ion-buttons slot="start">
@@ -97,21 +97,44 @@
         </ion-item>
 
         <!-- Lista de productos dentro de la categoría -->
-        <ion-list *ngIf="isCategoriaAbierta(categoria.izena)">
-          <ion-item *ngFor="let producto of categoria.produktuak">
-            <ion-label> {{ producto.izena }}</ion-label>
-            <ion-label> Stock: {{ producto.stock }} </ion-label>
-            <ion-label class="deskribapena"> {{ producto.deskribapena }}</ion-label>
-            <ion-checkbox slot="start" [(ngModel)]="producto.selected"
-              (ionChange)="actualizarProductosSeleccionados(producto, categoria.id)"></ion-checkbox>
-            <ion-button *ngIf="!isIkasle" color="light" slot="end" (click)="openProdModal(producto, categoria.id)">
-              <ion-icon name="create"></ion-icon>
-            </ion-button>
-            <ion-button *ngIf="!isIkasle" slot="end" color="danger" (click)="eliminarProducto(producto.id)">
-              <ion-icon name="trash"></ion-icon>
-            </ion-button>
-          </ion-item>
-        </ion-list>
+        <ion-grid *ngIf="isCategoriaAbierta(categoria.izena)">
+          <ion-row>
+            <ion-col size="4" sizeMd="3" sizeLg="2" *ngFor="let producto of categoria.produktuak">
+              <ion-card class="product-card">
+                
+                <!-- Imagen del producto -->
+                <ion-card-header>
+                  <img [src]="transformarURL(producto.img_url)" 
+                      (error)="onImageError($event)" 
+                      class="product-image" />
+                </ion-card-header>
+            
+                <!-- Información del producto -->
+                <ion-card-content>
+                  <div class="product-info">
+                    <h2 class="product-name">{{ producto.izena }}</h2>
+                    <p class="product-stock">Stock: {{ producto.stock }}</p>
+                    <p class="product-description">{{ producto.deskribapena }}</p>
+                  </div>
+
+                  <!-- Checkbox de selección -->
+                  <ion-item lines="none">
+                    <ion-checkbox slot="start" [(ngModel)]="producto.selected" (ionChange)="actualizarProductosSeleccionados(producto, categoria.id)"></ion-checkbox>
+                    <!-- Botones de acción -->
+                    <ion-buttons slot="end" *ngIf="!isIkasle">
+                      <ion-button *ngIf="!isIkasle" slot="end" (click)="openProdModal(producto, categoria.id)">
+                        <ion-icon name="create"></ion-icon>
+                      </ion-button>
+                      <ion-button *ngIf="!isIkasle" slot="end" color="danger" (click)="eliminarProducto(producto.id)">
+                        <ion-icon name="trash"></ion-icon>
+                      </ion-button>
+                    </ion-buttons>
+                  </ion-item>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </ion-card>
     </ng-container>
 
@@ -248,7 +271,10 @@
             <ion-text color="danger" *ngIf="stockAlerta.invalid && stockAlerta.touched">
               {{ "productos.validaciones.stockAlerta" | translate }}
             </ion-text>
-
+            <ion-item>
+              <ion-label position="stacked">{{ 'productos.modal.img' | translate }}</ion-label>
+              <ion-input [(ngModel)]="crearImg" name="img" required #img="ngModel" placeholder="Imagen"></ion-input>
+            </ion-item>
             <ion-grid>
               <ion-row>
                 <ion-col>
@@ -332,7 +358,10 @@
             <ion-text color="danger" *ngIf="stockAlerta.invalid && stockAlerta.touched">
               {{ "productos.validaciones.stockAlerta" | translate }}
             </ion-text>
-
+            <ion-item>
+              <ion-label position="stacked">{{ 'productos.modal.img' | translate }}</ion-label>
+              <ion-input [(ngModel)]="editingProduct.img_url" name="img" #img="ngModel" placeholder="Imagen"></ion-input>
+            </ion-item>
             <ion-grid>
               <ion-row>
                 <ion-col>
@@ -428,4 +457,4 @@
       </ng-template>
     </ion-modal>
   </ion-content>
-</ion-content>
+<!-- </ion-content> -->

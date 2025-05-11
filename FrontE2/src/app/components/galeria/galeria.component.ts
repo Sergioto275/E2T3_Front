@@ -18,11 +18,25 @@ export class GaleriaComponent {
 
   constructor(private modalController: ModalController) {}
 
-  transformarURL(url:any): string {
-    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    return match ? `https://drive.google.com/thumbnail?id=${match[1]}` : url;
+  transformarURL(url: any): string {
+    if (url == null) {
+      return 'assets/image-default.avif';
+    }
+    // Verificamos si el enlace es de Google Drive
+    if (url.includes("drive.google.com")) {
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      return match ? `https://drive.google.com/thumbnail?id=${match[1]}` : url;
+    }
+  
+    // Si es un enlace de imagen válido (JPG, PNG, GIF, WEBP), lo dejamos igual
+    if (url.match(/(jpeg|jpg|gif|png|webp)$/i)) {
+      return url;
+    }
+  
+    // Si no es ni Google Drive ni una imagen directa, devolvemos un placeholder:
+    return 'assets/image-default.avif';
   }
-
+  
   swiperReady(){
     this.swiper = this.swiperRef?.nativeElement.swiper;
   }
