@@ -67,12 +67,51 @@ $color-dark-gray: #333333;
   }
 }
 
-ion-select{
-  // ion-label{
-    color: white;
-  // }
+.fechaClass {
+  /* Estilos generales (comunes a ambos modos) */
+  margin: 10px 0;
+  width: 100%;
+
+  /* Modo Claro (por defecto) */
+  --ion-label-color: #333333;  /* Color del texto del label */
+  --ion-input-background: #{$color-secondary}; /* Fondo del input */
+  --ion-input-color: #000000;  /* Color del texto del input */
+  --ion-border-color: #cccccc; /* Borde del input */
+
+  /* Aplicar los estilos al ion-item e ion-input */
+  ion-item {
+    --background: transparent;
+  }
 }
 
+/* Elimina todos los estilos predeterminados de Ionic */
+ion-searchbar {
+  --background: transparent !important;
+  --box-shadow: none !important;
+  --color: var(--ion-text-color) !important;
+  --placeholder-color: rgba(var(--ion-text-color-rgb), 0.6) !important;
+  --icon-color: var(--ion-text-color) !important;
+  
+  /* Contenedor principal */
+  .searchbar-input-container {
+    background: #1c345c  !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(var(--ion-text-color-rgb), 0.1) !important;
+  }
+  
+  /* Input interno */
+  .searchbar-input {
+    background: transparent !important;
+    padding-inline-start: 40px !important;
+    box-shadow: none !important;
+  }
+  
+  /* Iconos */
+  .searchbar-search-icon, 
+  .searchbar-clear-icon {
+    color: var(--ion-text-color) !important;
+  }
+}
 
 /* Estilos generales */
 #container {
@@ -295,18 +334,6 @@ ion-menu::part(container) {
   --ion-color-secondary: #{lighten($color-secondary, 10%)};
   --ion-color-tertiary: #{lighten($color-tertiary, 5%)};
 
-  /* Variables de modo oscuro */
-  --ion-background-color: #121212;
-  --ion-text-color: #{$color-white};
-  --ion-toolbar-background: #1e1e1e;
-  --ion-toolbar-color: #{$color-white};
-  --ion-item-background: #1e1e1e;
-  --ion-card-background: #1e1e1e;
-  --ion-menu-background: #1e1e1e;
-  --ion-menu-color: #{$color-white};
-  --ion-datetime-background: #1e1e1e;
-  --ion-border-color: rgba(255, 255, 255, 0.12);
-
   /* Estilos generales en modo oscuro */
   #container {
     strong {
@@ -333,7 +360,11 @@ ion-menu::part(container) {
     }
   }
 
-
+   ion-label {
+    --color: var(--ion-text-color) !important;
+    color: var(--ion-text-color) !important;
+  }
+  
   ion-header {
     --background: var(--ion-color-primary);
     --color: #{$color-white};
@@ -345,15 +376,10 @@ ion-menu::part(container) {
     }
   }
 
-  ion-segment {
-    --background: #{rgba($color-primary-tint, 0.2)};
-    
-    ion-segment-button {
-      --color: #{lighten($color-primary-tint, 20%)};
-      --color-checked: #{$color-white};
-      --background-checked: var(--ion-color-primary);
-    }
+  ion-card-content{
+    background-color: var(--ion-item-background);
   }
+  
 
   ion-card {
     --background: #1e1e1e;
@@ -381,8 +407,6 @@ ion-menu::part(container) {
         border-bottom: 2px solid #{$color-tertiary};
       }
     }
-
-
     ion-list {
       ion-item {
         --color: #{$color-white};
@@ -408,6 +432,99 @@ ion-menu::part(container) {
     }
   }
 
+    ion-item {
+    --background: var(--ion-item-background, #1e1e1e);
+    --border-color: var(--ion-border-color, #333);
+    --color: var(--ion-text-color, #ffffff);
+    --detail-icon-color: var(--ion-color-tertiary, #{$color-tertiary});
+    --highlight-color-focused: var(--ion-color-primary, #3b5a8a);
+    --highlight-color-valid: var(--ion-color-success, #2dd36f);
+    --highlight-color-invalid: var(--ion-color-danger, #eb445a);
+    
+    &.item-interactive {
+      --background-activated: rgba(var(--ion-color-primary-rgb, 37, 66, 115), 0.2);
+      --background-hover: rgba(var(--ion-color-primary-rgb, 37, 66, 115), 0.1);
+    }
+
+    ion-label {
+      --color: var(--ion-text-color, #ffffff) !important;
+    }
+
+    ion-input, ion-select, ion-datetime {
+      --color: var(--ion-text-color, #ffffff);
+      --placeholder-color: rgba(var(--ion-text-color-rgb, 255, 255, 255), 0.6);
+      --placeholder-opacity: 0.6;
+    }
+  }
+  
+ion-segment {
+    background: rgba(28, 52, 92, 0.2); // Fondo sutil para el contenedor
+    
+    ion-segment-button {
+      --background: #333;
+      --background-checked: #3b5a8a;
+      --background-hover: #4b6a9a;
+      
+      /* Asegura que no haya fondo blanco */
+      &::part(native) {
+        background: var(--background);
+      }
+      
+      /* Estilo cuando está seleccionado */
+      &.segment-button-checked {
+        --background: var(--background-checked);
+        
+        ion-label {
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+
+  // Estilo específico para los items dentro de cards
+  ion-card ion-item {
+    --background: var(--ion-card-background, #1e1e1e);
+    --border-color: rgba(var(--ion-text-color-rgb, 255, 255, 255), 0.12);
+  }
+
+  // Estilo para items en listas
+  ion-list ion-item {
+    --background: var(--ion-item-background, #1e1e1e);
+    --border-color: rgba(var(--ion-text-color-rgb, 255, 255, 255), 0.12);
+  }
+
+  ion-searchbar {
+    --background: #2d2d2d;
+    --box-shadow: none;
+    --cancel-button-color: var(--ion-color-primary);
+
+    .searchbar-input-container {
+      .searchbar-input {
+        background: var(--background);
+        color: var(--ion-text-color);
+        padding-inline-start: 40px !important;
+      }
+    }
+    
+    .searchbar-search-icon, 
+    .searchbar-clear-icon {
+      color: var(--ion-text-color);
+    }
+    
+    .searchbar-cancel-button {
+      color: var(--ion-color-primary);
+    }
+  }
+  ion-item {
+    --background: rgba(var(--card-header-bg), 0.7);
+    --color: var(--card-header-text);
+    
+    ion-label {
+      color: var(--card-header-label) !important;
+    }
+  }
+
   /* Ajustes adicionales para modo oscuro */
   .selected {
     --background: rgba(var(--ion-color-primary-rgb), 0.2);
@@ -418,5 +535,4 @@ ion-menu::part(container) {
   ion-header, ion-card {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   }
-
 }

@@ -270,6 +270,22 @@ ion-text[color="danger"] {
   color: var(--ion-color-light);
 }
 
+/* Estilo para ion-item con fondo gris (#FFFFFF) */
+ion-item {
+  --background: {var(--dark-color)};
+  --border-radius: 8px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  margin-bottom: 8px;
+  border: 1px solid #e0e0e0; /* Opcional: añadir borde sutil */
+}
+
+/* Asegurar que las etiquetas tengan buen contraste */
+ion-item ion-label[position="stacked"] {
+  color: #555555;
+  font-weight: 500;
+}
+
 /* Animación al cambiar */
 @keyframes pulse {
   0% { transform: scale(1); }

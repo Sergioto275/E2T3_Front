@@ -87,8 +87,6 @@ export class GrafikoakPage implements OnInit {
     pdf.save(`grafico_${trabajadorNombre}.pdf`);
   }
   
-  
-
   openGraphModal(langile: any) {
     this.isGraphOpen = true;
     this.langileSelec = langile;
@@ -126,6 +124,8 @@ export class GrafikoakPage implements OnInit {
       this.langileakLortu();
       this.langile_serviceLortu();
     });
+
+    this.cargarModoPreferido();
   }
 
   toggleCategoria(categoria: string) {

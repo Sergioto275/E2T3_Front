@@ -30,7 +30,7 @@
     
     <ion-content class="ion-padding">
       <div class="flexbox">
-        <div>
+        <div class="fechaClass">
           <ion-item>
             <ion-label position="stacked">{{ "citas.modal.fecha" | translate }}</ion-label>
             <ion-input class="date-selector" [(ngModel)]="dataSelec" type="date" placeholder="Fecha" (ngModelChange)="cargar_dia_seleccionado()"></ion-input>
@@ -143,7 +143,7 @@
                 </ion-item>
                 <ion-text color="danger" *ngIf="telefono.invalid && telefono.touched">{{ "citas.validaciones.telefono" | translate }}</ion-text>
                 <ion-item>
-                  <ion-label>{{ "citas.modal.casa" | translate }}</ion-label>
+                  <ion-label color="primary">{{ "citas.modal.casa" | translate }}</ion-label>
                   <ion-checkbox [(ngModel)]="citaCrear.etxekoa" name="casa" required #casa="ngModel"></ion-checkbox>
                 </ion-item>
                 <ion-text color="danger" *ngIf="casa.invalid && casa.touched">{{ "citas.validaciones.seleccion" | translate }}</ion-text>

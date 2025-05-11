@@ -146,16 +146,6 @@ ion-content {
     }
   }
   
-  /* Barra de búsqueda */
-  ion-searchbar {
-    --background: #{$color-light-gray};
-    --border-radius: 8px;
-    --box-shadow: none;
-    --color: #{$color-primary};
-    --placeholder-color: #{$color-medium-gray};
-    --icon-color: #{$color-primary};
-  }
-  
   /* Botones */
   ion-button {
     --border-radius: 8px;
