@@ -162,7 +162,7 @@ ion-header {
   
   ion-toolbar {
     --background: transparent;
-    --color: #{$color-white};
+    --color: #{$color-primary-shade};
   }
 }
 
@@ -566,5 +566,9 @@ ion-segment {
   /* Efectos de sombra más sutiles en modo oscuro */
   ion-header, ion-card {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .compact-item{
+    background-color: #ffffff;
   }
 }

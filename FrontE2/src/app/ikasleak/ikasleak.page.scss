@@ -7,6 +7,7 @@ $color-white: #ffffff;
 $color-light-gray: #f8f8f8;
 $color-medium-gray: #e9e9e9;
 $color-dark-gray: #333333;
+$color-danger: #e74c3c;        // Rojo
 
 .Headeraaa {
   --background: #1c345c; /* Azul oscuro principal */
@@ -63,7 +64,7 @@ ion-toolbar {
   flex-wrap: wrap; /* Permite que los botones se envuelvan */
   justify-content: space-between;
   gap: 8px;
-  padding: 10px;
+  padding: 8px;
 
   ion-button.Botoiak {
     flex: 1 1 auto; /* Se adapta al espacio disponible */
@@ -233,6 +234,7 @@ ion-searchbar {
   .dark .theme-toggle ion-icon {
     color: var(--ion-color-light);
   }
+
   
   /* Animación al cambiar */
   @keyframes pulse {
@@ -245,4 +247,257 @@ ion-searchbar {
     animation: pulse 0.3s ease;
   }
 }
+
+  .card-content {
+    padding: 10px;
+  border-radius: 10px;
+}
+
+.alumnos-list {
+  background-color: transparent;
+}
+
+.itemAlumno {
+  background-color: #1c345c;   // Azul oscuro de fondo
+  color: #ffffff;              // Texto blanco
+  margin: 8px 0;
+  border-radius: 8px;
+  padding: 12px;               // Añadir algo de relleno
+  transition: all 0.3s ease;   // Transición suave para el hover
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Sombra ligera
+}
+
+.itemAlumno:hover {
+  background-color: #41a367;   // Verde claro cuando se pasa el mouse
+  cursor: pointer;
+}
+
+.itemAlumno h3 {
+  margin: 0;
+  font-weight: 500;
+  font-size: 1rem;  // Tamaño de fuente para el nombre del alumno
+  color: #ffffff;   // Asegúrate de que el texto siga siendo blanco en hover
+}
+
+.itemAlumno:active {
+  background-color: #254273;   // Azul claro cuando se hace clic
+}
+
+.itemAlumno:focus {
+  outline: none;   // Elimina el borde por defecto de focus
+  box-shadow: 0 0 4px #41a367;   // Resalta el borde con el color verde claro
+}
+
+/* Estilos generales del modal */
+ion-modal {
+  --background: $color-white; /* Fondo blanco para el modal */
+  --border-radius: 12px; /* Bordes redondeados */
+  --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave para darle profundidad */
+}
+
+/* Asegúrate de que los títulos dentro del modal tengan texto blanco */
+ion-header {
+  background-color: $color-primary; /* Fondo azul oscuro */
+  color: $color-white; /* Texto blanco */
+  
+  ion-title {
+    color: $color-white; /* Título en blanco */
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  /* Si hay cualquier otro texto en el header, aseguramos que sea blanco */
+  ion-label {
+    color: $color-white; /* Etiquetas en blanco */
+  }
+}
+
+/* Aseguramos que los títulos dentro del contenido también sean blancos */
+ion-item ion-label {
+  color: $color-dark-gray; /* Etiquetas de los campos en texto gris oscuro */
+}
+
+ion-item ion-input,
+ion-item ion-select {
+  --color: $color-dark-gray; /* Color del texto de los inputs */
+}
+
+ion-item ion-label {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: $color-dark-gray;
+}
+
+
+/* Estilos del contenido del modal */
+ion-content {
+  background-color: $color-light-gray; /* Fondo gris claro */
+  padding: 16px;
+  border-radius: 10px;
+}
+
+/* Estilos para los items del formulario */
+ion-item {
+  background-color: transparent;
+  margin-bottom: 16px;
+  --highlight-background: $color-primary-tint; /* Fondo suave en hover */
+  --highlight-color: $color-white; /* Texto blanco al resaltar */
+  --border-radius: 8px; /* Bordes redondeados para los campos de texto */
+}
+
+ion-label {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: $color-dark-gray;
+}
+
+ion-input,
+ion-select {
+  --background: $color-white;
+  --color: $color-dark-gray;
+  --padding-start: 12px;
+  --border-radius: 8px;
+  font-size: 1rem;
+}
+
+ion-select {
+  --placeholder-color: $color-medium-gray; /* Color del placeholder */
+}
+
+/* Mensajes de error */
+ion-text[color="danger"] {
+  font-size: 0.8rem;
+  margin-top: 8px;
+  color: $color-danger; /* Color rojo para errores */
+}
+
+// Media query para móvil (ajustes específicos)
+@media (max-width: 768px) {
+  .filter-card {
+    margin: 8px;
+    
+    ion-card-header {
+      padding: 10px 12px;
+      
+      ion-card-title {
+        font-size: 1rem;
+      }
+    }
+    
+    ion-card-content {
+      padding: 12px;
+      
+      .filter-grid {
+        ion-row {
+          flex-wrap: wrap;
+          margin: 0 -4px;
+          
+          ion-col {
+            padding: 0 4px;
+            flex: 0 0 50%;
+            max-width: 50%;
+            margin-bottom: 8px;
+            
+            &:first-child, &:nth-child(2) {
+              flex: 0 0 48%;
+              max-width: 48%;
+            }
+            
+            &:last-child {
+              flex: 0 0 100%;
+              max-width: 100%;
+              margin-top: 8px;
+            }
+          }
+        }
+        
+        ion-item {
+          --min-height: 42px;
+          
+          ion-label {
+            font-size: 0.8rem;
+          }
+          
+          ion-input {
+            font-size: 0.85rem;
+          }
+        }
+        
+        .reset-btn {
+          height: 40px;
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+  
+  ion-toolbar {
+    ion-button.Botoiak {
+      font-size: 0.8rem;
+      min-width: 80px;
+    }
+  }
+}
+
+// Resto de tus estilos (se mantienen igual)
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px;
+  
+  ion-button {
+    --padding-start: 8px;
+    --padding-end: 8px;
+    margin: 0;
+    
+    ion-icon {
+      font-size: 1.2em;
+    }
+  }
+}
+@media (max-width: 768px) {
+  .compact-grid ion-row {
+    flex-wrap: wrap;
+
+    ion-col {
+      flex: 0 0 100%;
+      max-width: 100%;
+      margin-bottom: 8px;
+    }
+
+    ion-button.compact-button {
+      width: 100%;
+      font-size: 0.85rem;
+    }
+  }
+
+  .compact-item {
+    --min-height: 40px;
+    
+    ion-label {
+      font-size: 0.8rem;
+    }
+
+    ion-input {
+      font-size: 0.85rem;
+    }
+      .center-button-wrapper {
+    justify-content: center;
+  }
+  .center-button-wrapper ion-button {
+    width: 100%;
+  }
+  }
+}
+
+   .center-button-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+
+
+
+
 

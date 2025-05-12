@@ -198,8 +198,6 @@ export class ProduktuakPage implements OnInit {
       "img_url": this.editingProduct.img_url
     };
 
-    console.log(json_data);
-
     this.http.put(`${environment.url}produktuak`, json_data, {
       headers: {
         'Content-Type': 'application/json',

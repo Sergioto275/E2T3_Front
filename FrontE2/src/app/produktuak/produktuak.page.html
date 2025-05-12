@@ -27,7 +27,7 @@
         <ion-button id="cat-prod-sortu-modal">{{ 'productos.botones.crearCategoria' | translate }}</ion-button>
       </ion-buttons>
       <ion-buttons *ngIf="!isIkasle" slot="start">
-        <ion-button id="prod-sortu-modal">{{ 'productos.botones.agregarProducto' | translate }}</ion-button>
+        <ion-button  (click) = "crearProducto" id="prod-sortu-modal">{{ 'productos.botones.agregarProducto' | translate }}</ion-button>
       </ion-buttons>
       <ion-buttons slot="end">
         <ion-button [disabled]="productosSeleccionados.length==0" id="atera-modal">{{ 'productos.botones.sacarProductos'
