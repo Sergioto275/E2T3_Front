@@ -1,342 +1,233 @@
-$color-primary: #1c345c;
-$color-primary-shade: #172a4b;
-$color-primary-tint: #254273;
-$color-secondary: #031027;
-$color-tertiary: #41a367;
-$color-white: #FFFFFF;
-$color-black: #000000;
-$color-light-gray: #f8f8f8;
-$color-medium-gray: #E9E9E9;
-$color-dark-gray: #333333;
-
 /* Estilos generales */
-ion-content {
-  --background: #{$color-light-gray};
+ion-card {
+  margin: 12px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para el ítem de categoría */
+ion-item {
   --padding-start: 16px;
   --padding-end: 16px;
-  --padding-top: 16px;
-  --padding-bottom: 16px;
-}
-
-/* Toolbar superior */
-ion-toolbar {
-  --background: #{$color-primary};
-  --color: #{$color-white};
-  padding: 8px 16px;
-
-  ion-button {
-    --background: #{$color-primary-tint};
-    --background-activated: #{$color-primary-shade};
-    --background-hover: #{lighten($color-primary-tint, 5%)};
-    --color: #{$color-white};
-    --border-radius: 8px;
-    margin: 0 8px;
-    font-weight: 500;
-  }
-}
-
-/* Tarjetas principales */
-ion-card {
-  --background: #{$color-white};
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  margin-bottom: 20px;
-  overflow: hidden;
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: translateY(-3px);
-  }
-}
-
-/* Encabezados de tarjeta */
-ion-card-header {
-  --background: #{$color-primary};
-  --color: #{$color-white};
-  padding: 16px;
-
-  ion-card-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #{$color-white};
-  }
-}
-
-/* Contenido de tarjetas */
-ion-card-content {
-  padding: 16px;
-
-  ion-grid {
-    padding: 0;
-  }
-}
-
-/* Barra de búsqueda */
-ion-searchbar {
-  --background: #{$color-light-gray};
-  --border-radius: 8px;
-  --box-shadow: none;
-  --color: #{$color-primary-shade}; // Color del texto ingresado
-  --placeholder-color: #{$color-primary-tint}; // Color del placeholder (azul más claro)
-  --icon-color: #{$color-primary}; // Color del icono de búsqueda
-
-  /* Opcional: si quieres un azul aún más claro */
-  &.custom-placeholder {
-    --placeholder-color: #{lighten($color-primary-tint, 20%)}; // Azul más claro
-    --placeholder-opacity: 1; // Asegura que se vea bien el color
-  }
-}
-
-/* Items de categoría */
-ion-item {
-  --background: #{$color-white};
-  --border-color: #{$color-medium-gray};
-  --padding-start: 16px;
-  --inner-padding-end: 16px;
   --min-height: 60px;
-
+  --border-radius: 12px;
+  
   ion-label {
-    color: #{$color-primary};
-    font-weight: 500;
-
-    p {
-      color: #{$color-dark-gray};
-      font-size: 0.9rem;
-    }
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ion-color-dark);
   }
-
+  
   ion-button {
     --padding-start: 8px;
     --padding-end: 8px;
-    margin: 0 4px;
-  }
-}
-
-/* Botones de acción */
-ion-button {
-  &[color="danger"] {
-    --background: #{$color-white};
-    --background-activated: #{$color-light-gray};
-    --color: #{$color-primary-shade};
-    --border-color: #{$color-primary-shade};
-    --border-width: 1px;
-  }
-
-  &[color="primary"] {
-    --background: #{$color-tertiary};
-    --background-activated: #{darken($color-tertiary, 10%)};
-  }
-}
-
-/* Lista de servicios */
-ion-list {
-  background: transparent;
-  padding: 0;
-
-  ion-item {
-    --border-color: #{$color-medium-gray};
-    --padding-start: 24px;
-
-    ion-label {
-      color: #{$color-secondary};
+    margin: 0 2px;
+    
+    ion-icon {
+      font-size: 1.2rem;
     }
   }
+  
+  ion-icon[name^="chevron"] {
+    font-size: 1.4rem;
+    color: var(--ion-color-medium);
+  }
 }
 
-.service-card {
-  margin-bottom: 15px;
-  overflow: hidden;
-  border-radius: 8px;
-}
-
-.service-image {
+/* Grid de servicios optimizado */
+ion-grid {
   width: 100%;
-  height: 120px;
-  object-fit: cover;
-  border-bottom: 1px solid #ccc;
+  padding: 0;
+  margin: 0;
 }
 
-.service-info {
-  margin-bottom: 10px;
-  text-align: center;
+ion-row {
+  margin: -4px; /* Compensa el margen de las columnas */
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.service-name {
-  font-size: 1em;
-  font-weight: bold;
-  margin-bottom: 5px;
+ion-col[size="4"], 
+ion-col[sizeMd="3"], 
+ion-col[sizeLg="2"] {
+  padding: 4px; /* Espaciado entre cards */
+  display: flex; /* Importante para que la card ocupe todo el espacio */
 }
 
-.service-price {
-  font-size: 0.9em;
-  color: var(--ion-color-medium);
-}
-
-/* Modales */
-ion-modal {
-  --background: rgba(0, 0, 0, 0.4);
-
-  ion-header {
-    ion-toolbar {
-      --background: #{$color-primary};
-      --color: #{$color-white};
-    }
-  }
-
-  ion-content {
-    --background: #{$color-white};
-    --padding-start: 16px;
-    --padding-end: 16px;
-    --padding-top: 16px;
-    --padding-bottom: 16px;
-  }
-}
-
-/* Formularios */
-form {
-  ion-item {
-    --background: #{$color-light-gray};
-    --border-radius: 8px;
-    margin-bottom: 16px;
-
-    ion-label[position="stacked"] {
-      color: #{$color-primary};
-      font-weight: 500;
-    }
-
-    ion-input,
-    ion-select {
-      --background: #{$color-white};
-      --color: #{$color-primary};
-      --padding-start: 12px;
-      --highlight-color-focused: #{$color-tertiary};
-    }
-  }
-
-  ion-button[type="submit"] {
-    --background: #{$color-tertiary};
-    --background-activated: #{darken($color-tertiary, 10%)};
-    --background-hover: #{lighten($color-tertiary, 5%)};
-    --color: #{$color-white};
-    margin-top: 24px;
-    height: 50px;
-    font-weight: 600;
-  }
-}
-
-/* Iconos */
-ion-icon {
-  &[name="create"] {
-    color: #{$color-light-gray};
-  }
-
-  &[name="trash"] {
-    color: #{$color-primary-shade};
-  }
-
-  &[name="chevron-up"],
-  &[name="chevron-down"] {
-    color: #{$color-primary};
-  }
-}
-
-/* Mensajes de validación */
-ion-text[color="danger"] {
-  color: #{$color-primary-shade} !important;
-  font-size: 0.8rem;
-  display: block;
-  margin-top: -12px;
-  margin-bottom: 12px;
-}
-
-/* Efectos visuales */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-ion-item {
-  animation: fadeIn 0.3s ease-out;
-}
-
-ion-toolbar:not(.Headeraaa) {
-  --background: #{$color-primary}; // Usa tu color primario
-  --color: #{$color-white}; // Texto blanco
-  --border-radius: 20px 20px 20px 20px; // Esquinas redondeadas solo abajo
-  border-radius: var(--border-radius); // Aplica el redondeo
-  overflow: hidden; // Importante para que el contenido respete el redondeo
-  margin-bottom: 16px; // Espacio después del toolbar
-
-  /* Efecto de sombra opcional */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-
-  /* Transición suave para hover/click */
-  transition: all 0.3s ease;
-
-  /* Estilo cuando está en la parte inferior */
-  &:last-child {
-    --border-radius: 20px 20px 20px 20px;
-  }
-}
-
-/* Responsive */
-@media (max-width: 576px) {
-  ion-toolbar {
-    ion-buttons {
-      flex-direction: column;
-      align-items: flex-start;
-
-      ion-button {
-        margin: 4px 0;
+/* Estilos optimizados para las tarjetas de servicio */
+.service-card {
+  margin: 0;
+  width: 100%; /* Ocupa todo el ancho del col */
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Asegura misma altura */
+  
+  ion-card-header {
+    padding: 0;
+    height: 0;
+    padding-top: 100%; /* Mantiene relación 1:1 */
+    position: relative;
+    
+    .service-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      background-color: #f5f5f5;
+      transition: transform 0.3s ease;
+      
+      &:before {
+        content: "Imagen no disponible";
+        color: #999;
+        font-size: 0.8rem;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
         width: 100%;
+        padding: 0 16px;
       }
     }
   }
-
-  ion-row {
-    flex-direction: column;
-
-    ion-col {
-      width: 100%;
-      padding: 0;
-    }
-  }
-}
-
-@media (max-width: 768px) {
-  ion-toolbar {
-    --border-radius: 12px 12px 12px 12px; // Redondeo más pequeño en móviles
-  }
-}
-.theme-toggle {
-  --padding-start: 8px;
-  --padding-end: 8px;
   
-  ion-icon {
-    color: white;
-    font-size: 24px;
-    transition: all 0.3s ease;
+  ion-card-content {
+    flex-grow: 1;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
     
-    &:hover {
-      transform: rotate(15deg) scale(1.1);
-      color: #a8c4ff;
+    .service-info {
+      flex-grow: 1;
+      margin-bottom: 12px;
+      
+      .service-name {
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 8px 0;
+        color: var(--ion-color-dark);
+      }
+      
+      .service-price {
+        font-size: 0.9rem;
+        margin: 4px 0;
+        color: var(--ion-color-medium);
+      }
+    }
+    
+    ion-item {
+      --padding-start: 0;
+      --padding-end: 0;
+      --min-height: auto;
+      
+      ion-buttons {
+        ion-button {
+          --padding-start: 4px;
+          --padding-end: 4px;
+          
+          ion-icon {
+            font-size: 1rem;
+          }
+        }
+      }
     }
   }
 }
 
-/* Asegura contraste en ambos modos */
-.dark .theme-toggle ion-icon {
-  color: var(--ion-color-light);
+/* Estilos para el searchbar (se mantienen igual) */
+ion-searchbar {
+  width: 100%;
+  padding: 0;
+  margin-bottom: 8px;
+  --background: #f5f5f5;
+  --border-radius: 12px;
+  --box-shadow: none;
+  --icon-color: var(--ion-color-medium);
+  --placeholder-color: var(--ion-color-medium);
+  --color: var(--ion-color-dark);
+  transition: all 0.3s ease;
+
+  .searchbar-input-container {
+    input {
+      padding: 12px 16px !important;
+      font-size: 0.95rem;
+    }
+  }
+
+  &:focus-within {
+    --background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
 }
 
-/* Animación al cambiar */
+/* Estilos responsivos */
+@media (max-width: 576px) {
+  ion-col[size="4"] {
+    width: 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  
+  ion-searchbar {
+    .searchbar-input-container {
+      input {
+        padding: 10px 14px !important;
+        
+        &::placeholder {
+          font-size: 0.85rem;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 577px) and (max-width: 991px) {
+  ion-col[sizeMd="3"] {
+    width: 33.333%;
+    flex: 0 0 33.333%;
+    max-width: 33.333%;
+  }
+}
+
+@media (min-width: 992px) {
+  ion-col[sizeLg="2"] {
+    width: 16.666%;
+    flex: 0 0 16.666%;
+    max-width: 16.666%;
+  }
+}
+
+/* Efectos hover */
+@media (hover: hover) {
+  ion-searchbar:hover {
+    --background: #f0f0f0;
+  }
+  
+  @media (min-width: 768px) {
+    .service-card:hover {
+      .service-image {
+        transform: scale(1.03);
+      }
+    }
+  }
+}
+
+/* Estilos para modo oscuro */
+.dark {
+  .theme-toggle ion-icon {
+    color: var(--ion-color-light);
+  }
+}
+
+/* Animaciones */
 @keyframes pulse {
   0% { transform: scale(1); }
   50% { transform: scale(1.2); }
@@ -345,4 +236,47 @@ ion-toolbar:not(.Headeraaa) {
 
 .theme-toggle:active ion-icon {
   animation: pulse 0.3s ease;
+}
+
+/* Manejo de imágenes faltantes */
+img[src=""], img:not([src]) {
+  opacity: 0;
+}
+
+
+/* Estilos para el grid y searchbars */
+ion-col {
+  flex: 0 0 100% !important;
+  margin-top: 5px;
+  
+  &:first-child {
+    padding-top: 0 !important;
+  }
+  
+  &:last-child {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
+ion-searchbar {
+  width: 120%;
+  padding: 0;
+  margin-bottom: 8px;
+  --background: #f5f5f5;
+  --border-radius: 12px;
+  --box-shadow: none;
+  --icon-color: var(--ion-color-medium);
+  --placeholder-color: var(--ion-color-medium);
+  --color: var(--ion-color-dark);
+  transition: all 0.3s ease;
+
+  &:focus-within {
+    --background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+}
+
+.service-card h2.service-name {
+  color: #254273 !important;
 }

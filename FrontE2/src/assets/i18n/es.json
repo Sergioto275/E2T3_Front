@@ -66,8 +66,8 @@
       "stockAlerta": "Stock Alerta",
       "descripcion": "Descripción",
       "vacio": "No hay productos seleccionados",
-      "filtroCat": "Filtrar por Nombre de Categoria",
-      "filtroProd": "Filtrar por Nombre de Producto",
+      "filtroCat": "Filtrar por Categoria",
+      "filtroProd": "Filtrar por Producto",
       "stockBajo": "Productos Bajo Stock",
       "img": "URL de la Imagen"
     },
