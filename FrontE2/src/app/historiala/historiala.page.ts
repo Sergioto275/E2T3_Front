@@ -10,7 +10,7 @@ import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
 import { GaleriaComponent } from '../components/galeria/galeria.component';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
-import { LanguageService } from '../services/language.service';
+import { LanguageService } from '../zerbitzuak/language.service';
 
 @Component({
   selector: 'app-historiala',

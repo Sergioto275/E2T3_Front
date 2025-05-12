@@ -9,7 +9,7 @@ import autoTable from 'jspdf-autotable';
 import jsPDF from 'jspdf';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 
-import { LanguageService } from '../services/language.service';
+import { LanguageService } from '../zerbitzuak/language.service';
 
 declare var Chart: any; 
 declare var html2canvas: any; // Declaramos que `html2canvas` existe globalmente

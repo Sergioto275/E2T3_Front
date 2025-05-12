@@ -7,7 +7,7 @@ import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
-import { LanguageService } from '../services/language.service';
+import { LanguageService } from '../zerbitzuak/language.service';
 
 export interface Alumno {
   nombre: string;

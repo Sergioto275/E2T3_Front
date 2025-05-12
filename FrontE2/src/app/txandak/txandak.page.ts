@@ -9,7 +9,7 @@ import { formatDate } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 
-import { LanguageService } from '../services/language.service';
+import { LanguageService } from '../zerbitzuak/language.service';
 
 // Interfaz movida fuera de la clase
 export interface Txanda {
