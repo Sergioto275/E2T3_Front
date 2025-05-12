@@ -9,6 +9,8 @@ import autoTable from 'jspdf-autotable';
 import jsPDF from 'jspdf';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 
+import { LanguageService } from '../services/language.service';
+
 declare var Chart: any; 
 declare var html2canvas: any; // Declaramos que `html2canvas` existe globalmente
 
@@ -42,10 +44,12 @@ export class GrafikoakPage implements OnInit {
     private http: HttpClient, private loginService: LoginServiceService, 
     private router: Router, 
     private route: ActivatedRoute,
-    private modoOscuroService: ModoOscuroService
+    private modoOscuroService: ModoOscuroService,
+    private languageService: LanguageService
   ) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
+    this.selectedLanguage = this.languageService.getLanguage();
   }
 
   descargarGrafico() {
@@ -138,6 +142,7 @@ export class GrafikoakPage implements OnInit {
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
+    this.languageService.setLanguage(this.selectedLanguage);
     if (this.headerComponent) {
       this.headerComponent.loadTranslations();
     }

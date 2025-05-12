@@ -7,6 +7,8 @@ import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 
+import { LanguageService } from '../services/language.service';
+
 @Component({
   selector: 'app-ikasleak',
   templateUrl: './ikasleak.page.html',
@@ -56,10 +58,12 @@ export class IkasleakPage implements OnInit {
     private router: Router,
     private loginService: LoginServiceService,
     private route: ActivatedRoute,
-    private modoOscuroService: ModoOscuroService
+    private modoOscuroService: ModoOscuroService,
+    private languageService: LanguageService
   ) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
+    this.selectedLanguage = this.languageService.getLanguage();
   }
 
   lortuData(): string {
@@ -105,6 +109,7 @@ export class IkasleakPage implements OnInit {
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
+    this.languageService.setLanguage(this.selectedLanguage);
     if (this.headerComponent) {
       this.headerComponent.loadTranslations();
     }

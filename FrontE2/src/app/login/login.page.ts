@@ -5,6 +5,8 @@ import { firstValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 
+import { LanguageService } from '../services/language.service';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -23,8 +25,9 @@ export class LoginPage implements OnInit {
     private router: Router, 
     private loginService: LoginServiceService, 
     private translate: TranslateService,
-    private modoOscuroService: ModoOscuroService 
-  ) {}
+    private modoOscuroService: ModoOscuroService,
+    private languageService: LanguageService
+  ) {this.selectedLanguage = this.languageService.getLanguage();}
 
   ngOnInit() {
     this.translate.setDefaultLang(this.selectedLanguage);
@@ -39,6 +42,7 @@ export class LoginPage implements OnInit {
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
+    this.languageService.setLanguage(this.selectedLanguage);
   }
 
   // Nuevo método para limpiar mensajes
