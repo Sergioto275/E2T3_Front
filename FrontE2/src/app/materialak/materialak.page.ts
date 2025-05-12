@@ -13,7 +13,7 @@ import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 
-import { LanguageService } from '../services/language.service';
+import { LanguageService } from '../zerbitzuak/language.service';
 
 export interface Alumno {
   nombre: string;
@@ -523,6 +523,7 @@ export class MaterialakPage implements OnInit {
   }
 
   ngOnInit() {
+    this.selectedLanguage = this.languageService.getLanguage();
     // Suscribirse a los cambios de ruta
     this.routeSubscription = this.route.params.subscribe((params) => {
       console.log('Ruta cambiada:', params); // Si necesitas los parámetros de la ruta

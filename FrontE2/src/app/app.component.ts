@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, Routes } from '@angular/router';
 import { LoginServiceService } from './zerbitzuak/login-service.service';
 import { Subscription } from 'rxjs';
-import { LanguageService } from './services/language.service';
+import { LanguageService } from './zerbitzuak/language.service';
 
 @Component({
   selector: 'app-root',

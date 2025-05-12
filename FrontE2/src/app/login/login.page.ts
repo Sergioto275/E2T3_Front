@@ -5,7 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 
-import { LanguageService } from '../services/language.service';
+import { LanguageService } from '../zerbitzuak/language.service';
 
 @Component({
   selector: 'app-login',
@@ -30,6 +30,7 @@ export class LoginPage implements OnInit {
   ) {this.selectedLanguage = this.languageService.getLanguage();}
 
   ngOnInit() {
+    this.selectedLanguage = this.languageService.getLanguage();
     this.translate.setDefaultLang(this.selectedLanguage);
     this.cargarModoPreferido();
   }

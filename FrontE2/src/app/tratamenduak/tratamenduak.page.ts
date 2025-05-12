@@ -7,7 +7,7 @@ import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
-import { LanguageService } from '../services/language.service';
+import { LanguageService } from '../zerbitzuak/language.service';
 
 @Component({
   selector: 'app-tratamenduak',
@@ -55,6 +55,7 @@ export class TratamenduakPage implements OnInit {
   }
 
   ngOnInit() {
+    this.selectedLanguage = this.languageService.getLanguage();
     // Suscribirse a los cambios de ruta
     this.routeSubscription = this.route.params.subscribe((params) => {
       console.log('Ruta cambiada:', params); // Si necesitas los parámetros de la ruta

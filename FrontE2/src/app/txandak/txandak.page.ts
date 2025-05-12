@@ -9,7 +9,7 @@ import { formatDate } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 
-import { LanguageService } from '../services/language.service';
+import { LanguageService } from '../zerbitzuak/language.service';
 
 // Interfaz movida fuera de la clase
 export interface Txanda {
@@ -84,6 +84,7 @@ export class TxandakPage implements OnInit {
   ngOnInit() {
     this.fechaInicio = this.lortuData();
     this.fechaFin = this.lortuData();
+    this.selectedLanguage = this.languageService.getLanguage();
     // Iniciar traducción al idioma por defecto
     this.translate.setDefaultLang(this.selectedLanguage);
 

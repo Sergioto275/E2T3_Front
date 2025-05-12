@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 import { HeaderComponent } from '../components/header/header.component';
 import { AlertController, NavController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
-
+import { LanguageService } from '../zerbitzuak/language.service';
 import { ToastController } from '@ionic/angular';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 import { ComunService } from '../zerbitzuak/comun.service';
@@ -259,15 +259,18 @@ export class HitzorduakPage implements OnInit {
     private navCtrl: NavController, 
     private http: HttpClient,
     private modoOscuroService: ModoOscuroService,
-    private comonService: ComunService
+    private comonService: ComunService,
+    private languageService: LanguageService
   ) 
     
     {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
+    this.selectedLanguage = this.languageService.getLanguage();
     }
 
   ngOnInit() {
+    this.selectedLanguage = this.languageService.getLanguage();
     this.dataSelec = this.lortuData();
     this.todayDate = this.lortuData();
     this.cargarHitzordu();
@@ -586,6 +589,7 @@ export class HitzorduakPage implements OnInit {
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
+    this.languageService.setLanguage(this.selectedLanguage);
     if (this.headerComponent) {
       this.headerComponent.loadTranslations();
     }

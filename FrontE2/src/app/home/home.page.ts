@@ -4,7 +4,7 @@ import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 
-import { LanguageService } from '../services/language.service';
+import { LanguageService } from '../zerbitzuak/language.service';
 
 @Component({
   selector: 'app-home',
@@ -29,7 +29,7 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.actualizarEstadoAlumno(); 
     this.translate.setDefaultLang(this.selectedLanguage);
-  
+    this.selectedLanguage = this.languageService.getLanguage();
     this.route.params.subscribe(() => {
       this.actualizarEstadoAlumno();
     });

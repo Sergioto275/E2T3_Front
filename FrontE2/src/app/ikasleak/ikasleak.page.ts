@@ -7,7 +7,7 @@ import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 
-import { LanguageService } from '../services/language.service';
+import { LanguageService } from '../zerbitzuak/language.service';
 
 @Component({
   selector: 'app-ikasleak',
@@ -82,6 +82,7 @@ export class IkasleakPage implements OnInit {
   }
 
   ngOnInit() {
+    this.selectedLanguage = this.languageService.getLanguage();
     this.cargarModoPreferido();
     this.routeSubscription = this.route.params.subscribe((params) => {
       console.log('Ruta cambiada:', params); 

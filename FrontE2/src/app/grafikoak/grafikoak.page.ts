@@ -9,7 +9,7 @@ import autoTable from 'jspdf-autotable';
 import jsPDF from 'jspdf';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 
-import { LanguageService } from '../services/language.service';
+import { LanguageService } from '../zerbitzuak/language.service';
 
 declare var Chart: any; 
 declare var html2canvas: any; // Declaramos que `html2canvas` existe globalmente
@@ -149,6 +149,7 @@ export class GrafikoakPage implements OnInit {
   }
 
   ngOnInit() {
+    this.selectedLanguage = this.languageService.getLanguage();
     // Suscribirse a los cambios de ruta
     this.routeSubscription = this.route.params.subscribe((params) => {
       console.log('Ruta cambiada:', params); // Aquí puedes ver los cambios de parámetros
