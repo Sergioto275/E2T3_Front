@@ -504,6 +504,7 @@ export class ProduktuakPage implements OnInit {
   }
 
   ngOnInit() {
+    this.selectedLanguage = this.languageService.getLanguage();
     this.cargarModoPreferido();
     // Suscribirse a los cambios de ruta
     this.routeSubscription = this.route.params.subscribe((params) => {

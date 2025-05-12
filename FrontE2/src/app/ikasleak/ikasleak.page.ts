@@ -82,6 +82,7 @@ export class IkasleakPage implements OnInit {
   }
 
   ngOnInit() {
+    this.selectedLanguage = this.languageService.getLanguage();
     this.cargarModoPreferido();
     this.routeSubscription = this.route.params.subscribe((params) => {
       console.log('Ruta cambiada:', params); 

@@ -149,6 +149,7 @@ export class GrafikoakPage implements OnInit {
   }
 
   ngOnInit() {
+    this.selectedLanguage = this.languageService.getLanguage();
     // Suscribirse a los cambios de ruta
     this.routeSubscription = this.route.params.subscribe((params) => {
       console.log('Ruta cambiada:', params); // Aquí puedes ver los cambios de parámetros

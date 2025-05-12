@@ -29,7 +29,7 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.actualizarEstadoAlumno(); 
     this.translate.setDefaultLang(this.selectedLanguage);
-  
+    this.selectedLanguage = this.languageService.getLanguage();
     this.route.params.subscribe(() => {
       this.actualizarEstadoAlumno();
     });

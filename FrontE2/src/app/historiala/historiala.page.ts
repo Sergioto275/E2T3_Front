@@ -479,6 +479,7 @@ export class HistorialaPage implements OnInit {
   }
 
   ngOnInit() {
+    this.selectedLanguage = this.languageService.getLanguage();
     this.fechaInicioFilterMat = this.lortuData();
     this.fechaInicioFilterProd = this.lortuData();
     this.fechaInicioFilterTicket = this.lortuData();

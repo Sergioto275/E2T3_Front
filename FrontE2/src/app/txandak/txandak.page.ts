@@ -84,6 +84,7 @@ export class TxandakPage implements OnInit {
   ngOnInit() {
     this.fechaInicio = this.lortuData();
     this.fechaFin = this.lortuData();
+    this.selectedLanguage = this.languageService.getLanguage();
     // Iniciar traducción al idioma por defecto
     this.translate.setDefaultLang(this.selectedLanguage);
 

@@ -30,6 +30,7 @@ export class LoginPage implements OnInit {
   ) {this.selectedLanguage = this.languageService.getLanguage();}
 
   ngOnInit() {
+    this.selectedLanguage = this.languageService.getLanguage();
     this.translate.setDefaultLang(this.selectedLanguage);
     this.cargarModoPreferido();
   }
