@@ -84,6 +84,16 @@ $color-dark-gray: #333333;
   }
 }
 
+ion-modal {
+  --width: 80%;
+  --max-height: 90%;
+  --border-radius: 10px;
+}
+
+ion-content {
+  --padding: 20px;
+}
+
 /* Elimina todos los estilos predeterminados de Ionic */
 ion-searchbar {
   --background: transparent !important;

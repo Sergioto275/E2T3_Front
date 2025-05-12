@@ -7,8 +7,6 @@ import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
-// import { IonButton, IonContent, IonHeader, IonLabel, IonModal, IonTitle, IonToolbar } from '@ionic/angular/standalone';
-
 
 export interface Alumno {
   nombre: string;
