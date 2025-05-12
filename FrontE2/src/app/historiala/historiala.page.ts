@@ -10,6 +10,7 @@ import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
 import { GaleriaComponent } from '../components/galeria/galeria.component';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
+import { LanguageService } from '../services/language.service';
 
 @Component({
   selector: 'app-historiala',
@@ -55,10 +56,12 @@ export class HistorialaPage implements OnInit {
     private http: HttpClient,
     private modalController: ModalController,
     private modoOscuroService: ModoOscuroService,
-    private comonService: ComunService
+    private comonService: ComunService,
+    private languageService: LanguageService
   ) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
+    this.selectedLanguage = this.languageService.getLanguage();
   
     this.bezeroForm = this.fb.group({
       izena: ['', Validators.required],
@@ -454,6 +457,7 @@ export class HistorialaPage implements OnInit {
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
+    this.languageService.setLanguage(this.selectedLanguage);
     if (this.headerComponent) {
       this.headerComponent.loadTranslations();
     }

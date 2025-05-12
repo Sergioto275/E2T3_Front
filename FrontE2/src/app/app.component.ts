@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, Routes } from '@angular/router';
 import { LoginServiceService } from './zerbitzuak/login-service.service';
 import { Subscription } from 'rxjs';
+import { LanguageService } from './services/language.service';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +20,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private loginService: LoginServiceService
+    private loginService: LoginServiceService,
+    private languageService: LanguageService
   ) {
     // Escuchar cambios en el usuario
     this.userSub = this.loginService.userChanged.subscribe(role => {

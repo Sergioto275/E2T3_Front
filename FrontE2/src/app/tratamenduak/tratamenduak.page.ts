@@ -7,6 +7,7 @@ import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
+import { LanguageService } from '../services/language.service';
 
 @Component({
   selector: 'app-tratamenduak',
@@ -44,10 +45,13 @@ export class TratamenduakPage implements OnInit {
     private loginService: LoginServiceService, 
     private router: Router, 
     private route: ActivatedRoute,
+    private languageService: LanguageService,
     private modoOscuroService: ModoOscuroService) 
   {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
+    this.selectedLanguage = this.languageService.getLanguage();
+
   }
 
   ngOnInit() {
@@ -78,6 +82,7 @@ export class TratamenduakPage implements OnInit {
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
+    this.languageService.setLanguage(this.selectedLanguage);
     if (this.headerComponent) {
       this.headerComponent.loadTranslations();
     }

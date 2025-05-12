@@ -13,6 +13,8 @@ import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 
+import { LanguageService } from '../services/language.service';
+
 export interface Alumno {
   nombre: string;
   grupo: string;
@@ -88,6 +90,7 @@ export class MaterialakPage implements OnInit {
     this.translate.use(this.selectedLanguage);
     if (this.headerComponent) {
       this.headerComponent.loadTranslations();
+      this.languageService.setLanguage(this.selectedLanguage);
     }
   }
 
@@ -510,12 +513,13 @@ export class MaterialakPage implements OnInit {
      private alertController: AlertController,
       private loginService: LoginServiceService,
        private route: ActivatedRoute,
-       private modoOscuroService: ModoOscuroService
+       private modoOscuroService: ModoOscuroService,
+       private languageService: LanguageService
       ) 
   {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
-
+    this.selectedLanguage = this.languageService.getLanguage();
   }
 
   ngOnInit() {

@@ -7,6 +7,7 @@ import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
+import { LanguageService } from '../services/language.service';
 
 export interface Alumno {
   nombre: string;
@@ -100,6 +101,7 @@ export class ProduktuakPage implements OnInit {
 
   changeLanguage() {
     this.translate.use(this.selectedLanguage);
+    this.languageService.setLanguage(this.selectedLanguage);
     if (this.headerComponent) {
       this.headerComponent.loadTranslations();
     }
@@ -491,12 +493,14 @@ export class ProduktuakPage implements OnInit {
     private http: HttpClient, 
     private loginService: LoginServiceService, 
     private route: ActivatedRoute,
-    private modoOscuroService: ModoOscuroService
+    private modoOscuroService: ModoOscuroService,
+    private languageService: LanguageService
   ) 
     
     {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
+    this.selectedLanguage = this.languageService.getLanguage();
   }
 
   ngOnInit() {

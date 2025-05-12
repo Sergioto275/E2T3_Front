@@ -9,6 +9,8 @@ import { formatDate } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 
+import { LanguageService } from '../services/language.service';
+
 // Interfaz movida fuera de la clase
 export interface Txanda {
   id?: number;
@@ -76,7 +78,8 @@ export class TxandakPage implements OnInit {
     private alertCtrl: AlertController,
     private ikasleService: IkasleZerbitzuakService,
     private modoOscuroService: ModoOscuroService,
-  ) { }
+    private languageService: LanguageService
+  ) { this.selectedLanguage = this.languageService.getLanguage(); }
 
   ngOnInit() {
     this.fechaInicio = this.lortuData();
@@ -87,8 +90,8 @@ export class TxandakPage implements OnInit {
     // Llamar al método para obtener los txandas
     this.getTxandak();
     this.getHorarios();
-    this.filterTxandas();  
-    this.cargarModoPreferido();  
+    this.filterTxandas();
+    this.cargarModoPreferido();
   }
 
   changeLanguage() {
@@ -96,6 +99,7 @@ export class TxandakPage implements OnInit {
   }
 
   getAlumno(id: number) {
+    this.languageService.setLanguage(this.selectedLanguage);
     return this.filteredAlumnos.find(ikaslea => ikaslea.id === id);
   }
 
@@ -316,7 +320,7 @@ export class TxandakPage implements OnInit {
     document.body.classList.add('dark');
     const ionContent = document.querySelector('ion-content');
     if (ionContent) {
-      ionContent.classList.add('dark'); 
+      ionContent.classList.add('dark');
     }
   }
 
@@ -324,7 +328,7 @@ export class TxandakPage implements OnInit {
     document.body.classList.remove('dark');
     const ionContent = document.querySelector('ion-content');
     if (ionContent) {
-      ionContent.classList.remove('dark'); 
+      ionContent.classList.remove('dark');
     }
   }
 

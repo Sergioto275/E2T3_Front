@@ -4,6 +4,8 @@ import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 
+import { LanguageService } from '../services/language.service';
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -18,8 +20,11 @@ export class HomePage implements OnInit {
     private loginService: LoginServiceService,
     private translate: TranslateService,
     private route: ActivatedRoute,
-    private modoOscuroService: ModoOscuroService
+    private modoOscuroService: ModoOscuroService,
+    private languageService: LanguageService
   ) {}
+
+  
 
   ngOnInit() {
     this.actualizarEstadoAlumno(); 
@@ -40,6 +45,7 @@ export class HomePage implements OnInit {
   }
 
   changeLanguage() {
+    this.languageService.setLanguage(this.selectedLanguage);
     this.translate.use(this.selectedLanguage);
   }
 
