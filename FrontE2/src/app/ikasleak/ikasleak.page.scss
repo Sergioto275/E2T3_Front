@@ -58,12 +58,21 @@ $color-dark-gray: #333333;
 }
 
 /* Para asegurar que el header mantenga su estilo */
-ion-header {
-  ion-toolbar {
-    &:first-of-type {
-      padding-top: constant(safe-area-inset-top); /* Para dispositivos con notch */
-      padding-top: env(safe-area-inset-top);
-    }
+ion-toolbar {
+  display: flex;
+  flex-wrap: wrap; /* Permite que los botones se envuelvan */
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px;
+
+  ion-button.Botoiak {
+    flex: 1 1 auto; /* Se adapta al espacio disponible */
+    min-width: 100px;
+    font-size: 0.85rem;
+    padding: 6px 8px;
+    text-align: center;
+    --padding-start: 1px;
+    --padding-end: 1px;
   }
 }
 
@@ -138,11 +147,6 @@ ion-text[color="danger"] {
     
     ion-card {
       margin: 8px;
-    }
-    
-    .Botoiak {
-      font-size: 0.9rem;
-      margin: 4px;
     }
   }
 

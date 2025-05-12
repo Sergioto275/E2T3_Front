@@ -34,13 +34,12 @@
 
   <ion-segment-view>
     <ion-segment-content id="taldeKudeatu">
-      <ion-toolbar>
-        <ion-button slot="start" id="prod-gestionatu-modal" class="Botoiak">{{ "ikaslePage.SortuTaldea" | translate
-          }}</ion-button>
+     <ion-toolbar class="boton-toolbar">
+        <ion-button id="prod-gestionatu-modal" class="Botoiak">{{ "ikaslePage.SortuTaldea" | translate }}</ion-button>
         <ion-button id="prod-sortu-modal" class="Botoiak">{{ "ikaslePage.SortuIkaslea" | translate }}</ion-button>
-        <ion-button id="atera-modal" class="Botoiak" slot="end">{{ "ikaslePage.IkasleakBistaratu" | translate
-          }}</ion-button>
+        <ion-button id="atera-modal" class="Botoiak">{{ "ikaslePage.IkasleakBistaratu" | translate }}</ion-button>
       </ion-toolbar>
+
       <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterGroups()" debounce="300" placeholder="{{ 'ikaslePage.IzenaOKodea' | translate }}"></ion-searchbar>
 
       <ion-list>
