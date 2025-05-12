@@ -359,6 +359,47 @@ ion-menu::part(container) {
   ion-select{
       color: white;
   }
+  ion-modal::part(backdrop) {
+    background: rgba(0, 0, 0, 0.6); // oscuro semi-transparente
+  }
+
+  ion-modal::part(content) {
+    background-color: #121212; // igual que tu --ion-background-color
+    color: white;
+  }
+
+  ion-modal ion-content {
+    --background: #121212;
+    --color: white;
+  }
+
+  ion-modal ion-toolbar {
+    --background: #1e1e1e;
+    --color: white;
+  }
+
+  ion-modal ion-item {
+    --background: #1e1e1e;
+    color: white;
+  }
+
+  ion-modal ion-card {
+    --background: #2a2a2a;
+    color: white;
+  }
+
+  ion-modal ion-select,
+  ion-modal ion-input {
+    color: white;
+  }
+
+  ion-modal .tarjetaRoja {
+    background-color: #4a1a1a;
+  }
+
+  ion-modal .tarjetaVerde {
+    background-color: #1a4a1a;
+  }
   
   .select-interface-option {
     .sc-ion-alert-md{
