@@ -184,7 +184,6 @@ ion-segment {
 ion-card {
   --background: #{$color-white};
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  // border-left: 4px solid var(--ion-color-tertiary);
   
   ion-card-header {
     --background: #{lighten($color-tertiary, 45%)};

@@ -297,55 +297,10 @@ ion-content {
     border-left: 4px solid #{$color-tertiary};
   }
 
-/* Estilos generales */
-.filter-card {
-  margin: 12px;
-  border-radius: 10px;
-  
-  ion-card-header {
-    background: var(--ion-color-primary);
-    color: white;
-    padding: 12px 16px;
-    
-    ion-card-title {
-      font-size: 1rem;
-      font-weight: 500;
-    }
-  }
-  
-  ion-card-content {
-    padding: 16px;
-  }
+ion-item {
+  margin-bottom: 12px;
 }
-
-/* Versión desktop/tablet */
-.filter-desktop {
-  display: block;
   
-  .action-button {
-    ion-icon {
-      display: none;
-    }
-  }
-}
-
-/* Versión móvil */
-.filter-mobile {
-  display: none;
-  
-  ion-item {
-    margin-bottom: 12px;
-  }
-  
-  .action-button {
-    margin-top: 8px;
-    
-    .button-text {
-      display: inline;
-    }
-  }
-}
-
 /* Grid de productos */
 .product-grid {
   padding: 8px;
@@ -472,4 +427,50 @@ ion-content {
 .theme-toggle:active ion-icon {
   animation: pulse 0.3s ease;
 }
+
+/* Estilos para el segment en móvil */
+ion-segment {
+  display: flex;
+  flex-wrap: wrap; /* Permite que los botones pasen a múltiples líneas */
+  justify-content: center;
+}
+
+ion-segment-button {
+  flex: 1 1 auto; /* Hace que los botones crezcan según su contenido */
+  min-width: 120px; /* Ancho mínimo para cada botón */
+  max-width: 100%; /* Evita que se estiren demasiado */
+  
+  ion-label {
+    white-space: normal; /* Permite que el texto se divida en múltiples líneas */
+    text-align: center;
+    font-size: 0.8rem; /* Tamaño de fuente más pequeño para móvil */
+    padding: 8px 4px; /* Espaciado interno */
+  }
+}
+
+/* Ajustes específicos para pantallas pequeñas */
+@media (max-width: 576px) {
+  ion-segment {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  ion-segment-button {
+    flex: 1 0 50%; /* 2 botones por fila en móvil */
+    min-width: unset;
+    
+    ion-label {
+      font-size: 0.7rem;
+      line-height: 1.2;
+    }
+  }
+}
+
+/* Ajustes para tablets */
+@media (min-width: 577px) and (max-width: 991px) {
+  ion-segment-button {
+    flex: 1 0 25%; /* 4 botones por fila */
+  }
+}
+
   
