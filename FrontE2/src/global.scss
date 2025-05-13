@@ -45,6 +45,7 @@ $color-dark-gray: #333333;
   --ion-toolbar-background: #{$color-white};
   --ion-item-background: #{$color-light-gray};
   --ion-card-background: #{$color-white};
+  --ion-gray-dark-medium:#333333;
 }
 
 /* Modo oscuro - ahora usando mixin en lugar de extend */
@@ -58,6 +59,7 @@ $color-dark-gray: #333333;
   --ion-menu-background: #1e1e1e;
   --ion-menu-color: #{$color-white};
   --ion-datetime-background: #1e1e1e;
+  --ion-gray-dark-medium:#E9E9E9;
 }
 
 /* Aplicar modo oscuro cuando el sistema lo prefiera */
@@ -92,6 +94,10 @@ ion-modal {
 
 ion-content {
   --padding: 20px;
+}
+
+ion-card{
+  background-color: transparent;
 }
 
 /* Elimina todos los estilos predeterminados de Ionic */
@@ -358,6 +364,7 @@ ion-menu::part(container) {
   ion-select{
       color: white;
   }
+  
   ion-modal::part(backdrop) {
     background: rgba(0, 0, 0, 0.6); // oscuro semi-transparente
   }

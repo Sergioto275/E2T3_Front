@@ -218,6 +218,9 @@
   },
   "historial": {
     "titulo": "Historial",
+    "paginacion": {
+      "indice": "Página {{currentPage}} de {{totalPages}}"
+    },
     "botones": {
       "productos": "Movimientos de productos",
       "materiales": "Movimientos de materiales",
@@ -226,7 +229,9 @@
       "crear": "Crear",
       "añadir": "Añadir",
       "guardar": "Guardar",
-      "editar": "Editar"
+      "editar": "Editar",
+      "next":"Siguiente",
+      "previous":"Anterior"
     },
     "modal": {
       "proceso": "En proceso",

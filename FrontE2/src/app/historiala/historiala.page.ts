@@ -48,6 +48,34 @@ export class HistorialaPage implements OnInit {
   fechaFinFilterTicket: any = null;
   filtroIzena!:string;
   modoOscuro: Boolean = false;
+  pageSize: number = 5; // Número de registros por página
+  currentPage: number = 1;
+  totalPages: number = 1;
+  paginatedHistoriala: any[] = [];
+
+  calculateTotalPages() {
+    this.totalPages = Math.ceil(this.editingBezero.historiala.length / this.pageSize);
+  }
+
+  updatePagination() {
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.paginatedHistoriala = this.editingBezero.historiala.slice(start, end);
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePagination();
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePagination();
+    }
+  }
 
   constructor(
     private toastController: ToastController,
@@ -327,6 +355,8 @@ export class HistorialaPage implements OnInit {
   openBezero(bezero: any) {
     this.isEditingBezero = true;
     this.editingBezero = bezero;
+    this.updatePagination();
+    this.calculateTotalPages();
   }
 
   cerrarModal() {
@@ -342,6 +372,11 @@ export class HistorialaPage implements OnInit {
       produktuIzena:""
     }
     this.editingBezero.historiala.push(hist);
+
+    // Recalcular paginación
+    this.calculateTotalPages();
+    this.currentPage = this.totalPages; // Nos movemos a la última página
+    this.updatePagination();
   }
 
   remove_historial(index: number) {

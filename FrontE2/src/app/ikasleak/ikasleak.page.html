@@ -1,46 +1,47 @@
 <meta name="mobile-web-app-capable" content="yes" />
 <app-header></app-header>
-<ion-content class="ion-page" id="main-content">
-  <ion-header>
-    <ion-toolbar class="Headeraaa">
-      <ion-buttons slot="start">
-        <ion-menu-button></ion-menu-button>
-      </ion-buttons>
-      <ion-title size="large">{{ "ikaslePage.ikasleak" | translate }} </ion-title>
-      <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">
-        <ion-select-option value="es">Español</ion-select-option>
-        <ion-select-option value="eu">Euskera</ion-select-option>
-      </ion-select>
-        
-      <!-- Icono dinámico modo oscuro/claro -->
-      <ion-buttons slot="primary">
-        <ion-button fill="clear" (click)="ponerModoOscuro()" class="theme-toggle">
-          <ion-icon *ngIf="modoOscuro" name="moon-outline"></ion-icon>
-          <ion-icon *ngIf="!modoOscuro" name="sunny-outline"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-    <ion-toolbar class="Headeraaa">
-      <ion-segment>
-        <ion-segment-button value="taldeKudeatu" content-id="taldeKudeatu">
-          <ion-label color="white">{{ "ikaslePage.taldeenKudeaketa" | translate }} </ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="taldeOrdutegi" content-id="taldeOrdutegi">
-          <ion-label color="white">{{ "ikaslePage.ordutegienKudeaketa" | translate }} </ion-label>
-        </ion-segment-button>
-      </ion-segment>
-    </ion-toolbar>
-  </ion-header>
+<!-- <ion-content class="ion-page" id="main-content"> -->
+<ion-header>
+  <ion-toolbar class="Headeraaa">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title size="large">{{ "ikaslePage.ikasleak" | translate }} </ion-title>
+    <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">
+      <ion-select-option value="es">Español</ion-select-option>
+      <ion-select-option value="eu">Euskera</ion-select-option>
+    </ion-select>
 
+    <!-- Icono dinámico modo oscuro/claro -->
+    <ion-buttons slot="primary">
+      <ion-button fill="clear" (click)="ponerModoOscuro()" class="theme-toggle">
+        <ion-icon *ngIf="modoOscuro" name="moon-outline"></ion-icon>
+        <ion-icon *ngIf="!modoOscuro" name="sunny-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar class="Headeraaa">
+    <ion-segment>
+      <ion-segment-button value="taldeKudeatu" content-id="taldeKudeatu">
+        <ion-label color="white">{{ "ikaslePage.taldeenKudeaketa" | translate }} </ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="taldeOrdutegi" content-id="taldeOrdutegi">
+        <ion-label color="white">{{ "ikaslePage.ordutegienKudeaketa" | translate }} </ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
   <ion-segment-view>
     <ion-segment-content id="taldeKudeatu">
-     <ion-toolbar class="boton-toolbar">
+      <ion-toolbar class="boton-toolbar">
         <ion-button id="prod-gestionatu-modal" class="Botoiak">{{ "ikaslePage.SortuTaldea" | translate }}</ion-button>
-        <ion-button (click) ="agregarAlumno" id="prod-sortu-modal" class="Botoiak">{{ "ikaslePage.SortuIkaslea" | translate }}</ion-button>
+        <ion-button id="prod-sortu-modal" class="Botoiak">{{ "ikaslePage.SortuIkaslea" |translate }}</ion-button>
         <ion-button id="atera-modal" class="Botoiak">{{ "ikaslePage.IkasleakBistaratu" | translate }}</ion-button>
       </ion-toolbar>
 
-      <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterGroups()" debounce="300" placeholder="{{ 'ikaslePage.IzenaOKodea' | translate }}"></ion-searchbar>
+      <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterGroups()" debounce="300"
+        placeholder="{{ 'ikaslePage.IzenaOKodea' | translate }}"></ion-searchbar>
 
       <ion-list>
         <ion-card *ngFor="let grupo of filteredGroups">
@@ -71,258 +72,97 @@
           </ion-card-content>
         </ion-card>
       </ion-list>
-      
-    <ion-modal [isOpen]="isEditModalOpen" (ionModalDidDismiss)="closeEditModal()">
-  <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>{{ "ikaslePage.EditIkaslea" | translate }}</ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="closeEditModal()">
-            <ion-icon name="close" slot="icon-only"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content>
-      <form #editAlumnoForm="ngForm" (ngSubmit)="updateAlumno()" novalidate>
-        <!-- Campo para Izena -->
-        <ion-item>
-          <ion-label position="stacked">{{ "ikaslePage.Izena" | translate }}</ion-label>
-          <ion-input [(ngModel)]="selectedAlumno.izena" name="izena"
-            placeholder="{{ 'ikaslePage.SartuIzenBerria' | translate }}" required #izena="ngModel"></ion-input>
-        </ion-item>
-        <ion-text color="danger" *ngIf="izena?.invalid && izena?.touched">{{ "ikaslePage.validaciones.izena" | translate }}</ion-text>
-
-        <!-- Campo para Abizena -->
-        <ion-item>
-          <ion-label position="stacked">{{ "ikaslePage.Abizena" | translate }}</ion-label>
-          <ion-input [(ngModel)]="selectedAlumno.abizenak" name="abizenak"
-            placeholder="{{ 'ikaslePage.SartuAbizenBerriak' | translate }}" required #abizenak="ngModel"></ion-input>
-        </ion-item>
-        <ion-text color="danger" *ngIf="abizenak?.invalid && abizenak?.touched">{{ "ikaslePage.validaciones.abizena" | translate }}</ion-text>
-
-        <!-- Campo para TaldeKodea -->
-        <ion-item>
-          <ion-label position="stacked">{{ "ikaslePage.Kodea" | translate }}</ion-label>
-          <ion-select [(ngModel)]="selectedAlumno.taldeKodea" name="taldeKodea"
-            placeholder="{{ 'ikaslePage.ErabakiKodeBerriBat' | translate }}" required #taldeKodea="ngModel">
-            <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
-              {{ grupo.kodea }}
-            </ion-select-option>
-          </ion-select>
-        </ion-item>
-        <ion-text color="danger" *ngIf="taldeKodea?.invalid && taldeKodea?.touched">{{ "ikaslePage.validaciones.kodeaSelec" | translate }}</ion-text>
-
-        <!-- Botón de guardar -->
-        <ion-button expand="full" type="submit" [disabled]="editAlumnoForm.invalid">
-          {{ "ikaslePage.GordeAldaketak" | translate }}
-        </ion-button>
-      </form>
-    </ion-content>
-  </ng-template>
-</ion-modal>
-
-      <!-- Modal para crear Ikaslea -->
-      <ion-modal trigger="prod-sortu-modal">
-        <ng-template>
-          <ion-header>
-            <ion-toolbar>
-              <ion-title>{{ "ikaslePage.SortuIkaslea" | translate }}</ion-title>
-            </ion-toolbar>
-          </ion-header>
-          <ion-content>
-            <form #sortuIkasleForm="ngForm" (ngSubmit)="agregarAlumno()" novalidate>
-              <ion-item>
-                <ion-label position="stacked">{{ "ikaslePage.Izena" | translate }}</ion-label>
-                <ion-input [(ngModel)]="nuevoAlumno.izena" name="izena" required #izena="ngModel"
-                  placeholder="{{ 'ikaslePage.Izena' | translate }}"></ion-input>
-              </ion-item>
-              <ion-text color="danger" *ngIf="izena.invalid && izena.touched">
-                {{ "ikaslePage.Validaciones.izena" | translate }}
-              </ion-text>
-
-              <ion-item>
-                <ion-label position="stacked">{{ "ikaslePage.Abizena" | translate }}</ion-label>
-                <ion-input [(ngModel)]="nuevoAlumno.abizenak" name="abizenak" required #abizenak="ngModel"
-                  placeholder="{{ 'ikaslePage.Abizena' | translate }}"></ion-input>
-              </ion-item>
-              <ion-text color="danger" *ngIf="abizenak.invalid && abizenak.touched">
-                {{ "ikaslePage.Validaciones.abizena" | translate }}
-              </ion-text>
-
-              <ion-item>
-                <ion-label position="stacked">{{ 'ikaslePage.Kodea' | translate }}</ion-label>
-                <ion-select [(ngModel)]="nuevoAlumno.taldea.kodea" name="taldeKodea" required #taldeKodea="ngModel"
-                  placeholder="{{ 'ikaslePage.ErabakiKodeBerriBat' | translate }}">
-                  <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
-                    {{ grupo.kodea }}
-                  </ion-select-option>
-                </ion-select>
-              </ion-item>
-              <ion-text color="danger" *ngIf="taldeKodea.invalid && taldeKodea.touched">
-                {{ "ikaslePage.Validaciones.kodeaSelec" | translate }}
-              </ion-text>
-
-              <!-- El botón se deshabilita si el formulario es inválido -->
-              <ion-button expand="full" type="submit" [disabled]="sortuIkasleForm.invalid">
-                {{ 'ikaslePage.SortuIkaslea' | translate }}
-              </ion-button>
-            </form>
-          </ion-content>
-        </ng-template>
-      </ion-modal>
-
-      <!-- Modal para eliminar un Ikaslea -->
-      <ion-modal trigger="atera-modal">
-        <ng-template>
-          <ion-header>
-            <ion-toolbar>
-              <!-- Botón de Ezabatu en la esquina superior derecha -->
-              <ion-buttons slot="end">
-                <ion-button (click)="eliminarAlumnos()">{{ 'ikaslePage.Ezabatu' | translate }}</ion-button>
-              </ion-buttons>
-              <ion-title>{{ 'ikaslePage.Ezabatu' | translate }}</ion-title>
-            </ion-toolbar>
-          </ion-header>
-          <ion-content>
-            <!-- Barra de búsqueda para filtrar alumnos -->
-            <ion-item>
-              <ion-label position="stacked">{{ 'ikaslePage.Izena' | translate }}</ion-label>
-              <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterAlumnos()" debounce="0"
-                placeholder="{{ 'ikaslePage.SartuIzenaBerria' | translate }}"></ion-searchbar>
-            </ion-item>
-
-            <!-- Lista de alumnos con casillas de verificación para seleccionar varios -->
-            <ion-list>
-              <ion-item *ngFor="let alumno of filteredAlumnos">
-                <!-- Checkbox para seleccionar alumno -->
-                <ion-checkbox slot="start" [(ngModel)]="alumno.selected" (ionChange)="onAlumnoSelected(alumno.id)">
-                </ion-checkbox>
-                <ion-label>
-                  <h2>{{ alumno.izena }} {{ alumno.abizenak }}</h2>
-                  <p>{{ 'ikaslePage.Taldea' | translate }}: {{ alumno.taldeIzena }}</p>
-                  <p>{{ 'ikaslePage.TaldeKodea' | translate }}: {{ alumno.taldeKodea }}</p>
-                  <p>{{ 'ikaslePage.Fecha' | translate }}: {{ alumno.sortzeData }}</p>
-                </ion-label>
-                <ion-button (click)="openEditModal(alumno)">
-                  <ion-icon name="create-outline"></ion-icon>
-                </ion-button>
-              </ion-item>
-            </ion-list>
-          </ion-content>
-        </ng-template>
-      </ion-modal>
-
-      <!-- Modal para gestionar grupos -->
-      <ion-modal trigger="prod-gestionatu-modal">
-        <ng-template>
-          <ion-header>
-            <ion-toolbar>
-              <ion-title>{{ 'ikaslePage.SortuTaldea' | translate }}</ion-title>
-            </ion-toolbar>
-          </ion-header>
-          <ion-content>
-            <form #grupoForm="ngForm" (ngSubmit)="agregarGrupo()" novalidate>
-              <!-- Mensaje de error si el nombre del grupo no está lleno -->
-              <ion-text color="danger" *ngIf="taldeIzena?.invalid && taldeIzena?.touched">
-                {{ 'ikaslePage.Validaciones.izena' | translate }}
-              </ion-text>
-              <ion-item>
-                <ion-label position="stacked">{{ 'ikaslePage.TaldeIzena' | translate }}</ion-label>
-                <ion-input [(ngModel)]="nuevoGrupo.izena" name="taldeIzena"
-                  placeholder="{{ 'ikaslePage.TaldeIzena' | translate }}" required #taldeIzena="ngModel"></ion-input>
-              </ion-item>
-
-              <!-- Mensaje de error si el código del grupo no está lleno -->
-              <ion-text color="danger" *ngIf="taldeKodea?.invalid && taldeKodea?.touched">
-                {{ 'ikaslePage.Validaciones.kodea' | translate }}
-              </ion-text>
-              <ion-item>
-                <ion-label position="stacked">{{ 'ikaslePage.TaldeKodea' | translate }}</ion-label>
-                <ion-input [(ngModel)]="nuevoGrupo.kodea" maxlength="5" name="taldeKodea"
-                  placeholder="{{ 'ikaslePage.TaldeKodea' | translate }}" required #taldeKodea="ngModel"></ion-input>
-              </ion-item>
-
-              <!-- El botón se deshabilita si los campos no están completos -->
-              <ion-button expand="full" type="submit" [disabled]="grupoForm.invalid">
-                {{ 'ikaslePage.SortuTaldea' | translate }}
-              </ion-button>
-            </form>
-          </ion-content>
-        </ng-template>
-      </ion-modal>
-
-
-      <!-- Modal para ver Taldeak e Ikasleak -->
-      <ion-modal [isOpen]="isEditTaldeModalOpen" (ionModalDidDismiss)="closeEditTaldeModal()">
-        <ng-template>
-          <ion-header>
-            <ion-toolbar>
-              <ion-title>{{ 'ikaslePage.TaldeIzena' | translate }}: {{ selectedTalde.kodea }}</ion-title>
-            </ion-toolbar>
-          </ion-header>
-          <ion-content>
-            <form #editTaldeForm="ngForm" (ngSubmit)="updateTalde()" novalidate>
-              <!-- Mensaje de error si el nombre del grupo está vacío -->
-              <ion-text color="danger" *ngIf="taldeIzena?.invalid && taldeIzena?.touched">
-                {{ 'ikaslePage.Validaciones.izena' | translate }}
-              </ion-text>
-              <ion-item>
-                <ion-label position="stacked">{{ 'ikaslePage.TaldeIzena' | translate }}</ion-label>
-                <ion-input [(ngModel)]="selectedTalde.izena" name="taldeIzena"
-                  placeholder="{{ 'ikaslePage.SartuIzenaBerria' | translate }}" required
-                  #taldeIzena="ngModel"></ion-input>
-              </ion-item>
-
-              <!-- Botón para guardar cambios (deshabilitado si el campo no es válido) -->
-              <ion-button expand="full" type="submit" [disabled]="editTaldeForm.invalid">
-                {{ 'ikaslePage.GordeAldaketak' | translate }}
-              </ion-button>
-            </form>
-          </ion-content>
-        </ng-template>
-      </ion-modal>
     </ion-segment-content>
     <ion-segment-content id="taldeOrdutegi">
       <ion-toolbar>
-  <ion-button id="egutegia" class="Botoiak">{{ 'ikaslePage.SortuOrdutegia' | translate }}</ion-button>
-</ion-toolbar>
+        <ion-button id="egutegia" class="Botoiak">{{ 'ikaslePage.SortuOrdutegia' | translate }}</ion-button>
+      </ion-toolbar>
 
-<ion-card class="mobile-optimized">
-  <ion-card-header>
-    <ion-card-title>{{ 'ikaslePage.Filtratu' | translate }}</ion-card-title>
-  </ion-card-header>
-  <ion-card-content>
-    <ion-grid class="compact-grid">
-      <ion-row class="ion-align-items-center ion-justify-content-between">
-        <ion-col size="5" class="compact-col">
-          <ion-item class="compact-item">
-            <ion-label position="stacked">{{ 'ikaslePage.HasieraOrdua' | translate }}</ion-label>
-            <ion-input class="calendario" type="date" [(ngModel)]="fechaInicioFilter" (ionChange)="getHorarios()" class="compact-input"></ion-input>
-          </ion-item>
-        </ion-col>
+      <ion-card class="filter-card">
+        <ion-card-header>
+          <ion-card-title>{{ "historial.modal.filtroFecha" | translate }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <!-- Versión desktop/tablet -->
+          <div class="filter-desktop">
+            <ion-grid>
+              <ion-row class="ion-align-items-center">
+                <ion-col size="5" size-md="5">
+                  <ion-item>
+                    <ion-label position="stacked">{{ "historial.modal.fechaInicio" | translate }}</ion-label>
+                    <ion-input class="calendario" type="date" [(ngModel)]="fechaInicioFilter" (ionChange)="getHorarios()"
+                    class="compact-input"></ion-input>
+                  </ion-item>
+                </ion-col>
+        
+                <ion-col size="5" size-md="5">
+                  <ion-item>
+                    <ion-label position="stacked">{{ "historial.modal.fechaFin" | translate }}</ion-label>
+                    <ion-input type="date" [(ngModel)]="fechaFinFilter" (ionChange)="getHorarios()"
+                    class="compact-input"></ion-input>
+                  </ion-item>
+                </ion-col>
+        
+                <ion-col size="2" size-md="2" class="ion-text-center">
+                  <ion-button color="danger" fill="outline" (click)="resetFilters()" class="compact-button">
+                    <ion-icon slot="start" name="close-circle"></ion-icon>
+                    {{ 'ikaslePage.Reset' | translate }}
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+          
+          <!-- Versión móvil -->
+          <!-- <div class="filter-mobile">
+            <ion-item>
+              <ion-label position="stacked">{{ "historial.modal.fechaInicio" | translate }}</ion-label>
+              <ion-input type="date" [(ngModel)]="fechaInicioFilterProd" (ionChange)="cargarMovimientoProductos()"></ion-input>
+            </ion-item>
+            
+            <ion-item>
+              <ion-label position="stacked">{{ "historial.modal.fechaFin" | translate }}</ion-label>
+              <ion-input type="date" [(ngModel)]="fechaFinFilterProd" (ionChange)="cargarMovimientoProductos()"></ion-input>
+            </ion-item>
+            
+            <ion-button expand="block" color="danger" fill="outline" (click)="resetProduktos()" class="action-button">
+              <ion-icon slot="start" name="close-circle"></ion-icon>
+              {{ "historial.modal.reset" | translate }}
+            </ion-button>
+          </div> -->
+        </ion-card-content>
+      </ion-card>
+      <!-- <ion-card class="mobile-optimized">
+        <ion-card-header>
+          <ion-card-title>{{ 'ikaslePage.Filtratu' | translate }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-grid class="compact-grid">
+            <ion-row class="ion-align-items-center ion-justify-content-between">
+              <ion-col size="5" class="compact-col">
+                <ion-item class="compact-item">
+                  <ion-label position="stacked">{{ 'ikaslePage.HasieraOrdua' | translate }}</ion-label>
+                  
+                </ion-item>
+              </ion-col>
 
-        <ion-col size="5" class="compact-col">
-          <ion-item class="compact-item">
-            <ion-label position="stacked">{{ 'ikaslePage.AmaierakoOrdua' | translate }}</ion-label>
-            <ion-input type="date" [(ngModel)]="fechaFinFilter" (ionChange)="getHorarios()" class="compact-input"></ion-input>
-          </ion-item>
-        </ion-col>
+              <ion-col size="5" class="compact-col">
+                <ion-item class="compact-item">
+                  <ion-label position="stacked">{{ 'ikaslePage.AmaierakoOrdua' | translate }}</ion-label>
+                  
+                </ion-item>
+              </ion-col>
 
-       <ion-col size="12">
-  <div class="center-button-wrapper">
-    <ion-button color="danger" fill="outline" (click)="resetFilters()" class="compact-button">
-      <ion-icon slot="start" name="close-circle"></ion-icon>
-      {{ 'ikaslePage.Reset' | translate }}
-    </ion-button>
-  </div>
-</ion-col>
+              <ion-col size="12">
+                <div class="center-button-wrapper">
+                  
+                </div>
+              </ion-col>
 
-      </ion-row>
-    </ion-grid>
-  </ion-card-content>
-</ion-card>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card> -->
 
       <ion-content>
         <!-- Tabla para mostrar los horarios -->
@@ -377,210 +217,424 @@
           </ion-card-content>
         </ion-card>
       </ion-content>
-
-      <!-- Modal para crear un nuevo horario -->
-      <ion-modal trigger="egutegia">
-        <ng-template>
-          <ion-header>
-            <ion-toolbar>
-              <ion-title>{{ 'ikaslePage.Egutegia' | translate }}</ion-title>
-              <ion-buttons slot="end">
-                <ion-button (click)="closeModal()">{{ 'ikaslePage.Itxi' | translate }}</ion-button>
-              </ion-buttons>
-            </ion-toolbar>
-          </ion-header>
-          <ion-content>
-            <form #horarioForm="ngForm" (ngSubmit)="guardarHorario()" novalidate>
-              <div class="horario-container">
-                <!-- Selección de grupo -->
-                <ion-item>
-                  <ion-label position="floating">{{ 'ikaslePage.Taldea' | translate }}</ion-label>
-                  <ion-select [(ngModel)]="grupoSeleccionado.kodea" name="grupo" required #grupo="ngModel">
-                    <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
-                      {{ grupo.izena }}
-                    </ion-select-option>
-                  </ion-select>
-                </ion-item>
-                <ion-text color="danger" *ngIf="grupo.invalid && grupo.touched">
-                  {{ 'ikaslePage.Validaciones.kodeaSelec' | translate }}
-                </ion-text>
-
-                <!-- Selección de día -->
-                <ion-item>
-                  <ion-label position="floating">{{ 'ikaslePage.Astekoa' | translate }}</ion-label>
-                  <ion-select [(ngModel)]="diaSeleccionado" name="diaSeleccionado" required #dia="ngModel">
-                    <ion-select-option value="1">{{ 'ikaslePage.Astelehena' | translate }}</ion-select-option>
-                    <ion-select-option value="2">{{ 'ikaslePage.Asteartea' | translate }}</ion-select-option>
-                    <ion-select-option value="3">{{ 'ikaslePage.Asteazkena' | translate }}</ion-select-option>
-                    <ion-select-option value="4">{{ 'ikaslePage.Osteguna' | translate }}</ion-select-option>
-                    <ion-select-option value="5">{{ 'ikaslePage.Ostirala' | translate }}</ion-select-option>
-                  </ion-select>
-                </ion-item>
-                <ion-text color="danger" *ngIf="dia.invalid && dia.touched">
-                  {{ 'ikaslePage.Validaciones.dia' | translate }}
-                </ion-text>
-
-                <!-- Fecha de inicio -->
-                <ion-item>
-                  <ion-label position="floating">{{ 'ikaslePage.HasieraFecha' | translate }}</ion-label>
-                  <ion-input [(ngModel)]="fechaInicio" name="fechaInicio" type="date" required
-                    #fechaInicioField="ngModel"></ion-input>
-                </ion-item>
-                <ion-text color="danger" *ngIf="fechaInicioField.invalid && fechaInicioField.touched">
-                  {{ 'ikaslePage.Validaciones.FechaInicio' | translate }}
-                </ion-text>
-
-                <!-- Fecha de fin -->
-                <ion-item>
-                  <ion-label position="floating">{{ 'ikaslePage.FinFecha' | translate }}</ion-label>
-                  <ion-input [(ngModel)]="fechaFin" name="fechaFin" type="date" required
-                    #fechaFinField="ngModel"></ion-input>
-                </ion-item>
-                <ion-text color="danger" *ngIf="fechaFinField.invalid && fechaFinField.touched">
-                  {{ 'ikaslePage.Validaciones.FechaFin' | translate }}
-                </ion-text>
-                <ion-text color="danger" *ngIf="fechaInicio && fechaFin && fechaInicio > fechaFin">
-                  {{ 'ikaslePage.Validaciones.FechaInicioMenor' | translate }}
-                </ion-text>
-
-                <!-- Hora de inicio -->
-                <ion-item>
-                  <ion-label position="floating">{{ 'ikaslePage.HasieraHora' | translate }}</ion-label>
-                  <ion-input [(ngModel)]="horaInicio" name="horaInicio" type="time" required
-                    #horaInicioField="ngModel"></ion-input>
-                </ion-item>
-                <ion-text color="danger" *ngIf="horaInicioField.invalid && horaInicioField.touched">
-                  {{ 'ikaslePage.Validaciones.HoraInicio' | translate }}
-                </ion-text>
-
-                <!-- Hora de fin -->
-                <ion-item>
-                  <ion-label position="floating">{{ 'ikaslePage.FinHora' | translate }}</ion-label>
-                  <ion-input [(ngModel)]="horaFin" name="horaFin" type="time" required
-                    #horaFinField="ngModel"></ion-input>
-                </ion-item>
-                <ion-text color="danger" *ngIf="horaFinField.invalid && horaFinField.touched">
-                  {{ 'ikaslePage.Validaciones.HoraFin' | translate }}
-                </ion-text>
-                <ion-text color="danger" *ngIf="horaInicio && horaFin && horaInicio >= horaFin">
-                  {{ 'ikaslePage.Validaciones.HoraInicioMenor' | translate }}
-                </ion-text>
-
-                <!-- Botón de guardar (deshabilitado si el formulario no es válido) -->
-                <ion-button type="submit"
-                  [disabled]="horarioForm.invalid || fechaInicio > fechaFin || horaInicio >= horaFin" expand="full">
-                  {{ 'ikaslePage.Gorde' | translate }}
-                </ion-button>
-              </div>
-            </form>
-          </ion-content>
-        </ng-template>
-      </ion-modal>
-
-
-      <ion-modal #egutegiaEguneratuModal>
-        <ng-template>
-          <ion-header>
-            <ion-toolbar>
-              <ion-title>{{ 'ikaslePage.Eguneratzen' | translate }}: {{ idHorario }}</ion-title>
-              <ion-buttons slot="end">
-                <ion-button (click)="closeModal()">{{ 'ikaslePage.Itxi' | translate }}</ion-button>
-              </ion-buttons>
-            </ion-toolbar>
-          </ion-header>
-          <ion-content>
-            <form #actualizarHorarioForm="ngForm" (ngSubmit)="actualizarHorario()" novalidate>
-              <div class="horario-container">
-                <!-- Grupo -->
-                <ion-item>
-                  <ion-label position="floating">{{ 'ikaslePage.Taldea' | translate }}</ion-label>
-                  <ion-select [(ngModel)]="grupoSeleccionado.kodea" name="grupo" required #grupo="ngModel">
-                    <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
-                      {{ grupo.izena }}
-                    </ion-select-option>
-                  </ion-select>
-                </ion-item>
-                <ion-text color="danger" *ngIf="grupo?.invalid && grupo?.touched">
-                  {{ 'ikaslePage.validaciones.kodea' | translate }}
-                </ion-text>
-
-                <!-- Día de la semana -->
-                <ion-item>
-                  <ion-label position="floating">{{ 'ikaslePage.Astekoa' | translate }}</ion-label>
-                  <ion-select [(ngModel)]="diaSeleccionado" name="diaSeleccionado" required #dia="ngModel">
-                    <ion-select-option value="1">{{ 'ikaslePage.Astelehena' | translate }}</ion-select-option>
-                    <ion-select-option value="2">{{ 'ikaslePage.Asteartea' | translate }}</ion-select-option>
-                    <ion-select-option value="3">{{ 'ikaslePage.Asteazkena' | translate }}</ion-select-option>
-                    <ion-select-option value="4">{{ 'ikaslePage.Osteguna' | translate }}</ion-select-option>
-                    <ion-select-option value="5">{{ 'ikaslePage.Ostirala' | translate }}</ion-select-option>
-                  </ion-select>
-                </ion-item>
-                <ion-text color="danger" *ngIf="dia?.invalid && dia?.touched">
-                  {{ 'ikaslePage.validaciones.dia' | translate }}
-                </ion-text>
-
-                <!-- Nombre del día seleccionado -->
-                <ion-item *ngIf="diaSeleccionado">
-                  <ion-label>{{ getDayName(diaSeleccionado) }}</ion-label>
-                </ion-item>
-
-                <!-- Fecha de inicio -->
-                <ion-item>
-                  <ion-label position="floating">{{ 'ikaslePage.HasieraFecha' | translate }}</ion-label>
-                  <ion-input [(ngModel)]="fechaInicio" name="fechaInicio" type="date" required
-                    #fechaInicioInput="ngModel"></ion-input>
-                </ion-item>
-                <ion-text color="danger" *ngIf="fechaInicioInput?.invalid && fechaInicioInput?.touched">
-                  {{ 'ikaslePage.validaciones.FechaInicio' | translate }}
-                </ion-text>
-
-                <!-- Fecha de fin -->
-                <ion-item>
-                  <ion-label position="floating">{{ 'ikaslePage.FinFecha' | translate }}</ion-label>
-                  <ion-input [(ngModel)]="fechaFin" name="fechaFin" type="date" required
-                    #fechaFinInput="ngModel"></ion-input>
-                </ion-item>
-                <ion-text color="danger" *ngIf="fechaFinInput?.invalid && fechaFinInput?.touched">
-                  {{ 'ikaslePage.validaciones.FechaFin' | translate }}
-                </ion-text>
-                <ion-text color="danger" *ngIf="fechaInicio && fechaFin && fechaInicio > fechaFin">
-                  {{ 'ikaslePage.validaciones.FechaInicioMenor' | translate }}
-                </ion-text>
-
-                <!-- Hora de inicio -->
-                <ion-item>
-                  <ion-label position="floating">{{ 'ikaslePage.HasieraHora' | translate }}</ion-label>
-                  <ion-input [(ngModel)]="horaInicio" name="horaInicio" type="time" required
-                    #horaInicioInput="ngModel"></ion-input>
-                </ion-item>
-                <ion-text color="danger" *ngIf="horaInicioInput?.invalid && horaInicioInput?.touched">
-                  {{ 'ikaslePage.validaciones.HoraInicio' | translate }}
-                </ion-text>
-
-                <!-- Hora de fin -->
-                <ion-item>
-                  <ion-label position="floating">{{ 'ikaslePage.FinHora' | translate }}</ion-label>
-                  <ion-input [(ngModel)]="horaFin" name="horaFin" type="time" required
-                    #horaFinInput="ngModel"></ion-input>
-                </ion-item>
-                <ion-text color="danger" *ngIf="horaFinInput?.invalid && horaFinInput?.touched">
-                  {{ 'ikaslePage.validaciones.HoraFin' | translate }}
-                </ion-text>
-                <ion-text color="danger" *ngIf="horaInicio && horaFin && horaInicio >= horaFin">
-                  {{ 'ikaslePage.validaciones.HoraInicioMenor' | translate }}
-                </ion-text>
-
-                <!-- Botón de actualización -->
-                <ion-button type="submit" expand="full"
-                  [disabled]="actualizarHorarioForm.invalid || !grupoSeleccionado || !diaSeleccionado || !fechaInicio || !fechaFin || fechaInicio > fechaFin || horaInicio >= horaFin">
-                  {{ 'ikaslePage.Gorde' | translate }}
-                </ion-button>
-              </div>
-            </form>
-          </ion-content>
-        </ng-template>
-      </ion-modal>
-
     </ion-segment-content>
   </ion-segment-view>
+
+  <!-- Modal para crear un nuevo horario -->
+  <ion-modal trigger="egutegia">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ 'ikaslePage.Egutegia' | translate }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeModal()">{{ 'ikaslePage.Itxi' | translate }}</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <form #horarioForm="ngForm" (ngSubmit)="guardarHorario()" novalidate>
+          <div class="horario-container">
+            <!-- Selección de grupo -->
+            <ion-item>
+              <ion-label position="floating">{{ 'ikaslePage.Taldea' | translate }}</ion-label>
+              <ion-select [(ngModel)]="grupoSeleccionado.kodea" name="grupo" required #grupo="ngModel">
+                <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
+                  {{ grupo.izena }}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-text color="danger" *ngIf="grupo.invalid && grupo.touched">
+              {{ 'ikaslePage.Validaciones.kodeaSelec' | translate }}
+            </ion-text>
+
+            <!-- Selección de día -->
+            <ion-item>
+              <ion-label position="floating">{{ 'ikaslePage.Astekoa' | translate }}</ion-label>
+              <ion-select [(ngModel)]="diaSeleccionado" name="diaSeleccionado" required #dia="ngModel">
+                <ion-select-option value="1">{{ 'ikaslePage.Astelehena' | translate }}</ion-select-option>
+                <ion-select-option value="2">{{ 'ikaslePage.Asteartea' | translate }}</ion-select-option>
+                <ion-select-option value="3">{{ 'ikaslePage.Asteazkena' | translate }}</ion-select-option>
+                <ion-select-option value="4">{{ 'ikaslePage.Osteguna' | translate }}</ion-select-option>
+                <ion-select-option value="5">{{ 'ikaslePage.Ostirala' | translate }}</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-text color="danger" *ngIf="dia.invalid && dia.touched">
+              {{ 'ikaslePage.Validaciones.dia' | translate }}
+            </ion-text>
+
+            <!-- Fecha de inicio -->
+            <ion-item>
+              <ion-label position="floating">{{ 'ikaslePage.HasieraFecha' | translate }}</ion-label>
+              <ion-input [(ngModel)]="fechaInicio" name="fechaInicio" type="date" required
+                #fechaInicioField="ngModel"></ion-input>
+            </ion-item>
+            <ion-text color="danger" *ngIf="fechaInicioField.invalid && fechaInicioField.touched">
+              {{ 'ikaslePage.Validaciones.FechaInicio' | translate }}
+            </ion-text>
+
+            <!-- Fecha de fin -->
+            <ion-item>
+              <ion-label position="floating">{{ 'ikaslePage.FinFecha' | translate }}</ion-label>
+              <ion-input [(ngModel)]="fechaFin" name="fechaFin" type="date" required
+                #fechaFinField="ngModel"></ion-input>
+            </ion-item>
+            <ion-text color="danger" *ngIf="fechaFinField.invalid && fechaFinField.touched">
+              {{ 'ikaslePage.Validaciones.FechaFin' | translate }}
+            </ion-text>
+            <ion-text color="danger" *ngIf="fechaInicio && fechaFin && fechaInicio > fechaFin">
+              {{ 'ikaslePage.Validaciones.FechaInicioMenor' | translate }}
+            </ion-text>
+
+            <!-- Hora de inicio -->
+            <ion-item>
+              <ion-label position="floating">{{ 'ikaslePage.HasieraHora' | translate }}</ion-label>
+              <ion-input [(ngModel)]="horaInicio" name="horaInicio" type="time" required
+                #horaInicioField="ngModel"></ion-input>
+            </ion-item>
+            <ion-text color="danger" *ngIf="horaInicioField.invalid && horaInicioField.touched">
+              {{ 'ikaslePage.Validaciones.HoraInicio' | translate }}
+            </ion-text>
+
+            <!-- Hora de fin -->
+            <ion-item>
+              <ion-label position="floating">{{ 'ikaslePage.FinHora' | translate }}</ion-label>
+              <ion-input [(ngModel)]="horaFin" name="horaFin" type="time" required
+                #horaFinField="ngModel"></ion-input>
+            </ion-item>
+            <ion-text color="danger" *ngIf="horaFinField.invalid && horaFinField.touched">
+              {{ 'ikaslePage.Validaciones.HoraFin' | translate }}
+            </ion-text>
+            <ion-text color="danger" *ngIf="horaInicio && horaFin && horaInicio >= horaFin">
+              {{ 'ikaslePage.Validaciones.HoraInicioMenor' | translate }}
+            </ion-text>
+
+            <!-- Botón de guardar (deshabilitado si el formulario no es válido) -->
+            <ion-button type="submit"
+              [disabled]="horarioForm.invalid || fechaInicio > fechaFin || horaInicio >= horaFin" expand="full">
+              {{ 'ikaslePage.Gorde' | translate }}
+            </ion-button>
+          </div>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+
+  <ion-modal #egutegiaEguneratuModal>
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ 'ikaslePage.Eguneratzen' | translate }}: {{ idHorario }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeModal()">{{ 'ikaslePage.Itxi' | translate }}</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <form #actualizarHorarioForm="ngForm" (ngSubmit)="actualizarHorario()" novalidate>
+          <div class="horario-container">
+            <!-- Grupo -->
+            <ion-item>
+              <ion-label position="floating">{{ 'ikaslePage.Taldea' | translate }}</ion-label>
+              <ion-select [(ngModel)]="grupoSeleccionado.kodea" name="grupo" required #grupo="ngModel">
+                <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
+                  {{ grupo.izena }}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-text color="danger" *ngIf="grupo?.invalid && grupo?.touched">
+              {{ 'ikaslePage.validaciones.kodea' | translate }}
+            </ion-text>
+
+            <!-- Día de la semana -->
+            <ion-item>
+              <ion-label position="floating">{{ 'ikaslePage.Astekoa' | translate }}</ion-label>
+              <ion-select [(ngModel)]="diaSeleccionado" name="diaSeleccionado" required #dia="ngModel">
+                <ion-select-option value="1">{{ 'ikaslePage.Astelehena' | translate }}</ion-select-option>
+                <ion-select-option value="2">{{ 'ikaslePage.Asteartea' | translate }}</ion-select-option>
+                <ion-select-option value="3">{{ 'ikaslePage.Asteazkena' | translate }}</ion-select-option>
+                <ion-select-option value="4">{{ 'ikaslePage.Osteguna' | translate }}</ion-select-option>
+                <ion-select-option value="5">{{ 'ikaslePage.Ostirala' | translate }}</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-text color="danger" *ngIf="dia?.invalid && dia?.touched">
+              {{ 'ikaslePage.validaciones.dia' | translate }}
+            </ion-text>
+
+            <!-- Nombre del día seleccionado -->
+            <ion-item *ngIf="diaSeleccionado">
+              <ion-label>{{ getDayName(diaSeleccionado) }}</ion-label>
+            </ion-item>
+
+            <!-- Fecha de inicio -->
+            <ion-item>
+              <ion-label position="floating">{{ 'ikaslePage.HasieraFecha' | translate }}</ion-label>
+              <ion-input [(ngModel)]="fechaInicio" name="fechaInicio" type="date" required
+                #fechaInicioInput="ngModel"></ion-input>
+            </ion-item>
+            <ion-text color="danger" *ngIf="fechaInicioInput?.invalid && fechaInicioInput?.touched">
+              {{ 'ikaslePage.validaciones.FechaInicio' | translate }}
+            </ion-text>
+
+            <!-- Fecha de fin -->
+            <ion-item>
+              <ion-label position="floating">{{ 'ikaslePage.FinFecha' | translate }}</ion-label>
+              <ion-input [(ngModel)]="fechaFin" name="fechaFin" type="date" required
+                #fechaFinInput="ngModel"></ion-input>
+            </ion-item>
+            <ion-text color="danger" *ngIf="fechaFinInput?.invalid && fechaFinInput?.touched">
+              {{ 'ikaslePage.validaciones.FechaFin' | translate }}
+            </ion-text>
+            <ion-text color="danger" *ngIf="fechaInicio && fechaFin && fechaInicio > fechaFin">
+              {{ 'ikaslePage.validaciones.FechaInicioMenor' | translate }}
+            </ion-text>
+
+            <!-- Hora de inicio -->
+            <ion-item>
+              <ion-label position="floating">{{ 'ikaslePage.HasieraHora' | translate }}</ion-label>
+              <ion-input [(ngModel)]="horaInicio" name="horaInicio" type="time" required
+                #horaInicioInput="ngModel"></ion-input>
+            </ion-item>
+            <ion-text color="danger" *ngIf="horaInicioInput?.invalid && horaInicioInput?.touched">
+              {{ 'ikaslePage.validaciones.HoraInicio' | translate }}
+            </ion-text>
+
+            <!-- Hora de fin -->
+            <ion-item>
+              <ion-label position="floating">{{ 'ikaslePage.FinHora' | translate }}</ion-label>
+              <ion-input [(ngModel)]="horaFin" name="horaFin" type="time" required
+                #horaFinInput="ngModel"></ion-input>
+            </ion-item>
+            <ion-text color="danger" *ngIf="horaFinInput?.invalid && horaFinInput?.touched">
+              {{ 'ikaslePage.validaciones.HoraFin' | translate }}
+            </ion-text>
+            <ion-text color="danger" *ngIf="horaInicio && horaFin && horaInicio >= horaFin">
+              {{ 'ikaslePage.validaciones.HoraInicioMenor' | translate }}
+            </ion-text>
+
+            <!-- Botón de actualización -->
+            <ion-button type="submit" expand="full"
+              [disabled]="actualizarHorarioForm.invalid || !grupoSeleccionado || !diaSeleccionado || !fechaInicio || !fechaFin || fechaInicio > fechaFin || horaInicio >= horaFin">
+              {{ 'ikaslePage.Gorde' | translate }}
+            </ion-button>
+          </div>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal [isOpen]="isEditModalOpen" (ionModalDidDismiss)="closeEditModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ "ikaslePage.EditIkaslea" | translate }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeEditModal()">
+              <ion-icon name="close" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <form #editAlumnoForm="ngForm" (ngSubmit)="updateAlumno()" novalidate>
+          <!-- Campo para Izena -->
+          <ion-item>
+            <ion-label position="stacked">{{ "ikaslePage.Izena" | translate }}</ion-label>
+            <ion-input [(ngModel)]="selectedAlumno.izena" name="izena"
+              placeholder="{{ 'ikaslePage.SartuIzenBerria' | translate }}" required #izena="ngModel"></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="izena?.invalid && izena?.touched">{{ "ikaslePage.validaciones.izena" |
+            translate }}</ion-text>
+
+          <!-- Campo para Abizena -->
+          <ion-item>
+            <ion-label position="stacked">{{ "ikaslePage.Abizena" | translate }}</ion-label>
+            <ion-input [(ngModel)]="selectedAlumno.abizenak" name="abizenak"
+              placeholder="{{ 'ikaslePage.SartuAbizenBerriak' | translate }}" required #abizenak="ngModel"></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="abizenak?.invalid && abizenak?.touched">{{ "ikaslePage.validaciones.abizena" |
+            translate }}</ion-text>
+
+          <!-- Campo para TaldeKodea -->
+          <ion-item>
+            <ion-label position="stacked">{{ "ikaslePage.Kodea" | translate }}</ion-label>
+            <ion-select [(ngModel)]="selectedAlumno.taldeKodea" name="taldeKodea"
+              placeholder="{{ 'ikaslePage.ErabakiKodeBerriBat' | translate }}" required #taldeKodea="ngModel">
+              <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
+                {{ grupo.kodea }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-text color="danger" *ngIf="taldeKodea?.invalid && taldeKodea?.touched">{{
+            "ikaslePage.validaciones.kodeaSelec" | translate }}</ion-text>
+
+          <!-- Botón de guardar -->
+          <ion-button expand="full" type="submit" [disabled]="editAlumnoForm.invalid">
+            {{ "ikaslePage.GordeAldaketak" | translate }}
+          </ion-button>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <!-- Modal para crear Ikaslea -->
+  <ion-modal trigger="prod-sortu-modal">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ "ikaslePage.SortuIkaslea" | translate }}</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <form #sortuIkasleForm="ngForm" (ngSubmit)="agregarAlumno()" novalidate>
+          <ion-item>
+            <ion-label position="stacked">{{ "ikaslePage.Izena" | translate }}</ion-label>
+            <ion-input [(ngModel)]="nuevoAlumno.izena" name="izena" required #izena="ngModel"
+              placeholder="{{ 'ikaslePage.Izena' | translate }}"></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="izena.invalid && izena.touched">
+            {{ "ikaslePage.Validaciones.izena" | translate }}
+          </ion-text>
+
+          <ion-item>
+            <ion-label position="stacked">{{ "ikaslePage.Abizena" | translate }}</ion-label>
+            <ion-input [(ngModel)]="nuevoAlumno.abizenak" name="abizenak" required #abizenak="ngModel"
+              placeholder="{{ 'ikaslePage.Abizena' | translate }}"></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="abizenak.invalid && abizenak.touched">
+            {{ "ikaslePage.Validaciones.abizena" | translate }}
+          </ion-text>
+
+          <ion-item>
+            <ion-label position="stacked">{{ 'ikaslePage.Kodea' | translate }}</ion-label>
+            <ion-select [(ngModel)]="nuevoAlumno.taldea.kodea" name="taldeKodea" required #taldeKodea="ngModel"
+              placeholder="{{ 'ikaslePage.ErabakiKodeBerriBat' | translate }}">
+              <ion-select-option *ngFor="let grupo of grupoArray" [value]="grupo.kodea">
+                {{ grupo.kodea }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-text color="danger" *ngIf="taldeKodea.invalid && taldeKodea.touched">
+            {{ "ikaslePage.Validaciones.kodeaSelec" | translate }}
+          </ion-text>
+
+          <!-- El botón se deshabilita si el formulario es inválido -->
+          <ion-button expand="full" type="submit" [disabled]="sortuIkasleForm.invalid">
+            {{ 'ikaslePage.SortuIkaslea' | translate }}
+          </ion-button>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <!-- Modal para eliminar un Ikaslea -->
+  <ion-modal trigger="atera-modal">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <!-- Botón de Ezabatu en la esquina superior derecha -->
+          <ion-buttons slot="end">
+            <ion-button (click)="eliminarAlumnos()">{{ 'ikaslePage.Ezabatu' | translate }}</ion-button>
+          </ion-buttons>
+          <ion-title>{{ 'ikaslePage.Ezabatu' | translate }}</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <!-- Barra de búsqueda para filtrar alumnos -->
+        <ion-item>
+          <ion-label position="stacked">{{ 'ikaslePage.Izena' | translate }}</ion-label>
+          <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterAlumnos()" debounce="0"
+            placeholder="{{ 'ikaslePage.SartuIzenaBerria' | translate }}"></ion-searchbar>
+        </ion-item>
+
+        <!-- Lista de alumnos con casillas de verificación para seleccionar varios -->
+        <ion-list>
+          <ion-item *ngFor="let alumno of filteredAlumnos">
+            <!-- Checkbox para seleccionar alumno -->
+            <ion-checkbox slot="start" [(ngModel)]="alumno.selected" (ionChange)="onAlumnoSelected(alumno.id)">
+            </ion-checkbox>
+            <ion-label>
+              <h2>{{ alumno.izena }} {{ alumno.abizenak }}</h2>
+              <p>{{ 'ikaslePage.Taldea' | translate }}: {{ alumno.taldeIzena }}</p>
+              <p>{{ 'ikaslePage.TaldeKodea' | translate }}: {{ alumno.taldeKodea }}</p>
+              <p>{{ 'ikaslePage.Fecha' | translate }}: {{ alumno.sortzeData }}</p>
+            </ion-label>
+            <ion-button (click)="openEditModal(alumno)">
+              <ion-icon name="create-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <!-- Modal para gestionar grupos -->
+  <ion-modal trigger="prod-gestionatu-modal">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ 'ikaslePage.SortuTaldea' | translate }}</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <form #grupoForm="ngForm" (ngSubmit)="agregarGrupo()" novalidate>
+          <!-- Mensaje de error si el nombre del grupo no está lleno -->
+          <ion-text color="danger" *ngIf="taldeIzena?.invalid && taldeIzena?.touched">
+            {{ 'ikaslePage.Validaciones.izena' | translate }}
+          </ion-text>
+          <ion-item>
+            <ion-label position="stacked">{{ 'ikaslePage.TaldeIzena' | translate }}</ion-label>
+            <ion-input [(ngModel)]="nuevoGrupo.izena" name="taldeIzena"
+              placeholder="{{ 'ikaslePage.TaldeIzena' | translate }}" required #taldeIzena="ngModel"></ion-input>
+          </ion-item>
+
+          <!-- Mensaje de error si el código del grupo no está lleno -->
+          <ion-text color="danger" *ngIf="taldeKodea?.invalid && taldeKodea?.touched">
+            {{ 'ikaslePage.Validaciones.kodea' | translate }}
+          </ion-text>
+          <ion-item>
+            <ion-label position="stacked">{{ 'ikaslePage.TaldeKodea' | translate }}</ion-label>
+            <ion-input [(ngModel)]="nuevoGrupo.kodea" maxlength="5" name="taldeKodea"
+              placeholder="{{ 'ikaslePage.TaldeKodea' | translate }}" required #taldeKodea="ngModel"></ion-input>
+          </ion-item>
+
+          <!-- El botón se deshabilita si los campos no están completos -->
+          <ion-button expand="full" type="submit" [disabled]="grupoForm.invalid">
+            {{ 'ikaslePage.SortuTaldea' | translate }}
+          </ion-button>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+
+  <!-- Modal para ver Taldeak e Ikasleak -->
+  <ion-modal [isOpen]="isEditTaldeModalOpen" (ionModalDidDismiss)="closeEditTaldeModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ 'ikaslePage.TaldeIzena' | translate }}: {{ selectedTalde.kodea }}</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <form #editTaldeForm="ngForm" (ngSubmit)="updateTalde()" novalidate>
+          <!-- Mensaje de error si el nombre del grupo está vacío -->
+          <ion-text color="danger" *ngIf="taldeIzena?.invalid && taldeIzena?.touched">
+            {{ 'ikaslePage.Validaciones.izena' | translate }}
+          </ion-text>
+          <ion-item>
+            <ion-label position="stacked">{{ 'ikaslePage.TaldeIzena' | translate }}</ion-label>
+            <ion-input [(ngModel)]="selectedTalde.izena" name="taldeIzena"
+              placeholder="{{ 'ikaslePage.SartuIzenaBerria' | translate }}" required #taldeIzena="ngModel"></ion-input>
+          </ion-item>
+
+          <!-- Botón para guardar cambios (deshabilitado si el campo no es válido) -->
+          <ion-button expand="full" type="submit" [disabled]="editTaldeForm.invalid">
+            {{ 'ikaslePage.GordeAldaketak' | translate }}
+          </ion-button>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>
+<!-- </ion-content> -->

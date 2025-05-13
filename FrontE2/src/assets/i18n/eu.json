@@ -218,6 +218,9 @@
     },
     "historial": {
         "titulo": "Historiala",
+        "paginacion": {
+            "indice": "{{currentPage}}. orria / Guztira: {{totalPages}} orri"
+        },
         "botones": {
             "productos": "Produktu mugimenduak",
             "materiales": "Material mugimenduak",
@@ -226,8 +229,11 @@
             "crear": "Sortu",
             "añadir": "Gehgitu",
             "guardar": "Gorde",
-            "editar": "Editatu"
+            "editar": "Editatu",
+            "next":"Hurrengoa",
+            "previous":"Aurrekoa"
         },
+        
         "modal": {
             "proceso": "Prozesuan (erabiltzen, cambiar depende del contexto)",
             "trabajador": "Langilea",

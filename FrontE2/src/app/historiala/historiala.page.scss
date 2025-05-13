@@ -62,29 +62,29 @@ ion-content {
     }
   }
   
-  /* Segmentos */
-  ion-segment {
-    --background: #{$color-white};
-    margin-bottom: 16px;
+  // /* Segmentos */
+  // ion-segment {
+  //   --background: #{$color-white};
+  //   margin-bottom: 16px;
     
-    ion-segment-button {
-      --color: #{$color-primary};
-      --color-checked: #{$color-white};
-      --background-checked: #{$color-tertiary};
-      --indicator-color: transparent;
-      font-weight: 500;
-      border-radius: 8px;
-      margin: 0 4px;
+  //   ion-segment-button {
+  //     --color: #{$color-primary};
+  //     --color-checked: #{$color-white};
+  //     --background-checked: #{$color-tertiary};
+  //     --indicator-color: transparent;
+  //     font-weight: 500;
+  //     border-radius: 8px;
+  //     margin: 0 4px;
       
-      &:first-child {
-        margin-left: 0;
-      }
+  //     &:first-child {
+  //       margin-left: 0;
+  //     }
       
-      &:last-child {
-        margin-right: 0;
-      }
-    }
-  }
+  //     &:last-child {
+  //       margin-right: 0;
+  //     }
+  //   }
+  // }
   
   /* Tarjetas */
   ion-card {
@@ -188,11 +188,28 @@ ion-content {
         }
         
         p {
-          color: #{$color-dark-gray};
+          color: var(--ion-gray-dark-medium);
         }
       }
     }
   }
+
+  history-item{
+    display: flex;
+  }
+  
+  .pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .history-list {
+    max-height: 400px; 
+    overflow-y: auto;
+  }
+
   
   /* Grid */
   ion-grid {
@@ -314,12 +331,12 @@ ion-item {
       
       ion-card-title {
         font-size: 1rem;
-        color: var(--ion-color-primary);
+        // color: var(--ion-color-primary);
       }
       
       ion-card-subtitle {
         font-size: 0.8rem;
-        color: var(--ion-color-medium);
+        // color: var(--ion-color-medium);
       }
     }
     
@@ -429,24 +446,24 @@ ion-item {
 }
 
 /* Estilos para el segment en móvil */
-ion-segment {
-  display: flex;
-  flex-wrap: wrap; /* Permite que los botones pasen a múltiples líneas */
-  justify-content: center;
-}
+// ion-segment {
+//   display: flex;
+//   flex-wrap: wrap; /* Permite que los botones pasen a múltiples líneas */
+//   justify-content: center;
+// }
 
-ion-segment-button {
-  flex: 1 1 auto; /* Hace que los botones crezcan según su contenido */
-  min-width: 120px; /* Ancho mínimo para cada botón */
-  max-width: 100%; /* Evita que se estiren demasiado */
+// ion-segment-button {
+//   flex: 1 1 auto; /* Hace que los botones crezcan según su contenido */
+//   min-width: 120px; /* Ancho mínimo para cada botón */
+//   max-width: 100%; /* Evita que se estiren demasiado */
   
-  ion-label {
-    white-space: normal; /* Permite que el texto se divida en múltiples líneas */
-    text-align: center;
-    font-size: 0.8rem; /* Tamaño de fuente más pequeño para móvil */
-    padding: 8px 4px; /* Espaciado interno */
-  }
-}
+//   ion-label {
+//     white-space: normal; /* Permite que el texto se divida en múltiples líneas */
+//     text-align: center;
+//     font-size: 0.8rem; /* Tamaño de fuente más pequeño para móvil */
+//     padding: 8px 4px; /* Espaciado interno */
+//   }
+// }
 
 /* Ajustes específicos para pantallas pequeñas */
 @media (max-width: 576px) {
