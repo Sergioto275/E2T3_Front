@@ -102,11 +102,13 @@
               <ion-card class="product-card">
                 
                 <!-- Imagen del producto -->
-                <ion-card-header>
-                  <img [src]="transformarURL(producto.img_url)" 
-                      (error)="onImageError($event)" 
-                      class="product-image" />
-                </ion-card-header>
+                <ion-card-header class="image-header">
+                  <img 
+                    [src]="transformarURL(producto.img_url)" 
+                    (error)="onImageError($event)" 
+                    class="product-image" 
+                  />
+                </ion-card-header>                
             
                 <!-- Información del producto -->
                 <ion-card-content>

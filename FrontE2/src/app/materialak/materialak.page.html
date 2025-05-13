@@ -108,11 +108,13 @@
             <ion-card class="material-card">
               
               <!-- Imagen del material -->
-              <ion-card-header>
-                <img [src]="transformarURL(material.img_url)" 
-                    (error)="onImageError($event)" 
-                    class="material-image" />
-              </ion-card-header>
+              <ion-card-header class="image-header">
+                <img 
+                  [src]="transformarURL(material.img_url)" 
+                  (error)="onImageError($event)" 
+                  class="material-image" 
+                />
+              </ion-card-header>              
           
               <!-- Información del material -->
               <ion-card-content class="material-content">

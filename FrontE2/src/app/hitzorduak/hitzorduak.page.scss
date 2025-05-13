@@ -103,6 +103,10 @@ th:not(:first-child) {
   color: var(--text-color);
 }
 
+ion-card-content{
+  background-color: transparent;
+}
+
 /* Tarjetas de citas */
 .appointment-card {
   padding: 10px;
@@ -199,12 +203,14 @@ th:not(:first-child) {
 }
 
 .extra-price-input {
-  max-width: 50px;
-  --padding-start: 8px;
-  --padding-end: 8px;
-  text-align: right;
+  --border-radius: 8px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  text-align: left;
+  --background: transparent;
+  width: 100%; /* Ocupa el 100% del espacio disponible */
+  border: 1px solid #444; 
 }
-
 
 /* Selector de fecha */
 .date-selector {

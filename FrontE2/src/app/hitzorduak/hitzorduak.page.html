@@ -245,9 +245,9 @@
                         </ng-template>
                       </ng-container>
                       <ng-container *ngIf="katTrat.extra">
-                        <ion-item *ngIf="trat.selected">
+                        <ion-label *ngIf="trat.selected">
                           <ion-input class="extra-price-input" [(ngModel)]="trat.precio" name="precio_{{trat.id}}" placeholder="€€€" type="number" required #precio="ngModel"></ion-input>
-                        </ion-item>
+                        </ion-label>
                       </ng-container>
                     </ion-label>
                   </ion-item>
