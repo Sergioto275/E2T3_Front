@@ -23,6 +23,9 @@
 
   <ion-content [fullscreen]="true">
     <ion-toolbar color="primary">
+      <ion-button expand="full" slot="start" (click)="mostrarFiltros = !mostrarFiltros">
+        <ion-icon name="search"></ion-icon>
+      </ion-button>
       <ion-buttons *ngIf="!isIkasle" slot="start">
         <ion-button id="cat-prod-sortu-modal">{{ 'productos.botones.crearCategoria' | translate }}</ion-button>
       </ion-buttons>
@@ -51,34 +54,28 @@
             </ion-item>
           </ion-list>
 
-          <ion-label *ngIf="productosSeleccionados?.length === 0">
+          <ion-label class="carrito" *ngIf="productosSeleccionados?.length === 0">
             {{ 'productos.modal.vacio' | translate }}
           </ion-label>
         </ion-content>
       </ng-template>
     </ion-popover>
-
-    <ion-list>
-      <!-- Filtro por Categoría -->
-      <ion-item>
-        <!-- <ion-label position="stacked">{{ 'productos.modal.filtroCat' | translate }}</ion-label> -->
+    <!-- Filtro por Categoría -->
+    <ion-card>
+      <div *ngIf="mostrarFiltros">
+        <ion-card-header>
+          <ion-card-title><b>{{ 'materiales.modal.filtros' | translate }}</b></ion-card-title>
+        </ion-card-header>
         <ion-searchbar [(ngModel)]="filtroCategoria" (ngModelChange)="filtrarProductos()" animated="true"
           placeholder="{{ 'productos.modal.filtroCat' | translate }}"></ion-searchbar>
-      </ion-item>
-
-      <!-- Filtro por Producto -->
-      <ion-item>
-        <!-- <ion-label position="stacked">{{ 'productos.modal.filtroProd' | translate }}</ion-label> -->
         <ion-searchbar [(ngModel)]="filtroProducto" (ngModelChange)="filtrarProductos()" animated="true"
           placeholder="{{ 'productos.modal.filtroProd' | translate }}"></ion-searchbar>
-      </ion-item>
-
-      <!-- Filtro por Stock Bajo -->
-      <ion-item color="primary">
+          <ion-item color="primary">
         <ion-label>{{ 'productos.modal.stockBajo' | translate }}</ion-label>
         <ion-checkbox slot="start" [(ngModel)]="filtroStockBajo" (ngModelChange)="filtrarProductos()"></ion-checkbox>
       </ion-item>
-    </ion-list>
+      </div>
+    </ion-card>
 
     <ng-container *ngFor="let categoria of filteredProduktuak">
       <!-- Categoría -->
@@ -119,7 +116,7 @@
                   </div>
 
                   <!-- Checkbox de selección -->
-                  <ion-item lines="none">
+                  <ion-item class="select-item" lines="none">
                     <ion-checkbox slot="start" [(ngModel)]="producto.selected" (ionChange)="actualizarProductosSeleccionados(producto, categoria.id)"></ion-checkbox>
                     <!-- Botones de acción -->
                     <ion-buttons slot="end" *ngIf="!isIkasle">

@@ -32,6 +32,7 @@ export class TratamenduakPage implements OnInit {
   serviciosSeleccionados: any[] = [];
   isEditingService: boolean = false;
   isEditingCategoria: boolean = false;
+  mostrarFiltros: Boolean = false;
 
   filtroCategoria: string = '';
   filtroZerbitzua: string = '';

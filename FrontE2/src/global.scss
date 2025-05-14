@@ -62,6 +62,14 @@ $color-dark-gray: #333333;
   --ion-gray-dark-medium:#E9E9E9;
 }
 
+ion-select{
+    color: white;
+}
+
+ion-input{
+  color: black;
+}
+
 /* Aplicar modo oscuro cuando el sistema lo prefiera */
 @media (prefers-color-scheme: dark) {
   :root {
@@ -98,13 +106,19 @@ ion-content {
 
 ion-card{
   background-color: transparent;
+  transition: transform 0.3s ease;
+  
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    }
 }
 
 /* Elimina todos los estilos predeterminados de Ionic */
 ion-searchbar {
   --background: transparent !important;
   --box-shadow: none !important;
-  --color: var(--ion-text-color) !important;
+  --color: white !important;
   --placeholder-color: rgba(var(--ion-text-color-rgb), 0.6) !important;
   --icon-color: var(--ion-text-color) !important;
   
@@ -125,7 +139,7 @@ ion-searchbar {
   /* Iconos */
   .searchbar-search-icon, 
   .searchbar-clear-icon {
-    color: var(--ion-text-color) !important;
+    color: white !important;
   }
 }
 
@@ -360,9 +374,9 @@ ion-menu::part(container) {
   --ion-menu-color: #{$color-white};
   --ion-datetime-background: #1e1e1e;
   --ion-border-color: rgba(255, 255, 255, 0.12);
-  
-  ion-select{
-      color: white;
+ 
+  ion-input{
+    color: white;
   }
   
   ion-modal::part(backdrop) {

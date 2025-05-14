@@ -202,6 +202,10 @@ ion-card-content{
   font-weight: 500;
 }
 
+.service-name{
+  color: black;
+}
+
 .extra-price-input {
   --border-radius: 8px;
   --padding-start: 12px;
@@ -209,7 +213,8 @@ ion-card-content{
   text-align: left;
   --background: transparent;
   width: 100%; /* Ocupa el 100% del espacio disponible */
-  border: 1px solid #444; 
+  border: 1px solid #444;
+  color: var(--success-color);
 }
 
 /* Selector de fecha */
@@ -274,6 +279,13 @@ ion-text[color="danger"] {
 /* Asegura contraste en ambos modos */
 .dark .theme-toggle ion-icon {
   color: var(--ion-color-light);
+  .service-name{
+    color: white !important;
+  }
+
+  .service-price{
+    color: var(--success-color) !important;
+  }
 }
 
 /* Estilo para ion-item con fondo gris (#FFFFFF) */

@@ -53,6 +53,7 @@ export class ProduktuakPage implements OnInit {
   isIkasle!: boolean;
   private routeSubscription: any;
   modoOscuro: Boolean = false;
+  mostrarFiltros: Boolean = false;
 
 
   filtroCategoria: string = '';

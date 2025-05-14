@@ -7,8 +7,33 @@ ion-modal {
   margin: 0 auto;
 }
 
+ion-card {
+  ion-card-header {
+    background: #1c345c; /* Azul oscuro principal */
+    
+    ion-card-title {
+      color: #ffffff; /* Texto blanco */
+    }
+  }
+
+  ion-item{
+    border-radius: 4px;
+    width: 99%;
+    padding-left: 1%;
+  }
+}
+
+.select-item{
+  --background: transparent;
+}
+
 ion-toolbar {
   --height: 56px;
+}
+
+ion-searchbar{
+  color: white;
+  --ion-icon:white;
 }
 
 ion-title {
@@ -46,6 +71,10 @@ ion-label {
   font-size: 16px;
   font-weight: 500;
   color: #fff;
+}
+
+.carrito{
+  color: black;
 }
 
 ion-input {

@@ -235,8 +235,8 @@
                     <ion-checkbox slot="start" [(ngModel)]="trat.selected" name="trat_{{trat.id}}"
                       (ionChange)="actualizarServiciosSeleccionados(trat, katTrat.extra, katTrat.kolorea)">
                     </ion-checkbox>
-                    <ion-label>{{ trat.izena }}
-                      <ng-container class="service-price" *ngIf="!katTrat.extra">
+                    <ion-label class="service-price"><span class="service-name">{{ trat.izena }}</span>
+                      <ng-container *ngIf="!katTrat.extra">
                         <ng-container *ngIf="citaEditar.etxekoa; else kanpokoa">
                           {{ trat.etxekoPrezioa }}
                         </ng-container>
