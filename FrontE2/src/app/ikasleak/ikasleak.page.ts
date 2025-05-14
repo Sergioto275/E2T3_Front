@@ -48,6 +48,7 @@ export class IkasleakPage implements OnInit {
   isIkasle!: boolean;
   private routeSubscription: any;
   modoOscuro: Boolean = false;
+  gruposAbiertos: { [key: string]: boolean } = {};
 
   constructor(
     private translate: TranslateService,
@@ -64,6 +65,14 @@ export class IkasleakPage implements OnInit {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
     this.selectedLanguage = this.languageService.getLanguage();
+  }
+
+  toggleGrupo(grupo: string) {
+    this.gruposAbiertos[grupo] = !this.gruposAbiertos[grupo];
+  }
+
+  isGrupoAbierto(grupo: string): boolean {
+    return this.gruposAbiertos[grupo] || false;
   }
 
   lortuData(): string {

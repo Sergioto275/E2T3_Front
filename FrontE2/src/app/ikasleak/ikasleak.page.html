@@ -37,27 +37,34 @@
       <ion-toolbar class="boton-toolbar">
         <ion-button id="prod-gestionatu-modal" class="Botoiak">{{ "ikaslePage.SortuTaldea" | translate }}</ion-button>
         <ion-button id="prod-sortu-modal" class="Botoiak">{{ "ikaslePage.SortuIkaslea" |translate }}</ion-button>
-        <ion-button id="atera-modal" class="Botoiak">{{ "ikaslePage.IkasleakBistaratu" | translate }}</ion-button>
       </ion-toolbar>
 
-      <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterGroups()" debounce="300"
-        placeholder="{{ 'ikaslePage.IzenaOKodea' | translate }}"></ion-searchbar>
+      <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterGroups()" debounce="300" placeholder="{{ 'ikaslePage.IzenaOKodea' | translate }}"></ion-searchbar>
 
       <ion-list>
         <ion-card *ngFor="let grupo of filteredGroups">
-          <ion-card-header>
-            <ion-card-title>{{ grupo.izena }}</ion-card-title>
-            <ion-card-subtitle>{{ "ikaslePage.Kodea" | translate }}: {{ grupo.kodea }}</ion-card-subtitle>
+          <ion-card-header button (click)="toggleGrupo(grupo.kodea)" detail="false">
+            <ion-row class="ion-align-items-center">
+              <ion-col size="10">
+                <ion-card-title>{{ grupo.izena }}</ion-card-title>
+                <ion-card-subtitle>{{ "ikaslePage.Kodea" | translate }}: {{ grupo.kodea }}</ion-card-subtitle>
+              </ion-col>
+              <ion-col size="2" class="ion-text-right">
+                <ion-icon [name]="isGrupoAbierto(grupo.kodea) ? 'chevron-up' : 'chevron-down'" style="font-size: 1.5em;">
+                </ion-icon>
+              </ion-col>
+            </ion-row>
           </ion-card-header>
 
           <ion-card-content class="card-content">
             <!-- Lista de alumnos dentro de items -->
-            <ion-list class="alumnos-list">
-              <div class="itemAlumno" *ngFor="let ikaslea of grupo.langileak" (click)="openEditModal(ikaslea)">
-                <ion-label>
+            <ion-list class="alumnos-list" *ngIf="isGrupoAbierto(grupo.kodea)">
+              <ion-item class="itemAlumno" *ngFor="let ikaslea of grupo.langileak" (click)="openEditModal(ikaslea)">
                   <h3>{{ ikaslea.izena }} {{ ikaslea.abizenak }} {{ ikaslea.ezabatzeData }}</h3>
-                </ion-label>
-              </div>
+                  <ion-button slot="end" color="danger" (click)="eliminarAlumno(ikaslea.id); $event.stopPropagation()">
+                    <ion-icon name="trash"></ion-icon>
+                  </ion-button>
+              </ion-item>
             </ion-list>
 
             <!-- Contenedor flex para alinear los botones al final -->
@@ -72,6 +79,28 @@
           </ion-card-content>
         </ion-card>
       </ion-list>
+
+      <!-- <ion-list>
+        <ion-card *ngFor="let grupo of filteredGroups">
+          <ion-item >
+            <ion-label><strong>{{ grupo.izena }}</strong></ion-label>
+            <ion-button slot="end" color="primary" (click)="openEditTaldeModal(grupo); $event.stopPropagation()">
+              <ion-icon name="create-outline"></ion-icon>
+            </ion-button>
+            <ion-button slot="end" color="danger" (click)="confirmarEliminacionGrupo(grupo.kodea); $event.stopPropagation()">
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+
+          <ion-list >
+            <ion-item *ngFor="let ikaslea of grupo.langileak" (click)="openEditModal(ikaslea)">
+              <ion-label>
+                <h3>{{ ikaslea.izena }} {{ ikaslea.abizenak }} {{ ikaslea.ezabatzeData }}</h3>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-card>
+      </ion-list> -->
     </ion-segment-content>
     <ion-segment-content id="taldeOrdutegi">
       <ion-toolbar>
@@ -523,47 +552,6 @@
             {{ 'ikaslePage.SortuIkaslea' | translate }}
           </ion-button>
         </form>
-      </ion-content>
-    </ng-template>
-  </ion-modal>
-
-  <!-- Modal para eliminar un Ikaslea -->
-  <ion-modal trigger="atera-modal">
-    <ng-template>
-      <ion-header>
-        <ion-toolbar>
-          <!-- Botón de Ezabatu en la esquina superior derecha -->
-          <ion-buttons slot="end">
-            <ion-button (click)="eliminarAlumnos()">{{ 'ikaslePage.Ezabatu' | translate }}</ion-button>
-          </ion-buttons>
-          <ion-title>{{ 'ikaslePage.Ezabatu' | translate }}</ion-title>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content>
-        <!-- Barra de búsqueda para filtrar alumnos -->
-        <ion-item>
-          <ion-label position="stacked">{{ 'ikaslePage.Izena' | translate }}</ion-label>
-          <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterAlumnos()" debounce="0"
-            placeholder="{{ 'ikaslePage.SartuIzenaBerria' | translate }}"></ion-searchbar>
-        </ion-item>
-
-        <!-- Lista de alumnos con casillas de verificación para seleccionar varios -->
-        <ion-list>
-          <ion-item *ngFor="let alumno of filteredAlumnos">
-            <!-- Checkbox para seleccionar alumno -->
-            <ion-checkbox slot="start" [(ngModel)]="alumno.selected" (ionChange)="onAlumnoSelected(alumno.id)">
-            </ion-checkbox>
-            <ion-label>
-              <h2>{{ alumno.izena }} {{ alumno.abizenak }}</h2>
-              <p>{{ 'ikaslePage.Taldea' | translate }}: {{ alumno.taldeIzena }}</p>
-              <p>{{ 'ikaslePage.TaldeKodea' | translate }}: {{ alumno.taldeKodea }}</p>
-              <p>{{ 'ikaslePage.Fecha' | translate }}: {{ alumno.sortzeData }}</p>
-            </ion-label>
-            <ion-button (click)="openEditModal(alumno)">
-              <ion-icon name="create-outline"></ion-icon>
-            </ion-button>
-          </ion-item>
-        </ion-list>
       </ion-content>
     </ng-template>
   </ion-modal>

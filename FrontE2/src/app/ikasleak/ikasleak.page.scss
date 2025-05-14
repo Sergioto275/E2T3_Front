@@ -65,6 +65,7 @@ ion-toolbar {
   justify-content: space-between;
   gap: 8px;
   padding: 8px;
+  --background: transparent;
 
   ion-button.Botoiak {
     flex: 1 1 auto; /* Se adapta al espacio disponible */
@@ -154,14 +155,15 @@ ion-text[color="danger"] {
 /* Specific Searchbar Component Styles */
 ion-searchbar {
   --background: #ffffff;
-  --color: #1c345c; /* Primary blue for text */
+  --color: #ffffff; /* Primary blue for text */
   --placeholder-color: #8e9aaf; /* Soft blue-gray for placeholder */
-  --icon-color: #1c345c; /* Primary blue for search icon */
+  --icon-color: white; /* Primary blue for search icon */
   --border-radius: 8px;
   --box-shadow: 0 2px 6px rgba(28, 52, 92, 0.1); /* Subtle shadow with primary color tint */
   padding: 8px 12px;
   margin: 12px 0;
   transition: all 0.3s ease;
+  color: white;
 
   /* Search icon styling */
   .searchbar-search-icon {
@@ -258,17 +260,23 @@ ion-searchbar {
 }
 
 .itemAlumno {
-  background-color: #1c345c;   // Azul oscuro de fondo
+  background-color: transparent !important;
+  --background: #1c345c;   // Azul oscuro de fondo
   color: #ffffff;              // Texto blanco
   margin: 8px 0;
-  border-radius: 8px;
-  padding: 12px;               // Añadir algo de relleno
+  // border-radius: 8px;
+  // padding: 12px;               // Añadir algo de relleno
   transition: all 0.3s ease;   // Transición suave para el hover
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Sombra ligera
 }
 
+.item-header{
+  --background: transparent !important;
+  background-color: transparent;
+}
+
 .itemAlumno:hover {
-  background-color: #41a367;   // Verde claro cuando se pasa el mouse
+  --background: #41a367;   // Verde claro cuando se pasa el mouse
   cursor: pointer;
 }
 
