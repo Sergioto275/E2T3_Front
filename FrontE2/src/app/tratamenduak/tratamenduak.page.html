@@ -6,7 +6,7 @@
         <ion-menu-button style="--color: white;"></ion-menu-button>
       </ion-buttons>
       <ion-title size="large" style="color: white;">{{ 'servicios.title' | translate }}</ion-title>
-      <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()"
+      <ion-select class="idioma" slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()"
         style="--color: white; --placeholder-color: white; --border-color: white;">
         <ion-select-option value="es" style="--color: #1c345c;">Español</ion-select-option>
         <ion-select-option value="eu" style="--color: #1c345c;">Euskera</ion-select-option>

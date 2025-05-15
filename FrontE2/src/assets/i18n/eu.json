@@ -35,7 +35,8 @@
             "editarCategoria": "Kategoriak editatu",
             "confirmar": "Baieztatu",
             "crear": "Sortu",
-            "editar": "Editatu"
+            "editar": "Editatu",
+            "cancelar": "Utzi"
         },
         "toast": {
             "Insert_OK": "Produktua sortu da.",
@@ -69,7 +70,9 @@
             "filtroCat": "Kategoriaren izenaz iragazi",
             "filtroProd": "Produktuaren izenaz iragazi",
             "stockBajo": "Stock gutxiko produktuak",
-            "img": "Irudiaren URL"
+            "img": "Irudiaren URL",
+            "productosSeleccionados":"Aukeratutako Produktuak",
+            "grupo":"Taldea"
         },
         "categorias": {
             "electronica": "Elektronika"
@@ -212,6 +215,8 @@
           "Insert_E": "Errorea hitzordua sortzerakoan.",
           "Update": "Hitzordua eguneratu da.",
           "Update_E": "Errorea hitzordua eguneratzerakoan.",
+          "Asignado": "Hitzordua esleitu da.",  
+          "Generado": "Hitzorduaren ticket-a sortu da.",  
           "Delete": "Hitzordua ezabatu da.",
           "Delete_E": "Errorea hitzordua ezabatzerakoan."
         }

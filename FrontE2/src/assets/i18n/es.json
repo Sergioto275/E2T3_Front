@@ -35,7 +35,8 @@
       "editarCategoria": "Editar Categoria",
       "confirmar": "Confirmar",
       "crear": "Crear",
-      "editar": "Editar"
+      "editar": "Editar",
+      "cancelar": "Cancelar"
     },
     "toast": {
       "Insert_OK": "El producto se ha creado.",
@@ -69,7 +70,9 @@
       "filtroCat": "Filtrar por Categoria",
       "filtroProd": "Filtrar por Producto",
       "stockBajo": "Productos Bajo Stock",
-      "img": "URL de la Imagen"
+      "img": "URL de la Imagen",
+      "productosSeleccionados":"Productos Seleccionados",
+      "grupo":"Grupo"
     },
     "categorias": {
       "electronica": "Electrónica"
@@ -212,6 +215,8 @@
       "Insert_E": "Error al crear la cita.",
       "Update": "La cita se ha actualizado.",
       "Update_E": "Error al actualizar la cita.",
+      "Asignado": "La cita se ha asignado",
+      "Generado": "El ticket de la cita se ha creado",
       "Delete": "La cita se ha eliminado.",
       "Delete_E": "Error al eliminar la cita."
     }

@@ -77,7 +77,7 @@ export class MaterialakPage implements OnInit {
   filtroCategoria: string = '';
   filtroMaterial: string = '';
 
-  checkboxHabilitado = false;
+  checkboxHabilitado:boolean = false;
   mostrarCheckbox: boolean = false;
   isIkasle!: boolean;
   modoOscuro: Boolean = false;
@@ -142,7 +142,9 @@ export class MaterialakPage implements OnInit {
 
   toggleMostrarCheckbox() {
     this.mostrarCheckbox = !this.mostrarCheckbox;
+
     if (this.mostrarCheckbox) {
+      // Filtrar materiales
       this.filteredMaterialak = this.filteredMaterialak.map(material => {
         return {
           ...material,
@@ -153,11 +155,25 @@ export class MaterialakPage implements OnInit {
       }).filter(material => material.materialak.length > 0);
 
     } else {
+      // Restaurar materiales
       this.filteredMaterialak = this.materialak;
     }
-    console.log(this.filteredMaterialak)
-    console.log(this.materialaDevolver)
+
+    console.log(this.filteredMaterialak);
+    console.log(this.materialaDevolver);
   }
+
+  /* Función para desmarcar el checkbox después de sacar los materiales */
+  desmarcarCheckbox() {
+    // this.mostrarCheckbox = false;  // Cambiar el valor del checkbox
+    const checkboxElement = document.querySelector('ion-checkbox') as any;
+
+    if (checkboxElement) {
+      checkboxElement.checked = false;
+      checkboxElement.dispatchEvent(new Event('ionChange')); // Disparar el evento manualmente
+    }
+  }
+
 
   toggleCategoria(categoria: string) {
     this.categoriasAbiertas[categoria] = !this.categoriasAbiertas[categoria];
@@ -247,6 +263,7 @@ export class MaterialakPage implements OnInit {
     this.crearCategoria = null;
     this.crearKatNombre = null;
     this.materialesSeleccionados = [];
+    this.desmarcarCheckbox(); // Desmarcamos el checkbox y disparamos el evento
   }
 
   async materialaEzabatu(id: number) {
@@ -545,6 +562,7 @@ export class MaterialakPage implements OnInit {
       this.routeSubscription.unsubscribe();
     }
   }
+
   materialakAtera() {
     const data = this.materialesSeleccionados.map(materiala => ({
       materiala: { id: materiala.id },

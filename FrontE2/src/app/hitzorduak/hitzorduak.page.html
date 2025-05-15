@@ -189,7 +189,7 @@
                 <ion-text color="danger" *ngIf="telefono.invalid && telefono.touched">{{ "citas.validaciones.telefono" | translate }}</ion-text>
                 <ion-item>
                   <ion-label>{{ "citas.modal.casa" | translate }}</ion-label>
-                  <ion-checkbox [(ngModel)]="citaEditar.etxekoa" name="casa" required #casa="ngModel"></ion-checkbox>
+                  <ion-checkbox [(ngModel)]="citaEditar.etxekoaBool" name="casa" required #casa="ngModel"></ion-checkbox>
                 </ion-item>
                 <ion-text color="danger" *ngIf="casa.invalid && casa.touched">{{ "citas.validaciones.seleccion" | translate }}</ion-text>
                 <ion-text color="danger" *ngIf="citaEditar.langilea && !citaEditar.prezioTotala">{{ "citas.validaciones.iniciada" | translate }}</ion-text>
@@ -237,7 +237,7 @@
                     </ion-checkbox>
                     <ion-label class="service-price"><span class="service-name">{{ trat.izena }}</span>
                       <ng-container *ngIf="!katTrat.extra">
-                        <ng-container *ngIf="citaEditar.etxekoa; else kanpokoa">
+                        <ng-container *ngIf="citaEditar.etxekoaBool; else kanpokoa">
                           {{ trat.etxekoPrezioa }}
                         </ng-container>
                         <ng-template #kanpokoa>

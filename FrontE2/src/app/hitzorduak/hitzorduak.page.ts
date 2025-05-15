@@ -32,7 +32,7 @@ export class HitzorduakPage implements OnInit {
   hoursArray: any[] = [];
   rowspanAux: any[] = [];
   citaCrear: any = { "data": null, "hasieraOrdua": null, "amaieraOrdua": null, "eserlekua": 0, "izena": '', "telefonoa": '', "deskribapena": '', "etxekoa": false };
-  citaEditar: any = { "data": null, "hasieraOrdua": null, "amaieraOrdua": null, "eserlekua": 0, "izena": '', "telefonoa": '', "deskribapena": '', "etxekoa": false };
+  citaEditar: any = { "data": null, "hasieraOrdua": null, "amaieraOrdua": null, "eserlekua": 0, "izena": '', "telefonoa": '', "deskribapena": '', "etxekoaBool": false };
   idLangile: any = null;
   dataSelec!: any;
   todayDate!: any;
@@ -312,6 +312,7 @@ export class HitzorduakPage implements OnInit {
         this.hitzorduak = datuak.filter((hitzordu: any) => hitzordu.ezabatzeData === null);
         const eguna = formatDate(this.dataSelec, 'yyyy-MM-dd', 'en-US');
         this.hitzorduArray = this.hitzorduak.filter((hitzordu: any) => hitzordu.data.includes(eguna));
+        console.log(this.hitzorduArray)
       },
       (error) => {
         console.error("Error al cargar citas:", error);
@@ -514,7 +515,7 @@ export class HitzorduakPage implements OnInit {
   }
   // ------------------------------------------------------------------ EDITAR DATOS ---------------------------------------------------------------
   editar_cita() {
-    const etxeko = this.citaEditar.etxekoa ? "E" : "K";
+    const etxeko = this.citaEditar.etxekoaBool ? "E" : "K";
     const json_data = {
       "id": this.citaEditar.id,
       "data": this.citaEditar.data,
@@ -599,7 +600,7 @@ export class HitzorduakPage implements OnInit {
     this.tratamenduSelec = [];
     this.idLangile = null;
     this.citaCrear = { "data": null, "hasieraOrdua": null, "amaieraOrdua": null, "eserlekua": 0, "izena": '', "telefonoa": '', "deskribapena": '', "etxekoa": false };
-    this.citaEditar = { "data": null, "hasieraOrdua": null, "amaieraOrdua": null, "eserlekua": 0, "izena": '', "telefonoa": '', "deskribapena": '', "etxekoa": false };
+    this.citaEditar = { "data": null, "hasieraOrdua": null, "amaieraOrdua": null, "eserlekua": 0, "izena": '', "telefonoa": '', "deskribapena": '', "etxekoaBool": false };
     this.resetSelection();
   }
 
@@ -612,19 +613,21 @@ export class HitzorduakPage implements OnInit {
   }
 
   cargar_cita_selec(citaSelec: any) {
+    console.log(citaSelec)
     if (this.citaEditar.id == citaSelec.id) {
-      this.citaEditar = { "data": null, "hasieraOrdua": null, "amaieraOrdua": null, "eserlekua": 0, "izena": '', "telefonoa": '', "deskribapena": '', "etxekoa": false };
+      this.citaEditar = { "data": null, "hasieraOrdua": null, "amaieraOrdua": null, "eserlekua": 0, "izena": '', "telefonoa": '', "deskribapena": '', "etxekoaBool": false };
       return;
     }
     this.citaEditar = citaSelec;
-    this.citaEditar.etxekoa = citaSelec.etxekoa == "E" ? true : false;
+    console.log(this.citaEditar)
+    this.citaEditar.etxekoaBool = citaSelec.etxekoa == "E" ? true : false;
     this.resetSelection();
   }
 
   actualizarServiciosSeleccionados(servicio: any, extra: boolean, color: boolean) {
     if (servicio.selected) {
       if (!extra) {
-        servicio.precio = this.citaEditar.etxekoa ? servicio.etxekoPrezioa : servicio.kanpokoPrezioa;
+        servicio.precio = this.citaEditar.etxekoaBool ? servicio.etxekoPrezioa : servicio.kanpokoPrezioa;
       }
     }
     servicio.color = color;
@@ -634,7 +637,6 @@ export class HitzorduakPage implements OnInit {
     } else if (!servicio.selected && index !== -1) {
       this.serviciosSeleccionados.splice(index, 1);
     }
-    console.log(this.serviciosSeleccionados)
   }
 
   asignar_cita() {
@@ -649,6 +651,9 @@ export class HitzorduakPage implements OnInit {
       async () => {
         await this.cargarHitzordu(); // Asegúrate de que esta función sea adecuada para manejar la carga de citas
         this.limpiar_campos(); // Asegúrate de que esta función esté definida correctamente
+        this.translate.get('citas.toast.Asignado').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
       },
       (error) => {
         console.error("Error al asignar la cita:", error);
@@ -676,7 +681,9 @@ export class HitzorduakPage implements OnInit {
       async (datuak: any) => {
         await this.cargarHitzordu();
         this.limpiar_campos();
-
+        this.translate.get('citas.toast.Generado').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
         const alert = await this.alertCtrl.create({
           header: this.translate.instant('citas.modal.ticket'),
           message: this.translate.instant('citas.modal.messageDownload'),

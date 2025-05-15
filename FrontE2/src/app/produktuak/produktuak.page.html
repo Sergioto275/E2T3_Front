@@ -47,7 +47,7 @@
           <ion-list *ngIf="productosSeleccionados && productosSeleccionados.length > 0">
             <ion-item *ngFor="let producto of productosSeleccionados">
               <ion-label>
-                <h2>{{ producto.izena }}</h2>
+                <h2 class="pop-name">{{ producto.izena }}</h2>
                 <ion-input type="number" [(ngModel)]="producto.kantitatea" placeholder="Cantidad">
                 </ion-input>
               </ion-label>
@@ -320,7 +320,7 @@
 <ion-modal #prodeditarmod [isOpen]="isEditingProduct">
   <ng-template>
     <ion-header>
-      <ion-toolbar color="primary">
+      <ion-toolbar style="background: transparent;">
         <ion-title>{{ 'productos.botones.editarProductos' | translate }}</ion-title>
         <ion-buttons slot="end">
           <ion-button (click)="closeProdModal()">

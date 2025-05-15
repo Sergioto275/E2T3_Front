@@ -375,6 +375,14 @@ ion-menu::part(container) {
   --ion-datetime-background: #1e1e1e;
   --ion-border-color: rgba(255, 255, 255, 0.12);
  
+  .service-name{
+    color: white;
+  }
+
+  .service-price{
+    color: var(--success-color) !important;
+  }
+  
   ion-input{
     color: white;
   }

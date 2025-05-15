@@ -195,16 +195,29 @@ ion-card-content{
   color: var(--accent-color);
 }
 
+/* Modo claro: Name en negro, Price en success */
+/* Modo claro: Name en negro, Price en success */
+.service-name {
+  color: black !important; /* Nombre en negro */
+}
 
 .service-price {
   font-size: 0.9rem;
-  color: var(--success-color);
+  color: var(--ion-color-success) !important; /* Precio en color success */
   font-weight: 500;
 }
 
-.service-name{
-  color: black;
+/* Modo oscuro: Name en blanco, Price sigue en success */
+body.dark span.service-name {
+  color: white !important; /* Forzamos blanco en modo oscuro */
 }
+
+// body.dark .service-price {
+//   color: var(--ion-color-success) !important;
+// }
+
+
+
 
 .extra-price-input {
   --border-radius: 8px;
@@ -279,13 +292,6 @@ ion-text[color="danger"] {
 /* Asegura contraste en ambos modos */
 .dark .theme-toggle ion-icon {
   color: var(--ion-color-light);
-  .service-name{
-    color: white !important;
-  }
-
-  .service-price{
-    color: var(--success-color) !important;
-  }
 }
 
 /* Estilo para ion-item con fondo gris (#FFFFFF) */

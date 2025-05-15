@@ -460,8 +460,13 @@ export class HistorialaPage implements OnInit {
     }).subscribe(
       () => {
         this.cargarClientes();
-        // Puedes limpiar los campos o mostrar un mensaje de éxito aquí si lo deseas
-        // this.limpiarCampos();
+        this.crearNombre = "";
+        this.crearApellido = "";
+        this.crearTelefono = "";
+        this.crearPiel = false;
+        this.translate.get('historial.toast.Insert').subscribe((texto) => {
+          this.mostrarToast(texto, 2000, 'success');
+        });
       },
       (error) => {
         console.error("Error al asignar la cita:", error);

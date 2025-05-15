@@ -7,7 +7,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title size="large">{{ "ikaslePage.ikasleak" | translate }} </ion-title>
-    <ion-select slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">
+    <ion-select class="idioma" slot="end" [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">
       <ion-select-option value="es">Español</ion-select-option>
       <ion-select-option value="eu">Euskera</ion-select-option>
     </ion-select>
@@ -204,9 +204,10 @@
             <ion-grid>
               <!-- Encabezado de la tabla -->
               <ion-row>
-                <ion-col size="4"><strong>{{ 'ikaslePage.Taldea' | translate }}</strong></ion-col>
+                <ion-col size="1"><strong>{{ 'ikaslePage.Taldea' | translate }}</strong></ion-col>
                 <ion-col size="3"><strong>{{ 'ikaslePage.Eguna' | translate }}</strong></ion-col>
                 <ion-col size="3"><strong>{{ 'ikaslePage.Ordua' | translate }}</strong></ion-col>
+                <ion-col size="3"><strong>{{ 'ikaslePage.Fecha' | translate }}</strong></ion-col>
                 <ion-col size="2"><strong>{{ 'ikaslePage.Ekintza' | translate }}</strong></ion-col>
               </ion-row>
 
@@ -215,9 +216,10 @@
                 <!-- Mostrar cada horario en una fila de la tabla -->
                 <ng-container *ngFor="let horario of ordutegiArrayFiltered">
                   <ion-row>
-                    <ion-col size="4">{{ horario.taldea.kodea }}</ion-col>
+                    <ion-col size="1">{{ horario.taldea.kodea }}</ion-col>
                     <ion-col size="3">{{ getDayName(horario.eguna) }}</ion-col>
                     <ion-col size="3">{{ horario.hasieraOrdua }} - {{ horario.amaieraOrdua }}</ion-col>
+                    <ion-col size="3">{{ horario.hasieraData }} - {{ horario.amaieraData }}</ion-col>
                     <ion-col size="2">
                       <!-- Botón para actualizar -->
                       <ion-button color="primary" (click)="openModal(horario, egutegiaEguneratuModal)">
@@ -273,7 +275,7 @@
               </ion-select>
             </ion-item>
             <ion-text color="danger" *ngIf="grupo.invalid && grupo.touched">
-              {{ 'ikaslePage.Validaciones.kodeaSelec' | translate }}
+              {{ 'ikaslePage.validaciones.kodeaSelec' | translate }}
             </ion-text>
 
             <!-- Selección de día -->
@@ -288,7 +290,7 @@
               </ion-select>
             </ion-item>
             <ion-text color="danger" *ngIf="dia.invalid && dia.touched">
-              {{ 'ikaslePage.Validaciones.dia' | translate }}
+              {{ 'ikaslePage.validaciones.dia' | translate }}
             </ion-text>
 
             <!-- Fecha de inicio -->
@@ -298,7 +300,7 @@
                 #fechaInicioField="ngModel"></ion-input>
             </ion-item>
             <ion-text color="danger" *ngIf="fechaInicioField.invalid && fechaInicioField.touched">
-              {{ 'ikaslePage.Validaciones.FechaInicio' | translate }}
+              {{ 'ikaslePage.validaciones.FechaInicio' | translate }}
             </ion-text>
 
             <!-- Fecha de fin -->
@@ -308,10 +310,10 @@
                 #fechaFinField="ngModel"></ion-input>
             </ion-item>
             <ion-text color="danger" *ngIf="fechaFinField.invalid && fechaFinField.touched">
-              {{ 'ikaslePage.Validaciones.FechaFin' | translate }}
+              {{ 'ikaslePage.validaciones.FechaFin' | translate }}
             </ion-text>
             <ion-text color="danger" *ngIf="fechaInicio && fechaFin && fechaInicio > fechaFin">
-              {{ 'ikaslePage.Validaciones.FechaInicioMenor' | translate }}
+              {{ 'ikaslePage.validaciones.FechaInicioMenor' | translate }}
             </ion-text>
 
             <!-- Hora de inicio -->
@@ -321,7 +323,7 @@
                 #horaInicioField="ngModel"></ion-input>
             </ion-item>
             <ion-text color="danger" *ngIf="horaInicioField.invalid && horaInicioField.touched">
-              {{ 'ikaslePage.Validaciones.HoraInicio' | translate }}
+              {{ 'ikaslePage.validaciones.HoraInicio' | translate }}
             </ion-text>
 
             <!-- Hora de fin -->
@@ -331,10 +333,10 @@
                 #horaFinField="ngModel"></ion-input>
             </ion-item>
             <ion-text color="danger" *ngIf="horaFinField.invalid && horaFinField.touched">
-              {{ 'ikaslePage.Validaciones.HoraFin' | translate }}
+              {{ 'ikaslePage.validaciones.HoraFin' | translate }}
             </ion-text>
             <ion-text color="danger" *ngIf="horaInicio && horaFin && horaInicio >= horaFin">
-              {{ 'ikaslePage.Validaciones.HoraInicioMenor' | translate }}
+              {{ 'ikaslePage.validaciones.HoraInicioMenor' | translate }}
             </ion-text>
 
             <!-- Botón de guardar (deshabilitado si el formulario no es válido) -->
@@ -522,7 +524,7 @@
               placeholder="{{ 'ikaslePage.Izena' | translate }}"></ion-input>
           </ion-item>
           <ion-text color="danger" *ngIf="izena.invalid && izena.touched">
-            {{ "ikaslePage.Validaciones.izena" | translate }}
+            {{ "ikaslePage.validaciones.izena" | translate }}
           </ion-text>
 
           <ion-item>
@@ -531,7 +533,7 @@
               placeholder="{{ 'ikaslePage.Abizena' | translate }}"></ion-input>
           </ion-item>
           <ion-text color="danger" *ngIf="abizenak.invalid && abizenak.touched">
-            {{ "ikaslePage.Validaciones.abizena" | translate }}
+            {{ "ikaslePage.validaciones.abizena" | translate }}
           </ion-text>
 
           <ion-item>
@@ -544,7 +546,7 @@
             </ion-select>
           </ion-item>
           <ion-text color="danger" *ngIf="taldeKodea.invalid && taldeKodea.touched">
-            {{ "ikaslePage.Validaciones.kodeaSelec" | translate }}
+            {{ "ikaslePage.validaciones.kodeaSelec" | translate }}
           </ion-text>
 
           <!-- El botón se deshabilita si el formulario es inválido -->
@@ -568,7 +570,7 @@
         <form #grupoForm="ngForm" (ngSubmit)="agregarGrupo()" novalidate>
           <!-- Mensaje de error si el nombre del grupo no está lleno -->
           <ion-text color="danger" *ngIf="taldeIzena?.invalid && taldeIzena?.touched">
-            {{ 'ikaslePage.Validaciones.izena' | translate }}
+            {{ 'ikaslePage.validaciones.izena' | translate }}
           </ion-text>
           <ion-item>
             <ion-label position="stacked">{{ 'ikaslePage.TaldeIzena' | translate }}</ion-label>
@@ -578,7 +580,7 @@
 
           <!-- Mensaje de error si el código del grupo no está lleno -->
           <ion-text color="danger" *ngIf="taldeKodea?.invalid && taldeKodea?.touched">
-            {{ 'ikaslePage.Validaciones.kodea' | translate }}
+            {{ 'ikaslePage.validaciones.kodea' | translate }}
           </ion-text>
           <ion-item>
             <ion-label position="stacked">{{ 'ikaslePage.TaldeKodea' | translate }}</ion-label>
@@ -608,7 +610,7 @@
         <form #editTaldeForm="ngForm" (ngSubmit)="updateTalde()" novalidate>
           <!-- Mensaje de error si el nombre del grupo está vacío -->
           <ion-text color="danger" *ngIf="taldeIzena?.invalid && taldeIzena?.touched">
-            {{ 'ikaslePage.Validaciones.izena' | translate }}
+            {{ 'ikaslePage.validaciones.izena' | translate }}
           </ion-text>
           <ion-item>
             <ion-label position="stacked">{{ 'ikaslePage.TaldeIzena' | translate }}</ion-label>

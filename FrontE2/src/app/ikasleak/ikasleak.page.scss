@@ -6,8 +6,16 @@ $color-tertiary: #41a367;        // Verde claro
 $color-white: #ffffff;
 $color-light-gray: #f8f8f8;
 $color-medium-gray: #e9e9e9;
-$color-dark-gray: #ffffff;
+$color-dark-gray: #353333;
 $color-danger: #e74c3c;        // Rojo
+
+ion-select{
+  color: black;
+}
+
+.idioma{
+  color: white;
+}
 
 .Headeraaa {
   --background: #1c345c; /* Azul oscuro principal */
@@ -316,8 +324,12 @@ ion-header {
 
   /* Si hay cualquier otro texto en el header, aseguramos que sea blanco */
   ion-label {
-    color: $color-white; /* Etiquetas en blanco */
+    // color: $color-white; /* Etiquetas en blanco */
   }
+}
+
+ion-label{
+  color: black;
 }
 
 /* Aseguramos que los títulos dentro del contenido también sean blancos */
@@ -362,14 +374,14 @@ ion-label {
 ion-input,
 ion-select {
   --background: $color-white;
-  --color: $color-dark-gray;
+  --color: $color-dark-gray !important;
   --padding-start: 12px;
   --border-radius: 8px;
   font-size: 1rem;
 }
 
 ion-select {
-  --placeholder-color: $color-medium-gray; /* Color del placeholder */
+  --placeholder-color: $color-medium-gray !important; /* Color del placeholder */
 }
 
 /* Mensajes de error */

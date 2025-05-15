@@ -7,6 +7,16 @@ ion-modal {
   margin: 0 auto;
 }
 
+ion-input,
+ion-textarea,
+.pop-name{
+  color: white;
+}
+
+ion-header{
+  background: #1c345c;
+}
+
 ion-card {
   ion-card-header {
     background: #1c345c; /* Azul oscuro principal */

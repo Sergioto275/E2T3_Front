@@ -61,6 +61,19 @@ export class ProduktuakPage implements OnInit {
   filtroStockBajo: boolean = false;
   filteredProduktuak: any[] = [];
 
+  limpiarCampos()
+  {
+    this.crearKatNombre = "";
+    this.crearNombre = "";
+    this.crearDescripcion = "";
+    this.crearCategoria = 0;
+    this.crearMarca = "";
+    this.crearStock = 0;
+    this.crearStockAlerta = 0;
+    this.crearImg = "";
+    this.productosSeleccionados = [];
+  }
+
   filtrarProductos() {
     this.filteredProduktuak = this.produktuak.map(categoria => ({
       ...categoria,
@@ -153,6 +166,7 @@ export class ProduktuakPage implements OnInit {
         });
 
         await this.produktuakLortu();
+        this.limpiarCampos();
       },
       async (error) => {
         console.error("Error al crear el producto:", error);
@@ -379,6 +393,7 @@ export class ProduktuakPage implements OnInit {
           this.mostrarToast(texto, 2000, 'success');
         });
         await this.produktuakLortu();
+        this.limpiarCampos();
       },
       async (error) => {
         console.error("Error al crear la categoría:", error);
@@ -412,6 +427,7 @@ export class ProduktuakPage implements OnInit {
     }).subscribe(
       async () => {
         await this.produktuakLortu();
+        this.limpiarCampos();
       },
       (error) => {
         console.error('Error al registrar los movimientos', error);
