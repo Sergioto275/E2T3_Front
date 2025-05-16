@@ -5,7 +5,7 @@ import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { AlertButton, AlertController, ToastController } from '@ionic/angular';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 import { LanguageService } from '../zerbitzuak/language.service';
 
@@ -189,6 +189,7 @@ export class ProduktuakPage implements OnInit {
 
   closeProdModal() {
     this.isEditingProduct = false;
+    console.log(this.isEditingProduct)
   }
 
   openKatModal(kategoria: any) {
@@ -275,19 +276,10 @@ export class ProduktuakPage implements OnInit {
     event.target.src = 'assets/image-default.avif';
   }
 
-  eliminarProducto(id: number) {
-    const confirmacion = confirm('¿Estás seguro de que quieres eliminar este producto?');
-    if (!confirmacion) {
-      console.log('Operación cancelada por el usuario.');
-      return;
-    }
-
+  eliminarProductoConf(id: number) {
     const json_data = {
       "id": id
     };
-
-    console.log(json_data);
-
     this.http.delete(`${environment.url}produktuak`, {
       headers: {
         'Content-Type': 'application/json',
@@ -313,19 +305,30 @@ export class ProduktuakPage implements OnInit {
     );
   }
 
-  eliminarKategoriaProducto(id: number) {
-    const confirmacion = confirm('¿Estás seguro de que quieres eliminar esta categoría?');
-    if (!confirmacion) {
-      console.log('Operación cancelada por el usuario.');
-      return;
-    }
+  async eliminarProducto(id: number) {
+    const alert = await this.alertController.create({
+      header: this.translate.instant('materiales.modal.confirmacion'),
+      message: this.translate.instant('eliminar'),
+      buttons: [
+        {
+          text: this.translate.instant('materiales.botones.cancelar'),
+          role: 'cancel',
+        },
+        {
+          text: this.translate.instant('materiales.botones.borrar'),
+          handler: () => {
+            this.eliminarProductoConf(id);
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
 
+  eliminarKategoriaProductoConf(id: number) {
     const json_data = {
       "id": id
     };
-
-    console.log(json_data);
-
     this.http.delete(`${environment.url}produktu_kategoria`, {
       headers: {
         'Content-Type': 'application/json',
@@ -346,6 +349,26 @@ export class ProduktuakPage implements OnInit {
         });
       }
     );
+  }
+
+  async eliminarKategoriaProducto(id: number) {
+    const alert = await this.alertController.create({
+      header: this.translate.instant('materiales.modal.confirmacion'),
+      message: this.translate.instant('eliminar'),
+      buttons: [
+        {
+          text: this.translate.instant('materiales.botones.cancelar'),
+          role: 'cancel',
+        },
+        {
+          text: this.translate.instant('materiales.botones.borrar'),
+          handler: () => {
+            this.eliminarKategoriaProductoConf(id);
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 
   editarKategoriaProducto() {
@@ -511,7 +534,8 @@ export class ProduktuakPage implements OnInit {
     private loginService: LoginServiceService, 
     private route: ActivatedRoute,
     private modoOscuroService: ModoOscuroService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private alertController: AlertController
   ) 
     
     {

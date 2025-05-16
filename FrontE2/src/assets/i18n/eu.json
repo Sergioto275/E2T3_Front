@@ -8,6 +8,7 @@
         "messageFail": "Erabiltzaile edo pasahitz okerrak.",
         "messageNotOk": "Errore ezezagun bat gertatu da. Berriz saiatu."
     },
+    "eliminar":"Ziur zaude ezabatu nahi duzula?",
     "menu": {
         "title": "Menua",
         "home": "Home",

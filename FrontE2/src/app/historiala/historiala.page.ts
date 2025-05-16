@@ -1,6 +1,6 @@
 import { ComunService } from './../zerbitzuak/comun.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ModalController, ToastController } from '@ionic/angular';
+import { AlertController, ModalController, ToastController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import jsPDF from 'jspdf';
@@ -85,7 +85,8 @@ export class HistorialaPage implements OnInit {
     private modalController: ModalController,
     private modoOscuroService: ModoOscuroService,
     private comonService: ComunService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private alertController: AlertController
   ) {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
@@ -379,13 +380,33 @@ export class HistorialaPage implements OnInit {
     this.updatePagination();
   }
 
-  remove_historial(index: number) {
+  remove_historialConf(index: number) {
     let historial = this.editingBezero.historiala[index];
     if (historial.id) {
         historial.ezabatzeData = new Date().toISOString(); // Marca como eliminado
     } else {
         this.editingBezero.historiala.splice(index, 1); // Si es nuevo, elimínalo
     }
+  }
+
+  async remove_historial(index: number) {
+    const alert = await this.alertController.create({
+      header: this.translate.instant('materiales.modal.confirmacion'),
+      message: this.translate.instant('eliminar'),
+      buttons: [
+        {
+          text: this.translate.instant('materiales.botones.cancelar'),
+          role: 'cancel',
+        },
+        {
+          text: this.translate.instant('materiales.botones.borrar'),
+          handler: () => {
+            this.remove_historialConf(index);
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
   
   guardarBezero() {
@@ -474,7 +495,7 @@ export class HistorialaPage implements OnInit {
     );
   }
 
-  deleteBezero(id: number) {
+  deleteBezeroConf(id: number) {
     const json_data = {
       "id": id
     };
@@ -493,6 +514,26 @@ export class HistorialaPage implements OnInit {
         console.error("Error al eliminar el cliente:", error);
       }
     );
+  }
+
+  async deleteBezero(id: number) {
+    const alert = await this.alertController.create({
+      header: this.translate.instant('materiales.modal.confirmacion'),
+      message: this.translate.instant('eliminar'),
+      buttons: [
+        {
+          text: this.translate.instant('materiales.botones.cancelar'),
+          role: 'cancel',
+        },
+        {
+          text: this.translate.instant('materiales.botones.borrar'),
+          handler: () => {
+            this.deleteBezeroConf(id);
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 
   changeLanguage() {

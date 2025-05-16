@@ -258,8 +258,10 @@
         <ion-toolbar>
           <ion-title>{{ 'ikaslePage.Egutegia' | translate }}</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="closeModal()">{{ 'ikaslePage.Itxi' | translate }}</ion-button>
-          </ion-buttons>
+          <ion-button class="close-icon" (click)="closeModal()">
+            <ion-icon name="close" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
         </ion-toolbar>
       </ion-header>
       <ion-content>
@@ -357,7 +359,9 @@
         <ion-toolbar>
           <ion-title>{{ 'ikaslePage.Eguneratzen' | translate }}: {{ idHorario }}</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="closeModal()">{{ 'ikaslePage.Itxi' | translate }}</ion-button>
+            <ion-button class="close-icon" (click)="closeModal()">
+              <ion-icon name="close" slot="icon-only"></ion-icon>
+            </ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -460,7 +464,7 @@
         <ion-toolbar>
           <ion-title>{{ "ikaslePage.EditIkaslea" | translate }}</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="closeEditModal()">
+            <ion-button class="close-icon" (click)="closeEditModal()">
               <ion-icon name="close" slot="icon-only"></ion-icon>
             </ion-button>
           </ion-buttons>
@@ -509,11 +513,16 @@
   </ion-modal>
 
   <!-- Modal para crear Ikaslea -->
-  <ion-modal trigger="prod-sortu-modal">
+  <ion-modal #sortuIkaslea trigger="prod-sortu-modal">
     <ng-template>
       <ion-header>
         <ion-toolbar>
           <ion-title>{{ "ikaslePage.SortuIkaslea" | translate }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button class="close-icon" (click)="sortuIkaslea.dismiss()">
+              <ion-icon name="close" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-buttons>
         </ion-toolbar>
       </ion-header>
       <ion-content>
@@ -559,11 +568,16 @@
   </ion-modal>
 
   <!-- Modal para gestionar grupos -->
-  <ion-modal trigger="prod-gestionatu-modal">
+  <ion-modal #gestionGrupos trigger="prod-gestionatu-modal">
     <ng-template>
       <ion-header>
         <ion-toolbar>
           <ion-title>{{ 'ikaslePage.SortuTaldea' | translate }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button class="close-icon" (click)="gestionGrupos.dismiss()">
+              <ion-icon name="close" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-buttons>
         </ion-toolbar>
       </ion-header>
       <ion-content>
@@ -604,6 +618,11 @@
       <ion-header>
         <ion-toolbar>
           <ion-title>{{ 'ikaslePage.TaldeIzena' | translate }}: {{ selectedTalde.kodea }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button class="close-icon" (click)="closeEditTaldeModal()">
+              <ion-icon name="close" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-buttons>
         </ion-toolbar>
       </ion-header>
       <ion-content>

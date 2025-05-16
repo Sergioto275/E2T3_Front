@@ -260,7 +260,8 @@ export class HitzorduakPage implements OnInit {
     private http: HttpClient,
     private modoOscuroService: ModoOscuroService,
     private comonService: ComunService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private alertController: AlertController
   ) 
     
     {
@@ -550,7 +551,7 @@ export class HitzorduakPage implements OnInit {
     );
   }
   // ----------------------------------------------------------------- ELIMINAR DATOS -----------------------------------------------------------------
-  eliminar_cita() {
+  eliminar_citaConf() {
     const json_data = { "id": this.citaEditar.id };
 
     this.http.delete(`${environment.url}hitzorduak`, {
@@ -574,6 +575,26 @@ export class HitzorduakPage implements OnInit {
         });
       }
     );
+  }
+
+  async eliminar_cita() {
+    const alert = await this.alertController.create({
+      header: this.translate.instant('materiales.modal.confirmacion'),
+      message: this.translate.instant('eliminar'),
+      buttons: [
+        {
+          text: this.translate.instant('materiales.botones.cancelar'),
+          role: 'cancel',
+        },
+        {
+          text: this.translate.instant('materiales.botones.borrar'),
+          handler: () => {
+            this.eliminar_citaConf();
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 
   async mostrarToast(mensaje: string, duracion: number = 2000, color: string = 'success') {

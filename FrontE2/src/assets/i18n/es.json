@@ -8,6 +8,7 @@
     "messageFail": "Usuario o contraseña incorrectos.",
     "messageNotOk": "Ocurrió un error inesperado. Inténtalo de nuevo."
   },
+  "eliminar":"Esta seguro que desea eliminarlo?",
   "menu": {
     "title": "Menu",
     "home": "Home",

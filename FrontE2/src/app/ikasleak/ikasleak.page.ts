@@ -483,7 +483,7 @@ export class IkasleakPage implements OnInit {
     );
   }
 
-  eliminarAlumno(alumnoId: number) {
+  eliminarAlumnoConf(alumnoId: number) {
     this.ikasleService.eliminarAlumno(alumnoId).subscribe(
       async () => {
         await this.getAlumnos();
@@ -499,6 +499,26 @@ export class IkasleakPage implements OnInit {
         });
       }
     );
+  }
+
+  async eliminarAlumno(alumnoId: number) {
+    const alert = await this.alertController.create({
+      header: this.translate.instant('materiales.modal.confirmacion'),
+      message: this.translate.instant('eliminar'),
+      buttons: [
+        {
+          text: this.translate.instant('materiales.botones.cancelar'),
+          role: 'cancel',
+        },
+        {
+          text: this.translate.instant('materiales.botones.borrar'),
+          handler: () => {
+            this.eliminarAlumnoConf(alumnoId);
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 
   eliminarAlumnos() {

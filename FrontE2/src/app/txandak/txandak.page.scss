@@ -9,6 +9,18 @@ $color-light-gray: #f8f8f8;
 $color-medium-gray: #E9E9E9;
 $color-dark-gray: #333333;
 
+.close-icon:hover ion-icon {
+  animation: shake 0.5s ease;
+  color: #ff6b6b !important; /* Color rojizo al hacer hover */
+}
+
+@keyframes shake {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(10deg); }
+  75% { transform: rotate(-10deg); }
+}
+
+
 /* Estilos generales para la página de txandak */
 ion-content {
   --background: #{$color-light-gray};
@@ -167,6 +179,11 @@ ion-list {
     }
   }
 }
+
+ion-modal ion-header ion-toolbar ion-title {
+  text-align: center !important;
+}
+
 
 /* Estilos para el modal */
 ion-modal {

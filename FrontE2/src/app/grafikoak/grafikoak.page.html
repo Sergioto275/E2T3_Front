@@ -50,8 +50,8 @@
           <ion-toolbar color="primary">
             <ion-title>📊 {{ 'graficos.graf' | translate }}</ion-title>
             <ion-buttons slot="end">
-              <ion-button (click)="closeGraphModal()">
-                <ion-icon name="close-circle-outline"></ion-icon> Cerrar
+              <ion-button class="close-icon" (click)="closeGraphModal()">
+                <ion-icon name="close" slot="icon-only"></ion-icon>
               </ion-button>
             </ion-buttons>
           </ion-toolbar>

@@ -129,13 +129,28 @@
   </ion-card>
 
   <!-- Modal para añadir una nueva txanda -->
-  <ion-modal trigger="txanda-sortu-modal">
+  <ion-modal #crearTxanda trigger="txanda-sortu-modal">
     <ng-template>
-      <ion-header>
+      <!-- <ion-header>
         <ion-toolbar>
           <ion-title>{{ 'txandakPage.modalTitulo' | translate }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button class="close-icon" (click)="crearTxanda.dismiss()">
+              <ion-icon name="close" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-buttons>
         </ion-toolbar>
-      </ion-header>
+      </ion-header> -->
+      <ion-header>
+          <ion-toolbar>
+            <ion-title>{{ 'txandakPage.modalTitulo' | translate }}</ion-title>
+            <ion-buttons slot="end">
+              <ion-button class="close-icon" (click)="crearTxanda.dismiss()">
+                <ion-icon name="close" slot="icon-only"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
       <ion-content>
         <!-- Selección del tipo de txanda -->
         <ion-item>

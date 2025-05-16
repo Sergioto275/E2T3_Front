@@ -191,6 +191,11 @@
         <ion-header>
           <ion-toolbar>
             <ion-title>{{ 'materiales.botones.sacarMateriales' | translate }}</ion-title>
+            <ion-buttons slot="end">
+              <ion-button class="close-icon" (click)="modalAteraMat.dismiss()">
+                <ion-icon name="close" slot="icon-only"></ion-icon>
+              </ion-button>
+            </ion-buttons>
           </ion-toolbar>
         </ion-header>
         <ion-content>
@@ -261,6 +266,11 @@
         <ion-header>
           <ion-toolbar>
             <ion-title>{{ 'materiales.botones.crearMateriales' | translate }}</ion-title>
+            <ion-buttons slot="end">
+              <ion-button class="close-icon" (click)="modalSortuMat.dismiss()">
+                <ion-icon name="close" slot="icon-only"></ion-icon>
+              </ion-button>
+            </ion-buttons>
           </ion-toolbar>
         </ion-header>
         <ion-content>
@@ -324,6 +334,11 @@
         <ion-header>
           <ion-toolbar>
             <ion-title>{{ 'materiales.botones.editarMateriales' | translate }}</ion-title>
+            <ion-buttons slot="end">
+              <ion-button class="close-icon" (click)="modalEditar.dismiss()">
+                <ion-icon name="close" slot="icon-only"></ion-icon>
+              </ion-button>
+            </ion-buttons>
           </ion-toolbar>
         </ion-header>
         <ion-content>
@@ -388,6 +403,11 @@
         <ion-header>
           <ion-toolbar>
             <ion-title>{{ 'materiales.botones.crearCategoria' | translate }}</ion-title>
+            <ion-buttons slot="end">
+              <ion-button class="close-icon" (click)="modalKatMatSortu.dismiss()">
+                <ion-icon name="close" slot="icon-only"></ion-icon>
+              </ion-button>
+            </ion-buttons>
           </ion-toolbar>
         </ion-header>
         <ion-content>
@@ -426,6 +446,9 @@
           <ion-toolbar>
             <ion-title>{{ 'materiales.botones.editarCategoria' | translate }}</ion-title>
             <ion-buttons slot="end">
+              <ion-button class="close-icon" (click)="modaleditarcat.dismiss()">
+                <ion-icon name="close" slot="icon-only"></ion-icon>
+              </ion-button>
             </ion-buttons>
           </ion-toolbar>
         </ion-header>
@@ -466,6 +489,9 @@
           <ion-toolbar>
             <ion-title>{{ 'materiales.botones.devolverMateriales' | translate }}</ion-title>
             <ion-buttons slot="end">
+              <ion-button class="close-icon" (click)="modalmatdevolver.dismiss()">
+                <ion-icon name="close" slot="icon-only"></ion-icon>
+              </ion-button>
             </ion-buttons>
           </ion-toolbar>
         </ion-header>

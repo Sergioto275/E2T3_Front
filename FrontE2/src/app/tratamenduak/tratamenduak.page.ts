@@ -5,7 +5,7 @@ import { HeaderComponent } from '../components/header/header.component';
 import { HttpClient } from '@angular/common/http';
 import { LoginServiceService } from '../zerbitzuak/login-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { ModoOscuroService } from '../zerbitzuak/Iluna.service';
 import { LanguageService } from '../zerbitzuak/language.service';
 
@@ -47,7 +47,8 @@ export class TratamenduakPage implements OnInit {
     private router: Router, 
     private route: ActivatedRoute,
     private languageService: LanguageService,
-    private modoOscuroService: ModoOscuroService) 
+    private modoOscuroService: ModoOscuroService,
+    private alertController: AlertController) 
   {
     this.translate.setDefaultLang('es');
     this.translate.use(this.selectedLanguage);
@@ -271,7 +272,7 @@ export class TratamenduakPage implements OnInit {
     toast.present();
   }
 
-  eliminarServicio(id: number) {
+  eliminarServicioConf(id: number) {
     const url = `${environment.url}zerbitzuak/${id}`;
 
     this.http.delete(url, {
@@ -296,6 +297,26 @@ export class TratamenduakPage implements OnInit {
         });
       }
     );
+  }
+
+  async eliminarServicio(id: number) {
+    const alert = await this.alertController.create({
+      header: this.translate.instant('materiales.modal.confirmacion'),
+      message: this.translate.instant('eliminar'),
+      buttons: [
+        {
+          text: this.translate.instant('materiales.botones.cancelar'),
+          role: 'cancel',
+        },
+        {
+          text: this.translate.instant('materiales.botones.borrar'),
+          handler: () => {
+            this.eliminarServicioConf(id);
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 
   crearKategoria() {
@@ -359,7 +380,7 @@ export class TratamenduakPage implements OnInit {
     );
   }
 
-  eliminarKategoria(id: number) {
+  eliminarKategoriaConf(id: number) {
     this.http.delete(`${environment.url}zerbitzu_kategoria/${id}`, {
       headers: {
         'Content-Type': 'application/json',
@@ -380,6 +401,27 @@ export class TratamenduakPage implements OnInit {
       }
     );
   }
+
+  async eliminarKategoria(id: number) {
+    const alert = await this.alertController.create({
+      header: this.translate.instant('materiales.modal.confirmacion'),
+      message: this.translate.instant('eliminar'),
+      buttons: [
+        {
+          text: this.translate.instant('materiales.botones.cancelar'),
+          role: 'cancel',
+        },
+        {
+          text: this.translate.instant('materiales.botones.borrar'),
+          handler: () => {
+            this.eliminarKategoriaConf(id);
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
+
   cargarModoPreferido() {
     this.modoOscuro = this.modoOscuroService.getModoOscuro();
     if (this.modoOscuro) {
